@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A9496908D4A186AF79DA348 /* libPods-biu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 882ECF70E4E409F2CC245E63 /* libPods-biu.a */; };
+		6558C9F54B9EEBDFACD01199 /* libPods-biuTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FF2F6A1D8073A5C8E135F00 /* libPods-biuTests.a */; };
 		EA6AAC301AF8739200ED3A55 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC2F1AF8739200ED3A55 /* main.m */; };
 		EA6AAC331AF8739200ED3A55 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC321AF8739200ED3A55 /* AppDelegate.m */; };
 		EA6AAC361AF8739200ED3A55 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC351AF8739200ED3A55 /* ViewController.m */; };
@@ -14,6 +16,10 @@
 		EA6AAC3B1AF8739200ED3A55 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA6AAC3A1AF8739200ED3A55 /* Images.xcassets */; };
 		EA6AAC3E1AF8739200ED3A55 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA6AAC3C1AF8739200ED3A55 /* LaunchScreen.xib */; };
 		EA6AAC4A1AF8739200ED3A55 /* biuTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC491AF8739200ED3A55 /* biuTests.m */; };
+		EA6AAC581AF8893900ED3A55 /* BlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC571AF8893900ED3A55 /* BlurView.m */; };
+		EA6AAC601AF88E3A00ED3A55 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC5F1AF88E3A00ED3A55 /* UIImage+ImageEffects.m */; };
+		EA6AAC631AF8940500ED3A55 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = EA6AAC611AF8940500ED3A55 /* logo.png */; };
+		EA6AAC641AF8940500ED3A55 /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = EA6AAC621AF8940500ED3A55 /* splash.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +33,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3EA7B4198736A1B9DD82C672 /* Pods-biu.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-biu.debug.xcconfig"; path = "Pods/Target Support Files/Pods-biu/Pods-biu.debug.xcconfig"; sourceTree = "<group>"; };
+		4187CEDC2E9F6BC29CED9B0E /* Pods-biu.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-biu.release.xcconfig"; path = "Pods/Target Support Files/Pods-biu/Pods-biu.release.xcconfig"; sourceTree = "<group>"; };
+		4FEB530044B4F7E91494142E /* Pods-biuTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-biuTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-biuTests/Pods-biuTests.debug.xcconfig"; sourceTree = "<group>"; };
+		52D026F5D14ECA4F27D67EBF /* Pods-biuTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-biuTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-biuTests/Pods-biuTests.release.xcconfig"; sourceTree = "<group>"; };
+		882ECF70E4E409F2CC245E63 /* libPods-biu.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-biu.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9FF2F6A1D8073A5C8E135F00 /* libPods-biuTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-biuTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA6AAC2A1AF8739200ED3A55 /* biu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = biu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA6AAC2E1AF8739200ED3A55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA6AAC2F1AF8739200ED3A55 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -40,6 +52,12 @@
 		EA6AAC431AF8739200ED3A55 /* biuTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = biuTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA6AAC481AF8739200ED3A55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA6AAC491AF8739200ED3A55 /* biuTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = biuTests.m; sourceTree = "<group>"; };
+		EA6AAC561AF8893900ED3A55 /* BlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlurView.h; sourceTree = "<group>"; };
+		EA6AAC571AF8893900ED3A55 /* BlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlurView.m; sourceTree = "<group>"; };
+		EA6AAC5E1AF88E3A00ED3A55 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
+		EA6AAC5F1AF88E3A00ED3A55 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
+		EA6AAC611AF8940500ED3A55 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = images/logo.png; sourceTree = "<group>"; };
+		EA6AAC621AF8940500ED3A55 /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = splash.png; path = images/splash.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A9496908D4A186AF79DA348 /* libPods-biu.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6558C9F54B9EEBDFACD01199 /* libPods-biuTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,6 +86,8 @@
 				EA6AAC2C1AF8739200ED3A55 /* biu */,
 				EA6AAC461AF8739200ED3A55 /* biuTests */,
 				EA6AAC2B1AF8739200ED3A55 /* Products */,
+				FD7E4ECAED3642A9EBCB7456 /* Pods */,
+				FD0D0DFF07202ECE53987CA7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -81,6 +103,8 @@
 		EA6AAC2C1AF8739200ED3A55 /* biu */ = {
 			isa = PBXGroup;
 			children = (
+				EA6AAC5B1AF88DB600ED3A55 /* Images */,
+				EA6AAC551AF8890E00ED3A55 /* Util */,
 				EA6AAC311AF8739200ED3A55 /* AppDelegate.h */,
 				EA6AAC321AF8739200ED3A55 /* AppDelegate.m */,
 				EA6AAC341AF8739200ED3A55 /* ViewController.h */,
@@ -119,6 +143,46 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		EA6AAC551AF8890E00ED3A55 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				EA6AAC5E1AF88E3A00ED3A55 /* UIImage+ImageEffects.h */,
+				EA6AAC5F1AF88E3A00ED3A55 /* UIImage+ImageEffects.m */,
+				EA6AAC561AF8893900ED3A55 /* BlurView.h */,
+				EA6AAC571AF8893900ED3A55 /* BlurView.m */,
+			);
+			name = Util;
+			sourceTree = "<group>";
+		};
+		EA6AAC5B1AF88DB600ED3A55 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				EA6AAC611AF8940500ED3A55 /* logo.png */,
+				EA6AAC621AF8940500ED3A55 /* splash.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		FD0D0DFF07202ECE53987CA7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				882ECF70E4E409F2CC245E63 /* libPods-biu.a */,
+				9FF2F6A1D8073A5C8E135F00 /* libPods-biuTests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FD7E4ECAED3642A9EBCB7456 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3EA7B4198736A1B9DD82C672 /* Pods-biu.debug.xcconfig */,
+				4187CEDC2E9F6BC29CED9B0E /* Pods-biu.release.xcconfig */,
+				4FEB530044B4F7E91494142E /* Pods-biuTests.debug.xcconfig */,
+				52D026F5D14ECA4F27D67EBF /* Pods-biuTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -126,9 +190,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = EA6AAC4D1AF8739200ED3A55 /* Build configuration list for PBXNativeTarget "biu" */;
 			buildPhases = (
+				E97A4F493FF3919BB2133CE7 /* Check Pods Manifest.lock */,
 				EA6AAC261AF8739200ED3A55 /* Sources */,
 				EA6AAC271AF8739200ED3A55 /* Frameworks */,
 				EA6AAC281AF8739200ED3A55 /* Resources */,
+				D340EDCDCE94832E6AE2E481 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -143,9 +209,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = EA6AAC501AF8739200ED3A55 /* Build configuration list for PBXNativeTarget "biuTests" */;
 			buildPhases = (
+				6C0CC7B2148841C2C37E3992 /* Check Pods Manifest.lock */,
 				EA6AAC3F1AF8739200ED3A55 /* Sources */,
 				EA6AAC401AF8739200ED3A55 /* Frameworks */,
 				EA6AAC411AF8739200ED3A55 /* Resources */,
+				DFF237BE70EEB9206A1E0744 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -199,9 +267,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA6AAC631AF8940500ED3A55 /* logo.png in Resources */,
 				EA6AAC391AF8739200ED3A55 /* Main.storyboard in Resources */,
 				EA6AAC3E1AF8739200ED3A55 /* LaunchScreen.xib in Resources */,
 				EA6AAC3B1AF8739200ED3A55 /* Images.xcassets in Resources */,
+				EA6AAC641AF8940500ED3A55 /* splash.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,12 +284,77 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		6C0CC7B2148841C2C37E3992 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		D340EDCDCE94832E6AE2E481 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-biu/Pods-biu-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DFF237BE70EEB9206A1E0744 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-biuTests/Pods-biuTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E97A4F493FF3919BB2133CE7 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		EA6AAC261AF8739200ED3A55 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				EA6AAC361AF8739200ED3A55 /* ViewController.m in Sources */,
+				EA6AAC601AF88E3A00ED3A55 /* UIImage+ImageEffects.m in Sources */,
+				EA6AAC581AF8893900ED3A55 /* BlurView.m in Sources */,
 				EA6AAC331AF8739200ED3A55 /* AppDelegate.m in Sources */,
 				EA6AAC301AF8739200ED3A55 /* main.m in Sources */,
 			);
@@ -345,6 +480,7 @@
 		};
 		EA6AAC4E1AF8739200ED3A55 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3EA7B4198736A1B9DD82C672 /* Pods-biu.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = biu/Info.plist;
@@ -355,6 +491,7 @@
 		};
 		EA6AAC4F1AF8739200ED3A55 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4187CEDC2E9F6BC29CED9B0E /* Pods-biu.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = biu/Info.plist;
@@ -365,6 +502,7 @@
 		};
 		EA6AAC511AF8739200ED3A55 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4FEB530044B4F7E91494142E /* Pods-biuTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -384,6 +522,7 @@
 		};
 		EA6AAC521AF8739200ED3A55 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 52D026F5D14ECA4F27D67EBF /* Pods-biuTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -416,6 +555,7 @@
 				EA6AAC4F1AF8739200ED3A55 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EA6AAC501AF8739200ED3A55 /* Build configuration list for PBXNativeTarget "biuTests" */ = {
 			isa = XCConfigurationList;
@@ -424,6 +564,7 @@
 				EA6AAC521AF8739200ED3A55 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
