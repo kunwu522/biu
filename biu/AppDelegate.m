@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 
+#import "KeychainItemWrapper.h"
+
 @interface AppDelegate ()
 
 @end
@@ -17,6 +19,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+     self.passwordItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"Password" accessGroup:nil];
+    
     return YES;
 }
 

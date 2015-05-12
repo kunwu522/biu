@@ -9,9 +9,12 @@
 /* Begin PBXBuildFile section */
 		3A9496908D4A186AF79DA348 /* libPods-biu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 882ECF70E4E409F2CC245E63 /* libPods-biu.a */; };
 		6558C9F54B9EEBDFACD01199 /* libPods-biuTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FF2F6A1D8073A5C8E135F00 /* libPods-biuTests.a */; };
+		EA1E504F1AFCB99F004F7F6A /* BLTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1E504E1AFCB99F004F7F6A /* BLTextField.m */; };
+		EA1E50511B0094B3004F7F6A /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA1E50501B0094B3004F7F6A /* Images-2.xcassets */; };
+		EA1E505B1B01FE55004F7F6A /* wel_background.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1E505A1B01FE55004F7F6A /* wel_background.png */; };
 		EA6AAC301AF8739200ED3A55 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC2F1AF8739200ED3A55 /* main.m */; };
 		EA6AAC331AF8739200ED3A55 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC321AF8739200ED3A55 /* AppDelegate.m */; };
-		EA6AAC361AF8739200ED3A55 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC351AF8739200ED3A55 /* ViewController.m */; };
+		EA6AAC361AF8739200ED3A55 /* BLWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC351AF8739200ED3A55 /* BLWelcomeViewController.m */; };
 		EA6AAC391AF8739200ED3A55 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA6AAC371AF8739200ED3A55 /* Main.storyboard */; };
 		EA6AAC3B1AF8739200ED3A55 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA6AAC3A1AF8739200ED3A55 /* Images.xcassets */; };
 		EA6AAC3E1AF8739200ED3A55 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA6AAC3C1AF8739200ED3A55 /* LaunchScreen.xib */; };
@@ -20,6 +23,8 @@
 		EA6AAC601AF88E3A00ED3A55 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC5F1AF88E3A00ED3A55 /* UIImage+ImageEffects.m */; };
 		EA6AAC631AF8940500ED3A55 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = EA6AAC611AF8940500ED3A55 /* logo.png */; };
 		EA6AAC641AF8940500ED3A55 /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = EA6AAC621AF8940500ED3A55 /* splash.png */; };
+		EAFBEE7D1AFB2F94006013CD /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAFBEE7C1AFB2F94006013CD /* Security.framework */; };
+		EAFBEE841AFB3038006013CD /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFBEE831AFB3038006013CD /* KeychainItemWrapper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,13 +44,17 @@
 		52D026F5D14ECA4F27D67EBF /* Pods-biuTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-biuTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-biuTests/Pods-biuTests.release.xcconfig"; sourceTree = "<group>"; };
 		882ECF70E4E409F2CC245E63 /* libPods-biu.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-biu.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FF2F6A1D8073A5C8E135F00 /* libPods-biuTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-biuTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA1E504D1AFCB99F004F7F6A /* BLTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLTextField.h; path = CustomizeUI/BLTextField.h; sourceTree = "<group>"; };
+		EA1E504E1AFCB99F004F7F6A /* BLTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLTextField.m; path = CustomizeUI/BLTextField.m; sourceTree = "<group>"; };
+		EA1E50501B0094B3004F7F6A /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Images-2.xcassets"; sourceTree = "<group>"; };
+		EA1E505A1B01FE55004F7F6A /* wel_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = wel_background.png; path = images/wel_background.png; sourceTree = "<group>"; };
 		EA6AAC2A1AF8739200ED3A55 /* biu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = biu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA6AAC2E1AF8739200ED3A55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA6AAC2F1AF8739200ED3A55 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EA6AAC311AF8739200ED3A55 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		EA6AAC321AF8739200ED3A55 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		EA6AAC341AF8739200ED3A55 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		EA6AAC351AF8739200ED3A55 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		EA6AAC341AF8739200ED3A55 /* BLWelcomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLWelcomeViewController.h; sourceTree = "<group>"; };
+		EA6AAC351AF8739200ED3A55 /* BLWelcomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLWelcomeViewController.m; sourceTree = "<group>"; };
 		EA6AAC381AF8739200ED3A55 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EA6AAC3A1AF8739200ED3A55 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		EA6AAC3D1AF8739200ED3A55 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -58,6 +67,9 @@
 		EA6AAC5F1AF88E3A00ED3A55 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		EA6AAC611AF8940500ED3A55 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = images/logo.png; sourceTree = "<group>"; };
 		EA6AAC621AF8940500ED3A55 /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = splash.png; path = images/splash.png; sourceTree = "<group>"; };
+		EAFBEE7C1AFB2F94006013CD /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		EAFBEE821AFB3038006013CD /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeychainItemWrapper.h; path = KeyChainUtil/KeychainItemWrapper.h; sourceTree = "<group>"; };
+		EAFBEE831AFB3038006013CD /* KeychainItemWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KeychainItemWrapper.m; path = KeyChainUtil/KeychainItemWrapper.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAFBEE7D1AFB2F94006013CD /* Security.framework in Frameworks */,
 				3A9496908D4A186AF79DA348 /* libPods-biu.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -80,6 +93,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EA1E50491AFCB891004F7F6A /* CustomizeUI */ = {
+			isa = PBXGroup;
+			children = (
+				EA1E504D1AFCB99F004F7F6A /* BLTextField.h */,
+				EA1E504E1AFCB99F004F7F6A /* BLTextField.m */,
+			);
+			name = CustomizeUI;
+			sourceTree = "<group>";
+		};
 		EA6AAC211AF8739200ED3A55 = {
 			isa = PBXGroup;
 			children = (
@@ -103,15 +125,18 @@
 		EA6AAC2C1AF8739200ED3A55 /* biu */ = {
 			isa = PBXGroup;
 			children = (
+				EA1E50491AFCB891004F7F6A /* CustomizeUI */,
+				EAFBEE7E1AFB2FD5006013CD /* KeyChainUtil */,
 				EA6AAC5B1AF88DB600ED3A55 /* Images */,
 				EA6AAC551AF8890E00ED3A55 /* Util */,
 				EA6AAC311AF8739200ED3A55 /* AppDelegate.h */,
 				EA6AAC321AF8739200ED3A55 /* AppDelegate.m */,
-				EA6AAC341AF8739200ED3A55 /* ViewController.h */,
-				EA6AAC351AF8739200ED3A55 /* ViewController.m */,
+				EA6AAC341AF8739200ED3A55 /* BLWelcomeViewController.h */,
+				EA6AAC351AF8739200ED3A55 /* BLWelcomeViewController.m */,
 				EA6AAC371AF8739200ED3A55 /* Main.storyboard */,
 				EA6AAC3A1AF8739200ED3A55 /* Images.xcassets */,
 				EA6AAC3C1AF8739200ED3A55 /* LaunchScreen.xib */,
+				EA1E50501B0094B3004F7F6A /* Images-2.xcassets */,
 				EA6AAC2D1AF8739200ED3A55 /* Supporting Files */,
 			);
 			path = biu;
@@ -157,15 +182,26 @@
 		EA6AAC5B1AF88DB600ED3A55 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				EA1E505A1B01FE55004F7F6A /* wel_background.png */,
 				EA6AAC611AF8940500ED3A55 /* logo.png */,
 				EA6AAC621AF8940500ED3A55 /* splash.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
 		};
+		EAFBEE7E1AFB2FD5006013CD /* KeyChainUtil */ = {
+			isa = PBXGroup;
+			children = (
+				EAFBEE821AFB3038006013CD /* KeychainItemWrapper.h */,
+				EAFBEE831AFB3038006013CD /* KeychainItemWrapper.m */,
+			);
+			name = KeyChainUtil;
+			sourceTree = "<group>";
+		};
 		FD0D0DFF07202ECE53987CA7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EAFBEE7C1AFB2F94006013CD /* Security.framework */,
 				882ECF70E4E409F2CC245E63 /* libPods-biu.a */,
 				9FF2F6A1D8073A5C8E135F00 /* libPods-biuTests.a */,
 			);
@@ -267,9 +303,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA1E50511B0094B3004F7F6A /* Images-2.xcassets in Resources */,
 				EA6AAC631AF8940500ED3A55 /* logo.png in Resources */,
 				EA6AAC391AF8739200ED3A55 /* Main.storyboard in Resources */,
 				EA6AAC3E1AF8739200ED3A55 /* LaunchScreen.xib in Resources */,
+				EA1E505B1B01FE55004F7F6A /* wel_background.png in Resources */,
 				EA6AAC3B1AF8739200ED3A55 /* Images.xcassets in Resources */,
 				EA6AAC641AF8940500ED3A55 /* splash.png in Resources */,
 			);
@@ -352,8 +390,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EA6AAC361AF8739200ED3A55 /* ViewController.m in Sources */,
+				EA1E504F1AFCB99F004F7F6A /* BLTextField.m in Sources */,
+				EA6AAC361AF8739200ED3A55 /* BLWelcomeViewController.m in Sources */,
 				EA6AAC601AF88E3A00ED3A55 /* UIImage+ImageEffects.m in Sources */,
+				EAFBEE841AFB3038006013CD /* KeychainItemWrapper.m in Sources */,
 				EA6AAC581AF8893900ED3A55 /* BlurView.m in Sources */,
 				EA6AAC331AF8739200ED3A55 /* AppDelegate.m in Sources */,
 				EA6AAC301AF8739200ED3A55 /* main.m in Sources */,
@@ -483,9 +523,11 @@
 			baseConfigurationReference = 3EA7B4198736A1B9DD82C672 /* Pods-biu.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = biu/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -494,9 +536,11 @@
 			baseConfigurationReference = 4187CEDC2E9F6BC29CED9B0E /* Pods-biu.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = biu/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
