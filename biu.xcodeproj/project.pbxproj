@@ -21,8 +21,9 @@
 		EA6AAC4A1AF8739200ED3A55 /* biuTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC491AF8739200ED3A55 /* biuTests.m */; };
 		EA6AAC581AF8893900ED3A55 /* BlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC571AF8893900ED3A55 /* BlurView.m */; };
 		EA6AAC601AF88E3A00ED3A55 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC5F1AF88E3A00ED3A55 /* UIImage+ImageEffects.m */; };
-		EA6AAC631AF8940500ED3A55 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = EA6AAC611AF8940500ED3A55 /* logo.png */; };
 		EA6AAC641AF8940500ED3A55 /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = EA6AAC621AF8940500ED3A55 /* splash.png */; };
+		EAE8E20C1B09CBF800C9038D /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE8E20B1B09CBF800C9038D /* logo.png */; };
+		EAE8E2111B09F34300C9038D /* BLLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE8E2101B09F34300C9038D /* BLLoginViewController.m */; };
 		EAFBEE7D1AFB2F94006013CD /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAFBEE7C1AFB2F94006013CD /* Security.framework */; };
 		EAFBEE841AFB3038006013CD /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFBEE831AFB3038006013CD /* KeychainItemWrapper.m */; };
 /* End PBXBuildFile section */
@@ -65,8 +66,10 @@
 		EA6AAC571AF8893900ED3A55 /* BlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlurView.m; sourceTree = "<group>"; };
 		EA6AAC5E1AF88E3A00ED3A55 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		EA6AAC5F1AF88E3A00ED3A55 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
-		EA6AAC611AF8940500ED3A55 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = images/logo.png; sourceTree = "<group>"; };
 		EA6AAC621AF8940500ED3A55 /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = splash.png; path = images/splash.png; sourceTree = "<group>"; };
+		EAE8E20B1B09CBF800C9038D /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = images/logo.png; sourceTree = "<group>"; };
+		EAE8E20F1B09F34300C9038D /* BLLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLLoginViewController.h; sourceTree = "<group>"; };
+		EAE8E2101B09F34300C9038D /* BLLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLLoginViewController.m; sourceTree = "<group>"; };
 		EAFBEE7C1AFB2F94006013CD /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		EAFBEE821AFB3038006013CD /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeychainItemWrapper.h; path = KeyChainUtil/KeychainItemWrapper.h; sourceTree = "<group>"; };
 		EAFBEE831AFB3038006013CD /* KeychainItemWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KeychainItemWrapper.m; path = KeyChainUtil/KeychainItemWrapper.m; sourceTree = "<group>"; };
@@ -133,6 +136,8 @@
 				EA6AAC321AF8739200ED3A55 /* AppDelegate.m */,
 				EA6AAC341AF8739200ED3A55 /* BLWelcomeViewController.h */,
 				EA6AAC351AF8739200ED3A55 /* BLWelcomeViewController.m */,
+				EAE8E20F1B09F34300C9038D /* BLLoginViewController.h */,
+				EAE8E2101B09F34300C9038D /* BLLoginViewController.m */,
 				EA6AAC371AF8739200ED3A55 /* Main.storyboard */,
 				EA6AAC3A1AF8739200ED3A55 /* Images.xcassets */,
 				EA6AAC3C1AF8739200ED3A55 /* LaunchScreen.xib */,
@@ -182,8 +187,8 @@
 		EA6AAC5B1AF88DB600ED3A55 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				EAE8E20B1B09CBF800C9038D /* logo.png */,
 				EA1E505A1B01FE55004F7F6A /* wel_background.png */,
-				EA6AAC611AF8940500ED3A55 /* logo.png */,
 				EA6AAC621AF8940500ED3A55 /* splash.png */,
 			);
 			name = Images;
@@ -303,8 +308,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAE8E20C1B09CBF800C9038D /* logo.png in Resources */,
 				EA1E50511B0094B3004F7F6A /* Images-2.xcassets in Resources */,
-				EA6AAC631AF8940500ED3A55 /* logo.png in Resources */,
 				EA6AAC391AF8739200ED3A55 /* Main.storyboard in Resources */,
 				EA6AAC3E1AF8739200ED3A55 /* LaunchScreen.xib in Resources */,
 				EA1E505B1B01FE55004F7F6A /* wel_background.png in Resources */,
@@ -390,6 +395,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAE8E2111B09F34300C9038D /* BLLoginViewController.m in Sources */,
 				EA1E504F1AFCB99F004F7F6A /* BLTextField.m in Sources */,
 				EA6AAC361AF8739200ED3A55 /* BLWelcomeViewController.m in Sources */,
 				EA6AAC601AF88E3A00ED3A55 /* UIImage+ImageEffects.m in Sources */,

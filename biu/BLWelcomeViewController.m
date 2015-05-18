@@ -27,24 +27,28 @@
 @property (retain, nonatomic) BLTextField * txtUsername;
 @property (retain, nonatomic) BLTextField * txtPassword;
 @property (retain, nonatomic) UILabel *lbLoginWith;
-@property (retain, nonatomic) UIButton *btnLoginWithWeChat;
-@property (retain, nonatomic) UIButton *btnLoginWithSina;
+@property (retain, nonatomic) UIButton *btnLogin;
+@property (retain, nonatomic) UIButton *btnSignup;
+@property (retain, nonatomic) UILabel *lbSlogan;
 
 @property (retain, nonatomic) UIView *background;
 @property (retain, nonatomic) UIImageView *imageView;
 @property (retain, nonatomic) BlurView *blurView;
 
+
 @end
 
 @implementation BLWelcomeViewController
 
-static double ICON_INITIAL_SIZE = 150;
+static double ICON_INITIAL_SIZE = 147.5;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
     self.view.backgroundColor = [UIColor clearColor];
+    
+    NSLog(@"ViewController size: %f--%f", self.view.frame.size.width, self.view.frame.size.height);
     
     _background = [[UIView alloc] initWithFrame:self.view.frame];
     _imageView = [[UIImageView alloc] initWithFrame:_background.frame];
@@ -55,21 +59,25 @@ static double ICON_INITIAL_SIZE = 150;
     
     //Initial View
     _logo = [[UIImageView alloc] init];
-    [self.view addSubview:_logo];
     _logo.image = [UIImage imageNamed:@"logo.png"];
+//    _logo.layer.cornerRadius = ICON_INITIAL_SIZE / 2;
+//    _logo.layer.masksToBounds = YES;
+//    _logo.contentMode = UIViewContentModeScaleAspectFill;
+    [self.view addSubview:_logo];
+    
     
     _biuTitle = [[UILabel alloc] init];
     _biuTitle.text = @"BIU";
-    _biuTitle.font = [UIFont fontWithName:@"Arial-BoldMT" size:40];
+    _biuTitle.font = [UIFont fontWithName:@"Arial-BoldMT" size:45];
     _biuTitle.textColor = [UIColor whiteColor];
     _biuTitle.textAlignment = NSTextAlignmentCenter;
     _biuTitle.adjustsFontSizeToFitWidth = YES;
     [self.view addSubview:_biuTitle];
     
     _biuSubtitle = [[UILabel alloc] init];
-    _biuSubtitle.text = @"I AM CLOSE";
-    _biuSubtitle.font = [UIFont fontWithName:@"ArialMT" size:18];
-    _biuSubtitle.textColor = [UIColor grayColor];
+    _biuSubtitle.text = @"I ' M   C L O S E";
+    _biuSubtitle.font = [UIFont fontWithName:@"Arial-BoldMT" size:15];
+    _biuSubtitle.textColor = [UIColor colorWithRed:89.0 / 255.0 green:96.0 / 255.0 blue:104.0 / 255.0 alpha:1];
     _biuSubtitle.textAlignment = NSTextAlignmentCenter;
     _biuSubtitle.adjustsFontSizeToFitWidth = YES;
     [self.view addSubview:_biuSubtitle];
@@ -77,19 +85,19 @@ static double ICON_INITIAL_SIZE = 150;
     // Create constraints
     [_logo mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view.mas_centerX);
-        make.centerY.equalTo(self.view.mas_centerY).with.offset(-50);
+        make.top.equalTo(self.view).with.offset(191.8);
         make.height.equalTo([NSNumber numberWithDouble:ICON_INITIAL_SIZE]);
         make.width.equalTo([NSNumber numberWithDouble:ICON_INITIAL_SIZE]);
     }];
     
     [_biuTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_logo.mas_centerX);
-        make.centerY.equalTo(_logo.mas_bottom).with.offset(80);
+        make.top.equalTo(_logo.mas_bottom).with.offset(79.7);
     }];
     
     [_biuSubtitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_logo.mas_centerX);
-        make.centerY.equalTo(_biuTitle.mas_bottom).with.offset(40);
+        make.top.equalTo(_biuTitle.mas_bottom).with.offset(40);
     }];
 }
 
@@ -107,15 +115,17 @@ static double ICON_INITIAL_SIZE = 150;
         [self loginViewLayout];
         [UIView animateWithDuration:0.5 animations:^{
             [self.view layoutIfNeeded];
+            _biuTitle.transform = CGAffineTransformScale(_biuTitle.transform, 0.67, 0.67);
             _biuSubtitle.alpha = 0;
         } completion:^(BOOL finished) {
             // TODO: show login input and button
             [UIView animateWithDuration:0.5 animations:^{
-                _txtUsername.alpha = 1;
-                _txtPassword.alpha = 1;
-                _lbLoginWith.alpha = 1;
-                _btnLoginWithWeChat.alpha = 1;
-                _btnLoginWithSina.alpha = 1;
+//                _txtUsername.alpha = 1;
+//                _txtPassword.alpha = 1;
+//                _lbLoginWith.alpha = 1;
+                _lbSlogan.alpha = 1;
+                _btnLogin.alpha = 1;
+                _btnSignup.alpha = 1;
             }];
         }];
     }
@@ -148,99 +158,125 @@ static double ICON_INITIAL_SIZE = 150;
 
 - (void)loginViewLayout {
     [_logo mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.view.mas_centerY).with.offset(-150);
-        make.height.equalTo(@100);
-        make.width.equalTo(@100);
+        make.top.equalTo(self.view).with.offset(91.7);
+        make.height.equalTo(@97.7);
+        make.width.equalTo(@97.7);
     }];
     
     [_biuTitle mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(_logo.mas_bottom).with.offset(40);
+        make.top.equalTo(_logo.mas_bottom).with.offset(29.5);
     }];
     
-    _txtUsername = [[BLTextField alloc] init];
-    _txtUsername.font = [UIFont fontWithName:@"ArialMT" size:14];
-    _txtUsername.placeholder = @"Email";
-    _txtUsername.alpha = 0;
-    _txtUsername.autocorrectionType = UITextAutocorrectionTypeNo;
-    _txtUsername.textColor = [UIColor grayColor];
-    [self.view addSubview:_txtUsername];
+//    _txtUsername = [[BLTextField alloc] init];
+//    _txtUsername.font = [UIFont fontWithName:@"ArialMT" size:14];
+//    _txtUsername.placeholder = @"Email";
+//    _txtUsername.alpha = 0;
+//    _txtUsername.autocorrectionType = UITextAutocorrectionTypeNo;
+//    _txtUsername.textColor = [UIColor grayColor];
+//    [self.view addSubview:_txtUsername];
+//    
+//    _txtPassword = [[BLTextField alloc] init];
+//    _txtPassword.font = [UIFont fontWithName:@"ArialMt" size:14];
+//    _txtPassword.placeholder = @"Password";
+//    _txtPassword.alpha = 0;
+//    _txtPassword.autocorrectionType = UITextAutocorrectionTypeNo;
+//    _txtPassword.textColor = [UIColor grayColor];
+//    _txtPassword.secureTextEntry = YES;
+//    [self.view addSubview:_txtPassword];
+//    
+//    _lbLoginWith = [[UILabel alloc] init];
+//    _lbLoginWith.text = @"LOGIN WITH:";
+//    _lbLoginWith.font = [UIFont fontWithName:@"ArialMT" size:14];
+//    _lbLoginWith.textColor = [UIColor grayColor];
+//    _lbLoginWith.textAlignment = NSTextAlignmentCenter;
+//    _lbLoginWith.adjustsFontSizeToFitWidth = YES;
+//    [self.view addSubview:_lbLoginWith];
+//    _lbLoginWith.alpha = 0;
     
-    _txtPassword = [[BLTextField alloc] init];
-    _txtPassword.font = [UIFont fontWithName:@"ArialMt" size:14];
-    _txtPassword.placeholder = @"Password";
-    _txtPassword.alpha = 0;
-    _txtPassword.autocorrectionType = UITextAutocorrectionTypeNo;
-    _txtPassword.textColor = [UIColor grayColor];
-    _txtPassword.secureTextEntry = YES;
-    [self.view addSubview:_txtPassword];
+    _lbSlogan = [[UILabel alloc] init];
+//    _lbSlogan.text = @"We help you to find your perfect one in close distance, and notify you from your new watch";
+    _lbSlogan.font = [UIFont fontWithName:@"ArialMT" size:16];
+    _lbSlogan.textColor = [UIColor whiteColor];
+    _lbSlogan.textAlignment = NSTextAlignmentCenter;
+    _lbSlogan.numberOfLines = 0;
+//    _lbSlogan.backgroundColor = [UIColor grayColor];
     
-    _lbLoginWith = [[UILabel alloc] init];
-    _lbLoginWith.text = @"LOGIN WITH:";
-    _lbLoginWith.font = [UIFont fontWithName:@"ArialMT" size:14];
-    _lbLoginWith.textColor = [UIColor grayColor];
-    _lbLoginWith.textAlignment = NSTextAlignmentCenter;
-    _lbLoginWith.adjustsFontSizeToFitWidth = YES;
-    [self.view addSubview:_lbLoginWith];
-    _lbLoginWith.alpha = 0;
+    //Set line space
+    NSString *labelText = @"We help you to find your perfect one in close distance, and notify you from your new watch";
+    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:labelText];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setLineSpacing:15];
+    [paragraphStyle setAlignment:NSTextAlignmentCenter];
+    [attrString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [labelText length])];
+    _lbSlogan.attributedText = attrString;
+    _lbSlogan.alpha = 0;
+    [self.view addSubview:_lbSlogan];
     
-    _btnLoginWithWeChat = [[UIButton alloc] init];
-    [_btnLoginWithWeChat addTarget:self action:@selector(loginWithWeChat:) forControlEvents:UIControlEventTouchDown];
-    [_btnLoginWithWeChat setTitle:@"WeChat" forState:UIControlStateNormal];
-    _btnLoginWithWeChat.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:18];
-    _btnLoginWithWeChat.titleLabel.textColor = [UIColor whiteColor];
-    _btnLoginWithWeChat.backgroundColor = [UIColor colorWithRed:112.0 / 255.0 green:194.0 / 255.0 blue:114.0 / 255.0 alpha:1];
-    _btnLoginWithWeChat.layer.cornerRadius = 5;
-    [self.view addSubview:_btnLoginWithWeChat];
-    _btnLoginWithWeChat.alpha = 0;
+    _btnLogin = [[UIButton alloc] init];
+    [_btnLogin addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchDown];
+    [_btnLogin setTitle:@"Login" forState:UIControlStateNormal];
+    _btnLogin.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:16];
+    _btnLogin.titleLabel.textColor = [UIColor whiteColor];
+    _btnLogin.backgroundColor = [UIColor colorWithRed:93.0 / 255.0 green:112.0 / 255.0 blue:129.0 / 255.0 alpha:1];
+    _btnLogin.layer.cornerRadius = 5;
+    [self.view addSubview:_btnLogin];
+    _btnLogin.alpha = 0;
     
-    _btnLoginWithSina = [[UIButton alloc] init];
-    [_btnLoginWithSina addTarget:self action:@selector(loginWithSina:) forControlEvents:UIControlEventTouchDown];
-    [_btnLoginWithSina setTitle:@"Sina Webo" forState:UIControlStateNormal];
-    _btnLoginWithSina.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:18];
-    _btnLoginWithSina.titleLabel.textColor = [UIColor whiteColor];
-    _btnLoginWithSina.backgroundColor = [UIColor colorWithRed:241.0 / 255.0 green:109.0 / 255.0 blue:111.0 / 255.0 alpha:1];
-    _btnLoginWithSina.layer.cornerRadius = 5;
-    [self.view addSubview:_btnLoginWithSina];
-    _btnLoginWithSina.alpha = 0;
+    _btnSignup = [[UIButton alloc] init];
+    [_btnSignup addTarget:self action:@selector(signup:) forControlEvents:UIControlEventTouchDown];
+    [_btnSignup setTitle:@"Sign up" forState:UIControlStateNormal];
+    _btnSignup.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:16];
+    _btnSignup.titleLabel.textColor = [UIColor whiteColor];
+    _btnSignup.backgroundColor = [UIColor colorWithRed:19.0 / 255.0 green:183.0 / 255.0 blue:120.0 / 255.0 alpha:1];
+    _btnSignup.layer.cornerRadius = 5;
+    [self.view addSubview:_btnSignup];
+    _btnSignup.alpha = 0;
     
-    [_txtUsername mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_biuTitle.mas_bottom).with.offset(30);
-        make.left.equalTo(_txtUsername.superview).with.offset(50);
-        make.right.equalTo(_txtUsername.superview).with.offset(-50);
+//    [_txtUsername mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(_biuTitle.mas_bottom).with.offset(30);
+//        make.left.equalTo(_txtUsername.superview).with.offset(50);
+//        make.right.equalTo(_txtUsername.superview).with.offset(-50);
+//    }];
+//    
+//    [_txtPassword mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(_txtUsername.mas_bottom).with.offset(20);
+//        make.left.equalTo(_txtPassword.superview).with.offset(50);
+//        make.right.equalTo(_txtPassword.superview).with.offset(-50);
+//    }];
+
+    [_lbSlogan mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_biuTitle.mas_bottom).with.offset(25.0);
+        make.left.equalTo(self.view).with.offset(47.2);
+        make.right.equalTo(self.view).with.offset(-47.2);
+        make.height.equalTo(@100);
     }];
     
-    [_txtPassword mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_txtUsername.mas_bottom).with.offset(20);
-        make.left.equalTo(_txtPassword.superview).with.offset(50);
-        make.right.equalTo(_txtPassword.superview).with.offset(-50);
+    [_btnSignup mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view).with.offset(-21.1);
+        make.left.equalTo(self.view).with.offset(20.7);
+        make.right.equalTo(self.view).with.offset(-20.7);
+        make.height.equalTo(@59);
     }];
     
-    [_btnLoginWithSina mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view).with.offset(-30);
-        make.left.equalTo(self.view).with.offset(20);
-        make.right.equalTo(self.view).with.offset(-20);
-        make.height.equalTo(@50);
+    [_btnLogin mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(_btnSignup.mas_top).with.offset(-13.6);
+        make.left.equalTo(self.view).with.offset(20.7);
+        make.right.equalTo(self.view).with.offset(-20.7);
+        make.height.equalTo(@59);
     }];
     
-    [_btnLoginWithWeChat mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(_btnLoginWithSina.mas_top).with.offset(-20);
-        make.left.equalTo(self.view).with.offset(20);
-        make.right.equalTo(self.view).with.offset(-20);
-        make.height.equalTo(@50);
-    }];
-    
-    [_lbLoginWith mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(_btnLoginWithWeChat.mas_top).with.offset(-20);
-        make.left.equalTo(self.view).with.offset(50);
-        make.right.equalTo(self.view).with.offset(-50);
-    }];
+//    [_lbLoginWith mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.equalTo(_btnLogin.mas_top).with.offset(-20);
+//        make.left.equalTo(self.view).with.offset(50);
+//        make.right.equalTo(self.view).with.offset(-50);
+//    }];
 }
 
-- (void)loginWithWeChat:(id)sender {
+- (void)login:(id)sender {
     
 }
 
-- (void)loginWithSina:(id)sender {
+- (void)signup:(id)sender {
     
 }
 

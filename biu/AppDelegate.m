@@ -21,6 +21,9 @@
     // Override point for customization after application launch.
      self.passwordItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"Password" accessGroup:nil];
     
+    // Add Navigation
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.window.rootViewController];
+    
     return YES;
 }
 
