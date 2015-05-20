@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3A9496908D4A186AF79DA348 /* libPods-biu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 882ECF70E4E409F2CC245E63 /* libPods-biu.a */; };
 		6558C9F54B9EEBDFACD01199 /* libPods-biuTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FF2F6A1D8073A5C8E135F00 /* libPods-biuTests.a */; };
+		A3F7EC691B0AD6520084DA70 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A3F7EC6B1B0AD6520084DA70 /* Localizable.strings */; };
 		EA1E504F1AFCB99F004F7F6A /* BLTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1E504E1AFCB99F004F7F6A /* BLTextField.m */; };
 		EA1E50511B0094B3004F7F6A /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA1E50501B0094B3004F7F6A /* Images-2.xcassets */; };
 		EA1E505B1B01FE55004F7F6A /* wel_background.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1E505A1B01FE55004F7F6A /* wel_background.png */; };
@@ -45,6 +46,10 @@
 		52D026F5D14ECA4F27D67EBF /* Pods-biuTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-biuTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-biuTests/Pods-biuTests.release.xcconfig"; sourceTree = "<group>"; };
 		882ECF70E4E409F2CC245E63 /* libPods-biu.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-biu.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FF2F6A1D8073A5C8E135F00 /* libPods-biuTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-biuTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3F7EC671B0AD5BF0084DA70 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		A3F7EC681B0AD5BF0084DA70 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		A3F7EC6A1B0AD6520084DA70 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A3F7EC6C1B0AD65A0084DA70 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		EA1E504D1AFCB99F004F7F6A /* BLTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLTextField.h; path = CustomizeUI/BLTextField.h; sourceTree = "<group>"; };
 		EA1E504E1AFCB99F004F7F6A /* BLTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLTextField.m; path = CustomizeUI/BLTextField.m; sourceTree = "<group>"; };
 		EA1E50501B0094B3004F7F6A /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Images-2.xcassets"; sourceTree = "<group>"; };
@@ -150,6 +155,7 @@
 		EA6AAC2D1AF8739200ED3A55 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A3F7EC6B1B0AD6520084DA70 /* Localizable.strings */,
 				EA6AAC2E1AF8739200ED3A55 /* Info.plist */,
 				EA6AAC2F1AF8739200ED3A55 /* main.m */,
 			);
@@ -291,6 +297,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = EA6AAC211AF8739200ED3A55;
 			productRefGroup = EA6AAC2B1AF8739200ED3A55 /* Products */;
@@ -312,6 +319,7 @@
 				EA1E50511B0094B3004F7F6A /* Images-2.xcassets in Resources */,
 				EA6AAC391AF8739200ED3A55 /* Main.storyboard in Resources */,
 				EA6AAC3E1AF8739200ED3A55 /* LaunchScreen.xib in Resources */,
+				A3F7EC691B0AD6520084DA70 /* Localizable.strings in Resources */,
 				EA1E505B1B01FE55004F7F6A /* wel_background.png in Resources */,
 				EA6AAC3B1AF8739200ED3A55 /* Images.xcassets in Resources */,
 				EA6AAC641AF8940500ED3A55 /* splash.png in Resources */,
@@ -425,10 +433,21 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		A3F7EC6B1B0AD6520084DA70 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A3F7EC6A1B0AD6520084DA70 /* en */,
+				A3F7EC6C1B0AD65A0084DA70 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			path = I18n;
+			sourceTree = "<group>";
+		};
 		EA6AAC371AF8739200ED3A55 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				EA6AAC381AF8739200ED3A55 /* Base */,
+				A3F7EC671B0AD5BF0084DA70 /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -437,6 +456,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				EA6AAC3D1AF8739200ED3A55 /* Base */,
+				A3F7EC681B0AD5BF0084DA70 /* zh-Hans */,
 			);
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";

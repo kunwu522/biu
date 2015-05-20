@@ -202,7 +202,8 @@ static double ICON_INITIAL_SIZE = 147.5;
 //    _lbSlogan.backgroundColor = [UIColor grayColor];
     
     //Set line space
-    NSString *labelText = @"We help you to find your perfect one in close distance, and notify you from your new watch";
+//    NSString *labelText = @"We help you to find your perfect one in close distance, and notify you from your new watch";
+    NSString *labelText = NSLocalizedString(@"Slogan", nil);
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:labelText];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setLineSpacing:15];
@@ -214,7 +215,7 @@ static double ICON_INITIAL_SIZE = 147.5;
     
     _btnLogin = [[UIButton alloc] init];
     [_btnLogin addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchDown];
-    [_btnLogin setTitle:@"Login" forState:UIControlStateNormal];
+    [_btnLogin setTitle:NSLocalizedString(@"Login", nil) forState:UIControlStateNormal];
     _btnLogin.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:16];
     _btnLogin.titleLabel.textColor = [UIColor whiteColor];
     _btnLogin.backgroundColor = [UIColor colorWithRed:93.0 / 255.0 green:112.0 / 255.0 blue:129.0 / 255.0 alpha:1];
@@ -224,7 +225,7 @@ static double ICON_INITIAL_SIZE = 147.5;
     
     _btnSignup = [[UIButton alloc] init];
     [_btnSignup addTarget:self action:@selector(signup:) forControlEvents:UIControlEventTouchDown];
-    [_btnSignup setTitle:@"Sign up" forState:UIControlStateNormal];
+    [_btnSignup setTitle:NSLocalizedString(@"Sign up", nil) forState:UIControlStateNormal];
     _btnSignup.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:16];
     _btnSignup.titleLabel.textColor = [UIColor whiteColor];
     _btnSignup.backgroundColor = [UIColor colorWithRed:19.0 / 255.0 green:183.0 / 255.0 blue:120.0 / 255.0 alpha:1];

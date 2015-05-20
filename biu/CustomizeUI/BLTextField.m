@@ -40,7 +40,7 @@
 - (void)drawRect:(CGRect)rect {
     CALayer *border = [CALayer layer];
     CGFloat borderWidth = 0.5f;
-    border.backgroundColor = [[UIColor whiteColor] CGColor];
+    border.backgroundColor = [[UIColor colorWithRed:107.0 / 255.0 green:108.0 / 255.0 blue:112.0 / 255.0 alpha:1.0f] CGColor];
     border.frame = CGRectMake(0, rect.size.height - borderWidth, rect.size.width, borderWidth);
     
     [self.layer addSublayer:border];

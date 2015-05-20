@@ -33,6 +33,9 @@
     
     _lbLogin = [[UILabel alloc] init];
     _lbLogin.text = @"LOG IN";
+    _lbLogin.textColor = [UIColor colorWithRed:107.0 / 255.0 green:108.0 / 255.0 blue:112.0 / 255.0 alpha:1.0f];
+    
+    
 }
 
 
