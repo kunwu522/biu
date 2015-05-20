@@ -10,6 +10,7 @@
 		3A9496908D4A186AF79DA348 /* libPods-biu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 882ECF70E4E409F2CC245E63 /* libPods-biu.a */; };
 		6558C9F54B9EEBDFACD01199 /* libPods-biuTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FF2F6A1D8073A5C8E135F00 /* libPods-biuTests.a */; };
 		A3F7EC691B0AD6520084DA70 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A3F7EC6B1B0AD6520084DA70 /* Localizable.strings */; };
+		EA113E8B1B0C511200EA6925 /* BLColorDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = EA113E8A1B0C511200EA6925 /* BLColorDefinition.m */; };
 		EA1E504F1AFCB99F004F7F6A /* BLTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1E504E1AFCB99F004F7F6A /* BLTextField.m */; };
 		EA1E50511B0094B3004F7F6A /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA1E50501B0094B3004F7F6A /* Images-2.xcassets */; };
 		EA1E505B1B01FE55004F7F6A /* wel_background.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1E505A1B01FE55004F7F6A /* wel_background.png */; };
@@ -23,6 +24,8 @@
 		EA6AAC581AF8893900ED3A55 /* BlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC571AF8893900ED3A55 /* BlurView.m */; };
 		EA6AAC601AF88E3A00ED3A55 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC5F1AF88E3A00ED3A55 /* UIImage+ImageEffects.m */; };
 		EA6AAC641AF8940500ED3A55 /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = EA6AAC621AF8940500ED3A55 /* splash.png */; };
+		EA7805321B0C7F0E00696FEF /* forward_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA7805311B0C7F0E00696FEF /* forward_icon.png */; };
+		EA7805341B0C7F1500696FEF /* return_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA7805331B0C7F1500696FEF /* return_icon.png */; };
 		EAE8E20C1B09CBF800C9038D /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE8E20B1B09CBF800C9038D /* logo.png */; };
 		EAE8E2111B09F34300C9038D /* BLLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE8E2101B09F34300C9038D /* BLLoginViewController.m */; };
 		EAFBEE7D1AFB2F94006013CD /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAFBEE7C1AFB2F94006013CD /* Security.framework */; };
@@ -50,6 +53,8 @@
 		A3F7EC681B0AD5BF0084DA70 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		A3F7EC6A1B0AD6520084DA70 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A3F7EC6C1B0AD65A0084DA70 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		EA113E891B0C511200EA6925 /* BLColorDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLColorDefinition.h; path = biu/ColorUtil/BLColorDefinition.h; sourceTree = "<group>"; };
+		EA113E8A1B0C511200EA6925 /* BLColorDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLColorDefinition.m; path = biu/ColorUtil/BLColorDefinition.m; sourceTree = "<group>"; };
 		EA1E504D1AFCB99F004F7F6A /* BLTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLTextField.h; path = CustomizeUI/BLTextField.h; sourceTree = "<group>"; };
 		EA1E504E1AFCB99F004F7F6A /* BLTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLTextField.m; path = CustomizeUI/BLTextField.m; sourceTree = "<group>"; };
 		EA1E50501B0094B3004F7F6A /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Images-2.xcassets"; sourceTree = "<group>"; };
@@ -72,6 +77,8 @@
 		EA6AAC5E1AF88E3A00ED3A55 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		EA6AAC5F1AF88E3A00ED3A55 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		EA6AAC621AF8940500ED3A55 /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = splash.png; path = images/splash.png; sourceTree = "<group>"; };
+		EA7805311B0C7F0E00696FEF /* forward_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = forward_icon.png; path = images/forward_icon.png; sourceTree = "<group>"; };
+		EA7805331B0C7F1500696FEF /* return_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = return_icon.png; path = images/return_icon.png; sourceTree = "<group>"; };
 		EAE8E20B1B09CBF800C9038D /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = images/logo.png; sourceTree = "<group>"; };
 		EAE8E20F1B09F34300C9038D /* BLLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLLoginViewController.h; sourceTree = "<group>"; };
 		EAE8E2101B09F34300C9038D /* BLLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLLoginViewController.m; sourceTree = "<group>"; };
@@ -101,6 +108,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EA113E881B0C50A300EA6925 /* ColorUtil */ = {
+			isa = PBXGroup;
+			children = (
+				EA113E891B0C511200EA6925 /* BLColorDefinition.h */,
+				EA113E8A1B0C511200EA6925 /* BLColorDefinition.m */,
+			);
+			name = ColorUtil;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		EA1E50491AFCB891004F7F6A /* CustomizeUI */ = {
 			isa = PBXGroup;
 			children = (
@@ -134,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				EA1E50491AFCB891004F7F6A /* CustomizeUI */,
+				EA113E881B0C50A300EA6925 /* ColorUtil */,
 				EAFBEE7E1AFB2FD5006013CD /* KeyChainUtil */,
 				EA6AAC5B1AF88DB600ED3A55 /* Images */,
 				EA6AAC551AF8890E00ED3A55 /* Util */,
@@ -193,6 +211,8 @@
 		EA6AAC5B1AF88DB600ED3A55 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				EA7805331B0C7F1500696FEF /* return_icon.png */,
+				EA7805311B0C7F0E00696FEF /* forward_icon.png */,
 				EAE8E20B1B09CBF800C9038D /* logo.png */,
 				EA1E505A1B01FE55004F7F6A /* wel_background.png */,
 				EA6AAC621AF8940500ED3A55 /* splash.png */,
@@ -317,9 +337,11 @@
 			files = (
 				EAE8E20C1B09CBF800C9038D /* logo.png in Resources */,
 				EA1E50511B0094B3004F7F6A /* Images-2.xcassets in Resources */,
+				EA7805321B0C7F0E00696FEF /* forward_icon.png in Resources */,
 				EA6AAC391AF8739200ED3A55 /* Main.storyboard in Resources */,
 				EA6AAC3E1AF8739200ED3A55 /* LaunchScreen.xib in Resources */,
 				A3F7EC691B0AD6520084DA70 /* Localizable.strings in Resources */,
+				EA7805341B0C7F1500696FEF /* return_icon.png in Resources */,
 				EA1E505B1B01FE55004F7F6A /* wel_background.png in Resources */,
 				EA6AAC3B1AF8739200ED3A55 /* Images.xcassets in Resources */,
 				EA6AAC641AF8940500ED3A55 /* splash.png in Resources */,
@@ -410,6 +432,7 @@
 				EAFBEE841AFB3038006013CD /* KeychainItemWrapper.m in Sources */,
 				EA6AAC581AF8893900ED3A55 /* BlurView.m in Sources */,
 				EA6AAC331AF8739200ED3A55 /* AppDelegate.m in Sources */,
+				EA113E8B1B0C511200EA6925 /* BLColorDefinition.m in Sources */,
 				EA6AAC301AF8739200ED3A55 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

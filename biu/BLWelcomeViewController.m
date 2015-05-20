@@ -8,6 +8,7 @@
 
 #import "BLWelcomeViewController.h"
 #import "AppDelegate.h"
+#import "BLLoginViewController.h"
 #import "KeychainItemWrapper.h"
 #import "Masonry.h"
 
@@ -274,7 +275,8 @@ static double ICON_INITIAL_SIZE = 147.5;
 }
 
 - (void)login:(id)sender {
-    
+    BLLoginViewController *loginViewController = [[BLLoginViewController alloc] initWithNibName:nil bundle:nil];
+    [self.navigationController pushViewController:loginViewController animated:YES];
 }
 
 - (void)signup:(id)sender {
