@@ -30,6 +30,8 @@
 @property (retain, nonatomic) UIButton *btnLoginWithTwitter;
 @property (retain, nonatomic) UIButton *btnLoginWithFacebook;
 
+@property (retain, nonatomic) UISwipeGestureRecognizer *swipeGestureRecognizer;
+
 
 @end
 
@@ -162,9 +164,11 @@
         make.left.equalTo(self.view).with.offset(21.0);
         make.right.equalTo(self.view).with.offset(-21.0);
     }];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
+    
+    _swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeHandler:)];
+    _swipeGestureRecognizer.delegate = self;
+    [self.view addGestureRecognizer:_swipeGestureRecognizer];
+    
     if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = YES;
         self.navigationController.interactivePopGestureRecognizer.delegate = self;
@@ -191,6 +195,14 @@
 
 - (void)loginWithFacebook:(id)sender {
     
+}
+
+#pragma gesture handler
+- (void)swipeHandler:(UISwipeGestureRecognizer *)recognizer {
+    if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    NSLog(@"Swipe received.");
 }
 
 

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3A9496908D4A186AF79DA348 /* libPods-biu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 882ECF70E4E409F2CC245E63 /* libPods-biu.a */; };
 		6558C9F54B9EEBDFACD01199 /* libPods-biuTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FF2F6A1D8073A5C8E135F00 /* libPods-biuTests.a */; };
+		A3BD9E4B1B0CC37D00815100 /* BLSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3BD9E4A1B0CC37D00815100 /* BLSignupViewController.m */; };
 		A3F7EC691B0AD6520084DA70 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A3F7EC6B1B0AD6520084DA70 /* Localizable.strings */; };
 		EA113E8B1B0C511200EA6925 /* BLColorDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = EA113E8A1B0C511200EA6925 /* BLColorDefinition.m */; };
 		EA1E504F1AFCB99F004F7F6A /* BLTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1E504E1AFCB99F004F7F6A /* BLTextField.m */; };
@@ -49,6 +50,8 @@
 		52D026F5D14ECA4F27D67EBF /* Pods-biuTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-biuTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-biuTests/Pods-biuTests.release.xcconfig"; sourceTree = "<group>"; };
 		882ECF70E4E409F2CC245E63 /* libPods-biu.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-biu.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FF2F6A1D8073A5C8E135F00 /* libPods-biuTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-biuTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3BD9E491B0CC37D00815100 /* BLSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLSignupViewController.h; sourceTree = "<group>"; };
+		A3BD9E4A1B0CC37D00815100 /* BLSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLSignupViewController.m; sourceTree = "<group>"; };
 		A3F7EC671B0AD5BF0084DA70 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		A3F7EC681B0AD5BF0084DA70 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		A3F7EC6A1B0AD6520084DA70 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -161,6 +164,8 @@
 				EA6AAC351AF8739200ED3A55 /* BLWelcomeViewController.m */,
 				EAE8E20F1B09F34300C9038D /* BLLoginViewController.h */,
 				EAE8E2101B09F34300C9038D /* BLLoginViewController.m */,
+				A3BD9E491B0CC37D00815100 /* BLSignupViewController.h */,
+				A3BD9E4A1B0CC37D00815100 /* BLSignupViewController.m */,
 				EA6AAC371AF8739200ED3A55 /* Main.storyboard */,
 				EA6AAC3A1AF8739200ED3A55 /* Images.xcassets */,
 				EA6AAC3C1AF8739200ED3A55 /* LaunchScreen.xib */,
@@ -427,6 +432,7 @@
 			files = (
 				EAE8E2111B09F34300C9038D /* BLLoginViewController.m in Sources */,
 				EA1E504F1AFCB99F004F7F6A /* BLTextField.m in Sources */,
+				A3BD9E4B1B0CC37D00815100 /* BLSignupViewController.m in Sources */,
 				EA6AAC361AF8739200ED3A55 /* BLWelcomeViewController.m in Sources */,
 				EA6AAC601AF88E3A00ED3A55 /* UIImage+ImageEffects.m in Sources */,
 				EAFBEE841AFB3038006013CD /* KeychainItemWrapper.m in Sources */,
