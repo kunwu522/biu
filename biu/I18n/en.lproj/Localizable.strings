@@ -7,11 +7,13 @@
 */
 "Login" = "Login";
 "LOG IN" = "LOG IN";
+"SIGN UP" = "SIGN UP";
 "Sign up" = "Sign up";
 "Slogan" = "We help you to find your perfect one in close distance, and notify you from your new watch";
 "Username" = "Username";
 "Password" = "Password";
 "Forgot password?" = "Forgot password?";
+"OR" = "OR";
 "OR LOG IN WITH" = "OR LOG IN WITH";
 "Email" = "Email";
 "OR SIGN UP WITH" = "OR SIGN UP WITH";

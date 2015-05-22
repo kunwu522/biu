@@ -26,6 +26,7 @@
 @property (retain, nonatomic) BLTextField *tfEmail;
 @property (retain, nonatomic) BLTextField *tfPassword;
 @property (retain, nonatomic) BLTextField *tfUsername;
+@property (retain, nonatomic) UIButton *btnSignup;
 
 @property (retain, nonatomic) UISwipeGestureRecognizer *swipeGestureRecognizer;
 
@@ -41,10 +42,15 @@
     _background.image = [UIImage imageNamed:@"wel_background.png"];
     [self.view addSubview:_background];
     
-    _btnForward = [[UIButton alloc] init];
-    [_btnForward setBackgroundImage:[UIImage imageNamed:@"forward_icon.png"] forState:UIControlStateNormal];
-    [_btnForward addTarget:self action:@selector(forward:) forControlEvents:UIControlEventTouchDown];
-    [self.view addSubview:_btnForward];
+//    _btnForward = [[UIButton alloc] init];
+//    [_btnForward setBackgroundImage:[UIImage imageNamed:@"forward_icon.png"] forState:UIControlStateNormal];
+//    [_btnForward addTarget:self action:@selector(forward:) forControlEvents:UIControlEventTouchDown];
+//    [self.view addSubview:_btnForward];
+    
+    _btnBack = [[UIButton alloc] init];
+    [_btnBack setBackgroundImage:[UIImage imageNamed:@"back_icon.png"] forState:UIControlStateNormal];
+    [_btnBack addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchDown];
+    [self.view addSubview:_btnBack];
     
     _imageViewLogo = [[UIImageView alloc] init];
     _imageViewLogo.image = [UIImage imageNamed:@"logo.png"];
@@ -82,9 +88,25 @@
     _tfUsername.layer.cornerRadius = 5.0f;
     [self.view addSubview:_tfUsername];
     
-    [_btnForward mas_makeConstraints:^(MASConstraintMaker *make) {
+    _btnSignup = [[UIButton alloc] init];
+    [_btnSignup addTarget:self action:@selector(signup:) forControlEvents:UIControlEventTouchDown];
+    [_btnSignup setTitle:NSLocalizedString(@"Sign up", nil) forState:UIControlStateNormal];
+    [_btnSignup setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    _btnSignup.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:16];
+    _btnSignup.backgroundColor = [UIColor colorWithRed:93.0 / 255.0 green:112.0 / 255.0 blue:129.0 / 255.0 alpha:1];
+    _btnSignup.layer.cornerRadius = 5;
+    [self.view addSubview:_btnSignup];
+    
+//    [_btnForward mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.view).with.offset(31.2);
+//        make.right.equalTo(self.view).with.offset(-20.8);
+//        make.width.equalTo(@45.3);
+//        make.height.equalTo(@45.3);
+//    }];
+    
+    [_btnBack mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).with.offset(31.2);
-        make.right.equalTo(self.view).with.offset(-20.8);
+        make.leading.equalTo(self.view).with.offset(20.8);
         make.width.equalTo(@45.3);
         make.height.equalTo(@45.3);
     }];
@@ -122,6 +144,13 @@
         make.height.equalTo(@60.0);
     }];
     
+    [_btnSignup mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view).with.offset(-20.7);
+        make.left.equalTo(self.view).with.offset(21.0);
+        make.right.equalTo(self.view).with.offset(-21.0);
+        make.height.equalTo(@60.0);
+    }];
+    
     _swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeHandler:)];
     _swipeGestureRecognizer.delegate = self;
     [self.view addGestureRecognizer:_swipeGestureRecognizer];
@@ -137,12 +166,29 @@
     
 }
 
+- (void)back:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)signup:(id)sender {
+    
+}
+
 #pragma mark - gesture handler
 - (void)swipeHandler:(UISwipeGestureRecognizer *)gesture {
     if (gesture.direction == UISwipeGestureRecognizerDirectionRight) {
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
+
+#pragma make - private
+- (BOOL)isEmailValid:(NSString *)email {
+    NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:email];
+}
+
+
 
 /*
 #pragma mark - Navigation

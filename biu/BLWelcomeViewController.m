@@ -37,6 +37,8 @@
 @property (retain, nonatomic) UIImageView *imageView;
 @property (retain, nonatomic) BlurView *blurView;
 
+@property (nonatomic) BOOL isLaunchLayout;
+
 
 @end
 
@@ -47,6 +49,8 @@ static double ICON_INITIAL_SIZE = 147.5;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    _isLaunchLayout = NO;
     
     self.view.backgroundColor = [UIColor clearColor];
     
@@ -110,27 +114,30 @@ static double ICON_INITIAL_SIZE = 147.5;
 
 - (void)viewDidAppear:(BOOL)animated {
     sleep(2);
-    
-    if ([self checkUserLogin]) {
-        //TODO: go to major view
-    } else {
-        [self loginViewLayout];
-        [UIView animateWithDuration:0.5 animations:^{
-            [self.view layoutIfNeeded];
-            _biuTitle.transform = CGAffineTransformScale(_biuTitle.transform, 0.67, 0.67);
-            _biuSubtitle.alpha = 0;
-        } completion:^(BOOL finished) {
-            // TODO: show login input and button
+    if (!_isLaunchLayout) {
+        if ([self checkUserLogin]) {
+            //TODO: go to major view
+        } else {
+            [self loginViewLayout];
             [UIView animateWithDuration:0.5 animations:^{
-//                _txtUsername.alpha = 1;
-//                _txtPassword.alpha = 1;
-//                _lbLoginWith.alpha = 1;
-                _lbSlogan.alpha = 1;
-                _btnLogin.alpha = 1;
-                _btnSignup.alpha = 1;
+                [self.view layoutIfNeeded];
+                _biuTitle.transform = CGAffineTransformScale(_biuTitle.transform, 0.67, 0.67);
+                _biuSubtitle.alpha = 0;
+            } completion:^(BOOL finished) {
+                // TODO: show login input and button
+                [UIView animateWithDuration:0.5 animations:^{
+                    //                _txtUsername.alpha = 1;
+                    //                _txtPassword.alpha = 1;
+                    //                _lbLoginWith.alpha = 1;
+                    _lbSlogan.alpha = 1;
+                    _btnLogin.alpha = 1;
+                    _btnSignup.alpha = 1;
+                }];
             }];
-        }];
+        }
+        _isLaunchLayout = YES;
     }
+    
 }
 
 - (BOOL)checkUserLogin {
