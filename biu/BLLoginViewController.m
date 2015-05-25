@@ -22,7 +22,7 @@
 @property (retain, nonatomic) UIImageView *imageViewLogo;
 
 @property (retain, nonatomic) UILabel *lbLogin;
-@property (retain, nonatomic) BLTextField *tfUsername;
+@property (retain, nonatomic) BLTextField *tfEmail;
 @property (retain, nonatomic) BLTextField *tfPassword;
 @property (retain, nonatomic) UIButton *btnForgotPw;
 @property (retain, nonatomic) UILabel *lbLoginWith;
@@ -31,12 +31,17 @@
 @property (retain, nonatomic) UIButton *btnLoginWithTwitter;
 @property (retain, nonatomic) UIButton *btnLoginWithFacebook;
 
-@property (retain, nonatomic) UISwipeGestureRecognizer *swipeGestureRecognizer;
+@property (retain, nonatomic) UILabel *lbErrorMsg;
 
+@property (retain, nonatomic) UISwipeGestureRecognizer *swipeGestureRecognizer;
+@property (retain, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
 
 @end
 
 @implementation BLLoginViewController
+
+static const NSInteger TAG_EMAIL = 0;
+static const NSInteger TAG_PASSWORD = 1;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -64,14 +69,15 @@
     _lbLogin.textColor = [BLColorDefinition grayColor];
     [self.view addSubview:_lbLogin];
     
-    _tfUsername = [[BLTextField alloc] init];
-    _tfUsername.placeholder = NSLocalizedString(@"Username", nil);
-    _tfUsername.backgroundColor = [UIColor clearColor];
-    _tfUsername.textAlignment = NSTextAlignmentCenter;
-    _tfUsername.layer.borderColor = [[BLColorDefinition grayColor] CGColor];
-    _tfUsername.layer.borderWidth = 2.0f;
-    _tfUsername.layer.cornerRadius = 5.0f;
-    [self.view addSubview:_tfUsername];
+    _tfEmail = [[BLTextField alloc] init];
+    _tfEmail.placeholder = NSLocalizedString(@"Email", nil);
+    _tfEmail.backgroundColor = [UIColor clearColor];
+    _tfEmail.textAlignment = NSTextAlignmentCenter;
+    _tfEmail.layer.borderColor = [[BLColorDefinition grayColor] CGColor];
+    _tfEmail.layer.borderWidth = 2.0f;
+    _tfEmail.layer.cornerRadius = 5.0f;
+    _tfEmail.tag = TAG_EMAIL;
+    [self.view addSubview:_tfEmail];
     
     _tfPassword = [[BLTextField alloc] init];
     _tfPassword.placeholder = NSLocalizedString(@"Password", nil);
@@ -80,6 +86,7 @@
     _tfPassword.layer.borderColor = [[BLColorDefinition grayColor] CGColor];
     _tfPassword.layer.borderWidth = 2.0f;
     _tfPassword.layer.cornerRadius = 5.0f;
+    _tfPassword.tag = TAG_PASSWORD;
     [self.view addSubview:_tfPassword];
     
     _btnForgotPw = [[UIButton alloc] init];
@@ -123,12 +130,16 @@
     _btnLoginWithFacebook.layer.cornerRadius = 5;
     [self.view addSubview:_btnLoginWithFacebook];
     
-//    [_btnForward mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.view).with.offset(31.2);
-//        make.right.equalTo(self.view).with.offset(-20.8);
-//        make.width.equalTo(@45.3);
-//        make.height.equalTo(@45.3);
-//    }];
+    _lbErrorMsg = [[UILabel alloc] init];
+    _lbErrorMsg.backgroundColor = [UIColor blackColor];
+    _lbErrorMsg.textColor = [UIColor whiteColor];
+    _lbErrorMsg.font = [UIFont fontWithName:@"Arial-BoldMT" size:14];
+    _lbErrorMsg.alpha = 0.0f;
+    _lbErrorMsg.textAlignment = NSTextAlignmentCenter;
+    _lbErrorMsg.numberOfLines = 0;
+    _lbErrorMsg.layer.cornerRadius = 8.0f;
+    _lbErrorMsg.clipsToBounds = YES;
+    [self.view addSubview:_lbErrorMsg];
     
     [_btnBack mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).with.offset(31.2);
@@ -149,7 +160,7 @@
         make.centerX.equalTo(self.view.mas_centerX);
     }];
     
-    [_tfUsername mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_tfEmail mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_lbLogin.mas_bottom).with.offset(36.6);
         make.left.equalTo(self.view).with.offset(21.0);
         make.right.equalTo(self.view).with.offset(-21.0);
@@ -157,7 +168,7 @@
     }];
     
     [_tfPassword mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_tfUsername.mas_bottom).with.offset(14.2);
+        make.top.equalTo(_tfEmail.mas_bottom).with.offset(14.2);
         make.left.equalTo(self.view).with.offset(21.0);
         make.right.equalTo(self.view).with.offset(-21.0);
         make.height.equalTo(@50.0);
@@ -165,7 +176,6 @@
     
     [_btnForgotPw mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_tfPassword.mas_bottom).with.offset(10.0);
-//        make.centerX.equalTo(self.view.mas_centerX);
         make.right.equalTo(self.view).with.offset(-20.0);
     }];
     
@@ -196,14 +206,54 @@
         make.height.equalTo(@50.0);
     }];
     
+    [_lbErrorMsg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view.mas_centerX);
+        make.centerY.equalTo(self.view.mas_centerY);
+        make.width.equalTo(@200);
+        make.height.equalTo(@100);
+    }];
+    
     _swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeHandler:)];
     _swipeGestureRecognizer.delegate = self;
     [self.view addGestureRecognizer:_swipeGestureRecognizer];
+    
+    _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
+    _tapGestureRecognizer.delegate = self;
+    [self.view addGestureRecognizer:_tapGestureRecognizer];
     
     if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = YES;
         self.navigationController.interactivePopGestureRecognizer.delegate = self;
     }
+    
+    // Add Keyboard Notification
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)keyboardShownLayout {
+    [_lbLogin mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_imageViewLogo.mas_bottom).with.offset(26.3);
+    }];
+    
+    [_tfEmail mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_lbLogin.mas_bottom).with.offset(26.3);
+    }];
+}
+
+- (void)keyboardHiddenLayout {
+    [_lbLogin mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_imageViewLogo.mas_bottom).with.offset(36.3);
+    }];
+    
+    [_tfEmail mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_lbLogin.mas_bottom).with.offset(36.6);
+    }];
 }
 
 
@@ -217,7 +267,25 @@
 }
 
 - (void)login:(id)sender {
+    NSString *errMsg = [self validateInput:_tfEmail];
+    if (errMsg) {
+        _lbErrorMsg.text = errMsg;
+        [self showErrorMessage];
+        return;
+    }
     
+    User *user = [User new];
+    user.email = _tfEmail.text;
+    user.password = _tfPassword.text;
+    
+    BLHTTPClient *httpClient = [BLHTTPClient sharedBLHTTPClient];
+    [httpClient login:user success:^(NSURLSessionDataTask *task, id responseObject) {
+        User *loginUser = responseObject;
+        NSLog(@"Log in success, welcome back, %@.", user.username);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        _lbErrorMsg.text = @"Email or Password is not match.";
+        [self showErrorMessage];
+    }];
 }
 
 - (void)forgotPassword:(id)sender {
@@ -232,12 +300,67 @@
     
 }
 
-#pragma gesture handler
+#pragma mark - handle notifaction
+- (void)keyboardWillShow:(NSNotification *)aNotifcation {
+    [self keyboardShownLayout];
+    [UIView animateWithDuration:0.2f animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+- (void)keyboardWillBeHidden:(NSNotification *)aNotifcaion {
+    [self keyboardHiddenLayout];
+    [UIView animateWithDuration:0.2f animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+#pragma mark - gesture handler
 - (void)swipeHandler:(UISwipeGestureRecognizer *)recognizer {
     if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
         [self.navigationController popViewControllerAnimated:YES];
     }
     NSLog(@"Swipe received.");
+}
+
+- (void)tapHandler:(UITapGestureRecognizer *)gesture {
+    [_tfEmail resignFirstResponder];
+    [_tfPassword resignFirstResponder];
+}
+
+#pragma mark - private
+- (NSString *)validateInput:(UITextField *)textField {
+    if (!textField) {
+        return @"Some error, please try later.";
+    }
+    
+    switch (textField.tag) {
+        case TAG_EMAIL:
+            if (![User isEmailValid:textField.text]) {
+                return @"Please input valid email.";
+            }
+            break;
+            
+        case TAG_PASSWORD:
+            // TODO
+            break;
+        default:
+            break;
+    }
+    
+    return nil;
+}
+
+- (void)showErrorMessage {
+    [UIView animateWithDuration:0.2f animations:^{
+        _lbErrorMsg.alpha = 0.8f;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.2f delay:2.0f options:UIViewAnimationOptionLayoutSubviews animations:^{
+            _lbErrorMsg.alpha = 0.0f;
+        } completion:^(BOOL finished) {
+            ;
+        }];
+    }];
 }
 
 

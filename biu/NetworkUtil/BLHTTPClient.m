@@ -49,4 +49,16 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/api/v1/";
     [self POST:@"users" parameters:parameter success:success failure:failure];
 }
 
+- (void)login:(User *)user
+      success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+      failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    if (!self) {
+        return;
+    }
+    
+    NSDictionary *parameter = @{@"email" : user.email,
+                                @"password" : user.password};
+    [self POST:@"login" parameters:parameter success:success failure:failure];
+}
+
 @end
