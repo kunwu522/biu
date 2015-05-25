@@ -10,6 +10,10 @@
 
 @implementation BLColorDefinition
 
++ (UIColor *)greenColor {
+    return [UIColor colorWithRed:26.0 /255.0  green:188.0 / 255.0 blue:135 / 255.0 alpha:1.0f];
+}
+
 + (UIColor *)grayColor {
     return [UIColor colorWithRed:107.0 / 255.0 green:108.0 / 255.0 blue:112.0 / 255.0 alpha:1.0f];
 }

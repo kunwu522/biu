@@ -16,5 +16,7 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import "AFNetworking.h"
+    #import "BLHTTPClient.h"
+    #import "User.h"
 #endif
 #endif

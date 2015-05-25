@@ -13,7 +13,7 @@
 
 #import "Masonry.h"
 
-@interface BLSignupViewController () <UIGestureRecognizerDelegate>
+@interface BLSignupViewController () <UIGestureRecognizerDelegate, UITextFieldDelegate>
 
 @property (retain, nonatomic) UIImageView *background;
 
@@ -28,11 +28,18 @@
 @property (retain, nonatomic) BLTextField *tfUsername;
 @property (retain, nonatomic) UIButton *btnSignup;
 
+@property (retain, nonatomic) UILabel *lbErrorMsg;
+
 @property (retain, nonatomic) UISwipeGestureRecognizer *swipeGestureRecognizer;
+@property (retain, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
 
 @end
 
 @implementation BLSignupViewController
+
+static const NSInteger INDEX_USERNAME = 0;
+static const NSInteger INDEX_EMAIL = 1;
+static const NSInteger INDEX_PASSWORD = 2;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -62,30 +69,43 @@
     [self.view addSubview:_lbSignup];
     
     _tfEmail = [[BLTextField alloc] init];
+    _tfEmail.textColor = [UIColor whiteColor];
+    _tfEmail.font = [UIFont fontWithName:@"ArialMT" size:15];
     _tfEmail.placeholder = NSLocalizedString(@"Email", nil);
     _tfEmail.backgroundColor = [UIColor clearColor];
     _tfEmail.textAlignment = NSTextAlignmentCenter;
     _tfEmail.layer.borderColor = [[BLColorDefinition grayColor] CGColor];
     _tfEmail.layer.borderWidth = 1.5f;
     _tfEmail.layer.cornerRadius = 5.0f;
+    _tfEmail.keyboardType = UIKeyboardTypeEmailAddress;
+    _tfEmail.tag = INDEX_EMAIL;
+    _tfEmail.delegate = self;
     [self.view addSubview:_tfEmail];
     
     _tfPassword = [[BLTextField alloc] init];
+    _tfPassword.textColor = [UIColor whiteColor];
+    _tfPassword.font = [UIFont fontWithName:@"ArialMT" size:15];
     _tfPassword.placeholder = NSLocalizedString(@"Password", nil);
     _tfPassword.backgroundColor = [UIColor clearColor];
     _tfPassword.textAlignment = NSTextAlignmentCenter;
     _tfPassword.layer.borderColor = [[BLColorDefinition grayColor] CGColor];
     _tfPassword.layer.borderWidth = 1.5f;
     _tfPassword.layer.cornerRadius = 5.0f;
+    _tfPassword.tag = INDEX_PASSWORD;
+    _tfPassword.delegate = self;
     [self.view addSubview:_tfPassword];
     
     _tfUsername = [[BLTextField alloc] init];
+    _tfUsername.textColor = [UIColor whiteColor];
+    _tfUsername.font = [UIFont fontWithName:@"ArialMT" size:15];
     _tfUsername.placeholder = NSLocalizedString(@"Username", nil);
     _tfUsername.backgroundColor = [UIColor clearColor];
     _tfUsername.textAlignment = NSTextAlignmentCenter;
     _tfUsername.layer.borderColor = [[BLColorDefinition grayColor] CGColor];
     _tfUsername.layer.borderWidth = 1.5f;
     _tfUsername.layer.cornerRadius = 5.0f;
+    _tfUsername.tag = INDEX_USERNAME;
+    _tfUsername.delegate = self;
     [self.view addSubview:_tfUsername];
     
     _btnSignup = [[UIButton alloc] init];
@@ -97,12 +117,46 @@
     _btnSignup.layer.cornerRadius = 5;
     [self.view addSubview:_btnSignup];
     
-//    [_btnForward mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.view).with.offset(31.2);
-//        make.right.equalTo(self.view).with.offset(-20.8);
-//        make.width.equalTo(@45.3);
-//        make.height.equalTo(@45.3);
-//    }];
+    _lbErrorMsg = [[UILabel alloc] init];
+    _lbErrorMsg.backgroundColor = [UIColor blackColor];
+    _lbErrorMsg.textColor = [UIColor whiteColor];
+    _lbErrorMsg.font = [UIFont fontWithName:@"Arial-BoldMT" size:14];
+    _lbErrorMsg.alpha = 0.0f;
+    _lbErrorMsg.textAlignment = NSTextAlignmentCenter;
+    _lbErrorMsg.numberOfLines = 0;
+    _lbErrorMsg.layer.cornerRadius = 8.0f;
+    _lbErrorMsg.clipsToBounds = YES;
+    [self.view addSubview:_lbErrorMsg];
+    
+    [self normalLayout];
+    
+    // Add Gesture
+    _swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeHandler:)];
+    _swipeGestureRecognizer.delegate = self;
+    [self.view addGestureRecognizer:_swipeGestureRecognizer];
+    
+    _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
+    _tapGestureRecognizer.delegate = self;
+    [self.view addGestureRecognizer:_tapGestureRecognizer];
+    
+    // Add Keyboard Notification
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)normalLayout {
+    
+    //    [_btnForward mas_makeConstraints:^(MASConstraintMaker *make) {
+    //        make.top.equalTo(self.view).with.offset(31.2);
+    //        make.right.equalTo(self.view).with.offset(-20.8);
+    //        make.width.equalTo(@45.3);
+    //        make.height.equalTo(@45.3);
+    //    }];
     
     [_btnBack mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).with.offset(31.2);
@@ -151,9 +205,40 @@
         make.height.equalTo(@60.0);
     }];
     
-    _swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeHandler:)];
-    _swipeGestureRecognizer.delegate = self;
-    [self.view addGestureRecognizer:_swipeGestureRecognizer];
+    [_lbErrorMsg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view.mas_centerX);
+        make.centerY.equalTo(self.view.mas_centerY);
+        make.width.equalTo(@200);
+        make.height.equalTo(@100);
+    }];
+}
+
+- (void)keyboardShownLayout {
+    [_imageViewLogo mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).with.offset(25.0);
+    }];
+    
+    [_lbSignup mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_imageViewLogo.mas_bottom).with.offset(16.3);
+    }];
+    
+    [_tfEmail mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_lbSignup.mas_bottom).with.offset(16.3);
+    }];
+}
+
+- (void)keyboardHiddenLayout {
+    [_imageViewLogo mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).with.offset(75.0);
+    }];
+    
+    [_lbSignup mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_imageViewLogo.mas_bottom).with.offset(36.3);
+    }];
+    
+    [_tfEmail mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_lbSignup.mas_bottom).with.offset(36.6);
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -171,7 +256,58 @@
 }
 
 - (void)signup:(id)sender {
+    NSString *errMsg = @"";
+    errMsg = [self validateInput:_tfEmail];
+    if (errMsg) {
+        _lbErrorMsg.text = errMsg;
+        [self showErrorMessage];
+        return;
+    }
     
+    errMsg = [self validateInput:_tfUsername];
+    if (errMsg) {
+        _lbErrorMsg.text = errMsg;
+        [self showErrorMessage];
+        return;
+    }
+    
+    errMsg = [self validateInput:_tfPassword];
+    if (errMsg) {
+        _lbErrorMsg.text = errMsg;
+        [self showErrorMessage];
+        return;
+    }
+    
+    User *user = [User new];
+    user.email = _tfEmail.text;
+    user.username = _tfUsername.text;
+    user.password = _tfPassword.text;
+    
+    BLHTTPClient *httpClient = [BLHTTPClient sharedBLHTTPClient];
+    [httpClient signup:user success:^(NSURLSessionDataTask *task, id responseObject) {
+        User *user = responseObject;
+        NSLog(@"Sign up success!!! user id: %@", user.id);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        _lbErrorMsg.text = @"Sorry we failed to set up your account. Please try again.";
+        [self showErrorMessage];
+    }];
+}
+
+#pragma mark - Text field delegate
+//- (void)textFieldDidEndEditing:(UITextField *)textField {
+//    NSString *errMsg = [self validateInput:textField];
+//    if (errMsg) {
+//        _lbErrorMsg.text = errMsg;
+//        _lbErrorMsg.alpha = 1.0f;
+//    } else {
+//        _lbErrorMsg.text = nil;
+//        _lbErrorMsg.alpha = 0.0f;
+//    }
+//}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
 }
 
 #pragma mark - gesture handler
@@ -181,13 +317,58 @@
     }
 }
 
-#pragma make - private
-- (BOOL)isEmailValid:(NSString *)email {
-    NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
-    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
-    return [emailTest evaluateWithObject:email];
+- (void)tapHandler:(UITapGestureRecognizer *)gesture {
+    [_tfEmail resignFirstResponder];
+    [_tfUsername resignFirstResponder];
+    [_tfPassword resignFirstResponder];
 }
 
+#pragma mark - handle notifaction
+- (void)keyboardWillShow:(NSNotification *)aNotifcation {
+    [self keyboardShownLayout];
+    [UIView animateWithDuration:0.2f animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+- (void)keyboardWillBeHidden:(NSNotification *)aNotifcaion {
+    [self keyboardHiddenLayout];
+    [UIView animateWithDuration:0.2f animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+#pragma make - private
+- (NSString *)validateInput:(UITextField *)textField {
+    switch (textField.tag) {
+        case INDEX_USERNAME:
+            return [User validateUsername:textField.text];
+            break;
+        case INDEX_PASSWORD:
+            return [User validatePassword:textField.text];
+            break;
+        case INDEX_EMAIL:
+            if (![User isEmailValid:textField.text]) {
+                return @"Email is not valid.";
+            }
+            break;
+        default:
+            break;
+    }
+    return nil;
+}
+
+- (void)showErrorMessage {
+    [UIView animateWithDuration:0.2f animations:^{
+        _lbErrorMsg.alpha = 0.8f;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.2f delay:2.0f options:UIViewAnimationOptionLayoutSubviews animations:^{
+            _lbErrorMsg.alpha = 0.0f;
+        } completion:^(BOOL finished) {
+            ;
+        }];
+    }];
+}
 
 
 /*

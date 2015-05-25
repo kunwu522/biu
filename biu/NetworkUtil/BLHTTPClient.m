@@ -8,7 +8,7 @@
 
 #import "BLHTTPClient.h"
 
-static NSString* const BLBaseURLString = @"http://www.biulove.com/api/v1/";
+static NSString* const BLBaseURLString = @"http://localhost:3000/api/v1/";
 
 @implementation BLHTTPClient
 
@@ -34,6 +34,19 @@ static NSString* const BLBaseURLString = @"http://www.biulove.com/api/v1/";
     return self;
 }
 
-
+- (void)signup:(User *)user
+       success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+       failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    if (!self) {
+        return;
+    }
+    
+    NSDictionary *parameter = @{@"username" : user.username,
+                                   @"email" : user.email,
+                                @"password" : user.password,
+                   @"password_confirmation" : user.password};
+    
+    [self POST:@"users" parameters:parameter success:success failure:failure];
+}
 
 @end

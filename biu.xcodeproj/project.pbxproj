@@ -15,6 +15,7 @@
 		EA1E504F1AFCB99F004F7F6A /* BLTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1E504E1AFCB99F004F7F6A /* BLTextField.m */; };
 		EA1E50511B0094B3004F7F6A /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA1E50501B0094B3004F7F6A /* Images-2.xcassets */; };
 		EA1E505B1B01FE55004F7F6A /* wel_background.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1E505A1B01FE55004F7F6A /* wel_background.png */; };
+		EA305EB71B13351600DD904D /* BLProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA305EB61B13351600DD904D /* BLProfileViewController.m */; };
 		EA6AAC301AF8739200ED3A55 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC2F1AF8739200ED3A55 /* main.m */; };
 		EA6AAC331AF8739200ED3A55 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC321AF8739200ED3A55 /* AppDelegate.m */; };
 		EA6AAC361AF8739200ED3A55 /* BLWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC351AF8739200ED3A55 /* BLWelcomeViewController.m */; };
@@ -28,6 +29,7 @@
 		EA7805321B0C7F0E00696FEF /* forward_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA7805311B0C7F0E00696FEF /* forward_icon.png */; };
 		EA7805341B0C7F1500696FEF /* back_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA7805331B0C7F1500696FEF /* back_icon.png */; };
 		EAA7FD6F1B0DD64F00C2B5C6 /* BLHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA7FD6E1B0DD64F00C2B5C6 /* BLHTTPClient.m */; };
+		EAA7FD731B12CFF700C2B5C6 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA7FD721B12CFF700C2B5C6 /* User.m */; };
 		EAE8E20C1B09CBF800C9038D /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE8E20B1B09CBF800C9038D /* logo.png */; };
 		EAE8E2111B09F34300C9038D /* BLLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE8E2101B09F34300C9038D /* BLLoginViewController.m */; };
 		EAFBEE7D1AFB2F94006013CD /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAFBEE7C1AFB2F94006013CD /* Security.framework */; };
@@ -63,6 +65,8 @@
 		EA1E504E1AFCB99F004F7F6A /* BLTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLTextField.m; path = CustomizeUI/BLTextField.m; sourceTree = "<group>"; };
 		EA1E50501B0094B3004F7F6A /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Images-2.xcassets"; sourceTree = "<group>"; };
 		EA1E505A1B01FE55004F7F6A /* wel_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = wel_background.png; path = images/wel_background.png; sourceTree = "<group>"; };
+		EA305EB51B13351600DD904D /* BLProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLProfileViewController.h; sourceTree = "<group>"; };
+		EA305EB61B13351600DD904D /* BLProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLProfileViewController.m; sourceTree = "<group>"; };
 		EA6AAC2A1AF8739200ED3A55 /* biu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = biu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA6AAC2E1AF8739200ED3A55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA6AAC2F1AF8739200ED3A55 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -86,6 +90,8 @@
 		EAA7FD6B1B0DCDA000C2B5C6 /* Biu-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Biu-Prefix.pch"; sourceTree = "<group>"; };
 		EAA7FD6D1B0DD64F00C2B5C6 /* BLHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLHTTPClient.h; path = NetworkUtil/BLHTTPClient.h; sourceTree = "<group>"; };
 		EAA7FD6E1B0DD64F00C2B5C6 /* BLHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLHTTPClient.m; path = NetworkUtil/BLHTTPClient.m; sourceTree = "<group>"; };
+		EAA7FD711B12CFF700C2B5C6 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = Model/User.h; sourceTree = "<group>"; };
+		EAA7FD721B12CFF700C2B5C6 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = Model/User.m; sourceTree = "<group>"; };
 		EAE8E20B1B09CBF800C9038D /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = images/logo.png; sourceTree = "<group>"; };
 		EAE8E20F1B09F34300C9038D /* BLLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLLoginViewController.h; sourceTree = "<group>"; };
 		EAE8E2101B09F34300C9038D /* BLLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLLoginViewController.m; sourceTree = "<group>"; };
@@ -157,6 +163,7 @@
 		EA6AAC2C1AF8739200ED3A55 /* biu */ = {
 			isa = PBXGroup;
 			children = (
+				EAA7FD701B12CFDF00C2B5C6 /* Model */,
 				EAA7FD6C1B0DD5D600C2B5C6 /* NetworkUtil */,
 				EA1E50491AFCB891004F7F6A /* CustomizeUI */,
 				EA113E881B0C50A300EA6925 /* ColorUtil */,
@@ -171,6 +178,8 @@
 				EAE8E2101B09F34300C9038D /* BLLoginViewController.m */,
 				A3BD9E491B0CC37D00815100 /* BLSignupViewController.h */,
 				A3BD9E4A1B0CC37D00815100 /* BLSignupViewController.m */,
+				EA305EB51B13351600DD904D /* BLProfileViewController.h */,
+				EA305EB61B13351600DD904D /* BLProfileViewController.m */,
 				EA6AAC371AF8739200ED3A55 /* Main.storyboard */,
 				EA6AAC3A1AF8739200ED3A55 /* Images.xcassets */,
 				EA6AAC3C1AF8739200ED3A55 /* LaunchScreen.xib */,
@@ -238,6 +247,15 @@
 				EAA7FD6E1B0DD64F00C2B5C6 /* BLHTTPClient.m */,
 			);
 			name = NetworkUtil;
+			sourceTree = "<group>";
+		};
+		EAA7FD701B12CFDF00C2B5C6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				EAA7FD711B12CFF700C2B5C6 /* User.h */,
+				EAA7FD721B12CFF700C2B5C6 /* User.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		EAFBEE7E1AFB2FD5006013CD /* KeyChainUtil */ = {
@@ -453,6 +471,8 @@
 				EAFBEE841AFB3038006013CD /* KeychainItemWrapper.m in Sources */,
 				EA6AAC581AF8893900ED3A55 /* BlurView.m in Sources */,
 				EAA7FD6F1B0DD64F00C2B5C6 /* BLHTTPClient.m in Sources */,
+				EAA7FD731B12CFF700C2B5C6 /* User.m in Sources */,
+				EA305EB71B13351600DD904D /* BLProfileViewController.m in Sources */,
 				EA6AAC331AF8739200ED3A55 /* AppDelegate.m in Sources */,
 				EA113E8B1B0C511200EA6925 /* BLColorDefinition.m in Sources */,
 				EA6AAC301AF8739200ED3A55 /* main.m in Sources */,

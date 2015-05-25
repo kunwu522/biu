@@ -7,6 +7,7 @@
 //
 
 #import "AFHTTPSessionManager.h"
+#import "User.h"
 
 @protocol BLHTTPClientDelegate;
 
@@ -16,6 +17,9 @@
 
 + (BLHTTPClient *)sharedBLHTTPClient;
 - (instancetype)initWithBaseURL:(NSURL *)url;
+- (void)signup:(User *)user
+       success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+       failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
 @end
 

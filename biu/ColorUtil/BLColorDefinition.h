@@ -10,6 +10,7 @@
 
 @interface BLColorDefinition : NSObject
 
++ (UIColor *)greenColor;
 + (UIColor *)grayColor;
 + (UIColor *)twitterBlueColor;
 + (UIColor *)facebookBlueColor;
