@@ -7,6 +7,8 @@
 //
 
 #import "BLLoginViewController.h"
+#import "BLWelcomeViewController.h"
+#import "AppDelegate.h"
 #import "BLTextField.h"
 #import "BLColorDefinition.h"
 
@@ -73,6 +75,7 @@ static const NSInteger TAG_PASSWORD = 1;
     _tfEmail.placeholder = NSLocalizedString(@"Email", nil);
     _tfEmail.backgroundColor = [UIColor clearColor];
     _tfEmail.textAlignment = NSTextAlignmentCenter;
+    _tfEmail.textColor = [UIColor whiteColor];
     _tfEmail.layer.borderColor = [[BLColorDefinition grayColor] CGColor];
     _tfEmail.layer.borderWidth = 2.0f;
     _tfEmail.layer.cornerRadius = 5.0f;
@@ -83,6 +86,7 @@ static const NSInteger TAG_PASSWORD = 1;
     _tfPassword.placeholder = NSLocalizedString(@"Password", nil);
     _tfPassword.backgroundColor = [UIColor clearColor];
     _tfPassword.textAlignment = NSTextAlignmentCenter;
+    _tfPassword.textColor = [UIColor whiteColor];
     _tfPassword.layer.borderColor = [[BLColorDefinition grayColor] CGColor];
     _tfPassword.layer.borderWidth = 2.0f;
     _tfPassword.layer.cornerRadius = 5.0f;
@@ -280,8 +284,9 @@ static const NSInteger TAG_PASSWORD = 1;
     
     BLHTTPClient *httpClient = [BLHTTPClient sharedBLHTTPClient];
     [httpClient login:user success:^(NSURLSessionDataTask *task, id responseObject) {
-        User *loginUser = responseObject;
-        NSLog(@"Log in success, welcome back, %@.", user.username);
+        NSLog(@"Response: %@", responseObject);
+        User *user = responseObject;
+        [self renderToMasterViewController];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         _lbErrorMsg.text = @"Email or Password is not match.";
         [self showErrorMessage];
@@ -361,6 +366,11 @@ static const NSInteger TAG_PASSWORD = 1;
             ;
         }];
     }];
+}
+
+- (void)renderToMasterViewController {
+    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    [self presentViewController:delegate.masterNavController animated:YES completion:nil];
 }
 
 

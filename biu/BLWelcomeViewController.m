@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "BLLoginViewController.h"
 #import "BLSignupViewController.h"
+#import "BLMatchViewController.h"
 #import "KeychainItemWrapper.h"
 #import "Masonry.h"
 
@@ -45,6 +46,8 @@
 @implementation BLWelcomeViewController
 
 static double ICON_INITIAL_SIZE = 147.5;
+
+@synthesize masterNavController;
 
 - (void)viewDidLoad {
     [super viewDidLoad];

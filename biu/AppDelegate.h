@@ -15,6 +15,7 @@
 @property (strong, nonatomic) UIWindow *window;
 
 @property (nonatomic, retain) KeychainItemWrapper *passwordItem;
+@property (nonatomic, retain) UINavigationController *masterNavController;
 
 @end
 

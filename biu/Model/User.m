@@ -10,6 +10,8 @@
 
 @implementation User
 
+@synthesize id, username, password, email;
+
 + (NSString *)validateUsername:(NSString *)username
 {
     if (!username) {

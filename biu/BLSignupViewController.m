@@ -160,7 +160,7 @@ static const NSInteger INDEX_PASSWORD = 2;
     
     [_btnBack mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).with.offset(31.2);
-        make.leading.equalTo(self.view).with.offset(20.8);
+        make.left.equalTo(self.view).with.offset(20.8);
         make.width.equalTo(@45.3);
         make.height.equalTo(@45.3);
     }];

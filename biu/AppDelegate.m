@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 
 #import "KeychainItemWrapper.h"
+#import "BLMatchViewController.h"
 
 @interface AppDelegate ()
 
@@ -16,6 +17,7 @@
 
 @implementation AppDelegate
 
+@synthesize passwordItem, masterNavController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
@@ -25,6 +27,11 @@
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.window.rootViewController];
     navController.navigationBarHidden = YES;
     self.window.rootViewController = navController;
+    
+    // Create master navigation controller
+    BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
+    self.masterNavController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
+    self.masterNavController.navigationBarHidden = YES;
     
     return YES;
 }

@@ -10,5 +10,7 @@
 
 @interface BLWelcomeViewController : UIViewController
 
+@property (retain, nonatomic) UINavigationController *masterNavController;
+
 @end
 

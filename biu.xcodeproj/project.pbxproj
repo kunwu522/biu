@@ -16,6 +16,17 @@
 		EA1E50511B0094B3004F7F6A /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA1E50501B0094B3004F7F6A /* Images-2.xcassets */; };
 		EA1E505B1B01FE55004F7F6A /* wel_background.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1E505A1B01FE55004F7F6A /* wel_background.png */; };
 		EA305EB71B13351600DD904D /* BLProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA305EB61B13351600DD904D /* BLProfileViewController.m */; };
+		EA305EBB1B14744100DD904D /* padding.png in Resources */ = {isa = PBXBuildFile; fileRef = EA305EBA1B14744100DD904D /* padding.png */; };
+		EA305EBE1B14773800DD904D /* BLGenderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA305EBD1B14773800DD904D /* BLGenderTableViewCell.m */; };
+		EA305EC31B147F0C00DD904D /* femaile_selected_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA305EBF1B147F0C00DD904D /* femaile_selected_icon.png */; };
+		EA305EC41B147F0C00DD904D /* femaile_unselected_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA305EC01B147F0C00DD904D /* femaile_unselected_icon.png */; };
+		EA305EC51B147F0C00DD904D /* male_unselected_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA305EC11B147F0C00DD904D /* male_unselected_icon.png */; };
+		EA305EC61B147F0C00DD904D /* male_selected_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA305EC21B147F0C00DD904D /* male_selected_icon.png */; };
+		EA305EC81B14841600DD904D /* division_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA305EC71B14841600DD904D /* division_icon.png */; };
+		EA305ECD1B1570B300DD904D /* BLMatchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA305ECC1B1570B300DD904D /* BLMatchViewController.m */; };
+		EA305ECF1B1575E900DD904D /* back_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = EA305ECE1B1575E900DD904D /* back_icon2.png */; };
+		EA305ED11B1576DF00DD904D /* menu_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA305ED01B1576DF00DD904D /* menu_icon.png */; };
+		EA305ED41B15904400DD904D /* BLMatchSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = EA305ED31B15904400DD904D /* BLMatchSwitch.m */; };
 		EA6AAC301AF8739200ED3A55 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC2F1AF8739200ED3A55 /* main.m */; };
 		EA6AAC331AF8739200ED3A55 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC321AF8739200ED3A55 /* AppDelegate.m */; };
 		EA6AAC361AF8739200ED3A55 /* BLWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC351AF8739200ED3A55 /* BLWelcomeViewController.m */; };
@@ -67,6 +78,20 @@
 		EA1E505A1B01FE55004F7F6A /* wel_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = wel_background.png; path = images/wel_background.png; sourceTree = "<group>"; };
 		EA305EB51B13351600DD904D /* BLProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLProfileViewController.h; sourceTree = "<group>"; };
 		EA305EB61B13351600DD904D /* BLProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLProfileViewController.m; sourceTree = "<group>"; };
+		EA305EBA1B14744100DD904D /* padding.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = padding.png; path = images/padding.png; sourceTree = "<group>"; };
+		EA305EBC1B14773800DD904D /* BLGenderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLGenderTableViewCell.h; path = CustomizeUI/BLGenderTableViewCell.h; sourceTree = "<group>"; };
+		EA305EBD1B14773800DD904D /* BLGenderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLGenderTableViewCell.m; path = CustomizeUI/BLGenderTableViewCell.m; sourceTree = "<group>"; };
+		EA305EBF1B147F0C00DD904D /* femaile_selected_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = femaile_selected_icon.png; path = images/femaile_selected_icon.png; sourceTree = "<group>"; };
+		EA305EC01B147F0C00DD904D /* femaile_unselected_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = femaile_unselected_icon.png; path = images/femaile_unselected_icon.png; sourceTree = "<group>"; };
+		EA305EC11B147F0C00DD904D /* male_unselected_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = male_unselected_icon.png; path = images/male_unselected_icon.png; sourceTree = "<group>"; };
+		EA305EC21B147F0C00DD904D /* male_selected_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = male_selected_icon.png; path = images/male_selected_icon.png; sourceTree = "<group>"; };
+		EA305EC71B14841600DD904D /* division_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = division_icon.png; path = images/division_icon.png; sourceTree = "<group>"; };
+		EA305ECB1B1570B300DD904D /* BLMatchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLMatchViewController.h; sourceTree = "<group>"; };
+		EA305ECC1B1570B300DD904D /* BLMatchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLMatchViewController.m; sourceTree = "<group>"; };
+		EA305ECE1B1575E900DD904D /* back_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = back_icon2.png; path = images/back_icon2.png; sourceTree = "<group>"; };
+		EA305ED01B1576DF00DD904D /* menu_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu_icon.png; path = images/menu_icon.png; sourceTree = "<group>"; };
+		EA305ED21B15904400DD904D /* BLMatchSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLMatchSwitch.h; path = CustomizeUI/BLMatchSwitch.h; sourceTree = "<group>"; };
+		EA305ED31B15904400DD904D /* BLMatchSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLMatchSwitch.m; path = CustomizeUI/BLMatchSwitch.m; sourceTree = "<group>"; };
 		EA6AAC2A1AF8739200ED3A55 /* biu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = biu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA6AAC2E1AF8739200ED3A55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA6AAC2F1AF8739200ED3A55 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -136,6 +161,10 @@
 			children = (
 				EA1E504D1AFCB99F004F7F6A /* BLTextField.h */,
 				EA1E504E1AFCB99F004F7F6A /* BLTextField.m */,
+				EA305EBC1B14773800DD904D /* BLGenderTableViewCell.h */,
+				EA305EBD1B14773800DD904D /* BLGenderTableViewCell.m */,
+				EA305ED21B15904400DD904D /* BLMatchSwitch.h */,
+				EA305ED31B15904400DD904D /* BLMatchSwitch.m */,
 			);
 			name = CustomizeUI;
 			sourceTree = "<group>";
@@ -180,6 +209,8 @@
 				A3BD9E4A1B0CC37D00815100 /* BLSignupViewController.m */,
 				EA305EB51B13351600DD904D /* BLProfileViewController.h */,
 				EA305EB61B13351600DD904D /* BLProfileViewController.m */,
+				EA305ECB1B1570B300DD904D /* BLMatchViewController.h */,
+				EA305ECC1B1570B300DD904D /* BLMatchViewController.m */,
 				EA6AAC371AF8739200ED3A55 /* Main.storyboard */,
 				EA6AAC3A1AF8739200ED3A55 /* Images.xcassets */,
 				EA6AAC3C1AF8739200ED3A55 /* LaunchScreen.xib */,
@@ -231,6 +262,14 @@
 		EA6AAC5B1AF88DB600ED3A55 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				EA305ED01B1576DF00DD904D /* menu_icon.png */,
+				EA305ECE1B1575E900DD904D /* back_icon2.png */,
+				EA305EC71B14841600DD904D /* division_icon.png */,
+				EA305EBF1B147F0C00DD904D /* femaile_selected_icon.png */,
+				EA305EC01B147F0C00DD904D /* femaile_unselected_icon.png */,
+				EA305EC11B147F0C00DD904D /* male_unselected_icon.png */,
+				EA305EC21B147F0C00DD904D /* male_selected_icon.png */,
+				EA305EBA1B14744100DD904D /* padding.png */,
 				EA7805331B0C7F1500696FEF /* back_icon.png */,
 				EA7805311B0C7F0E00696FEF /* forward_icon.png */,
 				EAE8E20B1B09CBF800C9038D /* logo.png */,
@@ -374,11 +413,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAE8E20C1B09CBF800C9038D /* logo.png in Resources */,
+				EA305EC81B14841600DD904D /* division_icon.png in Resources */,
 				EA1E50511B0094B3004F7F6A /* Images-2.xcassets in Resources */,
+				EA305EBB1B14744100DD904D /* padding.png in Resources */,
+				EA305ECF1B1575E900DD904D /* back_icon2.png in Resources */,
+				EA305ED11B1576DF00DD904D /* menu_icon.png in Resources */,
+				EA305EC31B147F0C00DD904D /* femaile_selected_icon.png in Resources */,
 				EA7805321B0C7F0E00696FEF /* forward_icon.png in Resources */,
+				EA305EC41B147F0C00DD904D /* femaile_unselected_icon.png in Resources */,
 				EA6AAC391AF8739200ED3A55 /* Main.storyboard in Resources */,
 				EA6AAC3E1AF8739200ED3A55 /* LaunchScreen.xib in Resources */,
 				A3F7EC691B0AD6520084DA70 /* Localizable.strings in Resources */,
+				EA305EC51B147F0C00DD904D /* male_unselected_icon.png in Resources */,
+				EA305EC61B147F0C00DD904D /* male_selected_icon.png in Resources */,
 				EA7805341B0C7F1500696FEF /* back_icon.png in Resources */,
 				EA1E505B1B01FE55004F7F6A /* wel_background.png in Resources */,
 				EA6AAC3B1AF8739200ED3A55 /* Images.xcassets in Resources */,
@@ -467,12 +514,15 @@
 				EA1E504F1AFCB99F004F7F6A /* BLTextField.m in Sources */,
 				A3BD9E4B1B0CC37D00815100 /* BLSignupViewController.m in Sources */,
 				EA6AAC361AF8739200ED3A55 /* BLWelcomeViewController.m in Sources */,
+				EA305EBE1B14773800DD904D /* BLGenderTableViewCell.m in Sources */,
 				EA6AAC601AF88E3A00ED3A55 /* UIImage+ImageEffects.m in Sources */,
 				EAFBEE841AFB3038006013CD /* KeychainItemWrapper.m in Sources */,
+				EA305ED41B15904400DD904D /* BLMatchSwitch.m in Sources */,
 				EA6AAC581AF8893900ED3A55 /* BlurView.m in Sources */,
 				EAA7FD6F1B0DD64F00C2B5C6 /* BLHTTPClient.m in Sources */,
 				EAA7FD731B12CFF700C2B5C6 /* User.m in Sources */,
 				EA305EB71B13351600DD904D /* BLProfileViewController.m in Sources */,
+				EA305ECD1B1570B300DD904D /* BLMatchViewController.m in Sources */,
 				EA6AAC331AF8739200ED3A55 /* AppDelegate.m in Sources */,
 				EA113E8B1B0C511200EA6925 /* BLColorDefinition.m in Sources */,
 				EA6AAC301AF8739200ED3A55 /* main.m in Sources */,
