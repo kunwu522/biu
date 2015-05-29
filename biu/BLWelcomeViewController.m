@@ -118,9 +118,14 @@ static double ICON_INITIAL_SIZE = 147.5;
 - (void)viewDidAppear:(BOOL)animated {
     sleep(2);
     if (!_isLaunchLayout) {
-        if ([self checkUserLogin]) {
-            //TODO: go to major view
-        } else {
+        User *user = [User new];
+        user.email = @"wukun@biulove.com";
+        user.password = @"wukun1234";
+        [[BLHTTPClient sharedBLHTTPClient] login:user success:^(NSURLSessionDataTask *task, id responseObject) {
+            AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+            [self presentViewController:delegate.masterNavController animated:YES completion:nil];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"Validate user failed: %@, code: %li", error.description, (long)error.code);
             [self loginViewLayout];
             [UIView animateWithDuration:0.5 animations:^{
                 [self.view layoutIfNeeded];
@@ -129,18 +134,14 @@ static double ICON_INITIAL_SIZE = 147.5;
             } completion:^(BOOL finished) {
                 // TODO: show login input and button
                 [UIView animateWithDuration:0.5 animations:^{
-                    //                _txtUsername.alpha = 1;
-                    //                _txtPassword.alpha = 1;
-                    //                _lbLoginWith.alpha = 1;
                     _lbSlogan.alpha = 1;
                     _btnLogin.alpha = 1;
                     _btnSignup.alpha = 1;
                 }];
             }];
-        }
-        _isLaunchLayout = YES;
+            _isLaunchLayout = YES;
+        }];
     }
-    
 }
 
 - (BOOL)checkUserLogin {

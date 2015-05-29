@@ -27,6 +27,7 @@
 		EA305ECF1B1575E900DD904D /* back_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = EA305ECE1B1575E900DD904D /* back_icon2.png */; };
 		EA305ED11B1576DF00DD904D /* menu_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA305ED01B1576DF00DD904D /* menu_icon.png */; };
 		EA305ED41B15904400DD904D /* BLMatchSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = EA305ED31B15904400DD904D /* BLMatchSwitch.m */; };
+		EA305ED91B16F32100DD904D /* BLPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA305ED81B16F32100DD904D /* BLPickerView.m */; };
 		EA6AAC301AF8739200ED3A55 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC2F1AF8739200ED3A55 /* main.m */; };
 		EA6AAC331AF8739200ED3A55 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC321AF8739200ED3A55 /* AppDelegate.m */; };
 		EA6AAC361AF8739200ED3A55 /* BLWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC351AF8739200ED3A55 /* BLWelcomeViewController.m */; };
@@ -92,6 +93,8 @@
 		EA305ED01B1576DF00DD904D /* menu_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu_icon.png; path = images/menu_icon.png; sourceTree = "<group>"; };
 		EA305ED21B15904400DD904D /* BLMatchSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLMatchSwitch.h; path = CustomizeUI/BLMatchSwitch.h; sourceTree = "<group>"; };
 		EA305ED31B15904400DD904D /* BLMatchSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLMatchSwitch.m; path = CustomizeUI/BLMatchSwitch.m; sourceTree = "<group>"; };
+		EA305ED71B16F32100DD904D /* BLPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLPickerView.h; path = CustomizeUI/BLPickerView.h; sourceTree = "<group>"; };
+		EA305ED81B16F32100DD904D /* BLPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLPickerView.m; path = CustomizeUI/BLPickerView.m; sourceTree = "<group>"; };
 		EA6AAC2A1AF8739200ED3A55 /* biu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = biu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA6AAC2E1AF8739200ED3A55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA6AAC2F1AF8739200ED3A55 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -165,6 +168,8 @@
 				EA305EBD1B14773800DD904D /* BLGenderTableViewCell.m */,
 				EA305ED21B15904400DD904D /* BLMatchSwitch.h */,
 				EA305ED31B15904400DD904D /* BLMatchSwitch.m */,
+				EA305ED71B16F32100DD904D /* BLPickerView.h */,
+				EA305ED81B16F32100DD904D /* BLPickerView.m */,
 			);
 			name = CustomizeUI;
 			sourceTree = "<group>";
@@ -510,6 +515,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA305ED91B16F32100DD904D /* BLPickerView.m in Sources */,
 				EAE8E2111B09F34300C9038D /* BLLoginViewController.m in Sources */,
 				EA1E504F1AFCB99F004F7F6A /* BLTextField.m in Sources */,
 				A3BD9E4B1B0CC37D00815100 /* BLSignupViewController.m in Sources */,

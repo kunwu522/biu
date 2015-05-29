@@ -7,16 +7,18 @@
 //
 
 #import "BLMatchViewController.h"
+#import "BLPickerView.h"
 #import "BLMatchSwitch.h"
 #import "Masonry.h"
 
-@interface BLMatchViewController () <UIPickerViewDataSource, UIPickerViewDelegate>
+@interface BLMatchViewController () <BLPickerViewDataSource, BLPickerViewDelegate>
 
 @property (retain, nonatomic) UIView *background;
 @property (retain, nonatomic) UIButton *btnBack;
 @property (retain, nonatomic) UIButton *btnMenu;
 @property (retain, nonatomic) UILabel *lbTitle;
-@property (retain, nonatomic) UIPickerView *pickViewDistance;
+@property (retain, nonatomic) BLPickerView *pickViewDistance;
+@property (retain, nonatomic) UILabel *pickViewMask;
 @property (retain, nonatomic) BLMatchSwitch *matchSwitch;
 
 @property (retain, nonatomic) NSArray *arrayDistanceData;
@@ -48,11 +50,22 @@
     _lbTitle.text = NSLocalizedString(@"Set the distance", nil);
     [self.view addSubview:_lbTitle];
     
-    _pickViewDistance = [[UIPickerView alloc] init];
-    _arrayDistanceData = [[NSArray alloc] initWithObjects:@"0.5", @"1.0", @"1.5", @"2.0", @"2.5", @"3.0", @"3.5", @"4.0", @"4.5", @"5.0", nil];
+    _pickViewDistance = [[BLPickerView alloc] initWithFrame:CGRectMake(0, 200, self.view.frame.size.width, 225.0f)];
+    _arrayDistanceData = [[NSArray alloc] initWithObjects:@"500",
+                                                          @"1000",
+                                                          @"1500",
+                                                          @"2000",
+                                                          @"2500",
+                                                          @"3000",
+                                                          @"3500",
+                                                          @"4000",
+                                                          @"4500",
+                                                          @"5000", nil];
     _pickViewDistance.delegate = self;
-    _pickViewDistance.showsSelectionIndicator = NO;
+    _pickViewDistance.dataSource = self;
+    _pickViewDistance.fisheyeFactor = 0.001;
     [self.view addSubview:_pickViewDistance];
+    
     
 //    _matchSwitch = [[BLMatchSwitch alloc] init];
 //    [_matchSwitch addTarget:self action:@selector(matchToLove:) forControlEvents:UIControlEventValueChanged];
@@ -77,10 +90,10 @@
         make.centerX.equalTo(self.view.mas_centerX);
     }];
     
-    [_pickViewDistance mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.view.mas_centerX);
-        make.centerY.equalTo(self.view.mas_centerY);
-    }];
+//    [_pickViewDistance mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerX.equalTo(self.view.mas_centerX);
+//        make.centerY.equalTo(self.view.mas_centerY);
+//    }];
     
 //    [_matchSwitch mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.bottom.equalTo(self.view).with.offset(64.9);
@@ -93,28 +106,12 @@
 }
 
 #pragma mark - Picker View Delegate and Data Source
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-    return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+- (NSInteger)numberOfRowsInPickerView:(BLPickerView *)pickerView {
     return _arrayDistanceData.count;
 }
 
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+- (NSString *)pickerView:(BLPickerView *)pickerView titleForRow:(NSInteger)row {
     return [_arrayDistanceData objectAtIndex:row];
-}
-
-- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view {
-    UILabel *newLabel = (UILabel *)view;
-    if (!newLabel) {
-        newLabel = [[UILabel alloc] init];
-        newLabel.font = [UIFont fontWithName:@"ArialMT" size:20.0f];
-        newLabel.textColor = [BLColorDefinition greenColor];
-        newLabel.textAlignment = NSTextAlignmentCenter;
-    }
-    newLabel.text = [_arrayDistanceData objectAtIndex:row];
-    return newLabel;
 }
 
 #pragma mark - Handle Switch
