@@ -1,31 +1,26 @@
 //
-//  BLMatchSwitch.m
+//  BLMatchSwitchTest.m
 //  biu
 //
-//  Created by Tony Wu on 5/27/15.
+//  Created by WuTony on 5/30/15.
 //  Copyright (c) 2015 BiuLove. All rights reserved.
 //
 
 #import "BLMatchSwitch.h"
+
 @interface BLMatchSwitch () {
-    BOOL currentVisualValue;
-    BOOL startTrackingValue;
-    BOOL didChangeWhileTracking;
-    BOOL isAnimating;
+    CGPoint _previousTouchPoint;
+    CGFloat _maxDelta;
+    CGPoint _startKnobCenter;
+    CGPoint _startInactiveBg;
+    CGPoint _startActiveBg;
 }
 
-@property (retain, nonatomic) UIColor *inactiveColor;
-@property (retain, nonatomic) UIColor *activeColor;
-@property (retain, nonatomic) UIColor *borderColor;
-@property (retain, nonatomic) UIColor *shadowColor;
-
-@property (retain, nonatomic) UIView *background;
-@property (retain, nonatomic) UIView *nob;
-@property (retain, nonatomic) UIImageView *imageViewNob;
-
-- (void)showOn:(BOOL)animated;
-- (void)showOff:(BOOL)animated;
-- (void)setup;
+@property (retain, nonatomic) UIView *inactiveBackground;
+@property (retain, nonatomic) UIView *activeBackground;
+@property (retain, nonatomic) UILabel *inactiveLabel;
+@property (retain, nonatomic) UILabel *activeLabel;
+@property (retain, nonatomic) UIImageView *nob;
 
 @end
 
@@ -33,8 +28,64 @@
 
 @synthesize on;
 
-- (id)init {
-    self = [super initWithFrame:CGRectMake(0, 0, 250.0f, 78.0f)];
+- (void)setup {
+    if (CGRectIsEmpty(self.frame)) {
+        self.frame = CGRectMake(0, 0, 250.0f, 78.0f);
+    }
+    self.layer.cornerRadius = self.frame.size.height / 2.0f;
+    self.clipsToBounds = YES;
+    
+    _activeBackground = [[UIView alloc] initWithFrame:CGRectMake(self.frame.size.height - self.frame.size.width, 0, self.frame.size.width, self.frame.size.height)];
+    _activeBackground.backgroundColor = [UIColor colorWithRed:68.0 / 255.0 green:229.0 / 255.0 blue:175.0 / 255.0 alpha:1.0f];
+    _activeBackground.userInteractionEnabled = NO;
+    _activeBackground.layer.cornerRadius = _activeBackground.frame.size.height * 0.5f;
+    _activeBackground.clipsToBounds = YES;
+    [self addSubview:_activeBackground];
+    
+    NSString *activeText = NSLocalizedString(@"Matching...", nil);
+    CGSize activeLabelSize = [BLFontDefinition normalFontSizeForString:activeText fontSize:18.0f];
+    _activeLabel = [[UILabel alloc] initWithFrame:CGRectMake((_activeBackground.frame.size.width - activeLabelSize.width) * 0.5 - 25,
+                                                             (_activeBackground.frame.size.height - activeLabelSize.height) * 0.5,
+                                                             activeLabelSize.width, activeLabelSize.height)];
+    _activeLabel.textAlignment = NSTextAlignmentCenter;
+    _activeLabel.textColor = [UIColor whiteColor];
+    _activeLabel.font = [BLFontDefinition normalFont:18.0f];
+    _activeLabel.numberOfLines = 1;
+    _activeLabel.text = activeText;
+    _activeLabel.userInteractionEnabled = NO;
+    [_activeBackground addSubview:_activeLabel];
+    
+    _inactiveBackground = [[UIView alloc] initWithFrame:self.bounds];
+    _inactiveBackground.backgroundColor = [UIColor colorWithRed:213.0 / 255.0 green:217.0 / 255.0 blue:221.0 / 255.0 alpha:1.0f];
+    _inactiveBackground.userInteractionEnabled = NO;
+    _inactiveBackground.layer.cornerRadius = _inactiveBackground.frame.size.height * 0.5f;
+    _inactiveBackground.clipsToBounds = YES;
+    [self addSubview:_inactiveBackground];
+    
+    NSString *inactiveText = NSLocalizedString(@"Slide to love", nil);
+    CGSize inactiveLabelSize = [BLFontDefinition normalFontSizeForString:inactiveText fontSize:18.0f];
+    _inactiveLabel = [[UILabel alloc] initWithFrame:CGRectMake((_inactiveBackground.frame.size.width - inactiveLabelSize.width) * 0.5 + 25,
+                                                       (_inactiveBackground.frame.size.height - inactiveLabelSize.height) * 0.5,
+                                                       inactiveLabelSize.width, inactiveLabelSize.height)];
+    _inactiveLabel.textAlignment = NSTextAlignmentCenter;
+    _inactiveLabel.textColor = [UIColor whiteColor];
+    _inactiveLabel.font = [BLFontDefinition normalFont:18.0f];
+    _inactiveLabel.numberOfLines = 1;
+    _inactiveLabel.text = inactiveText;
+    _inactiveLabel.userInteractionEnabled = NO;
+    [_inactiveBackground addSubview:_inactiveLabel];
+    
+    _nob = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.height, self.frame.size.height)];
+    _nob.image = [UIImage imageNamed:@"logo.png"];
+    _nob.userInteractionEnabled = NO;
+    [self addSubview:_nob];
+    
+    _maxDelta = self.frame.size.width - _nob.frame.size.width;
+    self.on = NO;
+}
+
+- (id)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
     if (self) {
         [self setup];
     }
@@ -49,202 +100,90 @@
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame {
-    CGRect initialFrame;
-    if (CGRectIsEmpty(frame)) {
-        initialFrame = CGRectMake(0, 0, 250.f, 78.0f);
-    } else {
-        initialFrame = frame;
-    }
-    self = [super initWithFrame:frame];
-    if (self) {
-        [self setup];
-    }
-    return self;
+- (void)layoutSubviews {
+    [super layoutSubviews];
 }
 
-- (void)setup {
-    self.on = NO;
-    _inactiveColor = [UIColor colorWithRed:213.0 / 255.0 green:217.0 / 255.0 blue:221.0 / 255.0 alpha:1.0f];
-    _activeColor = [UIColor colorWithRed:68.0 / 255.0 green:229.0 / 255.0 blue:175.0 / 255.0 alpha:1.0f];
-    currentVisualValue = NO;
-    
-    _background = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-    _background.backgroundColor = [UIColor clearColor];
-    _background.layer.cornerRadius = self.frame.size.height * 0.5f;
-    _background.userInteractionEnabled = NO;
-    _background.clipsToBounds = YES;
-    [self addSubview:_background];
-    
-    _nob = [[UIView alloc] initWithFrame:CGRectMake(1, 1, self.frame.size.height - 2, self.frame.size.height - 2)];
-    _nob.backgroundColor = [UIColor clearColor];
-    _nob.layer.cornerRadius = (self.frame.size.height * 0.5) - 1;
-    _nob.layer.masksToBounds = NO;
-    _nob.userInteractionEnabled = NO;
-    [self addSubview:_nob];
-    
-    _imageViewNob = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, _nob.frame.size.width, _nob.frame.size.height)];
-    _imageViewNob.image = [UIImage imageNamed:@"logo.png"];
-    _imageViewNob.contentMode = UIViewContentModeCenter;
-    _imageViewNob.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    [_nob addSubview:_imageViewNob];
-}
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
-
-#pragma mark - Touch Tracking
+#pragma mark - Handle touching
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
-    [super beginTrackingWithTouch:touch withEvent:event];
-    
-    startTrackingValue = self.on;
-    didChangeWhileTracking = NO;
-    
-    CGFloat activeKnobWidth = self.bounds.size.height - 2 + 5;
-    isAnimating = YES;
-    [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseOut|UIViewAnimationOptionBeginFromCurrentState animations:^{
-        if (self.on) {
-            _nob.frame = CGRectMake(self.bounds.size.width - (activeKnobWidth + 1), _nob.frame.origin.y, activeKnobWidth, _nob.frame.size.height);
-            _background.backgroundColor = _inactiveColor;
-        }
-        else {
-            _nob.frame = CGRectMake(_nob.frame.origin.x, _nob.frame.origin.y, activeKnobWidth, _nob.frame.size.height);
-            _background.backgroundColor = _activeColor;
-        }
-    } completion:^(BOOL finished) {
-        isAnimating = NO;
-    }];
-    
-    return YES;
+    _previousTouchPoint = [touch locationInView:self];
+    _startActiveBg = _activeBackground.center;
+    _startInactiveBg = _inactiveBackground.center;
+    _startKnobCenter = _nob.center;
+    BOOL b = CGRectContainsPoint(_nob.frame, _previousTouchPoint);
+    return b;
 }
 
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
-    [super continueTrackingWithTouch:touch withEvent:event];
+    CGPoint touchPoint = [touch locationInView:self];
+    CGFloat delta = MIN(touchPoint.x - _previousTouchPoint.x, _maxDelta);
     
-    // Get touch location
-    CGPoint lastPoint = [touch locationInView:self];
-    
-    // update the switch to the correct visuals depending on if
-    // they moved their touch to the right or left side of the switch
-    if (lastPoint.x > self.bounds.size.width * 0.5) {
-        [self showOn:YES];
-        if (!startTrackingValue) {
-            didChangeWhileTracking = YES;
-        }
-    }
-    else {
-        [self showOff:YES];
-        if (startTrackingValue) {
-            didChangeWhileTracking = YES;
-        }
-    }
-    
+    CGPoint knobCenter = _nob.center;
+    knobCenter.x = _startKnobCenter.x + delta;
+    _nob.center = knobCenter;
+    CGPoint activeBackgroundCenter = _activeBackground.center;
+    activeBackgroundCenter.x = _startActiveBg.x + delta;
+    _activeBackground.center = activeBackgroundCenter;
+    CGPoint inactiveBackgroundCenter = _inactiveBackground.center;
+    inactiveBackgroundCenter.x = _startInactiveBg.x + delta;
+    _inactiveBackground.center = inactiveBackgroundCenter;
     return YES;
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
-    [super endTrackingWithTouch:touch withEvent:event];
-    
-    BOOL previousValue = self.on;
-    
-    if (didChangeWhileTracking) {
-        [self setOn:currentVisualValue animated:YES];
-    }
-    else {
-        [self setOn:!self.on animated:YES];
-    }
-    
-    if (previousValue != self.on)
+    CGPoint touchPoint = [touch locationInView:self];
+    CGFloat delta = touchPoint.x - _previousTouchPoint.x;
+    NSLog(@"ABS delta: %f", fabs(delta));
+    if (fabs(delta) > (_maxDelta * 0.5f)) {
+        self.on ? [self showOff:YES] : [self showOn:YES];
         [self sendActionsForControlEvents:UIControlEventValueChanged];
-}
-
-- (void)cancelTrackingWithEvent:(UIEvent *)event {
-    [super cancelTrackingWithEvent:event];
+    } else {
+        self.on ? [self showOn:YES] : [self showOff:YES];
+    }
     
-    // just animate back to the original value
-    if (self.on)
-        [self showOn:YES];
-    else
-        [self showOff:YES];
 }
 
-#pragma mark State Changes
-
-
-/*
- * update the looks of the switch to be in the on position
- * optionally make it animated
- */
 - (void)showOn:(BOOL)animated {
-    CGFloat normalKnobWidth = self.bounds.size.height - 2;
-    CGFloat activeKnobWidth = normalKnobWidth + 5;
     if (animated) {
-        isAnimating = YES;
-        [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseOut|UIViewAnimationOptionBeginFromCurrentState animations:^{
-            if (self.tracking)
-                _nob.frame = CGRectMake(self.bounds.size.width - (activeKnobWidth + 1), _nob.frame.origin.y, activeKnobWidth, _nob.frame.size.height);
-            else
-                _nob.frame = CGRectMake(self.bounds.size.width - (normalKnobWidth + 1), _nob.frame.origin.y, normalKnobWidth, _nob.frame.size.height);
-            _background.backgroundColor = _activeColor;
-        } completion:^(BOOL finished) {
-            isAnimating = NO;
+        [UIView animateWithDuration:0.2f animations:^{
+            CGPoint knobCenter = CGPointMake(self.frame.size.width - _nob.frame.size.width * 0.5f, _nob.center.y);
+            _nob.center = knobCenter;
+            CGPoint activeBgCenter = CGPointMake(self.frame.size.width * 0.5f, _activeBackground.center.y);
+            _activeBackground.center = activeBgCenter;
+            CGPoint inactiveBgCenter = CGPointMake(self.frame.size.width * 1.5f - _nob.frame.size.width, _inactiveBackground.center.y);
+            _inactiveBackground.center = inactiveBgCenter;
         }];
+    } else {
+        CGPoint knobCenter = CGPointMake(self.frame.size.width - _nob.frame.size.width * 0.5f, _nob.center.y);
+        _nob.center = knobCenter;
+        CGPoint activeBgCenter = CGPointMake(self.frame.size.width * 0.5f, _activeBackground.center.y);
+        _activeBackground.center = activeBgCenter;
+        CGPoint inactiveBgCenter = CGPointMake(self.frame.size.width * 1.5f - _nob.frame.size.width, _inactiveBackground.center.y);
+        _inactiveBackground.center = inactiveBgCenter;
     }
-    
-    currentVisualValue = YES;
+    self.on = YES;
 }
 
-/*
- * update the looks of the switch to be in the off position
- * optionally make it animated
- */
 - (void)showOff:(BOOL)animated {
-    CGFloat normalKnobWidth = self.bounds.size.height - 2;
-    CGFloat activeKnobWidth = normalKnobWidth + 5;
     if (animated) {
-        isAnimating = YES;
-        [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseOut|UIViewAnimationOptionBeginFromCurrentState animations:^{
-            if (self.tracking) {
-                _nob.frame = CGRectMake(1, _nob.frame.origin.y, activeKnobWidth, _nob.frame.size.height);
-                _background.backgroundColor = self.activeColor;
-            }
-            else {
-                _nob.frame = CGRectMake(1, _nob.frame.origin.y, normalKnobWidth, _nob.frame.size.height);
-                _background.backgroundColor = self.inactiveColor;
-            }
-        } completion:^(BOOL finished) {
-            isAnimating = NO;
+        [UIView animateWithDuration:0.2f animations:^{
+            CGPoint knobCenter = CGPointMake(_nob.frame.size.width * 0.5f, _nob.center.y);
+            _nob.center = knobCenter;
+            CGPoint activeBgCenter = CGPointMake(_nob.frame.size.width - self.frame.size.width * 0.5f, _activeBackground.center.y);
+            _activeBackground.center = activeBgCenter;
+            CGPoint inactiveBgCenter = CGPointMake(self.frame.size.width * 0.5f, _inactiveBackground.center.y);
+            _inactiveBackground.center = inactiveBgCenter;
         }];
+    } else {
+        CGPoint knobCenter = CGPointMake(_nob.frame.size.width * 0.5f, _nob.center.y);
+        _nob.center = knobCenter;
+        CGPoint activeBgCenter = CGPointMake(_nob.frame.size.width - self.frame.size.width * 0.5f, _activeBackground.center.y);
+        _activeBackground.center = activeBgCenter;
+        CGPoint inactiveBgCenter = CGPointMake(self.frame.size.width * 0.5f, _inactiveBackground.center.y);
+        _inactiveBackground.center = inactiveBgCenter;
     }
-    
-    currentVisualValue = NO;
-}
-
-/*
- * Set (without animation) whether the switch is on or off
- */
-- (void)setOn:(BOOL)isOn {
-    [self setOn:isOn animated:NO];
-}
-
-
-/*
- * Set the state of the switch to on or off, optionally animating the transition.
- */
-- (void)setOn:(BOOL)isOn animated:(BOOL)animated {
-    self.on = isOn;
-    
-    if (isOn) {
-        [self showOn:animated];
-    }
-    else {
-        [self showOff:animated];
-    }
+    self.on = NO;
 }
 
 @end

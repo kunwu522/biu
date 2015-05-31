@@ -9,6 +9,7 @@
 #import "BLMatchViewController.h"
 #import "BLPickerView.h"
 #import "BLMatchSwitch.h"
+
 #import "Masonry.h"
 
 @interface BLMatchViewController () <BLPickerViewDataSource, BLPickerViewDelegate>
@@ -19,7 +20,8 @@
 @property (retain, nonatomic) UILabel *lbTitle;
 @property (retain, nonatomic) BLPickerView *pickViewDistance;
 @property (retain, nonatomic) UILabel *pickViewMask;
-@property (retain, nonatomic) BLMatchSwitch *matchSwitch;
+@property (retain, nonatomic) BLMatchSwitch *matchSwith;
+
 
 @property (retain, nonatomic) NSArray *arrayDistanceData;
 
@@ -64,12 +66,13 @@
     _pickViewDistance.delegate = self;
     _pickViewDistance.dataSource = self;
     _pickViewDistance.fisheyeFactor = 0.001;
+    [_pickViewDistance selectRow:3 animated:NO];
     [self.view addSubview:_pickViewDistance];
     
-    
-//    _matchSwitch = [[BLMatchSwitch alloc] init];
-//    [_matchSwitch addTarget:self action:@selector(matchToLove:) forControlEvents:UIControlEventValueChanged];
-//    [self.view addSubview:_matchSwitch];
+    _matchSwith = [[BLMatchSwitch alloc] init];
+    _matchSwith.backgroundColor = [UIColor clearColor];
+    [_matchSwith addTarget:self action:@selector(matchToLove:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:_matchSwith];
     
     [_btnBack mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).with.offset(31.2);
@@ -90,14 +93,12 @@
         make.centerX.equalTo(self.view.mas_centerX);
     }];
     
-//    [_pickViewDistance mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerX.equalTo(self.view.mas_centerX);
-//        make.centerY.equalTo(self.view.mas_centerY);
-//    }];
-    
-//    [_matchSwitch mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.bottom.equalTo(self.view).with.offset(64.9);
-//    }];
+    [_matchSwith mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view).with.offset(-64.9);
+        make.centerX.equalTo(self.view.mas_centerX);
+        make.width.equalTo(@250.0f);
+        make.height.equalTo(@78.0f);
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -112,6 +113,10 @@
 
 - (NSString *)pickerView:(BLPickerView *)pickerView titleForRow:(NSInteger)row {
     return [_arrayDistanceData objectAtIndex:row];
+}
+
+- (void)pickerView:(BLPickerView *)pickerView didSelectRow:(NSInteger)row {
+    NSLog(@"Select distance: %@", [_arrayDistanceData objectAtIndex:row]);
 }
 
 #pragma mark - Handle Switch

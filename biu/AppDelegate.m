@@ -17,7 +17,7 @@
 
 @implementation AppDelegate
 
-@synthesize passwordItem, masterNavController;
+@synthesize passwordItem, masterNavController, menuViewController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
@@ -32,6 +32,9 @@
     BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
     self.masterNavController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
     self.masterNavController.navigationBarHidden = YES;
+    
+    // Create BL Menu view controller
+    self.menuViewController = [[BLMenuViewController alloc] initWithRootViewControllr:matchViewController];
     
     return YES;
 }

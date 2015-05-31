@@ -18,6 +18,7 @@
     #import "AFNetworking.h"
     #import "BLHTTPClient.h"
     #import "BLColorDefinition.h"
+    #import "BLFontDefinition.h"
     #import "User.h"
 #endif
 #endif

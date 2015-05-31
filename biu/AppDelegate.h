@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BLMenuViewController.h"
 
 @class KeychainItemWrapper;
 
@@ -16,6 +17,7 @@
 
 @property (nonatomic, retain) KeychainItemWrapper *passwordItem;
 @property (nonatomic, retain) UINavigationController *masterNavController;
+@property (nonatomic, retain) BLMenuViewController *menuViewController;
 
 @end
 

@@ -120,10 +120,10 @@ static double ICON_INITIAL_SIZE = 147.5;
     if (!_isLaunchLayout) {
         User *user = [User new];
         user.email = @"wukun@biulove.com";
-        user.password = @"wukun1234";
+        user.password = @"12345678";
         [[BLHTTPClient sharedBLHTTPClient] login:user success:^(NSURLSessionDataTask *task, id responseObject) {
             AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-            [self presentViewController:delegate.masterNavController animated:YES completion:nil];
+            [self presentViewController:delegate.menuViewController animated:YES completion:nil];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"Validate user failed: %@, code: %li", error.description, (long)error.code);
             [self loginViewLayout];

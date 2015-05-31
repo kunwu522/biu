@@ -302,7 +302,6 @@
 
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewLayoutAttributes *attributes = [super layoutAttributesForItemAtIndexPath:indexPath];
-    NSLog(@"Attribute frame: %f--%f--%f--%f, midY: %f", attributes.frame.origin.x, attributes.frame.origin.y, attributes.frame.size.width, attributes.frame.size.height, _midY);
     CGFloat distance = CGRectGetMidY(attributes.frame) - _midY;
     CGFloat currentAngle = _maxAngle * distance / _height / M_PI_2;
     CATransform3D transform = CATransform3DIdentity;
@@ -311,7 +310,6 @@
     transform = CATransform3DTranslate(transform, 0, 0, _height);
     attributes.transform3D = transform;
     attributes.alpha = (ABS(currentAngle) < _maxAngle);
-    NSLog(@"Attribute2 frame: %f--%f--%f--%f, midY: %f", attributes.frame.origin.x, attributes.frame.origin.y, attributes.frame.size.width, attributes.frame.size.height, _midY);
     return attributes;
 }
 

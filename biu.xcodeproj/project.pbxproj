@@ -9,7 +9,17 @@
 /* Begin PBXBuildFile section */
 		3A9496908D4A186AF79DA348 /* libPods-biu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 882ECF70E4E409F2CC245E63 /* libPods-biu.a */; };
 		6558C9F54B9EEBDFACD01199 /* libPods-biuTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FF2F6A1D8073A5C8E135F00 /* libPods-biuTests.a */; };
+		A3039E901B1605B6006FB5E4 /* BLFontDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = A3039E8F1B1605B6006FB5E4 /* BLFontDefinition.m */; };
+		A3039E961B19E9B1006FB5E4 /* BLMatchSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = A3039E951B19E9B1006FB5E4 /* BLMatchSwitch.m */; };
+		A3039E9B1B1AEB4F006FB5E4 /* BLMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3039E9A1B1AEB4F006FB5E4 /* BLMenuViewController.m */; };
 		A3BD9E4B1B0CC37D00815100 /* BLSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3BD9E4A1B0CC37D00815100 /* BLSignupViewController.m */; };
+		A3CCFCFA1B1B602600C9BAE8 /* back_icon3.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFCF41B1B602600C9BAE8 /* back_icon3.png */; };
+		A3CCFCFB1B1B602600C9BAE8 /* forward_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFCF51B1B602600C9BAE8 /* forward_icon2.png */; };
+		A3CCFCFC1B1B602600C9BAE8 /* partner_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFCF61B1B602600C9BAE8 /* partner_icon.png */; };
+		A3CCFCFD1B1B602600C9BAE8 /* password_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFCF71B1B602600C9BAE8 /* password_icon.png */; };
+		A3CCFCFE1B1B602600C9BAE8 /* photo_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFCF81B1B602600C9BAE8 /* photo_icon.png */; };
+		A3CCFCFF1B1B602700C9BAE8 /* setting_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFCF91B1B602600C9BAE8 /* setting_icon.png */; };
+		A3CCFD011B1B647300C9BAE8 /* avator_default.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFD001B1B647300C9BAE8 /* avator_default.png */; };
 		A3F7EC691B0AD6520084DA70 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A3F7EC6B1B0AD6520084DA70 /* Localizable.strings */; };
 		EA113E8B1B0C511200EA6925 /* BLColorDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = EA113E8A1B0C511200EA6925 /* BLColorDefinition.m */; };
 		EA1E504F1AFCB99F004F7F6A /* BLTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1E504E1AFCB99F004F7F6A /* BLTextField.m */; };
@@ -26,7 +36,6 @@
 		EA305ECD1B1570B300DD904D /* BLMatchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA305ECC1B1570B300DD904D /* BLMatchViewController.m */; };
 		EA305ECF1B1575E900DD904D /* back_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = EA305ECE1B1575E900DD904D /* back_icon2.png */; };
 		EA305ED11B1576DF00DD904D /* menu_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA305ED01B1576DF00DD904D /* menu_icon.png */; };
-		EA305ED41B15904400DD904D /* BLMatchSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = EA305ED31B15904400DD904D /* BLMatchSwitch.m */; };
 		EA305ED91B16F32100DD904D /* BLPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA305ED81B16F32100DD904D /* BLPickerView.m */; };
 		EA6AAC301AF8739200ED3A55 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC2F1AF8739200ED3A55 /* main.m */; };
 		EA6AAC331AF8739200ED3A55 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC321AF8739200ED3A55 /* AppDelegate.m */; };
@@ -65,8 +74,21 @@
 		52D026F5D14ECA4F27D67EBF /* Pods-biuTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-biuTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-biuTests/Pods-biuTests.release.xcconfig"; sourceTree = "<group>"; };
 		882ECF70E4E409F2CC245E63 /* libPods-biu.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-biu.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FF2F6A1D8073A5C8E135F00 /* libPods-biuTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-biuTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3039E8E1B1605B6006FB5E4 /* BLFontDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLFontDefinition.h; sourceTree = "<group>"; };
+		A3039E8F1B1605B6006FB5E4 /* BLFontDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLFontDefinition.m; sourceTree = "<group>"; };
+		A3039E941B19E9B1006FB5E4 /* BLMatchSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLMatchSwitch.h; path = CustomizeUI/BLMatchSwitch.h; sourceTree = "<group>"; };
+		A3039E951B19E9B1006FB5E4 /* BLMatchSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLMatchSwitch.m; path = CustomizeUI/BLMatchSwitch.m; sourceTree = "<group>"; };
+		A3039E991B1AEB4F006FB5E4 /* BLMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLMenuViewController.h; path = CustomizeUI/BLMenuViewController.h; sourceTree = "<group>"; };
+		A3039E9A1B1AEB4F006FB5E4 /* BLMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLMenuViewController.m; path = CustomizeUI/BLMenuViewController.m; sourceTree = "<group>"; };
 		A3BD9E491B0CC37D00815100 /* BLSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLSignupViewController.h; sourceTree = "<group>"; };
 		A3BD9E4A1B0CC37D00815100 /* BLSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLSignupViewController.m; sourceTree = "<group>"; };
+		A3CCFCF41B1B602600C9BAE8 /* back_icon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = back_icon3.png; path = images/back_icon3.png; sourceTree = "<group>"; };
+		A3CCFCF51B1B602600C9BAE8 /* forward_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = forward_icon2.png; path = images/forward_icon2.png; sourceTree = "<group>"; };
+		A3CCFCF61B1B602600C9BAE8 /* partner_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = partner_icon.png; path = images/partner_icon.png; sourceTree = "<group>"; };
+		A3CCFCF71B1B602600C9BAE8 /* password_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = password_icon.png; path = images/password_icon.png; sourceTree = "<group>"; };
+		A3CCFCF81B1B602600C9BAE8 /* photo_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = photo_icon.png; path = images/photo_icon.png; sourceTree = "<group>"; };
+		A3CCFCF91B1B602600C9BAE8 /* setting_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = setting_icon.png; path = images/setting_icon.png; sourceTree = "<group>"; };
+		A3CCFD001B1B647300C9BAE8 /* avator_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = avator_default.png; path = images/avator_default.png; sourceTree = "<group>"; };
 		A3F7EC671B0AD5BF0084DA70 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		A3F7EC681B0AD5BF0084DA70 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		A3F7EC6A1B0AD6520084DA70 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -91,8 +113,6 @@
 		EA305ECC1B1570B300DD904D /* BLMatchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLMatchViewController.m; sourceTree = "<group>"; };
 		EA305ECE1B1575E900DD904D /* back_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = back_icon2.png; path = images/back_icon2.png; sourceTree = "<group>"; };
 		EA305ED01B1576DF00DD904D /* menu_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu_icon.png; path = images/menu_icon.png; sourceTree = "<group>"; };
-		EA305ED21B15904400DD904D /* BLMatchSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLMatchSwitch.h; path = CustomizeUI/BLMatchSwitch.h; sourceTree = "<group>"; };
-		EA305ED31B15904400DD904D /* BLMatchSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLMatchSwitch.m; path = CustomizeUI/BLMatchSwitch.m; sourceTree = "<group>"; };
 		EA305ED71B16F32100DD904D /* BLPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLPickerView.h; path = CustomizeUI/BLPickerView.h; sourceTree = "<group>"; };
 		EA305ED81B16F32100DD904D /* BLPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLPickerView.m; path = CustomizeUI/BLPickerView.m; sourceTree = "<group>"; };
 		EA6AAC2A1AF8739200ED3A55 /* biu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = biu.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -149,13 +169,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		EA113E881B0C50A300EA6925 /* ColorUtil */ = {
+		EA113E881B0C50A300EA6925 /* StyleUtil */ = {
 			isa = PBXGroup;
 			children = (
 				EA113E891B0C511200EA6925 /* BLColorDefinition.h */,
 				EA113E8A1B0C511200EA6925 /* BLColorDefinition.m */,
+				A3039E8E1B1605B6006FB5E4 /* BLFontDefinition.h */,
+				A3039E8F1B1605B6006FB5E4 /* BLFontDefinition.m */,
 			);
-			name = ColorUtil;
+			name = StyleUtil;
 			path = ..;
 			sourceTree = "<group>";
 		};
@@ -166,10 +188,12 @@
 				EA1E504E1AFCB99F004F7F6A /* BLTextField.m */,
 				EA305EBC1B14773800DD904D /* BLGenderTableViewCell.h */,
 				EA305EBD1B14773800DD904D /* BLGenderTableViewCell.m */,
-				EA305ED21B15904400DD904D /* BLMatchSwitch.h */,
-				EA305ED31B15904400DD904D /* BLMatchSwitch.m */,
 				EA305ED71B16F32100DD904D /* BLPickerView.h */,
 				EA305ED81B16F32100DD904D /* BLPickerView.m */,
+				A3039E941B19E9B1006FB5E4 /* BLMatchSwitch.h */,
+				A3039E951B19E9B1006FB5E4 /* BLMatchSwitch.m */,
+				A3039E991B1AEB4F006FB5E4 /* BLMenuViewController.h */,
+				A3039E9A1B1AEB4F006FB5E4 /* BLMenuViewController.m */,
 			);
 			name = CustomizeUI;
 			sourceTree = "<group>";
@@ -200,7 +224,7 @@
 				EAA7FD701B12CFDF00C2B5C6 /* Model */,
 				EAA7FD6C1B0DD5D600C2B5C6 /* NetworkUtil */,
 				EA1E50491AFCB891004F7F6A /* CustomizeUI */,
-				EA113E881B0C50A300EA6925 /* ColorUtil */,
+				EA113E881B0C50A300EA6925 /* StyleUtil */,
 				EAFBEE7E1AFB2FD5006013CD /* KeyChainUtil */,
 				EA6AAC5B1AF88DB600ED3A55 /* Images */,
 				EA6AAC551AF8890E00ED3A55 /* Util */,
@@ -267,6 +291,13 @@
 		EA6AAC5B1AF88DB600ED3A55 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				A3CCFD001B1B647300C9BAE8 /* avator_default.png */,
+				A3CCFCF41B1B602600C9BAE8 /* back_icon3.png */,
+				A3CCFCF51B1B602600C9BAE8 /* forward_icon2.png */,
+				A3CCFCF61B1B602600C9BAE8 /* partner_icon.png */,
+				A3CCFCF71B1B602600C9BAE8 /* password_icon.png */,
+				A3CCFCF81B1B602600C9BAE8 /* photo_icon.png */,
+				A3CCFCF91B1B602600C9BAE8 /* setting_icon.png */,
 				EA305ED01B1576DF00DD904D /* menu_icon.png */,
 				EA305ECE1B1575E900DD904D /* back_icon2.png */,
 				EA305EC71B14841600DD904D /* division_icon.png */,
@@ -418,22 +449,29 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAE8E20C1B09CBF800C9038D /* logo.png in Resources */,
+				A3CCFCFF1B1B602700C9BAE8 /* setting_icon.png in Resources */,
+				A3CCFCFC1B1B602600C9BAE8 /* partner_icon.png in Resources */,
 				EA305EC81B14841600DD904D /* division_icon.png in Resources */,
 				EA1E50511B0094B3004F7F6A /* Images-2.xcassets in Resources */,
 				EA305EBB1B14744100DD904D /* padding.png in Resources */,
 				EA305ECF1B1575E900DD904D /* back_icon2.png in Resources */,
 				EA305ED11B1576DF00DD904D /* menu_icon.png in Resources */,
 				EA305EC31B147F0C00DD904D /* femaile_selected_icon.png in Resources */,
+				A3CCFCFB1B1B602600C9BAE8 /* forward_icon2.png in Resources */,
+				A3CCFD011B1B647300C9BAE8 /* avator_default.png in Resources */,
 				EA7805321B0C7F0E00696FEF /* forward_icon.png in Resources */,
 				EA305EC41B147F0C00DD904D /* femaile_unselected_icon.png in Resources */,
+				A3CCFCFA1B1B602600C9BAE8 /* back_icon3.png in Resources */,
 				EA6AAC391AF8739200ED3A55 /* Main.storyboard in Resources */,
 				EA6AAC3E1AF8739200ED3A55 /* LaunchScreen.xib in Resources */,
 				A3F7EC691B0AD6520084DA70 /* Localizable.strings in Resources */,
 				EA305EC51B147F0C00DD904D /* male_unselected_icon.png in Resources */,
 				EA305EC61B147F0C00DD904D /* male_selected_icon.png in Resources */,
+				A3CCFCFD1B1B602600C9BAE8 /* password_icon.png in Resources */,
 				EA7805341B0C7F1500696FEF /* back_icon.png in Resources */,
 				EA1E505B1B01FE55004F7F6A /* wel_background.png in Resources */,
 				EA6AAC3B1AF8739200ED3A55 /* Images.xcassets in Resources */,
+				A3CCFCFE1B1B602600C9BAE8 /* photo_icon.png in Resources */,
 				EA6AAC641AF8940500ED3A55 /* splash.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -520,14 +558,16 @@
 				EA1E504F1AFCB99F004F7F6A /* BLTextField.m in Sources */,
 				A3BD9E4B1B0CC37D00815100 /* BLSignupViewController.m in Sources */,
 				EA6AAC361AF8739200ED3A55 /* BLWelcomeViewController.m in Sources */,
+				A3039E9B1B1AEB4F006FB5E4 /* BLMenuViewController.m in Sources */,
 				EA305EBE1B14773800DD904D /* BLGenderTableViewCell.m in Sources */,
 				EA6AAC601AF88E3A00ED3A55 /* UIImage+ImageEffects.m in Sources */,
+				A3039E961B19E9B1006FB5E4 /* BLMatchSwitch.m in Sources */,
 				EAFBEE841AFB3038006013CD /* KeychainItemWrapper.m in Sources */,
-				EA305ED41B15904400DD904D /* BLMatchSwitch.m in Sources */,
 				EA6AAC581AF8893900ED3A55 /* BlurView.m in Sources */,
 				EAA7FD6F1B0DD64F00C2B5C6 /* BLHTTPClient.m in Sources */,
 				EAA7FD731B12CFF700C2B5C6 /* User.m in Sources */,
 				EA305EB71B13351600DD904D /* BLProfileViewController.m in Sources */,
+				A3039E901B1605B6006FB5E4 /* BLFontDefinition.m in Sources */,
 				EA305ECD1B1570B300DD904D /* BLMatchViewController.m in Sources */,
 				EA6AAC331AF8739200ED3A55 /* AppDelegate.m in Sources */,
 				EA113E8B1B0C511200EA6925 /* BLColorDefinition.m in Sources */,

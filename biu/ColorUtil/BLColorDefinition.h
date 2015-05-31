@@ -11,6 +11,7 @@
 @interface BLColorDefinition : NSObject
 
 + (UIColor *)greenColor;
++ (UIColor *)fontGreenColor;
 + (UIColor *)grayColor;
 + (UIColor *)fontGrayColor;
 + (UIColor *)backgroundGrayColor;
