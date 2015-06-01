@@ -14,6 +14,7 @@
 + (UIColor *)fontGreenColor;
 + (UIColor *)grayColor;
 + (UIColor *)fontGrayColor;
++ (UIColor *)menuFontColor;
 + (UIColor *)backgroundGrayColor;
 + (UIColor *)twitterBlueColor;
 + (UIColor *)facebookBlueColor;

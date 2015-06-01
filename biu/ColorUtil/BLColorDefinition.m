@@ -38,4 +38,8 @@
     return [UIColor colorWithRed:41.0 / 255.0 green:110.0 / 255.0 blue:163.0 / 255.0 alpha:1.0f];
 }
 
++ (UIColor *)menuFontColor {
+    return [UIColor colorWithRed:175.0 / 255.0 green:178.0 / 255.0 blue:182.0 / 255.0 alpha:1.0f];
+}
+
 @end

@@ -15,6 +15,7 @@
 @interface BLMatchViewController () <BLPickerViewDataSource, BLPickerViewDelegate>
 
 @property (retain, nonatomic) UIView *background;
+@property (retain, nonatomic) UIImageView *test;
 @property (retain, nonatomic) UIButton *btnBack;
 @property (retain, nonatomic) UIButton *btnMenu;
 @property (retain, nonatomic) UILabel *lbTitle;
@@ -40,10 +41,6 @@
     _btnBack = [[UIButton alloc] init];
     [_btnBack setBackgroundImage:[UIImage imageNamed:@"back_icon2.png"] forState:UIControlStateNormal];
     [self.view addSubview:_btnBack];
-    
-    _btnMenu = [[UIButton alloc] init];
-    [_btnMenu setBackgroundImage:[UIImage imageNamed:@"menu_icon.png"] forState:UIControlStateNormal];
-    [self.view addSubview:_btnMenu];
     
     _lbTitle = [[UILabel alloc] init];
     _lbTitle.font = [UIFont fontWithName:@"ArialMT" size:20.0f];
@@ -77,13 +74,6 @@
     [_btnBack mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).with.offset(31.2);
         make.left.equalTo(self.view).with.offset(20.8);
-        make.width.equalTo(@45.3);
-        make.height.equalTo(@45.3);
-    }];
-    
-    [_btnMenu mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).with.offset(31.2);
-        make.right.equalTo(self.view).with.offset(-20.8);
         make.width.equalTo(@45.3);
         make.height.equalTo(@45.3);
     }];

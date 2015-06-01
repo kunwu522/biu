@@ -46,6 +46,8 @@
     if (self) {
         _gender = BLGenderNone;
         
+        self.backgroundColor = [BLColorDefinition backgroundGrayColor];
+        
         _imageMaleSelected = [UIImage imageNamed:@"male_selected_icon.png"];
         _imageMaleUnselected = [UIImage imageNamed:@"male_unselected_icon.png"];
         _imageFemaleSelected = [UIImage imageNamed:@"female_selected_icon.png"];
@@ -133,6 +135,14 @@
         make.left.equalTo(_imageViewDivision.mas_right).with.offset(40.0f);
         make.width.equalTo(@94.4f);
         make.height.equalTo(@141.5f);
+    }];
+    
+    [_imageViewMale mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(_imageViewMale.superview);
+    }];
+    
+    [_imageViewFemale mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(_imageViewFemale.superview);
     }];
 }
 

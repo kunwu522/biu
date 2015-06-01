@@ -15,7 +15,6 @@
 #import "Masonry.h"
 
 #import "BLTextField.h"
-#import "BlurView.h"
 
 
 @interface BLWelcomeViewController ()
@@ -36,7 +35,6 @@
 
 @property (retain, nonatomic) UIView *background;
 @property (retain, nonatomic) UIImageView *imageView;
-@property (retain, nonatomic) BlurView *blurView;
 
 @property (nonatomic) BOOL isLaunchLayout;
 
@@ -120,7 +118,7 @@ static double ICON_INITIAL_SIZE = 147.5;
     if (!_isLaunchLayout) {
         User *user = [User new];
         user.email = @"wukun@biulove.com";
-        user.password = @"12345678";
+        user.password = @"wukun1234";
         [[BLHTTPClient sharedBLHTTPClient] login:user success:^(NSURLSessionDataTask *task, id responseObject) {
             AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
             [self presentViewController:delegate.menuViewController animated:YES completion:nil];

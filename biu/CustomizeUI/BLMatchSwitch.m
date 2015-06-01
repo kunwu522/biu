@@ -134,7 +134,6 @@
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchPoint = [touch locationInView:self];
     CGFloat delta = touchPoint.x - _previousTouchPoint.x;
-    NSLog(@"ABS delta: %f", fabs(delta));
     if (fabs(delta) > (_maxDelta * 0.5f)) {
         self.on ? [self showOff:YES] : [self showOn:YES];
         [self sendActionsForControlEvents:UIControlEventValueChanged];

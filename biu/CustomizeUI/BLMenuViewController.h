@@ -15,5 +15,6 @@
 @property (retain, nonatomic) NSArray *viewControllers;
 
 - (id)initWithRootViewControllr:(UIViewController *)rootController;
+- (id)addViewController:(UIViewController *)viewController;
 
 @end
