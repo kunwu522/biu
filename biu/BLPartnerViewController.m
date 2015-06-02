@@ -1,40 +1,38 @@
 //
-//  BLProfileViewController.m
+//  BLPartnerViewController.m
 //  biu
 //
-//  Created by Tony Wu on 5/25/15.
+//  Created by Tony Wu on 6/2/15.
 //  Copyright (c) 2015 BiuLove. All rights reserved.
 //
 
-#import "BLProfileViewController.h"
-#import "BLGenderTableViewCell.h"
-#import "BLBirthTableViewCell.h"
+#import "BLPartnerViewController.h"
 #import "BLZodiacTableViewCell.h"
 
 #import "Masonry.h"
 
-@interface BLProfileViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface BLPartnerViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (retain, nonatomic) UITableView *tableView;
 @property (retain, nonatomic) UIImageView *imageViewAvator;
 
 @end
 
-@implementation BLProfileViewController
-
-static const NSInteger SECTION_HEADER = 0;
-static const NSInteger SECTION_GENDER = 1;
-static const NSInteger SECTION_BIRTHDAY = 2;
-static const NSInteger SECTION_ZODIAC = 3;
-static const NSInteger SECTION_STYLE = 4;
-static const NSInteger SECTION_CONTINUE = 5;
-
-static NSString *BL_NORMAL_CELL_REUSEID = @"BLNormalCell";
-static NSString *BL_PROFILE_GENDER_CELL_REUSEID = @"BLGenderCell";
-static NSString *BL_PROFILE_BIRTH_CELL_REUSEID = @"BLBirthCell";
-static NSString *BL_PROFILE_ZODIAC_CELL_REUSEID = @"BLZodiacCell";
+@implementation BLPartnerViewController
 
 static const float AVATOR_WIDTH = 163.0f;
+
+typedef NS_ENUM(NSUInteger, BLPartnerSection) {
+    BLPartnerSectionHeader = 0,
+    BLPartnerSectionSexuality,
+    BLPartnerSectionAgeRange,
+    BLPartnerSectionZodiac,
+    BLPartnerSectionStyle,
+    BLPartnerSectionButtion
+};
+
+static NSString *BL_NORMAL_CELL_REUSEID = @"BLNormalCell";
+static NSString *BL_PROFILE_ZODIAC_CELL_REUSEID = @"BLZodiacCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -48,8 +46,6 @@ static const float AVATOR_WIDTH = 163.0f;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.allowsSelection = NO;
     [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:BL_NORMAL_CELL_REUSEID];
-    [_tableView registerClass:[BLGenderTableViewCell class] forCellReuseIdentifier:BL_PROFILE_GENDER_CELL_REUSEID];
-    [_tableView registerClass:[BLBirthTableViewCell class] forCellReuseIdentifier:BL_PROFILE_BIRTH_CELL_REUSEID];
     [_tableView registerClass:[BLZodiacTableViewCell class] forCellReuseIdentifier:BL_PROFILE_ZODIAC_CELL_REUSEID];
 }
 
@@ -58,19 +54,9 @@ static const float AVATOR_WIDTH = 163.0f;
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 #pragma mark - TableView Delegate and Data Source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -79,31 +65,13 @@ static const float AVATOR_WIDTH = 163.0f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
-        case SECTION_HEADER:
+        case BLPartnerSectionHeader:
         {
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BL_NORMAL_CELL_REUSEID forIndexPath:indexPath];
             cell.backgroundColor = [BLColorDefinition backgroundGrayColor];
             return cell;
         }
-        case SECTION_GENDER:
-        {
-            BLGenderTableViewCell *cell = (BLGenderTableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_PROFILE_GENDER_CELL_REUSEID forIndexPath:indexPath];
-            if (!cell) {
-                cell = [[BLGenderTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PROFILE_GENDER_CELL_REUSEID];
-            }
-            return cell;
-            break;
-        }
-        case SECTION_BIRTHDAY:
-        {
-            BLBirthTableViewCell *cell = (BLBirthTableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_PROFILE_BIRTH_CELL_REUSEID forIndexPath:indexPath];
-            if (!cell) {
-                cell = [[BLBirthTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PROFILE_BIRTH_CELL_REUSEID];
-            }
-            return cell;
-            break;
-        }
-        case SECTION_ZODIAC:
+        case BLPartnerSectionZodiac:
         {
             BLZodiacTableViewCell *cell = (BLZodiacTableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_PROFILE_ZODIAC_CELL_REUSEID forIndexPath:indexPath];
             if (!cell) {
@@ -120,16 +88,10 @@ static const float AVATOR_WIDTH = 163.0f;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
-        case SECTION_HEADER:
+        case BLPartnerSectionHeader:
             return 10.0f;
             break;
-        case SECTION_GENDER:
-            return 287.0f;
-            break;
-        case SECTION_BIRTHDAY:
-            return 343.9f;
-            break;
-        case SECTION_ZODIAC:
+        case BLPartnerSectionZodiac:
             return 640.0f;
         default:
             break;
@@ -138,14 +100,14 @@ static const float AVATOR_WIDTH = 163.0f;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == SECTION_HEADER) {
+    if (section == BLPartnerSectionHeader) {
         return 231.8f;
     }
     return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (section == SECTION_HEADER) {
+    if (section == BLPartnerSectionHeader) {
         UIView *sectionHeaderView = [[UIView alloc] init];
         sectionHeaderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         sectionHeaderView.backgroundColor = [BLColorDefinition backgroundGrayColor];
@@ -172,5 +134,15 @@ static const float AVATOR_WIDTH = 163.0f;
     }
     return nil;
 }
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
 
 @end

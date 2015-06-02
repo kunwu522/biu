@@ -50,7 +50,6 @@
 		EA7805341B0C7F1500696FEF /* back_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA7805331B0C7F1500696FEF /* back_icon.png */; };
 		EA9F49391B1C021F0037D188 /* BLBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9F49381B1C021F0037D188 /* BLBlurView.m */; };
 		EA9F493B1B1C13C30037D188 /* test_avator.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9F493A1B1C13C30037D188 /* test_avator.png */; };
-		EA9F493D1B1C1A220037D188 /* image1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = EA9F493C1B1C1A220037D188 /* image1.jpg */; };
 		EA9F493F1B1C6A7F0037D188 /* me_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9F493E1B1C6A7F0037D188 /* me_icon.png */; };
 		EA9F49411B1C713D0037D188 /* default_background.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9F49401B1C713D0037D188 /* default_background.png */; };
 		EA9F49431B1C87220037D188 /* partner_avator.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9F49421B1C87220037D188 /* partner_avator.png */; };
@@ -77,9 +76,15 @@
 		EA9F49711B1D5A900037D188 /* unselected_zodiac8.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9F49651B1D5A900037D188 /* unselected_zodiac8.png */; };
 		EA9F49721B1D5A900037D188 /* unselected_zodiac9.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9F49661B1D5A900037D188 /* unselected_zodiac9.png */; };
 		EA9F49731B1D5A900037D188 /* unselected_zodiac10.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9F49671B1D5A900037D188 /* unselected_zodiac10.png */; };
-		EA9F49741B1D5A900037D188 /* unselected_zodica11.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9F49681B1D5A900037D188 /* unselected_zodica11.png */; };
 		EA9F49771B1D5B0B0037D188 /* BLBirthTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9F49761B1D5B0B0037D188 /* BLBirthTableViewCell.m */; };
 		EA9F497A1B1D5BD90037D188 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9F49791B1D5BD90037D188 /* UIImage+ImageEffects.m */; };
+		EA9F497C1B1D8B370037D188 /* unselected_zodiac11.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9F497B1B1D8B370037D188 /* unselected_zodiac11.png */; };
+		EA9F497F1B1D8BA30037D188 /* BLStyleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9F497E1B1D8BA30037D188 /* BLStyleTableViewCell.m */; };
+		EA9F49821B1DB2F10037D188 /* BLPartnerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9F49811B1DB2F10037D188 /* BLPartnerViewController.m */; };
+		EA9F49851B1DB5AA0037D188 /* BLBaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9F49841B1DB5AA0037D188 /* BLBaseTableViewCell.m */; };
+		EA9F49881B1DC3C40037D188 /* BLPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9F49871B1DC3C40037D188 /* BLPasswordViewController.m */; };
+		EA9F498B1B1DC3DF0037D188 /* BLSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9F498A1B1DC3DF0037D188 /* BLSettingViewController.m */; };
+		EA9F49901B1DDB220037D188 /* BLMenuButton.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9F498F1B1DDB220037D188 /* BLMenuButton.m */; };
 		EAA7FD6F1B0DD64F00C2B5C6 /* BLHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA7FD6E1B0DD64F00C2B5C6 /* BLHTTPClient.m */; };
 		EAA7FD731B12CFF700C2B5C6 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA7FD721B12CFF700C2B5C6 /* User.m */; };
 		EAE8E20C1B09CBF800C9038D /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE8E20B1B09CBF800C9038D /* logo.png */; };
@@ -167,7 +172,6 @@
 		EA9F49371B1C021F0037D188 /* BLBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLBlurView.h; path = CustomizeUI/BLBlurView.h; sourceTree = "<group>"; };
 		EA9F49381B1C021F0037D188 /* BLBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLBlurView.m; path = CustomizeUI/BLBlurView.m; sourceTree = "<group>"; };
 		EA9F493A1B1C13C30037D188 /* test_avator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = test_avator.png; path = images/test_avator.png; sourceTree = "<group>"; };
-		EA9F493C1B1C1A220037D188 /* image1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image1.jpg; sourceTree = "<group>"; };
 		EA9F493E1B1C6A7F0037D188 /* me_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = me_icon.png; path = images/me_icon.png; sourceTree = "<group>"; };
 		EA9F49401B1C713D0037D188 /* default_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = default_background.png; path = images/default_background.png; sourceTree = "<group>"; };
 		EA9F49421B1C87220037D188 /* partner_avator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = partner_avator.png; path = images/partner_avator.png; sourceTree = "<group>"; };
@@ -194,11 +198,23 @@
 		EA9F49651B1D5A900037D188 /* unselected_zodiac8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unselected_zodiac8.png; path = images/unselected_zodiac8.png; sourceTree = "<group>"; };
 		EA9F49661B1D5A900037D188 /* unselected_zodiac9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unselected_zodiac9.png; path = images/unselected_zodiac9.png; sourceTree = "<group>"; };
 		EA9F49671B1D5A900037D188 /* unselected_zodiac10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unselected_zodiac10.png; path = images/unselected_zodiac10.png; sourceTree = "<group>"; };
-		EA9F49681B1D5A900037D188 /* unselected_zodica11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unselected_zodica11.png; path = images/unselected_zodica11.png; sourceTree = "<group>"; };
 		EA9F49751B1D5B0B0037D188 /* BLBirthTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLBirthTableViewCell.h; path = CustomizeUI/BLBirthTableViewCell.h; sourceTree = "<group>"; };
 		EA9F49761B1D5B0B0037D188 /* BLBirthTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLBirthTableViewCell.m; path = CustomizeUI/BLBirthTableViewCell.m; sourceTree = "<group>"; };
 		EA9F49781B1D5BD90037D188 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+ImageEffects.h"; path = "Category/UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		EA9F49791B1D5BD90037D188 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+ImageEffects.m"; path = "Category/UIImage+ImageEffects.m"; sourceTree = "<group>"; };
+		EA9F497B1B1D8B370037D188 /* unselected_zodiac11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unselected_zodiac11.png; path = images/unselected_zodiac11.png; sourceTree = "<group>"; };
+		EA9F497D1B1D8BA30037D188 /* BLStyleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLStyleTableViewCell.h; path = CustomizeUI/BLStyleTableViewCell.h; sourceTree = "<group>"; };
+		EA9F497E1B1D8BA30037D188 /* BLStyleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLStyleTableViewCell.m; path = CustomizeUI/BLStyleTableViewCell.m; sourceTree = "<group>"; };
+		EA9F49801B1DB2F10037D188 /* BLPartnerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPartnerViewController.h; sourceTree = "<group>"; };
+		EA9F49811B1DB2F10037D188 /* BLPartnerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPartnerViewController.m; sourceTree = "<group>"; };
+		EA9F49831B1DB5AA0037D188 /* BLBaseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLBaseTableViewCell.h; path = CustomizeUI/BLBaseTableViewCell.h; sourceTree = "<group>"; };
+		EA9F49841B1DB5AA0037D188 /* BLBaseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLBaseTableViewCell.m; path = CustomizeUI/BLBaseTableViewCell.m; sourceTree = "<group>"; };
+		EA9F49861B1DC3C40037D188 /* BLPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPasswordViewController.h; sourceTree = "<group>"; };
+		EA9F49871B1DC3C40037D188 /* BLPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPasswordViewController.m; sourceTree = "<group>"; };
+		EA9F49891B1DC3DF0037D188 /* BLSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLSettingViewController.h; sourceTree = "<group>"; };
+		EA9F498A1B1DC3DF0037D188 /* BLSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLSettingViewController.m; sourceTree = "<group>"; };
+		EA9F498E1B1DDB220037D188 /* BLMenuButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLMenuButton.h; path = CustomizeUI/BLMenuButton.h; sourceTree = "<group>"; };
+		EA9F498F1B1DDB220037D188 /* BLMenuButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLMenuButton.m; path = CustomizeUI/BLMenuButton.m; sourceTree = "<group>"; };
 		EAA7FD6B1B0DCDA000C2B5C6 /* Biu-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Biu-Prefix.pch"; sourceTree = "<group>"; };
 		EAA7FD6D1B0DD64F00C2B5C6 /* BLHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLHTTPClient.h; path = NetworkUtil/BLHTTPClient.h; sourceTree = "<group>"; };
 		EAA7FD6E1B0DD64F00C2B5C6 /* BLHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLHTTPClient.m; path = NetworkUtil/BLHTTPClient.m; sourceTree = "<group>"; };
@@ -252,16 +268,22 @@
 				EA1E504E1AFCB99F004F7F6A /* BLTextField.m */,
 				EA305ED71B16F32100DD904D /* BLPickerView.h */,
 				EA305ED81B16F32100DD904D /* BLPickerView.m */,
+				EA9F498E1B1DDB220037D188 /* BLMenuButton.h */,
+				EA9F498F1B1DDB220037D188 /* BLMenuButton.m */,
 				A3039E941B19E9B1006FB5E4 /* BLMatchSwitch.h */,
 				A3039E951B19E9B1006FB5E4 /* BLMatchSwitch.m */,
 				EA9F49371B1C021F0037D188 /* BLBlurView.h */,
 				EA9F49381B1C021F0037D188 /* BLBlurView.m */,
+				EA9F49831B1DB5AA0037D188 /* BLBaseTableViewCell.h */,
+				EA9F49841B1DB5AA0037D188 /* BLBaseTableViewCell.m */,
 				EA305EBC1B14773800DD904D /* BLGenderTableViewCell.h */,
 				EA305EBD1B14773800DD904D /* BLGenderTableViewCell.m */,
-				A3CCFD051B1CBB2D00C9BAE8 /* BLZodiacTableViewCell.h */,
-				A3CCFD061B1CBB2D00C9BAE8 /* BLZodiacTableViewCell.m */,
 				EA9F49751B1D5B0B0037D188 /* BLBirthTableViewCell.h */,
 				EA9F49761B1D5B0B0037D188 /* BLBirthTableViewCell.m */,
+				A3CCFD051B1CBB2D00C9BAE8 /* BLZodiacTableViewCell.h */,
+				A3CCFD061B1CBB2D00C9BAE8 /* BLZodiacTableViewCell.m */,
+				EA9F497D1B1D8BA30037D188 /* BLStyleTableViewCell.h */,
+				EA9F497E1B1D8BA30037D188 /* BLStyleTableViewCell.m */,
 			);
 			name = CustomizeUI;
 			sourceTree = "<group>";
@@ -300,16 +322,22 @@
 				EA6AAC321AF8739200ED3A55 /* AppDelegate.m */,
 				EA6AAC341AF8739200ED3A55 /* BLWelcomeViewController.h */,
 				EA6AAC351AF8739200ED3A55 /* BLWelcomeViewController.m */,
-				A3039E991B1AEB4F006FB5E4 /* BLMenuViewController.h */,
-				A3039E9A1B1AEB4F006FB5E4 /* BLMenuViewController.m */,
 				EAE8E20F1B09F34300C9038D /* BLLoginViewController.h */,
 				EAE8E2101B09F34300C9038D /* BLLoginViewController.m */,
 				A3BD9E491B0CC37D00815100 /* BLSignupViewController.h */,
 				A3BD9E4A1B0CC37D00815100 /* BLSignupViewController.m */,
-				EA305EB51B13351600DD904D /* BLProfileViewController.h */,
-				EA305EB61B13351600DD904D /* BLProfileViewController.m */,
+				A3039E991B1AEB4F006FB5E4 /* BLMenuViewController.h */,
+				A3039E9A1B1AEB4F006FB5E4 /* BLMenuViewController.m */,
 				EA305ECB1B1570B300DD904D /* BLMatchViewController.h */,
 				EA305ECC1B1570B300DD904D /* BLMatchViewController.m */,
+				EA305EB51B13351600DD904D /* BLProfileViewController.h */,
+				EA305EB61B13351600DD904D /* BLProfileViewController.m */,
+				EA9F49861B1DC3C40037D188 /* BLPasswordViewController.h */,
+				EA9F49871B1DC3C40037D188 /* BLPasswordViewController.m */,
+				EA9F49801B1DB2F10037D188 /* BLPartnerViewController.h */,
+				EA9F49811B1DB2F10037D188 /* BLPartnerViewController.m */,
+				EA9F49891B1DC3DF0037D188 /* BLSettingViewController.h */,
+				EA9F498A1B1DC3DF0037D188 /* BLSettingViewController.m */,
 				EA6AAC371AF8739200ED3A55 /* Main.storyboard */,
 				EA6AAC3A1AF8739200ED3A55 /* Images.xcassets */,
 				EA6AAC3C1AF8739200ED3A55 /* LaunchScreen.xib */,
@@ -363,7 +391,6 @@
 				EA9F49421B1C87220037D188 /* partner_avator.png */,
 				EA9F49401B1C713D0037D188 /* default_background.png */,
 				EA9F493E1B1C6A7F0037D188 /* me_icon.png */,
-				EA9F493C1B1C1A220037D188 /* image1.jpg */,
 				EA9F493A1B1C13C30037D188 /* test_avator.png */,
 				A3CCFD001B1B647300C9BAE8 /* avator_default.png */,
 				A3CCFCF41B1B602600C9BAE8 /* back_icon3.png */,
@@ -403,7 +430,7 @@
 				EA9F49651B1D5A900037D188 /* unselected_zodiac8.png */,
 				EA9F49661B1D5A900037D188 /* unselected_zodiac9.png */,
 				EA9F49671B1D5A900037D188 /* unselected_zodiac10.png */,
-				EA9F49681B1D5A900037D188 /* unselected_zodica11.png */,
+				EA9F497B1B1D8B370037D188 /* unselected_zodiac11.png */,
 				EA9F49441B1D5A690037D188 /* selected_zodiac0.png */,
 				EA9F49451B1D5A690037D188 /* selected_zodiac1.png */,
 				EA9F49461B1D5A690037D188 /* selected_zodiac2.png */,
@@ -562,14 +589,12 @@
 				EA305EC81B14841600DD904D /* division_icon.png in Resources */,
 				EA9F496B1B1D5A900037D188 /* unselected_zodiac2.png in Resources */,
 				EA9F493F1B1C6A7F0037D188 /* me_icon.png in Resources */,
-				EA9F49741B1D5A900037D188 /* unselected_zodica11.png in Resources */,
 				EA9F49431B1C87220037D188 /* partner_avator.png in Resources */,
 				EA1E50511B0094B3004F7F6A /* Images-2.xcassets in Resources */,
 				EA9F496C1B1D5A900037D188 /* unselected_zodiac3.png in Resources */,
 				EA305EBB1B14744100DD904D /* padding.png in Resources */,
 				EA305ECF1B1575E900DD904D /* back_icon2.png in Resources */,
 				EA305ED11B1576DF00DD904D /* menu_icon.png in Resources */,
-				EA9F493D1B1C1A220037D188 /* image1.jpg in Resources */,
 				EA305EC31B147F0C00DD904D /* female_selected_icon.png in Resources */,
 				EA9F496A1B1D5A900037D188 /* unselected_zodiac1.png in Resources */,
 				A3CCFCFB1B1B602600C9BAE8 /* forward_icon2.png in Resources */,
@@ -581,6 +606,7 @@
 				EA305EC41B147F0C00DD904D /* female_unselected_icon.png in Resources */,
 				EA9F49691B1D5A900037D188 /* unselected_zodiac0.png in Resources */,
 				EA9F495B1B1D5A690037D188 /* selected_zodiac11.png in Resources */,
+				EA9F497C1B1D8B370037D188 /* unselected_zodiac11.png in Resources */,
 				A3CCFCFA1B1B602600C9BAE8 /* back_icon3.png in Resources */,
 				EA9F49571B1D5A690037D188 /* selected_zodiac7.png in Resources */,
 				EA6AAC391AF8739200ED3A55 /* Main.storyboard in Resources */,
@@ -689,13 +715,18 @@
 			files = (
 				EA305ED91B16F32100DD904D /* BLPickerView.m in Sources */,
 				EA9F49391B1C021F0037D188 /* BLBlurView.m in Sources */,
+				EA9F49821B1DB2F10037D188 /* BLPartnerViewController.m in Sources */,
 				EA9F497A1B1D5BD90037D188 /* UIImage+ImageEffects.m in Sources */,
+				EA9F497F1B1D8BA30037D188 /* BLStyleTableViewCell.m in Sources */,
+				EA9F498B1B1DC3DF0037D188 /* BLSettingViewController.m in Sources */,
 				EAE8E2111B09F34300C9038D /* BLLoginViewController.m in Sources */,
 				EA1E504F1AFCB99F004F7F6A /* BLTextField.m in Sources */,
+				EA9F49881B1DC3C40037D188 /* BLPasswordViewController.m in Sources */,
 				A3BD9E4B1B0CC37D00815100 /* BLSignupViewController.m in Sources */,
 				A3CCFD071B1CBB2D00C9BAE8 /* BLZodiacTableViewCell.m in Sources */,
 				EA6AAC361AF8739200ED3A55 /* BLWelcomeViewController.m in Sources */,
 				A3039E9B1B1AEB4F006FB5E4 /* BLMenuViewController.m in Sources */,
+				EA9F49901B1DDB220037D188 /* BLMenuButton.m in Sources */,
 				EA305EBE1B14773800DD904D /* BLGenderTableViewCell.m in Sources */,
 				A3039E961B19E9B1006FB5E4 /* BLMatchSwitch.m in Sources */,
 				EAFBEE841AFB3038006013CD /* KeychainItemWrapper.m in Sources */,
@@ -705,6 +736,7 @@
 				EA305EB71B13351600DD904D /* BLProfileViewController.m in Sources */,
 				A3039E901B1605B6006FB5E4 /* BLFontDefinition.m in Sources */,
 				EA305ECD1B1570B300DD904D /* BLMatchViewController.m in Sources */,
+				EA9F49851B1DB5AA0037D188 /* BLBaseTableViewCell.m in Sources */,
 				EA6AAC331AF8739200ED3A55 /* AppDelegate.m in Sources */,
 				EA113E8B1B0C511200EA6925 /* BLColorDefinition.m in Sources */,
 				EA6AAC301AF8739200ED3A55 /* main.m in Sources */,

@@ -7,19 +7,33 @@
 //
 
 #import "BLMenuViewController.h"
+#import "BLProfileViewController.h"
+#import "BLPasswordViewController.h"
+#import "BLPartnerViewController.h"
+#import "BLSettingViewController.h"
+
 #import "BLBlurView.h"
 #import "Masonry.h"
 
 @interface BLMenuViewController ()
 
+typedef NS_ENUM(NSUInteger, BLSubViewController) {
+    BLSubViewControllerRoot = 0,
+    BLSubViewControllerProfile = 1,
+    BLSubViewControllerPassword = 2,
+    BLSubViewControllerPartner = 3,
+    BLSubViewControllerSetting = 4
+};
+
 @property (retain, nonatomic) UIView *background;
-@property (retain, nonatomic) UIView *contentView;
+@property (strong, nonatomic) UIView *contentView;
+@property (strong, nonatomic) UIView *animiatedView;
 @property (retain, nonatomic) UITapGestureRecognizer *tapRecognizer;
 
 @property (retain, nonatomic) UIButton *btnMenu;
 @property (retain, nonatomic) UIView *menuView;
 @property (retain, nonatomic) BLBlurView *blurView;
-@property (retain, nonatomic) UIButton *btnCancel;
+@property (retain, nonatomic) UIButton *btnBack;
 @property (retain, nonatomic) UIButton *btnForward;
 @property (retain, nonatomic) UIImageView *avatorImageView;
 @property (retain, nonatomic) UILabel *lbUsername;
@@ -32,31 +46,45 @@
 @property (retain, nonatomic) UIImageView *settingImageView;
 @property (retain, nonatomic) UIButton *btnSetting;
 
+@property (strong, nonatomic) NSDictionary *subViewControllers;
+@property (strong, nonatomic) NSDictionary *subViewControllersButton;
+@property (assign, nonatomic) BLSubViewController selectedController;
+@property (strong, nonatomic) UIViewController *selectedViewController;
+
 @end
 
 @implementation BLMenuViewController
 
-typedef NS_ENUM(NSUInteger, BLMenuButton) {
-    BLMenuButtonMe = 0,
-    BLMenuButtonPassword = 1,
-    BLMenuButtonPartner = 2,
-    BLMenuButtonSetting = 3
-};
-
-@synthesize viewControllers = _viewControllers;
-
 - (id)initWithRootViewControllr:(UIViewController *)rootController {
     self = [super init];
     if (self) {
-        self.rootController = rootController;
-        _viewControllers = [NSArray array];
-        _selectedViewController = nil;
+        self.selectedViewController = rootController;
+        
+        BLProfileViewController *profileViewController = [[BLProfileViewController alloc] initWithNibName:nil bundle:nil];
+        BLPasswordViewController *passwordViewController = [[BLPasswordViewController alloc] initWithNibName:nil bundle:nil];
+        BLPartnerViewController *partnerViewController = [[BLPartnerViewController alloc] initWithNibName:nil bundle:nil];
+        BLSettingViewController *settingViewController = [[BLSettingViewController alloc] initWithNibName:nil bundle:nil];
+        _subViewControllers = @{[NSNumber numberWithInteger:BLSubViewControllerRoot] : rootController,
+                             [NSNumber numberWithInteger:BLSubViewControllerProfile] : profileViewController,
+                            [NSNumber numberWithInteger:BLSubViewControllerPassword] : passwordViewController,
+                             [NSNumber numberWithInteger:BLSubViewControllerPartner] : partnerViewController,
+                             [NSNumber numberWithInteger:BLSubViewControllerSetting] : settingViewController};
+
         
         [self setupMenuButton];
         [self setupMenuController];
         
+        _subViewControllersButton = @{[NSNumber numberWithInteger:BLSubViewControllerRoot] : _btnMenu,
+                                   [NSNumber numberWithInteger:BLSubViewControllerProfile] : _btnMe,
+                                  [NSNumber numberWithInteger:BLSubViewControllerPassword] : _btnPassword,
+                                   [NSNumber numberWithInteger:BLSubViewControllerPartner] : _btnPartner,
+                                   [NSNumber numberWithInteger:BLSubViewControllerSetting] : _btnSetting};
+        
         _tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapRecognized:)];
         [_menuView addGestureRecognizer:_tapRecognizer];
+        
+        _contentView = rootController.view;
+        [self.view insertSubview:_contentView belowSubview:_btnMenu];
     }
     
     return self;
@@ -67,44 +95,27 @@ typedef NS_ENUM(NSUInteger, BLMenuButton) {
     // Do any additional setup after loading the view.
 }
 
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void)setRootController:(UIViewController *)rootController {
-    _rootController = rootController;
-    _contentView = _rootController.view;
-    _contentView.bounds = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    [self.view addSubview:_contentView];
-    [self.view insertSubview:_contentView belowSubview:_btnMenu];
-}
-
-- (void)setSelectedViewController:(UIViewController *)selectedViewController {
-    _selectedViewController = selectedViewController;
-    
-    [_contentView removeFromSuperview];
-    _contentView = self.selectedViewController.view;
-    _contentView.bounds = self.view.bounds;
-    [self.view insertSubview:_contentView aboveSubview:_btnMenu];
-}
-
-- (void)selectController:(UIButton *)button {
-    _selectedViewController = [_viewControllers objectAtIndex:button.tag];
-    
-    _selectedViewController.view.frame = self.view.bounds;
-    [self.view insertSubview:_selectedViewController.view belowSubview:_menuView];
-    [self.contentView removeFromSuperview];
-    self.contentView = self.selectedViewController.view;
-    
+- (void)selectController:(BLSubViewController)controller {
+    if (_selectedController != controller) {
+        _selectedViewController = [_subViewControllers objectForKey:[NSNumber numberWithInteger:controller]];
+        _selectedController = controller;
+        
+        _selectedViewController.view.frame = self.view.bounds;
+        [_contentView removeFromSuperview];
+        _contentView = _selectedViewController.view;
+        [self.view insertSubview:_contentView belowSubview:_btnMenu];
+    }
     [self closeMenu];
 }
 
 #pragma mark - Handle action
-- (void)showMenu:(id)sender {
-    [_blurView blurWithView:_rootController.view];
+- (void)showMenu:(UIButton *)sender {
+    [_blurView blurWithView:_selectedViewController.view];
     [UIView animateWithDuration:0.2f animations:^{
         _menuView.alpha = 1.0f;
     }];
@@ -114,8 +125,36 @@ typedef NS_ENUM(NSUInteger, BLMenuButton) {
     [self closeMenu];
 }
 
-- (void)me:(UIButton *)sender {
-    [self selectController:sender];
+- (void)pressButton:(UIButton *)sender {
+    [self selectController:sender.tag];
+}
+
+- (void)backToRoot:(id)sender {
+    NSLog(@"selected view bounds: %f--%f", _selectedViewController.view.bounds.size.width, _selectedViewController.view.bounds.size.height);
+    NSLog(@"_contentView bounds: %f--%f", _contentView.bounds.size.width, _contentView.bounds.size.height);
+    _animiatedView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [self.view insertSubview:_animiatedView belowSubview:_btnMenu];
+    
+    _selectedViewController = [_subViewControllers objectForKey:[NSNumber numberWithInteger:BLSubViewControllerRoot]];
+    _selectedController = BLSubViewControllerRoot;
+    
+    [_contentView removeFromSuperview];
+    CGPoint center = _contentView.center;
+    center.x -= self.view.bounds.size.width;
+    _contentView.center = center;
+    _contentView = _selectedViewController.view;
+    [self.view insertSubview:_contentView belowSubview:_btnMenu];
+    
+    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        CGPoint center1 = _animiatedView.center;
+        CGPoint center2 = _contentView.center;
+        center1.x += self.view.bounds.size.width;
+        center2.x += self.view.bounds.size.width;
+        _animiatedView.center = center1;
+        _contentView.center = center2;
+    } completion:^(BOOL finished) {
+        [_animiatedView removeFromSuperview];
+    }];
 }
 
 
@@ -143,9 +182,21 @@ typedef NS_ENUM(NSUInteger, BLMenuButton) {
     [_btnMenu addTarget:self action:@selector(showMenu:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:_btnMenu];
     
+    _btnBack = [[UIButton alloc] init];
+    [_btnBack setBackgroundImage:[UIImage imageNamed:@"back_icon2.png"] forState:UIControlStateNormal];
+    [_btnBack addTarget:self action:@selector(backToRoot:) forControlEvents:UIControlEventTouchDown];
+    [self.view addSubview:_btnBack];
+    
     [_btnMenu mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).with.offset(31.2);
         make.right.equalTo(self.view).with.offset(-20.8);
+        make.width.equalTo(@45.3);
+        make.height.equalTo(@45.3);
+    }];
+    
+    [_btnBack mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_btnBack.superview).with.offset(31.2f);
+        make.left.equalTo(_btnBack.superview).with.offset(20.8f);
         make.width.equalTo(@45.3);
         make.height.equalTo(@45.3);
     }];
@@ -178,11 +229,12 @@ typedef NS_ENUM(NSUInteger, BLMenuButton) {
     [_menuView addSubview:_photoImageView];
     
     _btnMe = [[UIButton alloc] init];
+    _btnMe.tag = BLSubViewControllerProfile;
     _btnMe.titleLabel.font = [BLFontDefinition normalFont:20.0f];
     [_btnMe setTitleColor:[BLColorDefinition menuFontColor] forState:UIControlStateNormal];
     [_btnMe setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     [_btnMe setTitle:@"Me" forState:UIControlStateNormal];
-    [_btnMe addTarget:self action:@selector(me:) forControlEvents:UIControlEventTouchDown];
+    [_btnMe addTarget:self action:@selector(pressButton:) forControlEvents:UIControlEventTouchDown];
     [_menuView addSubview:_btnMe];
     
     _passwordImageView = [[UIImageView alloc] init];
@@ -190,10 +242,12 @@ typedef NS_ENUM(NSUInteger, BLMenuButton) {
     [_menuView addSubview:_passwordImageView];
     
     _btnPassword = [[UIButton alloc] init];
+    _btnPassword.tag = BLSubViewControllerPassword;
     _btnPassword.titleLabel.font = [BLFontDefinition normalFont:20.0f];
     [_btnPassword setTitleColor:[BLColorDefinition menuFontColor] forState:UIControlStateNormal];
     [_btnPassword setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     [_btnPassword setTitle:@"Password" forState:UIControlStateNormal];
+    [_btnPassword addTarget:self action:@selector(pressButton:) forControlEvents:UIControlEventTouchDown];
     [_menuView addSubview:_btnPassword];
     
     _partnerImageView = [[UIImageView alloc] init];
@@ -201,10 +255,12 @@ typedef NS_ENUM(NSUInteger, BLMenuButton) {
     [_menuView addSubview:_partnerImageView];
     
     _btnPartner = [[UIButton alloc] init];
+    _btnPartner.tag = BLSubViewControllerPartner;
     _btnPartner.titleLabel.font = [BLFontDefinition normalFont:20.0f];
     [_btnPartner setTitleColor:[BLColorDefinition menuFontColor] forState:UIControlStateNormal];
     [_btnPartner setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     [_btnPartner setTitle:@"Partner" forState:UIControlStateNormal];
+    [_btnPartner addTarget:self action:@selector(pressButton:) forControlEvents:UIControlEventTouchDown];
     [_menuView addSubview:_btnPartner];
     
     _settingImageView = [[UIImageView alloc] init];
@@ -212,10 +268,12 @@ typedef NS_ENUM(NSUInteger, BLMenuButton) {
     [_menuView addSubview:_settingImageView];
     
     _btnSetting = [[UIButton alloc] init];
+    _btnSetting.tag = BLSubViewControllerSetting;
     _btnSetting.titleLabel.font = [BLFontDefinition normalFont:20.0f];
     [_btnSetting setTitleColor:[BLColorDefinition menuFontColor] forState:UIControlStateNormal];
     [_btnSetting setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     [_btnSetting setTitle:@"Settings" forState:UIControlStateNormal];
+    [_btnSetting addTarget:self action:@selector(pressButton:) forControlEvents:UIControlEventTouchDown];
     [_menuView addSubview:_btnSetting];
     
     [_avatorImageView mas_makeConstraints:^(MASConstraintMaker *make) {

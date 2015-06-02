@@ -10,11 +10,6 @@
 
 @interface BLMenuViewController : UIViewController
 
-@property (retain, nonatomic) UIViewController *rootController;
-@property (retain, nonatomic) UIViewController *selectedViewController;
-@property (retain, nonatomic) NSArray *viewControllers;
-
 - (id)initWithRootViewControllr:(UIViewController *)rootController;
-- (id)addViewController:(UIViewController *)viewController;
 
 @end

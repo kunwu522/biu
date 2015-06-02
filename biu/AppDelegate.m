@@ -10,7 +10,7 @@
 
 #import "KeychainItemWrapper.h"
 #import "BLMatchViewController.h"
-#import "BLProfileViewController.h"
+//#import "BLProfileViewController.h"
 
 @interface AppDelegate ()
 
@@ -31,13 +31,13 @@
     
     // Create master navigation controller
     BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
-    BLProfileViewController *profileViewController = [[BLProfileViewController alloc] initWithNibName:nil bundle:nil];
-    
-    NSArray *viewControllers = [NSArray arrayWithObjects:profileViewController, nil];
+//    BLProfileViewController *profileViewController = [[BLProfileViewController alloc] initWithNibName:nil bundle:nil];
+//    
+//    NSArray *viewControllers = [NSArray arrayWithObjects:profileViewController, nil];
     
     // Create BL Menu view controller
     self.menuViewController = [[BLMenuViewController alloc] initWithRootViewControllr:matchViewController];
-    self.menuViewController.viewControllers = viewControllers;
+//    self.menuViewController.viewControllers = viewControllers;
     
     return YES;
 }

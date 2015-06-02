@@ -20,11 +20,11 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [BLColorDefinition backgroundGrayColor];
+        self.title.text = NSLocalizedString(@"Choose your Date of birth", nil);
         
         _datePicker = [[UIDatePicker alloc] init];
         _datePicker.datePickerMode = UIDatePickerModeDate;
-        [self addSubview:_datePicker];
+        [self.content addSubview:_datePicker];
         
         [self layout];
     }
@@ -32,9 +32,11 @@
 }
 
 - (void)layout {
+    [super layout];
+    
     [_datePicker mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.mas_centerX);
-        make.centerY.equalTo(self.mas_centerY);
+        make.centerX.equalTo(_datePicker.superview.mas_centerX);
+        make.centerY.equalTo(_datePicker.superview.mas_centerY);
     }];
 }
 

@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BLBaseTableViewCell.h"
 
-@interface BLGenderTableViewCell : UITableViewCell
+@interface BLGenderTableViewCell : BLBaseTableViewCell
 
 typedef NS_ENUM(NSInteger, BLGender) {
     BLGenderFemale = 0,

@@ -46,7 +46,7 @@
     if (self) {
         _gender = BLGenderNone;
         
-        self.backgroundColor = [BLColorDefinition backgroundGrayColor];
+        self.title.text = NSLocalizedString(@"Choose your Gender", nil);
         
         _imageMaleSelected = [UIImage imageNamed:@"male_selected_icon.png"];
         _imageMaleUnselected = [UIImage imageNamed:@"male_unselected_icon.png"];
@@ -55,21 +55,21 @@
         
         _imageViewDivision = [[UIImageView alloc] init];
         _imageViewDivision.image = [UIImage imageNamed:@"division_icon.png"];
-        [self addSubview:_imageViewDivision];
+        [self.content addSubview:_imageViewDivision];
         
         _maleView = [[UIView alloc] init];
         _maleView.backgroundColor = [UIColor clearColor];
         _imageViewMale = [[UIImageView alloc] initWithFrame:_maleView.frame];
         _imageViewMale.image = _imageMaleUnselected;
         [_maleView addSubview:_imageViewMale];
-        [self addSubview:_maleView];
+        [self.content addSubview:_maleView];
         
         _femaleView = [[UIView alloc] init];
         _femaleView.backgroundColor = [UIColor clearColor];
         _imageViewFemale = [[UIImageView alloc] initWithFrame:_femaleView.frame];
         _imageViewFemale.image = _imageFemaleUnselected;
         [_femaleView addSubview:_imageViewFemale];
-        [self addSubview:_femaleView];
+        [self.content addSubview:_femaleView];
         
         _tapMaleGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapMaleHandler:)];
         _tapMaleGestureRecognizer.delegate = self;
@@ -116,22 +116,24 @@
 
 #pragma mark - private
 - (void)layout {
+    [super layout];
+    
     [_imageViewDivision mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.mas_centerX);
-        make.centerY.equalTo(self.mas_centerY);
+        make.centerX.equalTo(_imageViewDivision.superview.mas_centerX);
+        make.centerY.equalTo(_imageViewDivision.superview.mas_centerY);
         make.width.equalTo(@12.5f);
         make.height.equalTo(@72.5f);
     }];
     
     [_maleView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.mas_centerY);
+        make.centerY.equalTo(_maleView.superview.mas_centerY);
         make.right.equalTo(_imageViewDivision.mas_left).with.offset(-40.0f);
         make.width.equalTo(@94.4f);
         make.height.equalTo(@141.5f);
     }];
     
     [_femaleView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.mas_centerY);
+        make.centerY.equalTo(_femaleView.superview.mas_centerY);
         make.left.equalTo(_imageViewDivision.mas_right).with.offset(40.0f);
         make.width.equalTo(@94.4f);
         make.height.equalTo(@141.5f);

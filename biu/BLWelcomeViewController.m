@@ -118,7 +118,7 @@ static double ICON_INITIAL_SIZE = 147.5;
     if (!_isLaunchLayout) {
         User *user = [User new];
         user.email = @"wukun@biulove.com";
-        user.password = @"12345678";
+        user.password = @"wukun1234";
         [[BLHTTPClient sharedBLHTTPClient] login:user success:^(NSURLSessionDataTask *task, id responseObject) {
             AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
             [self presentViewController:delegate.menuViewController animated:YES completion:nil];

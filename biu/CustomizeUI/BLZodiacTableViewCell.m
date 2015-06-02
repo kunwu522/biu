@@ -7,9 +7,12 @@
 //
 
 #import "BLZodiacTableViewCell.h"
+#import "Masonry.h"
 
 @interface BLZodiacCollectionViewCell : UICollectionViewCell
 
+@property (strong, nonatomic) UIImage *selectedImage;
+@property (strong, nonatomic) UIImage *unselectedImage;
 @property (retain, nonatomic) UIImageView *imageView;
 @property (retain, nonatomic) UILabel *lbZoidac;
 
@@ -18,42 +21,33 @@
 @interface BLZodiacTableViewCell () <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (retain, nonatomic) UICollectionView *collectionView;
+@property (retain, nonatomic) NSDictionary *stringOfZodiac;
 
 @end
 
 @implementation BLZodiacTableViewCell
 
-typedef NS_ENUM(NSUInteger, BLZodiac) {
-    BLZodiacAries = 0,
-    BLZodiacTaurus = 1,
-    BLZodiacGemini = 2,
-    BLZodiacCancer = 3,
-    BLZodiacLeo = 4,
-    BLZodiacVirgo = 5,
-    BLZodiacLibra = 6,
-    BLZodiacScorpio = 7,
-    BLZodiacSagittarius = 8,
-    BLZodiacCapricorn = 9,
-    BLZodiacAquarius = 10,
-    BLZodiacPisces = 11
-};
+@synthesize zodiac;
 
 static const float INSET_LEFT_RIGHT = 42.7f;
-static const float MIN_INTERITEM_SPACING = 25.3f;
+static const float MIN_INTERITEM_SPACING = 5.0f;
 static const float MIN_LINE_SPACING = 21.5f;
 static const float CELL_HEIGHT = 109.3;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.title.text = NSLocalizedString(@"Choose your Zodiac", nil);
+        
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        layout.sectionInset = UIEdgeInsetsMake(0, INSET_LEFT_RIGHT, 0, INSET_LEFT_RIGHT);
+        layout.sectionInset = UIEdgeInsetsMake(40, INSET_LEFT_RIGHT, 20, INSET_LEFT_RIGHT);
         layout.minimumInteritemSpacing = MIN_INTERITEM_SPACING;
         layout.minimumLineSpacing = MIN_LINE_SPACING;
         CGFloat width = (self.frame.size.width - (INSET_LEFT_RIGHT * 2) - (MIN_INTERITEM_SPACING * 2)) / 3;
         layout.itemSize = CGSizeMake(width, CELL_HEIGHT);
         
-        _collectionView = [[UICollectionView alloc] init];
+        _collectionView = [[UICollectionView alloc] initWithFrame:self.content.bounds collectionViewLayout:layout];
+        _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.delegate = self;
         _collectionView.dataSource = self;
         _collectionView.scrollEnabled = NO;
@@ -61,7 +55,20 @@ static const float CELL_HEIGHT = 109.3;
         [_collectionView registerClass:[BLZodiacCollectionViewCell class]
             forCellWithReuseIdentifier:NSStringFromClass([BLZodiacCollectionViewCell class])];
         
-        [self addSubview:_collectionView];
+        _stringOfZodiac = @{[NSNumber numberWithInteger:BLZodiacAries] : NSLocalizedString(@"Aries", nil),
+                            [NSNumber numberWithInteger:BLZodiacTaurus] : NSLocalizedString(@"Taurus", nil),
+                            [NSNumber numberWithInteger:BLZodiacGemini] : NSLocalizedString(@"Gemini", nil),
+                            [NSNumber numberWithInteger:BLZodiacCancer] : NSLocalizedString(@"Cancer", nil),
+                            [NSNumber numberWithInteger:BLZodiacLeo] : NSLocalizedString(@"Leo", nil),
+                            [NSNumber numberWithInteger:BLZodiacVirgo] : NSLocalizedString(@"Virgo", nil),
+                            [NSNumber numberWithInteger:BLZodiacLibra] : NSLocalizedString(@"Libra", nil),
+                            [NSNumber numberWithInteger:BLZodiacScorpio] : NSLocalizedString(@"Scorpio", nil),
+                            [NSNumber numberWithInteger:BLZodiacSagittarius] : NSLocalizedString(@"Sagittarius", nil),
+                            [NSNumber numberWithInteger:BLZodiacCapricorn] : NSLocalizedString(@"Capricorn", nil),
+                            [NSNumber numberWithInteger:BLZodiacAquarius] : NSLocalizedString(@"Aquarius", nil),
+                            [NSNumber numberWithInteger:BLZodiacPisces] : NSLocalizedString(@"Pisces", nil)};
+        
+        [self.content addSubview:_collectionView];
     }
     return self;
 }
@@ -77,17 +84,15 @@ static const float CELL_HEIGHT = 109.3;
 
 - (BLZodiacCollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     BLZodiacCollectionViewCell *cell = (BLZodiacCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([BLZodiacCollectionViewCell class]) forIndexPath:indexPath];
+    cell.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"selected_zodiac%li", indexPath.item]];
+    cell.unselectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"unselected_zodiac%li", indexPath.item]];
+    cell.imageView.image = cell.unselectedImage;
+    cell.lbZoidac.text = [_stringOfZodiac objectForKey:[NSNumber numberWithInteger:indexPath.item]];
     return cell;
 }
 
-- (void)awakeFromNib {
-    // Initialization code
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    self.zodiac = indexPath.item;
 }
 
 @end
@@ -114,13 +119,26 @@ static const float CELL_HEIGHT = 109.3;
     self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.width)];
     [self addSubview:self.imageView];
     
-    self.lbZoidac = [[UILabel alloc] init];
+    UIFont *font = [BLFontDefinition normalFont:20.0f];
+    self.lbZoidac = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height - font.lineHeight, self.frame.size.width, font.lineHeight)];
+    self.lbZoidac.backgroundColor = [UIColor clearColor];
     self.lbZoidac.font = [BLFontDefinition normalFont:20.0f];
     self.lbZoidac.textColor = [BLColorDefinition fontGrayColor];
     self.lbZoidac.textAlignment = NSTextAlignmentCenter;
     self.lbZoidac.numberOfLines = 1;
-    self.lbZoidac.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
     [self addSubview:self.lbZoidac];
+}
+
+- (void)setSelected:(BOOL)selected {
+    [super setSelected:selected];
+    if (selected) {
+        self.imageView.image = self.selectedImage;
+        self.lbZoidac.textColor = [BLColorDefinition greenColor];
+    } else {
+        self.imageView.image = self.unselectedImage;
+        self.lbZoidac.textColor = [BLColorDefinition fontGrayColor];
+    }
+    
 }
 
 @end
