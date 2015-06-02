@@ -20,6 +20,8 @@
 		A3CCFCFE1B1B602600C9BAE8 /* photo_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFCF81B1B602600C9BAE8 /* photo_icon.png */; };
 		A3CCFCFF1B1B602700C9BAE8 /* setting_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFCF91B1B602600C9BAE8 /* setting_icon.png */; };
 		A3CCFD011B1B647300C9BAE8 /* avator_default.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFD001B1B647300C9BAE8 /* avator_default.png */; };
+		A3CCFD041B1CADF500C9BAE8 /* BLBirthTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A3CCFD031B1CADF500C9BAE8 /* BLBirthTableViewCell.m */; };
+		A3CCFD071B1CBB2D00C9BAE8 /* BLZodiacTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A3CCFD061B1CBB2D00C9BAE8 /* BLZodiacTableViewCell.m */; };
 		A3F7EC691B0AD6520084DA70 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A3F7EC6B1B0AD6520084DA70 /* Localizable.strings */; };
 		EA113E8B1B0C511200EA6925 /* BLColorDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = EA113E8A1B0C511200EA6925 /* BLColorDefinition.m */; };
 		EA1E504F1AFCB99F004F7F6A /* BLTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1E504E1AFCB99F004F7F6A /* BLTextField.m */; };
@@ -94,6 +96,10 @@
 		A3CCFCF81B1B602600C9BAE8 /* photo_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = photo_icon.png; path = images/photo_icon.png; sourceTree = "<group>"; };
 		A3CCFCF91B1B602600C9BAE8 /* setting_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = setting_icon.png; path = images/setting_icon.png; sourceTree = "<group>"; };
 		A3CCFD001B1B647300C9BAE8 /* avator_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = avator_default.png; path = images/avator_default.png; sourceTree = "<group>"; };
+		A3CCFD021B1CADF500C9BAE8 /* BLBirthTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLBirthTableViewCell.h; sourceTree = "<group>"; };
+		A3CCFD031B1CADF500C9BAE8 /* BLBirthTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLBirthTableViewCell.m; sourceTree = "<group>"; };
+		A3CCFD051B1CBB2D00C9BAE8 /* BLZodiacTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLZodiacTableViewCell.h; path = CustomizeUI/BLZodiacTableViewCell.h; sourceTree = "<group>"; };
+		A3CCFD061B1CBB2D00C9BAE8 /* BLZodiacTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLZodiacTableViewCell.m; path = CustomizeUI/BLZodiacTableViewCell.m; sourceTree = "<group>"; };
 		A3F7EC671B0AD5BF0084DA70 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		A3F7EC681B0AD5BF0084DA70 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		A3F7EC6A1B0AD6520084DA70 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -196,14 +202,18 @@
 			children = (
 				EA1E504D1AFCB99F004F7F6A /* BLTextField.h */,
 				EA1E504E1AFCB99F004F7F6A /* BLTextField.m */,
-				EA305EBC1B14773800DD904D /* BLGenderTableViewCell.h */,
-				EA305EBD1B14773800DD904D /* BLGenderTableViewCell.m */,
 				EA305ED71B16F32100DD904D /* BLPickerView.h */,
 				EA305ED81B16F32100DD904D /* BLPickerView.m */,
 				A3039E941B19E9B1006FB5E4 /* BLMatchSwitch.h */,
 				A3039E951B19E9B1006FB5E4 /* BLMatchSwitch.m */,
 				EA9F49371B1C021F0037D188 /* BLBlurView.h */,
 				EA9F49381B1C021F0037D188 /* BLBlurView.m */,
+				EA305EBC1B14773800DD904D /* BLGenderTableViewCell.h */,
+				EA305EBD1B14773800DD904D /* BLGenderTableViewCell.m */,
+				A3CCFD021B1CADF500C9BAE8 /* BLBirthTableViewCell.h */,
+				A3CCFD031B1CADF500C9BAE8 /* BLBirthTableViewCell.m */,
+				A3CCFD051B1CBB2D00C9BAE8 /* BLZodiacTableViewCell.h */,
+				A3CCFD061B1CBB2D00C9BAE8 /* BLZodiacTableViewCell.m */,
 			);
 			name = CustomizeUI;
 			sourceTree = "<group>";
@@ -578,8 +588,10 @@
 				EAE8E2111B09F34300C9038D /* BLLoginViewController.m in Sources */,
 				EA1E504F1AFCB99F004F7F6A /* BLTextField.m in Sources */,
 				A3BD9E4B1B0CC37D00815100 /* BLSignupViewController.m in Sources */,
+				A3CCFD071B1CBB2D00C9BAE8 /* BLZodiacTableViewCell.m in Sources */,
 				EA6AAC361AF8739200ED3A55 /* BLWelcomeViewController.m in Sources */,
 				A3039E9B1B1AEB4F006FB5E4 /* BLMenuViewController.m in Sources */,
+				A3CCFD041B1CADF500C9BAE8 /* BLBirthTableViewCell.m in Sources */,
 				EA305EBE1B14773800DD904D /* BLGenderTableViewCell.m in Sources */,
 				EA6AAC601AF88E3A00ED3A55 /* UIImage+ImageEffects.m in Sources */,
 				A3039E961B19E9B1006FB5E4 /* BLMatchSwitch.m in Sources */,

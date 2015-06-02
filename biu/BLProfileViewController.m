@@ -8,6 +8,7 @@
 
 #import "BLProfileViewController.h"
 #import "BLGenderTableViewCell.h"
+#import "BLBirthTableViewCell.h"
 
 #import "Masonry.h"
 
@@ -30,6 +31,7 @@ static const NSInteger SECTION_CONTINUE = 5;
 
 static NSString *BL_NORMAL_CELL_REUSEID = @"BLNormalCell";
 static NSString *BL_PROFILE_GENDER_CELL_REUSEID = @"BLGenderCell";
+static NSString *BL_PROFILE_BIRTH_CELL_REUSEID = @"BLBirthCell";
 
 static const float AVATOR_WIDTH = 163.0f;
 
@@ -44,6 +46,7 @@ static const float AVATOR_WIDTH = 163.0f;
     _tableView.dataSource = self;
     [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:BL_NORMAL_CELL_REUSEID];
     [_tableView registerClass:[BLGenderTableViewCell class] forCellReuseIdentifier:BL_PROFILE_GENDER_CELL_REUSEID];
+    [_tableView registerClass:[BLBirthTableViewCell class] forCellReuseIdentifier:BL_PROFILE_BIRTH_CELL_REUSEID];
     
     _imageViewAvator = [[UIImageView alloc] init];
     _imageViewAvator.layer.cornerRadius = AVATOR_WIDTH / 2;
@@ -77,7 +80,7 @@ static const float AVATOR_WIDTH = 163.0f;
 
 #pragma mark - TableView Delegate and Data Source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -103,6 +106,14 @@ static const float AVATOR_WIDTH = 163.0f;
             return cell;
             break;
         }
+        case SECTION_BIRTHDAY:
+        {
+            BLBirthTableViewCell *cell = (BLBirthTableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_PROFILE_BIRTH_CELL_REUSEID forIndexPath:indexPath];
+            if (!cell) {
+                cell = [[BLBirthTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PROFILE_BIRTH_CELL_REUSEID];
+            }
+            return cell;
+        }
         default:
             break;
     }
@@ -115,7 +126,8 @@ static const float AVATOR_WIDTH = 163.0f;
             return 231.8f;
             break;
         case SECTION_GENDER:
-            return 240.0f;
+        case SECTION_BIRTHDAY:
+            return 200.0f;
             break;
         default:
             break;
@@ -126,12 +138,12 @@ static const float AVATOR_WIDTH = 163.0f;
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     switch (section) {
         case SECTION_GENDER:
-            return 112.8f;
+            return 80.0f;
             break;
         case SECTION_BIRTHDAY:
         case SECTION_STYLE:
         case SECTION_ZODIAC:
-            return 70.0f;
+            return 50.0f;
             break;
         case SECTION_HEADER:
         case SECTION_CONTINUE:
@@ -161,8 +173,7 @@ static const float AVATOR_WIDTH = 163.0f;
     if (section == SECTION_HEADER || section == SECTION_CONTINUE) {
         return nil;
     }
-//    CGFloat height = section == SECTION_GENDER ? 112.8f : 70.0f;
-//    UIView *sectionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, height)];
+
     UIView *sectionHeaderView = [[UIView alloc] init];
     sectionHeaderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     sectionHeaderView.backgroundColor = [BLColorDefinition backgroundGrayColor];
