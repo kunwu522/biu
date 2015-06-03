@@ -37,6 +37,7 @@
         
         self.content = [[UIView alloc] init];
         self.content.backgroundColor = [UIColor clearColor];
+        self.content.clipsToBounds = YES;
         [self addSubview:self.content];
         
         [self layout];

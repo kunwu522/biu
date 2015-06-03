@@ -7,6 +7,8 @@
 //
 
 #import "BLPartnerViewController.h"
+#import "BLSexualityTableViewCell.h"
+#import "BLAgeRangeTableViewCell.h"
 #import "BLZodiacTableViewCell.h"
 
 #import "Masonry.h"
@@ -32,7 +34,9 @@ typedef NS_ENUM(NSUInteger, BLPartnerSection) {
 };
 
 static NSString *BL_NORMAL_CELL_REUSEID = @"BLNormalCell";
-static NSString *BL_PROFILE_ZODIAC_CELL_REUSEID = @"BLZodiacCell";
+static NSString *BL_PARTNER_SEXUALITY_CELL_REUSEID = @"BLSexualityCell";
+static NSString *BL_PARTNER_AGERANGE_CELL_REUSEID = @"BLAgeRangeCell";
+static NSString *BL_PARTNER_ZODIAC_CELL_REUSEID = @"BLZodiacCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -46,7 +50,9 @@ static NSString *BL_PROFILE_ZODIAC_CELL_REUSEID = @"BLZodiacCell";
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.allowsSelection = NO;
     [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:BL_NORMAL_CELL_REUSEID];
-    [_tableView registerClass:[BLZodiacTableViewCell class] forCellReuseIdentifier:BL_PROFILE_ZODIAC_CELL_REUSEID];
+    [_tableView registerClass:[BLSexualityTableViewCell class] forCellReuseIdentifier:BL_PARTNER_SEXUALITY_CELL_REUSEID];
+    [_tableView registerClass:[BLAgeRangeTableViewCell class] forCellReuseIdentifier:BL_PARTNER_AGERANGE_CELL_REUSEID];
+    [_tableView registerClass:[BLZodiacTableViewCell class] forCellReuseIdentifier:BL_PARTNER_ZODIAC_CELL_REUSEID];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,7 +62,7 @@ static NSString *BL_PROFILE_ZODIAC_CELL_REUSEID = @"BLZodiacCell";
 
 #pragma mark - TableView Delegate and Data Source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -70,12 +76,31 @@ static NSString *BL_PROFILE_ZODIAC_CELL_REUSEID = @"BLZodiacCell";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BL_NORMAL_CELL_REUSEID forIndexPath:indexPath];
             cell.backgroundColor = [BLColorDefinition backgroundGrayColor];
             return cell;
+            break;
+        }
+        case BLPartnerSectionSexuality:
+        {
+            BLSexualityTableViewCell *cell = (BLSexualityTableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_PARTNER_SEXUALITY_CELL_REUSEID
+                                                                                                         forIndexPath:indexPath];
+            if (!cell) {
+                cell = [[BLSexualityTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PARTNER_SEXUALITY_CELL_REUSEID];
+            }
+            return cell;
+        }
+        case BLPartnerSectionAgeRange:
+        {
+            BLAgeRangeTableViewCell *cell = (BLAgeRangeTableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_PARTNER_AGERANGE_CELL_REUSEID
+                                                                                                       forIndexPath:indexPath];
+            if (!cell) {
+                cell = [[BLAgeRangeTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PARTNER_AGERANGE_CELL_REUSEID];
+            }
+            return cell;
         }
         case BLPartnerSectionZodiac:
         {
-            BLZodiacTableViewCell *cell = (BLZodiacTableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_PROFILE_ZODIAC_CELL_REUSEID forIndexPath:indexPath];
+            BLZodiacTableViewCell *cell = (BLZodiacTableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_PARTNER_ZODIAC_CELL_REUSEID forIndexPath:indexPath];
             if (!cell) {
-                cell = [[BLZodiacTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PROFILE_ZODIAC_CELL_REUSEID];
+                cell = [[BLZodiacTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PARTNER_ZODIAC_CELL_REUSEID];
             }
             return cell;
             break;
@@ -91,8 +116,15 @@ static NSString *BL_PROFILE_ZODIAC_CELL_REUSEID = @"BLZodiacCell";
         case BLPartnerSectionHeader:
             return 10.0f;
             break;
+        case BLPartnerSectionSexuality:
+            return 300.0f;
+            break;
+        case BLPartnerSectionAgeRange:
+            return 350.0f;
+            break;
         case BLPartnerSectionZodiac:
             return 640.0f;
+            break;
         default:
             break;
     }
@@ -120,7 +152,7 @@ static NSString *BL_PROFILE_ZODIAC_CELL_REUSEID = @"BLZodiacCell";
         _imageViewAvator = [[UIImageView alloc] init];
         _imageViewAvator.layer.cornerRadius = AVATOR_WIDTH / 2;
         _imageViewAvator.layer.borderColor = [UIColor whiteColor].CGColor;
-        _imageViewAvator.layer.borderWidth = 2.0f;
+        _imageViewAvator.layer.borderWidth = 4.0f;
         _imageViewAvator.image = [UIImage imageNamed:@"partner_avator.png"];
         [sectionHeaderView addSubview:_imageViewAvator];
         

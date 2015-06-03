@@ -27,7 +27,6 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
 
 @property (retain, nonatomic) UIView *background;
 @property (strong, nonatomic) UIView *contentView;
-@property (strong, nonatomic) UIView *animiatedView;
 @property (retain, nonatomic) UITapGestureRecognizer *tapRecognizer;
 
 @property (retain, nonatomic) UIButton *btnMenu;
@@ -130,30 +129,33 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
 }
 
 - (void)backToRoot:(id)sender {
-    NSLog(@"selected view bounds: %f--%f", _selectedViewController.view.bounds.size.width, _selectedViewController.view.bounds.size.height);
-    NSLog(@"_contentView bounds: %f--%f", _contentView.bounds.size.width, _contentView.bounds.size.height);
-    _animiatedView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    [self.view insertSubview:_animiatedView belowSubview:_btnMenu];
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)), NO, 1);
+    [_contentView drawViewHierarchyInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) afterScreenUpdates:NO];
+    
+    UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
+    UIImageView *tmpView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    tmpView.image = snapshot;
+    [self.view addSubview:tmpView];
     
     _selectedViewController = [_subViewControllers objectForKey:[NSNumber numberWithInteger:BLSubViewControllerRoot]];
     _selectedController = BLSubViewControllerRoot;
     
     [_contentView removeFromSuperview];
+    _contentView = _selectedViewController.view;
     CGPoint center = _contentView.center;
     center.x -= self.view.bounds.size.width;
     _contentView.center = center;
-    _contentView = _selectedViewController.view;
     [self.view insertSubview:_contentView belowSubview:_btnMenu];
     
     [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        CGPoint center1 = _animiatedView.center;
+        CGPoint center1 = tmpView.center;
         CGPoint center2 = _contentView.center;
         center1.x += self.view.bounds.size.width;
         center2.x += self.view.bounds.size.width;
-        _animiatedView.center = center1;
+        tmpView.center = center1;
         _contentView.center = center2;
     } completion:^(BOOL finished) {
-        [_animiatedView removeFromSuperview];
+        [tmpView removeFromSuperview];
     }];
 }
 
