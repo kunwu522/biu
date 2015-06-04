@@ -10,6 +10,13 @@
 
 @interface BLProfileViewController : UIViewController
 
+typedef NS_ENUM(NSUInteger, BLProfileViewType) {
+    BLProfileViewTypeCreate = 0,
+    BLProfileViewTypeUpdate = 1,
+};
+
+@property (assign, nonatomic) BLProfileViewType type; //default is BLProfileViewTypeCreate
+
 @end
 
 

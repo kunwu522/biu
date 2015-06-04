@@ -23,12 +23,14 @@
 
 @implementation BLProfileViewController
 
+@synthesize type;
+
 static const NSInteger SECTION_HEADER = 0;
 static const NSInteger SECTION_GENDER = 1;
 static const NSInteger SECTION_BIRTHDAY = 2;
 static const NSInteger SECTION_ZODIAC = 3;
 static const NSInteger SECTION_STYLE = 4;
-static const NSInteger SECTION_CONTINUE = 5;
+static const NSInteger SECTION_BUTTON = 5;
 
 static NSString *BL_NORMAL_CELL_REUSEID = @"BLNormalCell";
 static NSString *BL_PROFILE_GENDER_CELL_REUSEID = @"BLGenderCell";
@@ -73,7 +75,7 @@ static const float AVATOR_WIDTH = 163.0f;
 
 #pragma mark - TableView Delegate and Data Source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    return 6;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -84,7 +86,7 @@ static const float AVATOR_WIDTH = 163.0f;
     switch (indexPath.section) {
         case SECTION_HEADER:
         {
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BL_NORMAL_CELL_REUSEID forIndexPath:indexPath];
+            UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_NORMAL_CELL_REUSEID forIndexPath:indexPath];
             cell.backgroundColor = [BLColorDefinition backgroundGrayColor];
             return cell;
         }
@@ -124,6 +126,35 @@ static const float AVATOR_WIDTH = 163.0f;
             return cell;
             break;
         }
+        case SECTION_BUTTON:
+        {
+            UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_NORMAL_CELL_REUSEID forIndexPath:indexPath];
+            UIButton *button = [[UIButton alloc] init];
+            button.titleLabel.font = [BLFontDefinition boldFont:20.0f];
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [button setTitleColor:[BLColorDefinition fontGrayColor] forState:UIControlStateHighlighted];
+            [button setBackgroundColor:[BLColorDefinition fontGreenColor]];
+            button.layer.cornerRadius = 5.0f;
+            button.clipsToBounds = YES;
+            if (self.type == BLProfileViewTypeCreate) {
+                [button setTitle:@"Continue" forState:UIControlStateNormal];
+                [button addTarget:self action:@selector(next:) forControlEvents:UIControlEventTouchDown];
+            } else {
+                [button setTitle:@"Save" forState:UIControlStateNormal];
+                [button addTarget:self action:@selector(save:) forControlEvents:UIControlEventTouchDown];
+            }
+            [cell addSubview:button];
+            
+            [button mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(button.superview);
+                make.left.equalTo(button.superview).with.offset(20.0f);
+                make.bottom.equalTo(button.superview).with.offset(-20.0f);
+                make.right.equalTo(button.superview).with.offset(-20.0f);
+            }];
+            
+            return cell;
+            break;
+        }
         default:
             break;
     }
@@ -143,6 +174,13 @@ static const float AVATOR_WIDTH = 163.0f;
             break;
         case SECTION_ZODIAC:
             return 640.0f;
+            break;
+        case SECTION_STYLE:
+            return 500.0f;
+            break;
+        case SECTION_BUTTON:
+            return 90.0f;
+            break;
         default:
             break;
     }
@@ -170,7 +208,7 @@ static const float AVATOR_WIDTH = 163.0f;
         _imageViewAvator = [[UIImageView alloc] init];
         _imageViewAvator.layer.cornerRadius = AVATOR_WIDTH / 2;
         _imageViewAvator.layer.borderColor = [UIColor whiteColor].CGColor;
-        _imageViewAvator.layer.borderWidth = 2.0f;
+        _imageViewAvator.layer.borderWidth = 4.0f;
         _imageViewAvator.image = [UIImage imageNamed:@"partner_avator.png"];
         [sectionHeaderView addSubview:_imageViewAvator];
         
@@ -183,6 +221,15 @@ static const float AVATOR_WIDTH = 163.0f;
         return sectionHeaderView;
     }
     return nil;
+}
+
+#pragma mark - handle action
+- (void)next:(id)sender {
+    
+}
+
+- (void)save:(id)sender {
+    
 }
 
 @end

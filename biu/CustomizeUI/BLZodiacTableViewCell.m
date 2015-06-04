@@ -133,12 +133,11 @@ static const float CELL_HEIGHT = 109.3;
     [super setSelected:selected];
     if (selected) {
         self.imageView.image = self.selectedImage;
-        self.lbZoidac.textColor = [BLColorDefinition greenColor];
+        self.lbZoidac.textColor = [BLColorDefinition fontGreenColor];
     } else {
         self.imageView.image = self.unselectedImage;
         self.lbZoidac.textColor = [BLColorDefinition fontGrayColor];
     }
-    
 }
 
 @end

@@ -44,8 +44,6 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        _gender = BLGenderNone;
-        
         self.title.text = NSLocalizedString(@"Choose your Gender", nil);
         
         _imageMaleSelected = [UIImage imageNamed:@"male_selected_icon.png"];
@@ -80,6 +78,9 @@
         [_femaleView addGestureRecognizer:_tapFemaleGestureRecognizer];
         
         [self layout];
+        
+        // default is male
+        self.gender = BLGenderMale;
     }
     return self;
 }

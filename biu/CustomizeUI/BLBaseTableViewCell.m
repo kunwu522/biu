@@ -31,9 +31,11 @@
         self.title.backgroundColor = [UIColor clearColor];
         [self addSubview:self.title];
         
-        _imageViewPadding = [[UIImageView alloc] init];
-        _imageViewPadding.image = [UIImage imageNamed:@"padding.png"];
-        [self addSubview:_imageViewPadding];
+        if ([self needShowPaddingImage]) {
+            _imageViewPadding = [[UIImageView alloc] init];
+            _imageViewPadding.image = [UIImage imageNamed:@"padding.png"];
+            [self addSubview:_imageViewPadding];
+        }
         
         self.content = [[UIView alloc] init];
         self.content.backgroundColor = [UIColor clearColor];
@@ -56,15 +58,25 @@
         make.top.equalTo(self.title.mas_bottom);
         make.left.equalTo(self.content.superview);
         make.right.equalTo(self.content.superview);
-        make.bottom.equalTo(_imageViewPadding.mas_top);
+        if (_imageViewPadding) {
+            make.bottom.equalTo(_imageViewPadding.mas_top);
+        } else {
+            make.bottom.equalTo(self.content.superview);
+        }
     }];
     
-    [_imageViewPadding mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(_imageViewPadding.superview.mas_centerX);
-        make.bottom.equalTo(_imageViewPadding.superview);
-        make.width.equalTo(@269.3f);
-        make.height.equalTo(@16.0f);
-    }];
+    if ([self needShowPaddingImage]) {
+        [_imageViewPadding mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(_imageViewPadding.superview.mas_centerX);
+            make.bottom.equalTo(_imageViewPadding.superview);
+            make.width.equalTo(@269.3f);
+            make.height.equalTo(@16.0f);
+        }];
+    }
+}
+
+- (BOOL)needShowPaddingImage {
+    return YES;
 }
 
 - (void)awakeFromNib {

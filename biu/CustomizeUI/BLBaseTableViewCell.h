@@ -14,5 +14,6 @@
 @property (strong, nonatomic) UIView *content;
 
 - (void)layout;
+- (BOOL)needShowPaddingImage;
 
 @end
