@@ -11,21 +11,6 @@
 
 @interface BLZodiacTableViewCell : BLBaseTableViewCell
 
-typedef NS_ENUM(NSUInteger, BLZodiac) {
-    BLZodiacAries = 0,
-    BLZodiacTaurus = 1,
-    BLZodiacGemini = 2,
-    BLZodiacCancer = 3,
-    BLZodiacLeo = 4,
-    BLZodiacVirgo = 5,
-    BLZodiacLibra = 6,
-    BLZodiacScorpio = 7,
-    BLZodiacSagittarius = 8,
-    BLZodiacCapricorn = 9,
-    BLZodiacAquarius = 10,
-    BLZodiacPisces = 11
-};
-
 @property (assign, nonatomic) BLZodiac zodiac;
 
 @end

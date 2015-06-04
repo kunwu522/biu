@@ -11,12 +11,6 @@
 
 @interface BLGenderTableViewCell : BLBaseTableViewCell
 
-typedef NS_ENUM(NSInteger, BLGender) {
-    BLGenderFemale = 0,
-    BLGenderMale = 1,
-    BLGenderNone = 2
-};
-
 - (void)setGender:(BLGender)gender;
 - (BLGender)getGender;
 

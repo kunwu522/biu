@@ -12,7 +12,7 @@
 
 #import "Masonry.h"
 
-@interface BLMatchViewController () <BLPickerViewDataSource, BLPickerViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface BLMatchViewController () <BLPickerViewDataSource, BLPickerViewDelegate>
 
 @property (retain, nonatomic) UIView *background;
 @property (retain, nonatomic) UIImageView *test;

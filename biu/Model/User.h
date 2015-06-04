@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Profile.h"
 
 @interface User : NSObject
 
@@ -14,6 +15,7 @@
 @property (retain, nonatomic) NSString *username;
 @property (retain, nonatomic) NSString *email;
 @property (retain, nonatomic) NSString *password;
+@property (strong, nonatomic) Profile *profile;
 
 /*
  * return invalid reason otherwise return nil
