@@ -43,7 +43,7 @@
     [self.view addSubview:_btnBack];
     
     _lbTitle = [[UILabel alloc] init];
-    _lbTitle.font = [UIFont fontWithName:@"ArialMT" size:20.0f];
+    _lbTitle.font = [BLFontDefinition normalFont:20.0f];
     _lbTitle.textAlignment = NSTextAlignmentCenter;
     _lbTitle.textColor = [BLColorDefinition fontGrayColor];
     _lbTitle.text = NSLocalizedString(@"Set the distance", nil);

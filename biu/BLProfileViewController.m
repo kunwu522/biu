@@ -10,6 +10,7 @@
 #import "BLGenderTableViewCell.h"
 #import "BLBirthTableViewCell.h"
 #import "BLZodiacTableViewCell.h"
+#import "BLStyleTableViewCell.h"
 
 #import "Masonry.h"
 
@@ -33,6 +34,7 @@ static NSString *BL_NORMAL_CELL_REUSEID = @"BLNormalCell";
 static NSString *BL_PROFILE_GENDER_CELL_REUSEID = @"BLGenderCell";
 static NSString *BL_PROFILE_BIRTH_CELL_REUSEID = @"BLBirthCell";
 static NSString *BL_PROFILE_ZODIAC_CELL_REUSEID = @"BLZodiacCell";
+static NSString *BL_PROFIEL_STYLE_CELL_REUSEID = @"BLStyleCell";
 
 static const float AVATOR_WIDTH = 163.0f;
 
@@ -51,6 +53,7 @@ static const float AVATOR_WIDTH = 163.0f;
     [_tableView registerClass:[BLGenderTableViewCell class] forCellReuseIdentifier:BL_PROFILE_GENDER_CELL_REUSEID];
     [_tableView registerClass:[BLBirthTableViewCell class] forCellReuseIdentifier:BL_PROFILE_BIRTH_CELL_REUSEID];
     [_tableView registerClass:[BLZodiacTableViewCell class] forCellReuseIdentifier:BL_PROFILE_ZODIAC_CELL_REUSEID];
+    [_tableView registerClass:[BLStyleTableViewCell class] forCellReuseIdentifier:BL_PROFIEL_STYLE_CELL_REUSEID];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -108,6 +111,15 @@ static const float AVATOR_WIDTH = 163.0f;
             BLZodiacTableViewCell *cell = (BLZodiacTableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_PROFILE_ZODIAC_CELL_REUSEID forIndexPath:indexPath];
             if (!cell) {
                 cell = [[BLZodiacTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PROFILE_ZODIAC_CELL_REUSEID];
+            }
+            return cell;
+            break;
+        }
+        case SECTION_STYLE:
+        {
+            BLStyleTableViewCell *cell = (BLStyleTableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_PROFIEL_STYLE_CELL_REUSEID forIndexPath:indexPath];
+            if (!cell) {
+                cell = [[BLStyleTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PROFIEL_STYLE_CELL_REUSEID];
             }
             return cell;
             break;

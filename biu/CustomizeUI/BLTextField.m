@@ -13,7 +13,7 @@
 
 - (void)drawPlaceholderInRect:(CGRect)rect {
     if (self.placeholder) {
-        UIFont *placeholderTextFont = [UIFont fontWithName:@"ArialMT" size:15];
+        UIFont *placeholderTextFont = [BLFontDefinition normalFont:15];
         UIColor *placeholderTextColor = [BLColorDefinition grayColor];
         
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];

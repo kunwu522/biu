@@ -9,6 +9,7 @@
 #import "BLLoginViewController.h"
 #import "BLWelcomeViewController.h"
 #import "AppDelegate.h"
+#import "KeychainItemWrapper.h"
 #import "BLTextField.h"
 #import "BLColorDefinition.h"
 
@@ -16,19 +17,17 @@
 
 @interface BLLoginViewController () <UIGestureRecognizerDelegate>
 
-@property (retain, nonatomic) UIImageView *background;
+@property (strong, nonatomic) KeychainItemWrapper *keyChainItem;
 
+@property (retain, nonatomic) UIImageView *background;
 @property (retain, nonatomic) UIButton *btnBack;
 @property (retain, nonatomic) UIButton *btnForward;
-
 @property (retain, nonatomic) UIImageView *imageViewLogo;
-
 @property (retain, nonatomic) UILabel *lbLogin;
 @property (retain, nonatomic) BLTextField *tfEmail;
 @property (retain, nonatomic) BLTextField *tfPassword;
 @property (retain, nonatomic) UIButton *btnForgotPw;
 @property (retain, nonatomic) UILabel *lbLoginWith;
-
 @property (retain, nonatomic) UIButton *btnLogin;
 @property (retain, nonatomic) UIButton *btnLoginWithTwitter;
 @property (retain, nonatomic) UIButton *btnLoginWithFacebook;
@@ -37,6 +36,7 @@
 
 @property (retain, nonatomic) UISwipeGestureRecognizer *swipeGestureRecognizer;
 @property (retain, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
+
 
 @end
 
@@ -51,11 +51,6 @@ static const NSInteger TAG_PASSWORD = 1;
     _background = [[UIImageView alloc] initWithFrame:self.view.frame];
     _background.image = [UIImage imageNamed:@"wel_background.png"];
     [self.view addSubview:_background];
-    
-//    _btnForward = [[UIButton alloc] init];
-//    [_btnForward setBackgroundImage:[UIImage imageNamed:@"forward_icon.png"] forState:UIControlStateNormal];
-//    [_btnForward addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchDown];
-//    [self.view addSubview:_btnForward];
     
     _btnBack = [[UIButton alloc] init];
     [_btnBack setBackgroundImage:[UIImage imageNamed:@"back_icon.png"] forState:UIControlStateNormal];
@@ -94,7 +89,7 @@ static const NSInteger TAG_PASSWORD = 1;
     [self.view addSubview:_tfPassword];
     
     _btnForgotPw = [[UIButton alloc] init];
-    _btnForgotPw.titleLabel.font = [UIFont fontWithName:@"ArialMT" size:12];
+    _btnForgotPw.titleLabel.font = [BLFontDefinition normalFont:12.0f];
     [_btnForgotPw setTitle:NSLocalizedString(@"Forgot Password?", nil) forState:UIControlStateNormal];
     [_btnForgotPw setTitleColor:[BLColorDefinition grayColor] forState:UIControlStateNormal];
     [_btnForgotPw addTarget:self action:@selector(forgotPassword:) forControlEvents:UIControlEventTouchDown];
@@ -102,7 +97,7 @@ static const NSInteger TAG_PASSWORD = 1;
     
     _btnLogin = [[UIButton alloc] init];
     [_btnLogin addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchDown];
-    _btnLogin.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:16];
+    _btnLogin.titleLabel.font = [BLFontDefinition boldFont:16];
     [_btnLogin setTitle:NSLocalizedString(@"Login", nil) forState:UIControlStateNormal];
     [_btnLogin setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     _btnLogin.backgroundColor = [UIColor colorWithRed:93.0 / 255.0 green:112.0 / 255.0 blue:129.0 / 255.0 alpha:1];
@@ -110,7 +105,7 @@ static const NSInteger TAG_PASSWORD = 1;
     [self.view addSubview:_btnLogin];
     
     _lbLoginWith = [[UILabel alloc] init];
-    _lbLoginWith.font = [UIFont fontWithName:@"ArialMT" size:12];
+    _lbLoginWith.font = [BLFontDefinition normalFont:12.0f];
     _lbLoginWith.text = NSLocalizedString(@"OR", nil);
     _lbLoginWith.textColor = [BLColorDefinition grayColor];
     _lbLoginWith.textAlignment = NSTextAlignmentCenter;
@@ -118,7 +113,7 @@ static const NSInteger TAG_PASSWORD = 1;
     
     _btnLoginWithTwitter = [[UIButton alloc] init];
     [_btnLoginWithTwitter addTarget:self action:@selector(loginWithTwitter:) forControlEvents:UIControlEventTouchDown];
-    _btnLoginWithTwitter.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:16];
+    _btnLoginWithTwitter.titleLabel.font = [BLFontDefinition boldFont:16.0f];
     _btnLoginWithTwitter.titleLabel.textColor = [UIColor whiteColor];
     [_btnLoginWithTwitter setTitle:@"Twitter" forState:UIControlStateNormal];
     _btnLoginWithTwitter.backgroundColor = [BLColorDefinition twitterBlueColor];
@@ -127,7 +122,7 @@ static const NSInteger TAG_PASSWORD = 1;
     
     _btnLoginWithFacebook = [[UIButton alloc] init];
     [_btnLoginWithFacebook addTarget:self action:@selector(loginWithFacebook:) forControlEvents:UIControlEventTouchDown];
-    _btnLoginWithFacebook.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:16];
+    _btnLoginWithFacebook.titleLabel.font = [BLFontDefinition boldFont:16.0f];
     _btnLoginWithFacebook.titleLabel.textColor = [UIColor whiteColor];
     [_btnLoginWithFacebook setTitle:@"Facebook" forState:UIControlStateNormal];
     _btnLoginWithFacebook.backgroundColor = [BLColorDefinition facebookBlueColor];
@@ -137,7 +132,7 @@ static const NSInteger TAG_PASSWORD = 1;
     _lbErrorMsg = [[UILabel alloc] init];
     _lbErrorMsg.backgroundColor = [UIColor blackColor];
     _lbErrorMsg.textColor = [UIColor whiteColor];
-    _lbErrorMsg.font = [UIFont fontWithName:@"Arial-BoldMT" size:14];
+    _lbErrorMsg.font = [BLFontDefinition boldFont:14.0f];
     _lbErrorMsg.alpha = 0.0f;
     _lbErrorMsg.textAlignment = NSTextAlignmentCenter;
     _lbErrorMsg.numberOfLines = 0;
@@ -260,6 +255,10 @@ static const NSInteger TAG_PASSWORD = 1;
     }];
 }
 
+#pragma mark - private
+- (void)saveToKeychainWithUser:(User *)user {
+    
+}
 
 #pragma button action
 - (void)back:(id)sender {
@@ -282,14 +281,20 @@ static const NSInteger TAG_PASSWORD = 1;
     user.email = _tfEmail.text;
     user.password = _tfPassword.text;
     
+    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    [delegate.passwordItem setObject:_tfEmail.text forKey:(__bridge id)kSecAttrAccount];
+    [delegate.passwordItem setObject:_tfPassword.text forKey:(__bridge id)kSecValueData];
+    
     BLHTTPClient *httpClient = [BLHTTPClient sharedBLHTTPClient];
     [httpClient login:user success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Response: %@", responseObject);
-        User *user = responseObject;
         [self renderToMasterViewController];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         _lbErrorMsg.text = @"Email or Password is not match.";
         [self showErrorMessage];
+        
+        // reset keychain if log in failed
+        [delegate.passwordItem resetKeychainItem];
     }];
 }
 
@@ -370,7 +375,7 @@ static const NSInteger TAG_PASSWORD = 1;
 
 - (void)renderToMasterViewController {
     AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    [self presentViewController:delegate.masterNavController animated:YES completion:nil];
+    [self presentViewController:delegate.menuViewController animated:YES completion:nil];
 }
 
 

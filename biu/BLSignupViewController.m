@@ -7,6 +7,7 @@
 //
 
 #import "BLSignupViewController.h"
+#import "BLProfileViewController.h"
 #import "BLColorDefinition.h"
 
 #import "BLTextField.h"
@@ -70,7 +71,7 @@ static const NSInteger INDEX_PASSWORD = 2;
     
     _tfEmail = [[BLTextField alloc] init];
     _tfEmail.textColor = [UIColor whiteColor];
-    _tfEmail.font = [UIFont fontWithName:@"ArialMT" size:15];
+    _tfEmail.font = [BLFontDefinition normalFont:15.0f];
     _tfEmail.placeholder = NSLocalizedString(@"Email", nil);
     _tfEmail.backgroundColor = [UIColor clearColor];
     _tfEmail.textAlignment = NSTextAlignmentCenter;
@@ -84,7 +85,7 @@ static const NSInteger INDEX_PASSWORD = 2;
     
     _tfPassword = [[BLTextField alloc] init];
     _tfPassword.textColor = [UIColor whiteColor];
-    _tfPassword.font = [UIFont fontWithName:@"ArialMT" size:15];
+    _tfPassword.font = [BLFontDefinition normalFont:15.0f];
     _tfPassword.placeholder = NSLocalizedString(@"Password", nil);
     _tfPassword.backgroundColor = [UIColor clearColor];
     _tfPassword.textAlignment = NSTextAlignmentCenter;
@@ -97,7 +98,7 @@ static const NSInteger INDEX_PASSWORD = 2;
     
     _tfUsername = [[BLTextField alloc] init];
     _tfUsername.textColor = [UIColor whiteColor];
-    _tfUsername.font = [UIFont fontWithName:@"ArialMT" size:15];
+    _tfUsername.font = [BLFontDefinition normalFont:15.0f];
     _tfUsername.placeholder = NSLocalizedString(@"Username", nil);
     _tfUsername.backgroundColor = [UIColor clearColor];
     _tfUsername.textAlignment = NSTextAlignmentCenter;
@@ -112,7 +113,7 @@ static const NSInteger INDEX_PASSWORD = 2;
     [_btnSignup addTarget:self action:@selector(signup:) forControlEvents:UIControlEventTouchDown];
     [_btnSignup setTitle:NSLocalizedString(@"Sign up", nil) forState:UIControlStateNormal];
     [_btnSignup setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    _btnSignup.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:16];
+    _btnSignup.titleLabel.font = [BLFontDefinition normalFont:16.0f];
     _btnSignup.backgroundColor = [UIColor colorWithRed:93.0 / 255.0 green:112.0 / 255.0 blue:129.0 / 255.0 alpha:1];
     _btnSignup.layer.cornerRadius = 5;
     [self.view addSubview:_btnSignup];
@@ -120,7 +121,7 @@ static const NSInteger INDEX_PASSWORD = 2;
     _lbErrorMsg = [[UILabel alloc] init];
     _lbErrorMsg.backgroundColor = [UIColor blackColor];
     _lbErrorMsg.textColor = [UIColor whiteColor];
-    _lbErrorMsg.font = [UIFont fontWithName:@"Arial-BoldMT" size:14];
+    _lbErrorMsg.font = [BLFontDefinition boldFont:14.0f];
     _lbErrorMsg.alpha = 0.0f;
     _lbErrorMsg.textAlignment = NSTextAlignmentCenter;
     _lbErrorMsg.numberOfLines = 0;
@@ -287,6 +288,8 @@ static const NSInteger INDEX_PASSWORD = 2;
     [httpClient signup:user success:^(NSURLSessionDataTask *task, id responseObject) {
         User *user = responseObject;
         NSLog(@"Sign up success!!! user id: %@", user.id);
+        BLProfileViewController *profileViewController = [[BLProfileViewController alloc] initWithNibName:nil bundle:nil];
+        [self.navigationController pushViewController:profileViewController animated:YES];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         _lbErrorMsg.text = @"Sorry we failed to set up your account. Please try again.";
         [self showErrorMessage];

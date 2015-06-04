@@ -8,6 +8,14 @@
 
 #import "BLStyleTableViewCell.h"
 
+@interface BLStyleCollectionViewCell : UICollectionViewCell
+
+@property (strong, nonatomic) UIImage *selectedImage;
+@property (strong, nonatomic) UIImage *unselectedImage;
+@property (strong, nonatomic) UIImageView *imageView;
+
+@end
+
 @interface BLStyleTableViewCell () <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (retain, nonatomic) UICollectionView *collectionView;
@@ -42,6 +50,9 @@ static const float CELL_HEIGHT = 109.3;
     }
     return self;
 }
+
+#pragma mark - handle collection view delegate and data source
+
 
 - (void)awakeFromNib {
     // Initialization code

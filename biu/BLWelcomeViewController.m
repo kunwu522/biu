@@ -26,7 +26,7 @@
 @property (retain, nonatomic) UILabel * biuSubtitle;
 
 //For login view
-@property (retain, nonatomic) BLTextField * txtUsername;
+@property (retain, nonatomic) BLTextField * tfEmail;
 @property (retain, nonatomic) BLTextField * txtPassword;
 @property (retain, nonatomic) UILabel *lbLoginWith;
 @property (retain, nonatomic) UIButton *btnLogin;
@@ -36,7 +36,7 @@
 @property (retain, nonatomic) UIView *background;
 @property (retain, nonatomic) UIImageView *imageView;
 
-@property (nonatomic) BOOL isLaunchLayout;
+@property (nonatomic) BOOL isLoginLayout;
 
 
 @end
@@ -51,7 +51,7 @@ static double ICON_INITIAL_SIZE = 147.5;
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    _isLaunchLayout = NO;
+    _isLoginLayout = NO;
     
     self.view.backgroundColor = [UIColor clearColor];
     
@@ -75,7 +75,7 @@ static double ICON_INITIAL_SIZE = 147.5;
     
     _biuTitle = [[UILabel alloc] init];
     _biuTitle.text = @"BIU";
-    _biuTitle.font = [UIFont fontWithName:@"Arial-BoldMT" size:45];
+    _biuTitle.font = [BLFontDefinition boldFont:45.0f];
     _biuTitle.textColor = [UIColor whiteColor];
     _biuTitle.textAlignment = NSTextAlignmentCenter;
     _biuTitle.adjustsFontSizeToFitWidth = YES;
@@ -83,7 +83,7 @@ static double ICON_INITIAL_SIZE = 147.5;
     
     _biuSubtitle = [[UILabel alloc] init];
     _biuSubtitle.text = @"I ' M   C L O S E";
-    _biuSubtitle.font = [UIFont fontWithName:@"Arial-BoldMT" size:15];
+    _biuSubtitle.font = [BLFontDefinition boldFont:15.0f];
     _biuSubtitle.textColor = [UIColor colorWithRed:89.0 / 255.0 green:96.0 / 255.0 blue:104.0 / 255.0 alpha:1];
     _biuSubtitle.textAlignment = NSTextAlignmentCenter;
     _biuSubtitle.adjustsFontSizeToFitWidth = YES;
@@ -115,31 +115,44 @@ static double ICON_INITIAL_SIZE = 147.5;
 
 - (void)viewDidAppear:(BOOL)animated {
     sleep(2);
-    if (!_isLaunchLayout) {
+    if (!_isLoginLayout) {
+        AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+        NSString *email = [delegate.passwordItem objectForKey:(__bridge id)kSecAttrAccount];
+        NSData *pwd = [delegate.passwordItem objectForKey:(__bridge id)(kSecValueData)];
+        NSString *password = [[NSString alloc] initWithData:pwd encoding:NSUTF8StringEncoding];
+        if ([email isEqualToString:@""] || [password isEqualToString:@""]) {
+            [self showLoginUI];
+            return;
+        }
+        
         User *user = [User new];
-        user.email = @"wukun@biulove.com";
-        user.password = @"12345678";
+        user.email = email;
+        user.password = password;
         [[BLHTTPClient sharedBLHTTPClient] login:user success:^(NSURLSessionDataTask *task, id responseObject) {
             AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
             [self presentViewController:delegate.menuViewController animated:YES completion:nil];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"Validate user failed: %@, code: %li", error.description, (long)error.code);
-            [self loginViewLayout];
-            [UIView animateWithDuration:0.5 animations:^{
-                [self.view layoutIfNeeded];
-                _biuTitle.transform = CGAffineTransformScale(_biuTitle.transform, 0.67, 0.67);
-                _biuSubtitle.alpha = 0;
-            } completion:^(BOOL finished) {
-                // TODO: show login input and button
-                [UIView animateWithDuration:0.5 animations:^{
-                    _lbSlogan.alpha = 1;
-                    _btnLogin.alpha = 1;
-                    _btnSignup.alpha = 1;
-                }];
-            }];
-            _isLaunchLayout = YES;
+            [self showLoginUI];
         }];
     }
+}
+
+- (void)showLoginUI {
+    [self loginViewLayout];
+    [UIView animateWithDuration:0.5 animations:^{
+        [self.view layoutIfNeeded];
+        _biuTitle.transform = CGAffineTransformScale(_biuTitle.transform, 0.67, 0.67);
+        _biuSubtitle.alpha = 0;
+    } completion:^(BOOL finished) {
+        // TODO: show login input and button
+        [UIView animateWithDuration:0.5 animations:^{
+            _lbSlogan.alpha = 1;
+            _btnLogin.alpha = 1;
+            _btnSignup.alpha = 1;
+        }];
+    }];
+    _isLoginLayout = YES;
 }
 
 - (BOOL)checkUserLogin {
@@ -178,35 +191,9 @@ static double ICON_INITIAL_SIZE = 147.5;
         make.top.equalTo(_logo.mas_bottom).with.offset(29.5);
     }];
     
-//    _txtUsername = [[BLTextField alloc] init];
-//    _txtUsername.font = [UIFont fontWithName:@"ArialMT" size:14];
-//    _txtUsername.placeholder = @"Email";
-//    _txtUsername.alpha = 0;
-//    _txtUsername.autocorrectionType = UITextAutocorrectionTypeNo;
-//    _txtUsername.textColor = [UIColor grayColor];
-//    [self.view addSubview:_txtUsername];
-//    
-//    _txtPassword = [[BLTextField alloc] init];
-//    _txtPassword.font = [UIFont fontWithName:@"ArialMt" size:14];
-//    _txtPassword.placeholder = @"Password";
-//    _txtPassword.alpha = 0;
-//    _txtPassword.autocorrectionType = UITextAutocorrectionTypeNo;
-//    _txtPassword.textColor = [UIColor grayColor];
-//    _txtPassword.secureTextEntry = YES;
-//    [self.view addSubview:_txtPassword];
-//    
-//    _lbLoginWith = [[UILabel alloc] init];
-//    _lbLoginWith.text = @"LOGIN WITH:";
-//    _lbLoginWith.font = [UIFont fontWithName:@"ArialMT" size:14];
-//    _lbLoginWith.textColor = [UIColor grayColor];
-//    _lbLoginWith.textAlignment = NSTextAlignmentCenter;
-//    _lbLoginWith.adjustsFontSizeToFitWidth = YES;
-//    [self.view addSubview:_lbLoginWith];
-//    _lbLoginWith.alpha = 0;
-    
     _lbSlogan = [[UILabel alloc] init];
 //    _lbSlogan.text = @"We help you to find your perfect one in close distance, and notify you from your new watch";
-    _lbSlogan.font = [UIFont fontWithName:@"ArialMT" size:16];
+    _lbSlogan.font = [BLFontDefinition normalFont:16];
     _lbSlogan.textColor = [UIColor whiteColor];
     _lbSlogan.textAlignment = NSTextAlignmentCenter;
     _lbSlogan.numberOfLines = 0;
@@ -227,7 +214,7 @@ static double ICON_INITIAL_SIZE = 147.5;
     _btnLogin = [[UIButton alloc] init];
     [_btnLogin addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchDown];
     [_btnLogin setTitle:NSLocalizedString(@"Login", nil) forState:UIControlStateNormal];
-    _btnLogin.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:16];
+    _btnLogin.titleLabel.font = [BLFontDefinition boldFont:16];
     _btnLogin.titleLabel.textColor = [UIColor whiteColor];
     _btnLogin.backgroundColor = [UIColor colorWithRed:93.0 / 255.0 green:112.0 / 255.0 blue:129.0 / 255.0 alpha:1];
     _btnLogin.layer.cornerRadius = 5;
@@ -237,24 +224,12 @@ static double ICON_INITIAL_SIZE = 147.5;
     _btnSignup = [[UIButton alloc] init];
     [_btnSignup addTarget:self action:@selector(signup:) forControlEvents:UIControlEventTouchDown];
     [_btnSignup setTitle:NSLocalizedString(@"Sign up", nil) forState:UIControlStateNormal];
-    _btnSignup.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:16];
+    _btnSignup.titleLabel.font = [BLFontDefinition boldFont:16];
     _btnSignup.titleLabel.textColor = [UIColor whiteColor];
     _btnSignup.backgroundColor = [UIColor colorWithRed:19.0 / 255.0 green:183.0 / 255.0 blue:120.0 / 255.0 alpha:1];
     _btnSignup.layer.cornerRadius = 5;
     [self.view addSubview:_btnSignup];
     _btnSignup.alpha = 0;
-    
-//    [_txtUsername mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(_biuTitle.mas_bottom).with.offset(30);
-//        make.left.equalTo(_txtUsername.superview).with.offset(50);
-//        make.right.equalTo(_txtUsername.superview).with.offset(-50);
-//    }];
-//    
-//    [_txtPassword mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(_txtUsername.mas_bottom).with.offset(20);
-//        make.left.equalTo(_txtPassword.superview).with.offset(50);
-//        make.right.equalTo(_txtPassword.superview).with.offset(-50);
-//    }];
 
     [_lbSlogan mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_biuTitle.mas_bottom).with.offset(25.0);
@@ -276,12 +251,6 @@ static double ICON_INITIAL_SIZE = 147.5;
         make.right.equalTo(self.view).with.offset(-20.7);
         make.height.equalTo(@59);
     }];
-    
-//    [_lbLoginWith mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.bottom.equalTo(_btnLogin.mas_top).with.offset(-20);
-//        make.left.equalTo(self.view).with.offset(50);
-//        make.right.equalTo(self.view).with.offset(-50);
-//    }];
 }
 
 - (void)login:(id)sender {

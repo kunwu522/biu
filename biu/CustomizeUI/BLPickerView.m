@@ -26,8 +26,8 @@
 @implementation BLPickerView
 
 - (void)setup {
-    self.font = self.font ? : [UIFont fontWithName:@"ArialMT" size:26.0f];
-    self.highLightedFont = self.highLightedFont ? : [UIFont fontWithName:@"Arial-BoldMT" size:27.0f];
+    self.font = self.font ? : [BLFontDefinition normalFont:26.0f];
+    self.highLightedFont = self.highLightedFont ? : [BLFontDefinition boldFont:27.0f];
     self.textColor = self.textColor ? : [UIColor darkGrayColor];
     self.highLightedTextColor = self.highLightedTextColor ? : [BLColorDefinition greenColor];
     
@@ -336,7 +336,7 @@
     self.label.textColor = [UIColor blackColor];
     self.label.numberOfLines = 1;
     self.label.highlightedTextColor = [BLColorDefinition greenColor];
-    self.label.font = [UIFont fontWithName:@"ArialMT" size:26.0f];
+    self.label.font = [BLFontDefinition normalFont:26.0f];
     self.label.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin |
                                    UIViewAutoresizingFlexibleLeftMargin |
                                    UIViewAutoresizingFlexibleBottomMargin |
