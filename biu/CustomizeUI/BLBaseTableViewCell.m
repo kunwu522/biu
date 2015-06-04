@@ -25,7 +25,7 @@
         self.backgroundColor = [BLColorDefinition backgroundGrayColor];
         
         self.title = [[UILabel alloc] init];
-        self.title.font = [BLFontDefinition normalFont:20.0f];
+        self.title.font = [BLFontDefinition lightFont:20.0f];
         self.title.textColor = [BLColorDefinition fontGrayColor];
         self.title.textAlignment = NSTextAlignmentCenter;
         self.title.backgroundColor = [UIColor clearColor];

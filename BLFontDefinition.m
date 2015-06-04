@@ -10,15 +10,34 @@
 
 @implementation BLFontDefinition
 
-static NSString *NORMAL_FONT = @"ArialMT";
+static NSString *NORMAL_FONT = @"HelveticaNeue";
 
++ (UIFont *)ultraLightFont:(CGFloat)fontSize {
+    return [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:fontSize];
+}
+
++ (UIFont *)ultraLightItalic:(CGFloat)fontSize {
+    return [UIFont fontWithName:@"HelveticaNeue-UltraLightItalic" size:fontSize];
+}
+
++ (UIFont *)lightFont:(CGFloat)fontSize {
+    return [UIFont fontWithName:@"HelveticaNeue-Light" size:fontSize];
+}
+
++ (UIFont *)lightItalicFont:(CGFloat)fontSize {
+    return [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:fontSize];
+}
 
 + (UIFont *)normalFont:(CGFloat)fontSize {
-    return [UIFont fontWithName:@"ArialMT" size:fontSize];
+    return [UIFont fontWithName:@"HelveticaNeue" size:fontSize];
+}
+
++ (UIFont *)italicFont:(CGFloat)fontSize {
+    return [UIFont fontWithName:@"HelveticaNeue-Italic" size:fontSize];
 }
 
 + (UIFont *)boldFont:(CGFloat)fontSize {
-    return [UIFont fontWithName:@"Arial-BoldMT" size:fontSize];
+    return [UIFont fontWithName:@"HelveticaNeue-Bold" size:fontSize];
 }
 
 + (CGSize)normalFontSizeForString:(NSString *)string fontSize:(CGFloat)fontSize {

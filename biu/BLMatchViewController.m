@@ -12,7 +12,7 @@
 
 #import "Masonry.h"
 
-@interface BLMatchViewController () <BLPickerViewDataSource, BLPickerViewDelegate>
+@interface BLMatchViewController () <BLPickerViewDataSource, BLPickerViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 
 @property (retain, nonatomic) UIView *background;
 @property (retain, nonatomic) UIImageView *test;
@@ -23,7 +23,7 @@
 @property (retain, nonatomic) UILabel *pickViewMask;
 @property (retain, nonatomic) BLMatchSwitch *matchSwith;
 
-
+@property (retain, nonatomic) UIPickerView *pickerView;
 @property (retain, nonatomic) NSArray *arrayDistanceData;
 
 @end
@@ -49,7 +49,6 @@
     _lbTitle.text = NSLocalizedString(@"Set the distance", nil);
     [self.view addSubview:_lbTitle];
     
-    _pickViewDistance = [[BLPickerView alloc] initWithFrame:CGRectMake(0, 200, self.view.frame.size.width, 225.0f)];
     _arrayDistanceData = [[NSArray alloc] initWithObjects:@"500",
                                                           @"1000",
                                                           @"1500",
@@ -60,11 +59,16 @@
                                                           @"4000",
                                                           @"4500",
                                                           @"5000", nil];
+    _pickViewDistance = [[BLPickerView alloc] initWithFrame:CGRectMake(0, 200, self.view.frame.size.width, 225.0f)];
     _pickViewDistance.delegate = self;
     _pickViewDistance.dataSource = self;
     _pickViewDistance.fisheyeFactor = 0.001;
     [_pickViewDistance selectRow:3 animated:NO];
     [self.view addSubview:_pickViewDistance];
+//    _pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 200, self.view.frame.size.width, 300.0f)];
+//    _pickerView.delegate = self;
+//    _pickerView.dataSource = self;
+//    [self.view addSubview:_pickerView];
     
     _matchSwith = [[BLMatchSwitch alloc] init];
     _matchSwith.backgroundColor = [UIColor clearColor];
@@ -108,6 +112,37 @@
 - (void)pickerView:(BLPickerView *)pickerView didSelectRow:(NSInteger)row {
     NSLog(@"Select distance: %@", [_arrayDistanceData objectAtIndex:row]);
 }
+
+//- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+//    return 1;
+//}
+//
+//- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+//    return _arrayDistanceData.count;
+//}
+//
+//- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+//    return [_arrayDistanceData objectAtIndex:row];
+//}
+//
+//- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
+//    return 50;
+//}
+//
+//- (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component {
+//    NSString *title = [_arrayDistanceData objectAtIndex:row];
+//    UIColor *color = [UIColor colorWithRed:28.0 / 255.0 green:184.0 / 255.0 blue:134.0 / 255.0 alpha:1.0f];
+//    UIFont *font = nil;
+//    if (row == 1) {
+//        font = [BLFontDefinition italicFont:40];
+//    } else {
+//        font = [BLFontDefinition boldFont:40.0f];
+//    }
+//    
+//    NSDictionary *attributes = @{NSForegroundColorAttributeName : color,
+//                                            NSFontAttributeName : font};
+//    return [[NSAttributedString alloc] initWithString:title attributes:attributes];
+//}
 
 #pragma mark - Handle Switch
 - (void)matchToLove:(BLMatchSwitch *)sender {
