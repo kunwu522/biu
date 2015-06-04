@@ -24,6 +24,9 @@
 - (void)login:(User *)user
       success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
       failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+- (void)logout:(User *)user
+       success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+       failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
 @end
 
