@@ -12,12 +12,30 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/api/v1/";
 
 @implementation BLHTTPClient
 
+//@synthesize delegate = _delegate;
+
 + (BLHTTPClient *)sharedBLHTTPClient {
     static BLHTTPClient *_sharedHttpClient = nil;
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _sharedHttpClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:BLBaseURLString]];
+        
+        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:BLBaseURLString]];
+        NSOperationQueue *operationQueue = manager.operationQueue;
+        [manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+            switch (status) {
+                case AFNetworkReachabilityStatusNotReachable:
+                    [operationQueue setSuspended:YES];                    
+                case AFNetworkReachabilityStatusReachableViaWWAN:
+                case AFNetworkReachabilityStatusReachableViaWiFi:
+                default:
+                    [operationQueue setSuspended:NO];
+                    break;
+            }
+        }];
+        
+        [manager.reachabilityManager startMonitoring];
     });
     
     return _sharedHttpClient;
@@ -64,7 +82,11 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/api/v1/";
 - (void)logout:(User *)user
        success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
        failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    if (!self) {
+        return;
+    }
     
+    [self DELETE:@"logout" parameters:nil success:success failure:failure];
 }
 
 @end

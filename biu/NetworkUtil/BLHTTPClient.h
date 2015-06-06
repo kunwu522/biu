@@ -32,5 +32,6 @@
 
 @protocol BLHTTPClientDelegate <NSObject>
 @optional
+- (void)canNotReachNetworkWithHttpClient:(BLHTTPClient *)client;
 - (void)blHTTPClient:(BLHTTPClient *)client didFailWithError:(NSError *)error;
 @end

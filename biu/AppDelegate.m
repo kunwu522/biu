@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 
-#import "KeychainItemWrapper.h"
 #import "BLMatchViewController.h"
 //#import "BLProfileViewController.h"
 
@@ -18,26 +17,22 @@
 
 @implementation AppDelegate
 
-@synthesize passwordItem, masterNavController, menuViewController;
+@synthesize passwordItem, menuViewController, welNavController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
      self.passwordItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"Password" accessGroup:nil];
     
     // Add Navigation
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.window.rootViewController];
-    navController.navigationBarHidden = YES;
-    self.window.rootViewController = navController;
+    self.welNavController = [[UINavigationController alloc] initWithRootViewController:self.window.rootViewController];
+    self.welNavController.navigationBarHidden = YES;
+    self.window.rootViewController = self.welNavController;
     
     // Create master navigation controller
     BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
-//    BLProfileViewController *profileViewController = [[BLProfileViewController alloc] initWithNibName:nil bundle:nil];
-//    
-//    NSArray *viewControllers = [NSArray arrayWithObjects:profileViewController, nil];
     
     // Create BL Menu view controller
     self.menuViewController = [[BLMenuViewController alloc] initWithRootViewControllr:matchViewController];
-//    self.menuViewController.viewControllers = viewControllers;
     
     return YES;
 }

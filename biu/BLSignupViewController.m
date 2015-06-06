@@ -284,13 +284,17 @@ static const NSInteger INDEX_PASSWORD = 2;
     user.username = _tfUsername.text;
     user.password = _tfPassword.text;
     
-    BLHTTPClient *httpClient = [BLHTTPClient sharedBLHTTPClient];
-    [httpClient signup:user success:^(NSURLSessionDataTask *task, id responseObject) {
+    UIActivityIndicatorView *ai = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    ai.hidesWhenStopped = YES;
+    [ai startAnimating];
+    [[BLHTTPClient sharedBLHTTPClient] signup:user success:^(NSURLSessionDataTask *task, id responseObject) {
         User *user = responseObject;
         NSLog(@"Sign up success!!! user id: %@", user.id);
+        [ai stopAnimating];
         BLProfileViewController *profileViewController = [[BLProfileViewController alloc] initWithNibName:nil bundle:nil];
         [self.navigationController pushViewController:profileViewController animated:YES];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [ai stopAnimating];
         _lbErrorMsg.text = @"Sorry we failed to set up your account. Please try again.";
         [self showErrorMessage];
     }];

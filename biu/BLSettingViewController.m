@@ -7,6 +7,7 @@
 //
 
 #import "BLSettingViewController.h"
+#import "BLWelcomeViewController.h"
 #import "Masonry.h"
 
 @interface BLSettingViewController ()
@@ -31,6 +32,8 @@
     [_btnLogout mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_btnLogout.superview);
         make.centerY.equalTo(_btnLogout.superview).with.offset(100.0f);
+        make.width.equalTo(@200);
+        make.height.equalTo(@50);
     }];
 }
 
@@ -41,7 +44,20 @@
 
 #pragma mark - handle action
 - (void)logout:(id)sender {
+    //TODO: clear data in NSUserDefaults
+    [[BLHTTPClient sharedBLHTTPClient] logout:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"User log out successful.");
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"User log out failed. Error: %@", error.description);
+    }];
     
+    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    [delegate.passwordItem resetKeychainItem];
+    
+    BLWelcomeViewController *welViewController = [[BLWelcomeViewController alloc] initWithNibName:nil bundle:nil];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:welViewController];
+    navController.navigationBarHidden = YES;
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 /*
