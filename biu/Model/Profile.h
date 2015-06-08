@@ -63,4 +63,8 @@ typedef NS_ENUM(NSUInteger, BLStyleType) {
 
 - (void)save;
 
++ (NSUInteger)getAgeFromBirthday:(NSDate *)birthday;
++ (BLZodiac)getZodiacFromBirthday:(NSDate *)birthday;
++ (NSString *)getZodiacNameFromZodiac:(BLZodiac)zodiac isShotVersion:(BOOL)isShot;
+
 @end

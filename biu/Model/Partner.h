@@ -12,11 +12,11 @@
 
 typedef NS_ENUM(NSUInteger, BLSexualityType) {
     BLSexualityTypeMan = 0,
-    BLSexualityTypeWoman,
-    BLSexualityTypeP,
-    BLSexualityTypeT,
-    BLSexualityType1,
-    BLSexualityType0
+    BLSexualityTypeWoman = 1,
+    BLSexualityTypeP = 2,
+    BLSexualityTypeT = 3,
+    BLSexualityType1 = 4,
+    BLSexualityType0 = 5,
 };
 
 @property (strong, nonatomic) NSNumber *partnerId;

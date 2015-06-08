@@ -44,7 +44,8 @@
 #pragma mark - handle changing date
 - (void)dateChanged:(id)sender {
     UIDatePicker *picker = sender;
-    self.birthday = picker.date;
+    NSLog(@"Pick date: %@", picker.date);
+    _birthday = picker.date;
     if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
         [self.delegate tableViewCell:self didChangeValue:self.birthday];
     }
@@ -52,6 +53,9 @@
 
 #pragma mark -
 - (void)setBirthday:(NSDate *)birthday {
+    if (!birthday) {
+        return;
+    }
     [_datePicker setDate:birthday];
 }
 

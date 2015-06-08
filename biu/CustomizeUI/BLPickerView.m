@@ -197,7 +197,6 @@
     if ([self.dataSource respondsToSelector:@selector(pickerView:titleForRow:)]) {
         NSString *title = [self.dataSource pickerView:self titleForRow:indexPath.item];
         cell.label.text = title;
-        NSLog(@"inde row: %ld", indexPath.item);
         cell.label.textColor = self.textColor;
         cell.label.highlightedTextColor = self.highLightedTextColor;
         cell.label.font = self.font;

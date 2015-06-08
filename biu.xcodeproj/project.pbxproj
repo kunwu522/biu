@@ -69,8 +69,10 @@
 		EA9F49981B1EB1EC0037D188 /* BLRingView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9F49971B1EB1EC0037D188 /* BLRingView.m */; };
 		EAA7FD6F1B0DD64F00C2B5C6 /* BLHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA7FD6E1B0DD64F00C2B5C6 /* BLHTTPClient.m */; };
 		EAA7FD731B12CFF700C2B5C6 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA7FD721B12CFF700C2B5C6 /* User.m */; };
+		EAB60E371B257E8F00BE2874 /* BLProfileTest.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB60E361B257E8F00BE2874 /* BLProfileTest.m */; };
 		EAE8E20C1B09CBF800C9038D /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE8E20B1B09CBF800C9038D /* logo.png */; };
 		EAE8E2111B09F34300C9038D /* BLLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE8E2101B09F34300C9038D /* BLLoginViewController.m */; };
+		EAEA27D11B256776006967A1 /* BLZodiacAndAgeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAEA27D01B256776006967A1 /* BLZodiacAndAgeTableViewCell.m */; };
 		EAEC0AF81B1EEAC3000A7C5B /* zodiac_selected_icon0.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE01B1EEAC2000A7C5B /* zodiac_selected_icon0.png */; };
 		EAEC0AF91B1EEAC3000A7C5B /* zodiac_selected_icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE11B1EEAC2000A7C5B /* zodiac_selected_icon1.png */; };
 		EAEC0AFA1B1EEAC3000A7C5B /* zodiac_selected_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE21B1EEAC2000A7C5B /* zodiac_selected_icon2.png */; };
@@ -242,9 +244,12 @@
 		EAA7FD6E1B0DD64F00C2B5C6 /* BLHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLHTTPClient.m; path = NetworkUtil/BLHTTPClient.m; sourceTree = "<group>"; };
 		EAA7FD711B12CFF700C2B5C6 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = Model/User.h; sourceTree = "<group>"; };
 		EAA7FD721B12CFF700C2B5C6 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = Model/User.m; sourceTree = "<group>"; };
+		EAB60E361B257E8F00BE2874 /* BLProfileTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLProfileTest.m; path = Models/BLProfileTest.m; sourceTree = "<group>"; };
 		EAE8E20B1B09CBF800C9038D /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = images/logo.png; sourceTree = "<group>"; };
 		EAE8E20F1B09F34300C9038D /* BLLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLLoginViewController.h; sourceTree = "<group>"; };
 		EAE8E2101B09F34300C9038D /* BLLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLLoginViewController.m; sourceTree = "<group>"; };
+		EAEA27CF1B256776006967A1 /* BLZodiacAndAgeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLZodiacAndAgeTableViewCell.h; path = CustomizeUI/BLZodiacAndAgeTableViewCell.h; sourceTree = "<group>"; };
+		EAEA27D01B256776006967A1 /* BLZodiacAndAgeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLZodiacAndAgeTableViewCell.m; path = CustomizeUI/BLZodiacAndAgeTableViewCell.m; sourceTree = "<group>"; };
 		EAEC0AE01B1EEAC2000A7C5B /* zodiac_selected_icon0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon0.png; path = images/zodiac/zodiac_selected_icon0.png; sourceTree = "<group>"; };
 		EAEC0AE11B1EEAC2000A7C5B /* zodiac_selected_icon1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon1.png; path = images/zodiac/zodiac_selected_icon1.png; sourceTree = "<group>"; };
 		EAEC0AE21B1EEAC2000A7C5B /* zodiac_selected_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon2.png; path = images/zodiac/zodiac_selected_icon2.png; sourceTree = "<group>"; };
@@ -367,6 +372,8 @@
 				EA9F49921B1EA5890037D188 /* BLSexualityTableViewCell.m */,
 				EAEC0B2D1B1F06ED000A7C5B /* BLAgeRangeTableViewCell.h */,
 				EAEC0B2E1B1F06ED000A7C5B /* BLAgeRangeTableViewCell.m */,
+				EAEA27CF1B256776006967A1 /* BLZodiacAndAgeTableViewCell.h */,
+				EAEA27D01B256776006967A1 /* BLZodiacAndAgeTableViewCell.m */,
 			);
 			name = CustomizeUI;
 			sourceTree = "<group>";
@@ -444,6 +451,7 @@
 		EA6AAC461AF8739200ED3A55 /* biuTests */ = {
 			isa = PBXGroup;
 			children = (
+				EAB60E381B257E9A00BE2874 /* Models */,
 				EA6AAC491AF8739200ED3A55 /* biuTests.m */,
 				EA6AAC471AF8739200ED3A55 /* Supporting Files */,
 			);
@@ -553,6 +561,14 @@
 				A30D96A71B24433500A1CF88 /* Partner.m */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		EAB60E381B257E9A00BE2874 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EAB60E361B257E8F00BE2874 /* BLProfileTest.m */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 		EAEC0B101B1EEAC7000A7C5B /* sexuality */ = {
@@ -893,6 +909,7 @@
 				EA9F49881B1DC3C40037D188 /* BLPasswordViewController.m in Sources */,
 				A3BD9E4B1B0CC37D00815100 /* BLSignupViewController.m in Sources */,
 				A3CCFD071B1CBB2D00C9BAE8 /* BLZodiacTableViewCell.m in Sources */,
+				EAEA27D11B256776006967A1 /* BLZodiacAndAgeTableViewCell.m in Sources */,
 				EA6AAC361AF8739200ED3A55 /* BLWelcomeViewController.m in Sources */,
 				A3039E9B1B1AEB4F006FB5E4 /* BLMenuViewController.m in Sources */,
 				EA9F49901B1DDB220037D188 /* BLMenuButton.m in Sources */,
@@ -918,6 +935,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA6AAC4A1AF8739200ED3A55 /* biuTests.m in Sources */,
+				EAB60E371B257E8F00BE2874 /* BLProfileTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -109,4 +109,13 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/api/v1/";
     [self POST:@"profiles.json" parameters:parameter success:success failure:failure];
 }
 
+- (void)createPartner:(User *)user
+              success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    if (!self) {
+        return;
+    }
+    
+}
+
 @end

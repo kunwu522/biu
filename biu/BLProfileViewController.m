@@ -9,7 +9,7 @@
 #import "BLProfileViewController.h"
 #import "BLGenderTableViewCell.h"
 #import "BLBirthTableViewCell.h"
-#import "BLZodiacTableViewCell.h"
+#import "BLZodiacAndAgeTableViewCell.h"
 #import "BLStyleTableViewCell.h"
 
 #import "BLPartnerViewController.h"
@@ -35,14 +35,14 @@
 static const NSInteger SECTION_HEADER = 0;
 static const NSInteger SECTION_GENDER = 1;
 static const NSInteger SECTION_BIRTHDAY = 2;
-static const NSInteger SECTION_ZODIAC = 3;
+static const NSInteger SECTION_ZODIAC_AND_AGE = 3;
 static const NSInteger SECTION_STYLE = 4;
 static const NSInteger SECTION_BUTTON = 5;
 
 static NSString *BL_NORMAL_CELL_REUSEID = @"BLNormalCell";
 static NSString *BL_PROFILE_GENDER_CELL_REUSEID = @"BLGenderCell";
 static NSString *BL_PROFILE_BIRTH_CELL_REUSEID = @"BLBirthCell";
-static NSString *BL_PROFILE_ZODIAC_CELL_REUSEID = @"BLZodiacCell";
+static NSString *BL_PROFILE_ZODIAC_AND_AGE_CELL_REUSEID = @"BLZodiacAndAgeCell";
 static NSString *BL_PROFIEL_STYLE_CELL_REUSEID = @"BLStyleCell";
 
 static const float AVATOR_WIDTH = 163.0f;
@@ -67,7 +67,7 @@ static const float AVATOR_WIDTH = 163.0f;
     [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:BL_NORMAL_CELL_REUSEID];
     [_tableView registerClass:[BLGenderTableViewCell class] forCellReuseIdentifier:BL_PROFILE_GENDER_CELL_REUSEID];
     [_tableView registerClass:[BLBirthTableViewCell class] forCellReuseIdentifier:BL_PROFILE_BIRTH_CELL_REUSEID];
-    [_tableView registerClass:[BLZodiacTableViewCell class] forCellReuseIdentifier:BL_PROFILE_ZODIAC_CELL_REUSEID];
+    [_tableView registerClass:[BLZodiacAndAgeTableViewCell class] forCellReuseIdentifier:BL_PROFILE_ZODIAC_AND_AGE_CELL_REUSEID];
     [_tableView registerClass:[BLStyleTableViewCell class] forCellReuseIdentifier:BL_PROFIEL_STYLE_CELL_REUSEID];
 }
 
@@ -127,15 +127,15 @@ static const float AVATOR_WIDTH = 163.0f;
             return cell;
             break;
         }
-        case SECTION_ZODIAC:
+        case SECTION_ZODIAC_AND_AGE:
         {
-            BLZodiacTableViewCell *cell = (BLZodiacTableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_PROFILE_ZODIAC_CELL_REUSEID forIndexPath:indexPath];
+            BLZodiacAndAgeTableViewCell *cell = (BLZodiacAndAgeTableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_PROFILE_ZODIAC_AND_AGE_CELL_REUSEID forIndexPath:indexPath];
             if (!cell) {
-                cell = [[BLZodiacTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PROFILE_ZODIAC_CELL_REUSEID];
+                cell = [[BLZodiacAndAgeTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PROFILE_ZODIAC_AND_AGE_CELL_REUSEID];
             }
-            cell.zodiac = _zodiac;
+            cell.birthday = _birthday;
             cell.delegate = self;
-            cell.tag = SECTION_ZODIAC;
+            cell.tag = SECTION_ZODIAC_AND_AGE;
             return cell;
             break;
         }
@@ -198,8 +198,8 @@ static const float AVATOR_WIDTH = 163.0f;
         case SECTION_BIRTHDAY:
             return 343.9f;
             break;
-        case SECTION_ZODIAC:
-            return 640.0f;
+        case SECTION_ZODIAC_AND_AGE:
+            return 250.0f;
             break;
         case SECTION_STYLE:
             return 500.0f;
@@ -258,8 +258,9 @@ static const float AVATOR_WIDTH = 163.0f;
             break;
         case SECTION_BIRTHDAY:
             _birthday = (NSDate *)value;
+            [_tableView reloadData];
             break;
-        case SECTION_ZODIAC:
+        case SECTION_ZODIAC_AND_AGE:
             _zodiac = (BLZodiac)[value integerValue];
             break;
         case SECTION_STYLE:
