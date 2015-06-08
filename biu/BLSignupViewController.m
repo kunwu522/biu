@@ -279,19 +279,24 @@ static const NSInteger INDEX_PASSWORD = 2;
         return;
     }
     
+    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     User *user = [User new];
-    user.email = _tfEmail.text;
-    user.username = _tfUsername.text;
-    user.password = _tfPassword.text;
+    delegate.currentUser = user;
+    delegate.currentUser.email = _tfEmail.text;
+    delegate.currentUser.username = _tfUsername.text;
+    delegate.currentUser.password = _tfPassword.text;
     
     UIActivityIndicatorView *ai = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     ai.hidesWhenStopped = YES;
     [ai startAnimating];
-    [[BLHTTPClient sharedBLHTTPClient] signup:user success:^(NSURLSessionDataTask *task, id responseObject) {
-        User *user = responseObject;
-        NSLog(@"Sign up success!!! user id: %@", user.id);
+    [[BLHTTPClient sharedBLHTTPClient] signup:delegate.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSNumber *userId = [NSNumber numberWithInt:[[responseObject objectForKey:@"user_id"] intValue]];
+        NSLog(@"Sign up success!!! user id: %@", userId);
+        delegate.currentUser.userId = userId;
+        [delegate.currentUser save];
         [ai stopAnimating];
         BLProfileViewController *profileViewController = [[BLProfileViewController alloc] initWithNibName:nil bundle:nil];
+        profileViewController.type = BLProfileViewTypeCreate;
         [self.navigationController pushViewController:profileViewController animated:YES];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [ai stopAnimating];

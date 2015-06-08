@@ -10,4 +10,11 @@
 
 @interface BLPartnerViewController : UIViewController
 
+typedef NS_ENUM(NSUInteger, BLPartnerViewControllerType) {
+    BLPartnerViewControllerCreate,
+    BLPartnerViewControllerUpdate,
+};
+
+@property (assign, nonatomic) BLPartnerViewControllerType type;
+
 @end

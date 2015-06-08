@@ -115,8 +115,11 @@ static double ICON_INITIAL_SIZE = 147.5;
 
 - (void)viewDidAppear:(BOOL)animated {
     sleep(2);
-    if (!_isLoginLayout) {
-        AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    
+    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    if (!delegate.currentUser) {
+        [self showLoginUI];
+    } else {
         NSString *email = [delegate.passwordItem objectForKey:(__bridge id)kSecAttrAccount];
         NSData *pwd = [delegate.passwordItem objectForKey:(__bridge id)(kSecValueData)];
         NSString *password = [[NSString alloc] initWithData:pwd encoding:NSUTF8StringEncoding];
@@ -136,9 +139,14 @@ static double ICON_INITIAL_SIZE = 147.5;
             [self showLoginUI];
         }];
     }
+
 }
 
 - (void)showLoginUI {
+    if (_isLoginLayout) {
+        return;
+    }
+    
     [self loginViewLayout];
     [UIView animateWithDuration:0.5 animations:^{
         [self.view layoutIfNeeded];

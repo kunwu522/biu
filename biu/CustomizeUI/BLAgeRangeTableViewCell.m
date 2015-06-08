@@ -101,9 +101,12 @@ static const int BL_AGE_RANGE_MAX_PICKER = 1;
     } else {
         self.maxAge = [[_ageRange objectAtIndex:row] integerValue];
     }
-    NSLog(@"Age range: From %lu to %lu.", self.minAge, self.maxAge);
+    if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
+        [self.delegate tableViewCell:self didChangeValue:[_ageRange objectAtIndex:row]];
+    }
 }
 
+#pragma mark
 - (void)awakeFromNib {
     // Initialization code
 }

@@ -93,6 +93,15 @@ static const float CELL_HEIGHT = 109.3;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     self.zodiac = indexPath.item;
+    if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
+        [self.delegate tableViewCell:self didChangeValue:[NSNumber numberWithInteger:self.zodiac]];
+    }
+}
+
+#pragma mark - 
+- (void)setZodiac:(BLZodiac)zodiac {
+    NSIndexPath *indexPath = [[NSIndexPath alloc] initWithIndex:[[NSNumber numberWithInteger:zodiac] integerValue]];
+    [_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
 }
 
 @end

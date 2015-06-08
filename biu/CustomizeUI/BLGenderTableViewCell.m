@@ -12,8 +12,6 @@
 
 @interface BLGenderTableViewCell ()
 
-@property (nonatomic) BLGender gender;
-
 @property (retain, nonatomic) UIView *maleView;
 @property (retain, nonatomic) UIView *femaleView;
 @property (retain, nonatomic) UIImageView *imageViewDivision;
@@ -85,10 +83,6 @@
     return self;
 }
 
-- (BLGender)getGender {
-    return _gender;
-}
-
 - (void)setGender:(BLGender)gender {
     if (gender == BLGenderNone) {
         _imageViewMale.image = _imageMaleUnselected;
@@ -112,6 +106,9 @@
     if (_gender != gender) {
         [self switchGender];
         _gender = gender;
+        if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
+            [self.delegate tableViewCell:self didChangeValue:[NSNumber numberWithInteger:_gender]];
+        }
     }
 }
 

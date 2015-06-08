@@ -10,13 +10,20 @@
 #import "BLSexualityTableViewCell.h"
 #import "BLAgeRangeTableViewCell.h"
 #import "BLZodiacTableViewCell.h"
+#import "BLStyleTableViewCell.h"
 
 #import "Masonry.h"
 
-@interface BLPartnerViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface BLPartnerViewController () <UITableViewDataSource, UITableViewDelegate, BLTableViewCellDeletage>
 
-@property (retain, nonatomic) UITableView *tableView;
-@property (retain, nonatomic) UIImageView *imageViewAvator;
+@property (assign, nonatomic) BLSexualityType sexualityType;
+@property (strong, nonatomic) NSNumber *minAge;
+@property (strong, nonatomic) NSNumber *maxAge;
+@property (strong, nonatomic) NSArray *preferZodiacs;
+@property (strong, nonatomic) NSArray *preferStyles;
+
+@property (strong, nonatomic) UITableView *tableView;
+@property (strong, nonatomic) UIImageView *imageViewAvator;
 
 @end
 
@@ -30,13 +37,14 @@ typedef NS_ENUM(NSUInteger, BLPartnerSection) {
     BLPartnerSectionAgeRange,
     BLPartnerSectionZodiac,
     BLPartnerSectionStyle,
-    BLPartnerSectionButtion
+    BLPartnerSectionButton
 };
 
 static NSString *BL_NORMAL_CELL_REUSEID = @"BLNormalCell";
 static NSString *BL_PARTNER_SEXUALITY_CELL_REUSEID = @"BLSexualityCell";
 static NSString *BL_PARTNER_AGERANGE_CELL_REUSEID = @"BLAgeRangeCell";
 static NSString *BL_PARTNER_ZODIAC_CELL_REUSEID = @"BLZodiacCell";
+static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -75,16 +83,18 @@ static NSString *BL_PARTNER_ZODIAC_CELL_REUSEID = @"BLZodiacCell";
         {
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BL_NORMAL_CELL_REUSEID forIndexPath:indexPath];
             cell.backgroundColor = [BLColorDefinition backgroundGrayColor];
+            cell.tag = BLPartnerSectionHeader;
             return cell;
             break;
         }
         case BLPartnerSectionSexuality:
         {
-            BLSexualityTableViewCell *cell = (BLSexualityTableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_PARTNER_SEXUALITY_CELL_REUSEID
-                                                                                                         forIndexPath:indexPath];
+            BLSexualityTableViewCell *cell = (BLSexualityTableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_PARTNER_SEXUALITY_CELL_REUSEID forIndexPath:indexPath];
             if (!cell) {
                 cell = [[BLSexualityTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PARTNER_SEXUALITY_CELL_REUSEID];
             }
+            cell.delegate = self;
+            cell.tag = BLPartnerSectionSexuality;
             return cell;
         }
         case BLPartnerSectionAgeRange:
@@ -94,6 +104,8 @@ static NSString *BL_PARTNER_ZODIAC_CELL_REUSEID = @"BLZodiacCell";
             if (!cell) {
                 cell = [[BLAgeRangeTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PARTNER_AGERANGE_CELL_REUSEID];
             }
+            cell.delegate = self;
+            cell.tag = BLPartnerSectionAgeRange;
             return cell;
         }
         case BLPartnerSectionZodiac:
@@ -102,8 +114,49 @@ static NSString *BL_PARTNER_ZODIAC_CELL_REUSEID = @"BLZodiacCell";
             if (!cell) {
                 cell = [[BLZodiacTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PARTNER_ZODIAC_CELL_REUSEID];
             }
+            cell.delegate = self;
+            cell.tag = BLPartnerSectionZodiac;
             return cell;
             break;
+        }
+        case BLPartnerSectionStyle:
+        {
+            BLStyleTableViewCell *cell = (BLStyleTableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_PARTNER_STYLE_CELL_REUSEID forIndexPath:indexPath];
+            if (!cell) {
+                cell = [[BLStyleTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PARTNER_STYLE_CELL_REUSEID];
+            }
+            cell.allowMultiSelected = YES;
+            cell.sexuality = _sexualityType;
+            cell.delegate = self;
+            cell.tag = BLPartnerSectionStyle;
+            return cell;
+        }
+        case BLPartnerSectionButton:
+        {
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BL_NORMAL_CELL_REUSEID forIndexPath:indexPath];
+            UIButton *button = [[UIButton alloc] init];
+            button.titleLabel.font = [BLFontDefinition boldFont:20.0f];
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [button setTitleColor:[BLColorDefinition fontGrayColor] forState:UIControlStateHighlighted];
+            [button setBackgroundColor:[BLColorDefinition fontGreenColor]];
+            button.layer.cornerRadius = 5.0f;
+            button.clipsToBounds = YES;
+            if (self.type == BLPartnerViewControllerCreate) {
+                [button setTitle:@"Find" forState:UIControlStateNormal];
+                [button addTarget:self action:@selector(createPartner:) forControlEvents:UIControlEventTouchDown];
+            } else {
+                [button setTitle:@"Save" forState:UIControlStateNormal];
+                [button addTarget:self action:@selector(updatePartner:) forControlEvents:UIControlEventTouchDown];
+            }
+            [cell addSubview:button];
+            
+            [button mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(button.superview);
+                make.left.equalTo(button.superview).with.offset(20.0f);
+                make.bottom.equalTo(button.superview).with.offset(-20.0f);
+                make.right.equalTo(button.superview).with.offset(-20.0f);
+            }];
+
         }
         default:
             break;
@@ -165,6 +218,38 @@ static NSString *BL_PARTNER_ZODIAC_CELL_REUSEID = @"BLZodiacCell";
         return sectionHeaderView;
     }
     return nil;
+}
+
+- (void)tableViewCell:(BLBaseTableViewCell *)cell didChangeValue:(id)value {
+    switch (cell.tag) {
+        case BLPartnerSectionSexuality:
+            _sexualityType = (BLSexualityType)value;
+            [_tableView reloadData];
+            break;
+        case BLPartnerSectionAgeRange:
+            _minAge = [(NSDictionary *)value objectForKey:@"min_age"];
+            _maxAge = [(NSDictionary *)value objectForKey:@"max_age"];
+            break;
+        case BLPartnerSectionZodiac:
+            _preferZodiacs = (NSArray *)value;
+            break;
+        case BLPartnerSectionStyle:
+            _preferStyles = (NSArray *)value;
+            break;
+        case BLPartnerSectionHeader:
+        case BLPartnerSectionButton:
+        default:
+            break;
+    }
+}
+
+#pragma mark - handle action
+- (void)createPartner:(id)sender {
+    
+}
+
+- (void)updatePartner:(id)sender {
+    
 }
 
 /*

@@ -12,9 +12,16 @@
 #import "BLZodiacTableViewCell.h"
 #import "BLStyleTableViewCell.h"
 
+#import "BLPartnerViewController.h"
 #import "Masonry.h"
 
-@interface BLProfileViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface BLProfileViewController () <UITableViewDataSource, UITableViewDelegate, BLTableViewCellDeletage>
+
+@property (strong, nonatomic) User *currentUser;
+@property (assign, nonatomic) BLGender gender;
+@property (strong, nonatomic) NSDate *birthday;
+@property (assign, nonatomic) BLZodiac zodiac;
+@property (assign, nonatomic) BLStyleType style;
 
 @property (retain, nonatomic) UITableView *tableView;
 @property (retain, nonatomic) UIImageView *imageViewAvator;
@@ -43,6 +50,12 @@ static const float AVATOR_WIDTH = 163.0f;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    _currentUser = delegate.currentUser;
+    _gender = _currentUser.profile.gender;
+    _birthday = _currentUser.profile.birthday;
+    _zodiac = _currentUser.profile.zodiac;
+    _style = _currentUser.profile.style;
     
     _tableView = [[UITableView alloc] initWithFrame:self.view.frame];
     _tableView.backgroundColor = [UIColor clearColor];
@@ -96,6 +109,9 @@ static const float AVATOR_WIDTH = 163.0f;
             if (!cell) {
                 cell = [[BLGenderTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PROFILE_GENDER_CELL_REUSEID];
             }
+            cell.gender = _gender;
+            cell.delegate = self;
+            cell.tag = SECTION_GENDER;
             return cell;
             break;
         }
@@ -105,6 +121,9 @@ static const float AVATOR_WIDTH = 163.0f;
             if (!cell) {
                 cell = [[BLBirthTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PROFILE_BIRTH_CELL_REUSEID];
             }
+            cell.birthday = _birthday;
+            cell.delegate = self;
+            cell.tag = SECTION_BIRTHDAY;
             return cell;
             break;
         }
@@ -114,6 +133,9 @@ static const float AVATOR_WIDTH = 163.0f;
             if (!cell) {
                 cell = [[BLZodiacTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PROFILE_ZODIAC_CELL_REUSEID];
             }
+            cell.zodiac = _zodiac;
+            cell.delegate = self;
+            cell.tag = SECTION_ZODIAC;
             return cell;
             break;
         }
@@ -123,6 +145,10 @@ static const float AVATOR_WIDTH = 163.0f;
             if (!cell) {
                 cell = [[BLStyleTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PROFIEL_STYLE_CELL_REUSEID];
             }
+            cell.delegate = self;
+            cell.tag = SECTION_STYLE;
+            cell.gender = _gender;
+            cell.style = _style;
             return cell;
             break;
         }
@@ -138,10 +164,10 @@ static const float AVATOR_WIDTH = 163.0f;
             button.clipsToBounds = YES;
             if (self.type == BLProfileViewTypeCreate) {
                 [button setTitle:@"Continue" forState:UIControlStateNormal];
-                [button addTarget:self action:@selector(next:) forControlEvents:UIControlEventTouchDown];
+                [button addTarget:self action:@selector(createProfile:) forControlEvents:UIControlEventTouchDown];
             } else {
                 [button setTitle:@"Save" forState:UIControlStateNormal];
-                [button addTarget:self action:@selector(save:) forControlEvents:UIControlEventTouchDown];
+                [button addTarget:self action:@selector(udpateProfile:) forControlEvents:UIControlEventTouchDown];
             }
             [cell addSubview:button];
             
@@ -223,13 +249,66 @@ static const float AVATOR_WIDTH = 163.0f;
     return nil;
 }
 
-#pragma mark - handle action
-- (void)next:(id)sender {
-    
+#pragma mark - handle cell delegate
+- (void)tableViewCell:(BLBaseTableViewCell *)cell didChangeValue:(id)value {
+    switch (cell.tag) {
+        case SECTION_GENDER:
+            _gender = (BLGender)[value integerValue];
+            [_tableView reloadData];
+            break;
+        case SECTION_BIRTHDAY:
+            _birthday = (NSDate *)value;
+            break;
+        case SECTION_ZODIAC:
+            _zodiac = (BLZodiac)[value integerValue];
+            break;
+        case SECTION_STYLE:
+            _style = (BLStyleType)[value integerValue];
+            break;
+        default:
+            break;
+    }
 }
 
-- (void)save:(id)sender {
+#pragma mark - handle action
+- (void)udpateProfile:(id)sender {
+//    Profile *profile = [Profile new];
+//    profile.gender = _gender;
+//    profile.birthday = _birthday;
+//    profile.zodiac = _zodiac;
+//    profile.style = _style;
+//    [profile save];
+//    
+//    [[BLHTTPClient sharedBLHTTPClient] createProfile:profile success:^(NSURLSessionDataTask *task, id responseObject) {
+//        NSLog(@"Creating profile successed...");
+//        BLPartnerViewController *partnerController = [[BLPartnerViewController alloc] initWithNibName:nil bundle:nil];
+//        [self.navigationController pushViewController:partnerController animated:YES];
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        NSLog(@"Creating profile failed. Error: %@", error.description);
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Creating profile failed. Please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+//        [alertView show];
+//    }];
+}
+
+- (void)createProfile:(id)sender {
+    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    delegate.currentUser.profile = [Profile new];
+    delegate.currentUser.profile.gender = _gender;
+    delegate.currentUser.profile.birthday = _birthday;
+    delegate.currentUser.profile.zodiac = _zodiac;
+    delegate.currentUser.profile.style = _style;
     
+    [[BLHTTPClient sharedBLHTTPClient] createProfile:delegate.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"create profile profile successed...");
+        delegate.currentUser.profile.profileId = [responseObject objectForKey:@"profile_id"];
+        [delegate.currentUser save];
+        BLPartnerViewController *partnerController = [[BLPartnerViewController alloc] initWithNibName:nil bundle:nil];
+        [self.navigationController pushViewController:partnerController animated:YES];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"create profile profile failed. Error: %@", error.description);
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Updating profile failed. Please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alertView show];
+    }];
 }
 
 @end

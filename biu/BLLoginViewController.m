@@ -278,10 +278,7 @@ static const NSInteger TAG_PASSWORD = 1;
     User *user = [User new];
     user.email = _tfEmail.text;
     user.password = _tfPassword.text;
-    
-    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    [delegate.passwordItem setObject:_tfEmail.text forKey:(__bridge id)kSecAttrAccount];
-    [delegate.passwordItem setObject:_tfPassword.text forKey:(__bridge id)kSecValueData];
+    [user save];
     
     BLHTTPClient *httpClient = [BLHTTPClient sharedBLHTTPClient];
     [httpClient login:user success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -292,6 +289,7 @@ static const NSInteger TAG_PASSWORD = 1;
         [self showErrorMessage];
         
         // reset keychain if log in failed
+        AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
         [delegate.passwordItem resetKeychainItem];
     }];
 }

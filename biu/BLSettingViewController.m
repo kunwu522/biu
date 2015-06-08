@@ -54,6 +54,9 @@
     AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     [delegate.passwordItem resetKeychainItem];
     
+    [delegate.currentUser removeFromUserDefault];
+    delegate.currentUser = nil;
+    
     BLWelcomeViewController *welViewController = [[BLWelcomeViewController alloc] initWithNibName:nil bundle:nil];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:welViewController];
     navController.navigationBarHidden = YES;

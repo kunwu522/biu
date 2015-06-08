@@ -74,6 +74,9 @@ static const float BL_SEXUALITY_CELL_WIDTH = 100.0f;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     self.sexuality = (BLSexualityType)indexPath.item;
+    if ([self respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
+        [self.delegate tableViewCell:self didChangeValue:[NSNumber numberWithInteger:self.sexuality]];
+    }
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {

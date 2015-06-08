@@ -11,4 +11,6 @@
 
 @interface BLBirthTableViewCell : BLBaseTableViewCell
 
+@property (strong, nonatomic) NSDate *birthday;
+
 @end

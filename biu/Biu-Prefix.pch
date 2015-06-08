@@ -21,6 +21,7 @@
     #import "BLColorDefinition.h"
     #import "BLFontDefinition.h"
     #import "Profile.h"
+    #import "Partner.h"
     #import "User.h"
 #endif
 #endif

@@ -9,12 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "BLMenuViewController.h"
 #import "KeychainItemWrapper.h"
+#import "User.h"
 
 @class KeychainItemWrapper;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+
+@property (strong, nonatomic) User *currentUser;
 
 @property (strong, nonatomic) UINavigationController *welNavController;
 @property (nonatomic, retain) KeychainItemWrapper *passwordItem;

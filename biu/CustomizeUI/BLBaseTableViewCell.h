@@ -8,7 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+@class BLBaseTableViewCell;
+
+@protocol BLTableViewCellDeletage <NSObject>
+
+@optional
+-(void)tableViewCell:(BLBaseTableViewCell *)cell didChangeValue:(id)value;
+
+@end
+
 @interface BLBaseTableViewCell : UITableViewCell
+
+@property (weak, nonatomic) id<BLTableViewCellDeletage> delegate;
 
 @property (strong, nonatomic) UILabel *title;
 @property (strong, nonatomic) UIView *content;

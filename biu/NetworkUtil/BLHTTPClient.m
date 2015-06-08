@@ -64,7 +64,7 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/api/v1/";
                                 @"password" : user.password,
                    @"password_confirmation" : user.password};
     
-    [self POST:@"users" parameters:parameter success:success failure:failure];
+    [self POST:@"users.json" parameters:parameter success:success failure:failure];
 }
 
 - (void)login:(User *)user
@@ -76,7 +76,7 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/api/v1/";
     
     NSDictionary *parameter = @{@"email" : user.email,
                                 @"password" : user.password};
-    [self POST:@"login" parameters:parameter success:success failure:failure];
+    [self POST:@"login.json" parameters:parameter success:success failure:failure];
 }
 
 - (void)logout:(User *)user
@@ -86,7 +86,27 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/api/v1/";
         return;
     }
     
-    [self DELETE:@"logout" parameters:nil success:success failure:failure];
+    [self DELETE:@"logout.json" parameters:nil success:success failure:failure];
+}
+
+- (void)createProfile:(User *)user
+       success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+       failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    if (!self) {
+        return;
+    }
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *dateString = [dateFormatter stringFromDate:user.profile.birthday];
+    
+    NSDictionary *parameter = @{@"user_id" : user.userId,
+                                @"gender" : [NSNumber numberWithInteger:user.profile.gender],
+                                @"birthday" : dateString,
+                                @"zodiac_id" : [NSNumber numberWithInteger:user.profile.zodiac],
+                                @"style_id" : [NSNumber numberWithInteger:user.profile.style]};
+    
+    [self POST:@"profiles.json" parameters:parameter success:success failure:failure];
 }
 
 @end

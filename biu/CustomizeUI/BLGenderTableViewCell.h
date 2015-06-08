@@ -9,7 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "BLBaseTableViewCell.h"
 
+@class BLGenderTableViewCell;
+
 @interface BLGenderTableViewCell : BLBaseTableViewCell
+
+@property (assign, nonatomic) BLGender gender;
 
 - (void)setGender:(BLGender)gender;
 - (BLGender)getGender;

@@ -10,15 +10,6 @@
 
 @interface BLSexualityTableViewCell : BLBaseTableViewCell
 
-typedef NS_ENUM(NSUInteger, BLSexualityType) {
-    BLSexualityTypeMan = 0,
-    BLSexualityTypeWoman,
-    BLSexualityTypeP,
-    BLSexualityTypeT,
-    BLSexualityType1,
-    BLSexualityType0
-};
-
 @property (assign, nonatomic) BLSexualityType sexuality;
 
 @end

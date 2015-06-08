@@ -34,6 +34,9 @@
     // Create BL Menu view controller
     self.menuViewController = [[BLMenuViewController alloc] initWithRootViewControllr:matchViewController];
     
+    // Get current user
+    self.currentUser = [[User alloc] initWithFromUserDefault];
+    
     return YES;
 }
 

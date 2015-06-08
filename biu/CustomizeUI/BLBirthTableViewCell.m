@@ -23,6 +23,7 @@
         self.title.text = NSLocalizedString(@"Choose your Date of birth", nil);
         
         _datePicker = [[UIDatePicker alloc] init];
+        [_datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
         _datePicker.datePickerMode = UIDatePickerModeDate;
         [self.content addSubview:_datePicker];
         
@@ -38,6 +39,20 @@
         make.centerX.equalTo(_datePicker.superview.mas_centerX);
         make.centerY.equalTo(_datePicker.superview.mas_centerY);
     }];
+}
+
+#pragma mark - handle changing date
+- (void)dateChanged:(id)sender {
+    UIDatePicker *picker = sender;
+    self.birthday = picker.date;
+    if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
+        [self.delegate tableViewCell:self didChangeValue:self.birthday];
+    }
+}
+
+#pragma mark -
+- (void)setBirthday:(NSDate *)birthday {
+    [_datePicker setDate:birthday];
 }
 
 - (void)awakeFromNib {

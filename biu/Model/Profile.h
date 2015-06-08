@@ -31,34 +31,36 @@ typedef NS_ENUM(NSUInteger, BLZodiac) {
     BLZodiacPisces = 11
 };
 
-typedef NS_ENUM(NSUInteger, BLStyleManType) {
-    BLStyleManTypeRich = 0,
-    BLStyleManTypeGFS = 1,
-    BLStyleManTypeDS = 2,
-    BLStyleManTypeTalent = 3,
-    BLStyleManTypeSport = 4,
-    BLStyleManTypeFashion = 5,
-    BLStyleManTypeYoung = 6,
-    BLStyleManTypeCommon = 7,
-    BLStyleManTypeAll = 8,
+typedef NS_ENUM(NSUInteger, BLStyleType) {
+    BLStyleTypeManRich = 0,
+    BLStyleTypeManGFS = 1,
+    BLStyleTypeManDS = 2,
+    BLStyleTypeManTalent = 3,
+    BLStyleTypeManSport = 4,
+    BLStyleTypeManFashion = 5,
+    BLStyleTypeManYoung = 6,
+    BLStyleTypeManCommon = 7,
+    BLStyleTypeManAll = 8,
+    BLStyleTypeWomanGodness = 0,
+    BLStyleTypeWomanBFM = 1,
+    BLStyleTypeWomanDS = 2,
+    BLStyleTypeWomanTalent = 3,
+    BLStyleTypeWomanSport = 4,
+    BLStyleTypeWomanSexy = 5,
+    BLStyleTypeWomanLovely = 6,
+    BLStyleTypeWomanSuccessFul = 7,
+    BLStyleTypeWomanAll = 8,
 };
 
-typedef NS_ENUM(NSUInteger, BLStyleWomanType) {
-    BLStyleWomanTypeGodness = 0,
-    BLStyleWomanTypeBFM = 1,
-    BLStyleWomanTypeDS = 2,
-    BLStyleWomanTypeTalent = 3,
-    BLStyleWomanTypeSport = 4,
-    BLStyleWomanTypeSexy = 5,
-    BLStyleWomanTypeLovely = 6,
-    BLStyleWomanTypeSuccessFul = 7,
-    BLStyleWomanTypeAll = 8,
-};
-
+@property (strong, nonatomic) NSNumber *profileId;
+@property (strong, nonatomic) NSNumber *userId;
+@property (strong, nonatomic) NSString *username;
 @property (strong, nonatomic) NSDate *birthday;
 @property (strong, nonatomic) NSNumber *age;
 @property (assign, nonatomic) BLZodiac zodiac;
 @property (assign, nonatomic) BLGender gender;
-@property (assign, nonatomic) NSUInteger style;
+@property (assign, nonatomic) BLStyleType style;
+
+- (void)save;
 
 @end

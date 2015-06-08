@@ -60,6 +60,7 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
         self.selectedViewController = rootController;
         
         BLProfileViewController *profileViewController = [[BLProfileViewController alloc] initWithNibName:nil bundle:nil];
+        profileViewController.type = BLProfileViewTypeUpdate;
         BLPasswordViewController *passwordViewController = [[BLPasswordViewController alloc] initWithNibName:nil bundle:nil];
         BLPartnerViewController *partnerViewController = [[BLPartnerViewController alloc] initWithNibName:nil bundle:nil];
         BLSettingViewController *settingViewController = [[BLSettingViewController alloc] initWithNibName:nil bundle:nil];

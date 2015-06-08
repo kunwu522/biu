@@ -14,7 +14,8 @@
 		A3039E9B1B1AEB4F006FB5E4 /* BLMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3039E9A1B1AEB4F006FB5E4 /* BLMenuViewController.m */; };
 		A30D96691B20BD8800A1CF88 /* style_man_unselected_icon8.png in Resources */ = {isa = PBXBuildFile; fileRef = A30D96671B20BD8800A1CF88 /* style_man_unselected_icon8.png */; };
 		A30D966A1B20BD8800A1CF88 /* style_woman_unselected_icon8.png in Resources */ = {isa = PBXBuildFile; fileRef = A30D96681B20BD8800A1CF88 /* style_woman_unselected_icon8.png */; };
-		A30D966D1B20CC9000A1CF88 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = A30D966C1B20CC9000A1CF88 /* Profile.m */; };
+		A30D96A51B24414900A1CF88 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = A30D96A41B24414900A1CF88 /* Profile.m */; };
+		A30D96A81B24433500A1CF88 /* Partner.m in Sources */ = {isa = PBXBuildFile; fileRef = A30D96A71B24433500A1CF88 /* Partner.m */; };
 		A3BD9E4B1B0CC37D00815100 /* BLSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3BD9E4A1B0CC37D00815100 /* BLSignupViewController.m */; };
 		A3CCFCFA1B1B602600C9BAE8 /* back_icon3.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFCF41B1B602600C9BAE8 /* back_icon3.png */; };
 		A3CCFCFB1B1B602600C9BAE8 /* forward_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFCF51B1B602600C9BAE8 /* forward_icon2.png */; };
@@ -153,8 +154,10 @@
 		A3039E9A1B1AEB4F006FB5E4 /* BLMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLMenuViewController.m; path = CustomizeUI/BLMenuViewController.m; sourceTree = "<group>"; };
 		A30D96671B20BD8800A1CF88 /* style_man_unselected_icon8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_man_unselected_icon8.png; path = images/style/style_man_unselected_icon8.png; sourceTree = "<group>"; };
 		A30D96681B20BD8800A1CF88 /* style_woman_unselected_icon8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_woman_unselected_icon8.png; path = images/style/style_woman_unselected_icon8.png; sourceTree = "<group>"; };
-		A30D966B1B20CC9000A1CF88 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Profile.h; path = Model/Profile.h; sourceTree = "<group>"; };
-		A30D966C1B20CC9000A1CF88 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Profile.m; path = Model/Profile.m; sourceTree = "<group>"; };
+		A30D96A31B24414900A1CF88 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Profile.h; path = Model/Profile.h; sourceTree = "<group>"; };
+		A30D96A41B24414900A1CF88 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Profile.m; path = Model/Profile.m; sourceTree = "<group>"; };
+		A30D96A61B24433500A1CF88 /* Partner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Partner.h; path = Model/Partner.h; sourceTree = "<group>"; };
+		A30D96A71B24433500A1CF88 /* Partner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Partner.m; path = Model/Partner.m; sourceTree = "<group>"; };
 		A3BD9E491B0CC37D00815100 /* BLSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLSignupViewController.h; sourceTree = "<group>"; };
 		A3BD9E4A1B0CC37D00815100 /* BLSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLSignupViewController.m; sourceTree = "<group>"; };
 		A3CCFCF41B1B602600C9BAE8 /* back_icon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = back_icon3.png; path = images/back_icon3.png; sourceTree = "<group>"; };
@@ -544,8 +547,10 @@
 			children = (
 				EAA7FD711B12CFF700C2B5C6 /* User.h */,
 				EAA7FD721B12CFF700C2B5C6 /* User.m */,
-				A30D966B1B20CC9000A1CF88 /* Profile.h */,
-				A30D966C1B20CC9000A1CF88 /* Profile.m */,
+				A30D96A31B24414900A1CF88 /* Profile.h */,
+				A30D96A41B24414900A1CF88 /* Profile.m */,
+				A30D96A61B24433500A1CF88 /* Partner.h */,
+				A30D96A71B24433500A1CF88 /* Partner.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -873,6 +878,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A30D96A81B24433500A1CF88 /* Partner.m in Sources */,
 				EA305ED91B16F32100DD904D /* BLPickerView.m in Sources */,
 				EAEC0B2F1B1F06ED000A7C5B /* BLAgeRangeTableViewCell.m in Sources */,
 				EA9F49391B1C021F0037D188 /* BLBlurView.m in Sources */,
@@ -880,7 +886,7 @@
 				EA9F49821B1DB2F10037D188 /* BLPartnerViewController.m in Sources */,
 				EA9F497A1B1D5BD90037D188 /* UIImage+ImageEffects.m in Sources */,
 				EA9F497F1B1D8BA30037D188 /* BLStyleTableViewCell.m in Sources */,
-				A30D966D1B20CC9000A1CF88 /* Profile.m in Sources */,
+				A30D96A51B24414900A1CF88 /* Profile.m in Sources */,
 				EA9F498B1B1DC3DF0037D188 /* BLSettingViewController.m in Sources */,
 				EAE8E2111B09F34300C9038D /* BLLoginViewController.m in Sources */,
 				EA1E504F1AFCB99F004F7F6A /* BLTextField.m in Sources */,
@@ -1043,11 +1049,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "biu/Biu-Prefix.pch";
 				INFOPLIST_FILE = biu/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1058,6 +1066,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "biu/Biu-Prefix.pch";
 				INFOPLIST_FILE = biu/Info.plist;
