@@ -12,8 +12,10 @@
 
 typedef NS_ENUM(NSInteger, BLBlurStyle) {
     BLBlurStyleUndefined = 0,
-    BLBlurStypleDark = 1,
-    BLBlurStypleLight = 2
+    BLBlurStyleDark = 1,
+    BLBlurCondensedDark = 2,
+    BLBlurStyleLight = 3,
+    BLBlurStylePurple = 4
 };
 
 @property (retain, nonatomic) UIView *parentView;
@@ -21,5 +23,6 @@ typedef NS_ENUM(NSInteger, BLBlurStyle) {
 @property (retain, nonatomic) UIImageView *backgroundImageView;
 
 - (void)blurWithView:(UIView *)view;
+- (void)blurWithViewAync:(UIView *)view;
 
 @end

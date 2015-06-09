@@ -15,7 +15,4 @@
 
 @property (assign, nonatomic) BLGender gender;
 
-- (void)setGender:(BLGender)gender;
-- (BLGender)getGender;
-
 @end

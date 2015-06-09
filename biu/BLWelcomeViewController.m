@@ -9,6 +9,7 @@
 #import "BLWelcomeViewController.h"
 #import "AppDelegate.h"
 #import "BLLoginViewController.h"
+#import "BLLoginView.h"
 #import "BLSignupViewController.h"
 #import "BLMatchViewController.h"
 #import "KeychainItemWrapper.h"
@@ -55,8 +56,6 @@ static double ICON_INITIAL_SIZE = 147.5;
     
     self.view.backgroundColor = [UIColor clearColor];
     
-    NSLog(@"ViewController size: %f--%f", self.view.frame.size.width, self.view.frame.size.height);
-    
     _background = [[UIView alloc] initWithFrame:self.view.frame];
     _imageView = [[UIImageView alloc] initWithFrame:_background.frame];
     _imageView.image = [UIImage imageNamed:@"wel_background.png"];
@@ -67,11 +66,7 @@ static double ICON_INITIAL_SIZE = 147.5;
     //Initial View
     _logo = [[UIImageView alloc] init];
     _logo.image = [UIImage imageNamed:@"logo.png"];
-//    _logo.layer.cornerRadius = ICON_INITIAL_SIZE / 2;
-//    _logo.layer.masksToBounds = YES;
-//    _logo.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:_logo];
-    
     
     _biuTitle = [[UILabel alloc] init];
     _biuTitle.text = @"BIU";
@@ -151,11 +146,9 @@ static double ICON_INITIAL_SIZE = 147.5;
     [UIView animateWithDuration:0.5 animations:^{
         [self.view layoutIfNeeded];
         _biuTitle.transform = CGAffineTransformScale(_biuTitle.transform, 0.67, 0.67);
-        _biuSubtitle.alpha = 0;
     } completion:^(BOOL finished) {
         // TODO: show login input and button
-        [UIView animateWithDuration:0.5 animations:^{
-            _lbSlogan.alpha = 1;
+        [UIView animateWithDuration:1.0 animations:^{
             _btnLogin.alpha = 1;
             _btnSignup.alpha = 1;
         }];
@@ -190,39 +183,44 @@ static double ICON_INITIAL_SIZE = 147.5;
 
 - (void)loginViewLayout {
     [_logo mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).with.offset(91.7);
-        make.height.equalTo(@97.7);
-        make.width.equalTo(@97.7);
+        make.top.equalTo(self.view).with.offset(120.7);
+        make.height.equalTo(@120.0);
+        make.width.equalTo(@120.0);
     }];
     
     [_biuTitle mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_logo.mas_bottom).with.offset(29.5);
+        make.top.equalTo(_logo.mas_bottom).with.offset(30.0f);
     }];
     
-    _lbSlogan = [[UILabel alloc] init];
+    [_biuSubtitle mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_logo.mas_centerX);
+        make.top.equalTo(_biuTitle.mas_bottom).with.offset(30.0f);
+    }];
+    
+//    _lbSlogan = [[UILabel alloc] init];
 //    _lbSlogan.text = @"We help you to find your perfect one in close distance, and notify you from your new watch";
-    _lbSlogan.font = [BLFontDefinition normalFont:16];
-    _lbSlogan.textColor = [UIColor whiteColor];
-    _lbSlogan.textAlignment = NSTextAlignmentCenter;
-    _lbSlogan.numberOfLines = 0;
+//    _lbSlogan.font = [BLFontDefinition normalFont:16];
+//    _lbSlogan.textColor = [UIColor whiteColor];
+//    _lbSlogan.textAlignment = NSTextAlignmentCenter;
+//    _lbSlogan.numberOfLines = 0;
 //    _lbSlogan.backgroundColor = [UIColor grayColor];
     
     //Set line space
 //    NSString *labelText = @"We help you to find your perfect one in close distance, and notify you from your new watch";
-    NSString *labelText = NSLocalizedString(@"Slogan", nil);
-    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:labelText];
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setLineSpacing:15];
-    [paragraphStyle setAlignment:NSTextAlignmentCenter];
-    [attrString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [labelText length])];
-    _lbSlogan.attributedText = attrString;
-    _lbSlogan.alpha = 0;
-    [self.view addSubview:_lbSlogan];
+//    NSString *labelText = NSLocalizedString(@"Slogan", nil);
+//    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:labelText];
+//    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+//    [paragraphStyle setLineSpacing:15];
+//    [paragraphStyle setAlignment:NSTextAlignmentCenter];
+//    [attrString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [labelText length])];
+//    _lbSlogan.attributedText = attrString;
+//    _lbSlogan.alpha = 0;
+//    [self.view addSubview:_lbSlogan];
     
     _btnLogin = [[UIButton alloc] init];
     [_btnLogin addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchDown];
     [_btnLogin setTitle:NSLocalizedString(@"Login", nil) forState:UIControlStateNormal];
-    _btnLogin.titleLabel.font = [BLFontDefinition boldFont:16];
+    _btnLogin.titleLabel.font = [BLFontDefinition normalFont:16];
     _btnLogin.titleLabel.textColor = [UIColor whiteColor];
     _btnLogin.backgroundColor = [UIColor colorWithRed:93.0 / 255.0 green:112.0 / 255.0 blue:129.0 / 255.0 alpha:1];
     _btnLogin.layer.cornerRadius = 5;
@@ -232,7 +230,7 @@ static double ICON_INITIAL_SIZE = 147.5;
     _btnSignup = [[UIButton alloc] init];
     [_btnSignup addTarget:self action:@selector(signup:) forControlEvents:UIControlEventTouchDown];
     [_btnSignup setTitle:NSLocalizedString(@"Sign up", nil) forState:UIControlStateNormal];
-    _btnSignup.titleLabel.font = [BLFontDefinition boldFont:16];
+    _btnSignup.titleLabel.font = [BLFontDefinition normalFont:16];
     _btnSignup.titleLabel.textColor = [UIColor whiteColor];
     _btnSignup.backgroundColor = [UIColor colorWithRed:19.0 / 255.0 green:183.0 / 255.0 blue:120.0 / 255.0 alpha:1];
     _btnSignup.layer.cornerRadius = 5;
@@ -246,24 +244,34 @@ static double ICON_INITIAL_SIZE = 147.5;
         make.height.equalTo(@100);
     }];
     
-    [_btnSignup mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view).with.offset(-21.1);
-        make.left.equalTo(self.view).with.offset(20.7);
-        make.right.equalTo(self.view).with.offset(-20.7);
-        make.height.equalTo(@59);
+    [_btnLogin mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(_btnSignup.superview).with.offset(-5);
+        make.left.equalTo(self.view).with.offset(5);
+        make.right.equalTo(_btnSignup.mas_left).with.offset(-3);
+        make.height.equalTo(@40.0f);
+        make.width.equalTo(_btnSignup.mas_width);
     }];
     
-    [_btnLogin mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(_btnSignup.mas_top).with.offset(-13.6);
-        make.left.equalTo(self.view).with.offset(20.7);
-        make.right.equalTo(self.view).with.offset(-20.7);
-        make.height.equalTo(@59);
+    [_btnSignup mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(_btnLogin.superview).with.offset(-5);
+//        make.left.equalTo(_btnLogin.mas_right).with.offset(5);
+        make.right.equalTo(self.view).with.offset(-5);
+        make.height.equalTo(@40.0f);
+        make.width.equalTo(_btnLogin.mas_width);
     }];
 }
 
 - (void)login:(id)sender {
-    BLLoginViewController *loginViewController = [[BLLoginViewController alloc] initWithNibName:nil bundle:nil];
-    [self.navigationController pushViewController:loginViewController animated:YES];
+//    BLLoginViewController *loginViewController = [[BLLoginViewController alloc] initWithNibName:nil bundle:nil];
+//    [self.navigationController pushViewController:loginViewController animated:YES];
+    BLLoginView *loginView = [[BLLoginView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height)];
+    [self.view addSubview:loginView];
+    
+    [UIView animateWithDuration:0.3f animations:^{
+        CGPoint center = loginView.center;
+        center.y = self.view.center.y;
+        loginView.center = center;
+    }];
 }
 
 - (void)signup:(id)sender {

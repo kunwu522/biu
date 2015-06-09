@@ -70,6 +70,13 @@
 		EAA7FD6F1B0DD64F00C2B5C6 /* BLHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA7FD6E1B0DD64F00C2B5C6 /* BLHTTPClient.m */; };
 		EAA7FD731B12CFF700C2B5C6 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA7FD721B12CFF700C2B5C6 /* User.m */; };
 		EAB60E371B257E8F00BE2874 /* BLProfileTest.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB60E361B257E8F00BE2874 /* BLProfileTest.m */; };
+		EAB60E3B1B26B29D00BE2874 /* BLLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB60E3A1B26B29D00BE2874 /* BLLoginView.m */; };
+		EAB60E3D1B26BCAF00BE2874 /* close_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EAB60E3C1B26BCAF00BE2874 /* close_icon.png */; };
+		EAB60E431B26C45200BE2874 /* BLUIDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB60E421B26C45200BE2874 /* BLUIDrawer.m */; };
+		EAB60E461B26EB8E00BE2874 /* login_with_wechat_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EAB60E441B26EB8E00BE2874 /* login_with_wechat_icon.png */; };
+		EAB60E471B26EB8E00BE2874 /* login_with_weibo_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EAB60E451B26EB8E00BE2874 /* login_with_weibo_icon.png */; };
+		EAB60E491B26FDD100BE2874 /* login_signup_background.png in Resources */ = {isa = PBXBuildFile; fileRef = EAB60E481B26FDD100BE2874 /* login_signup_background.png */; };
+		EAB60E4C1B2709A700BE2874 /* BLSignupView.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB60E4B1B2709A700BE2874 /* BLSignupView.m */; };
 		EAE8E20C1B09CBF800C9038D /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE8E20B1B09CBF800C9038D /* logo.png */; };
 		EAE8E2111B09F34300C9038D /* BLLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE8E2101B09F34300C9038D /* BLLoginViewController.m */; };
 		EAEA27D11B256776006967A1 /* BLZodiacAndAgeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAEA27D01B256776006967A1 /* BLZodiacAndAgeTableViewCell.m */; };
@@ -245,6 +252,16 @@
 		EAA7FD711B12CFF700C2B5C6 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = Model/User.h; sourceTree = "<group>"; };
 		EAA7FD721B12CFF700C2B5C6 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = Model/User.m; sourceTree = "<group>"; };
 		EAB60E361B257E8F00BE2874 /* BLProfileTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLProfileTest.m; path = Models/BLProfileTest.m; sourceTree = "<group>"; };
+		EAB60E391B26B29D00BE2874 /* BLLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLLoginView.h; path = CustomizeUI/BLLoginView.h; sourceTree = "<group>"; };
+		EAB60E3A1B26B29D00BE2874 /* BLLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLLoginView.m; path = CustomizeUI/BLLoginView.m; sourceTree = "<group>"; };
+		EAB60E3C1B26BCAF00BE2874 /* close_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = close_icon.png; path = images/close_icon.png; sourceTree = "<group>"; };
+		EAB60E411B26C45200BE2874 /* BLUIDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLUIDrawer.h; path = UIUtil/BLUIDrawer.h; sourceTree = "<group>"; };
+		EAB60E421B26C45200BE2874 /* BLUIDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLUIDrawer.m; path = UIUtil/BLUIDrawer.m; sourceTree = "<group>"; };
+		EAB60E441B26EB8E00BE2874 /* login_with_wechat_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = login_with_wechat_icon.png; path = images/login_with_wechat_icon.png; sourceTree = "<group>"; };
+		EAB60E451B26EB8E00BE2874 /* login_with_weibo_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = login_with_weibo_icon.png; path = images/login_with_weibo_icon.png; sourceTree = "<group>"; };
+		EAB60E481B26FDD100BE2874 /* login_signup_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = login_signup_background.png; path = images/login_signup_background.png; sourceTree = "<group>"; };
+		EAB60E4A1B2709A700BE2874 /* BLSignupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLSignupView.h; path = CustomizeUI/BLSignupView.h; sourceTree = "<group>"; };
+		EAB60E4B1B2709A700BE2874 /* BLSignupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLSignupView.m; path = CustomizeUI/BLSignupView.m; sourceTree = "<group>"; };
 		EAE8E20B1B09CBF800C9038D /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = images/logo.png; sourceTree = "<group>"; };
 		EAE8E20F1B09F34300C9038D /* BLLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLLoginViewController.h; sourceTree = "<group>"; };
 		EAE8E2101B09F34300C9038D /* BLLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLLoginViewController.m; sourceTree = "<group>"; };
@@ -358,6 +375,10 @@
 				A3039E951B19E9B1006FB5E4 /* BLMatchSwitch.m */,
 				EA9F49371B1C021F0037D188 /* BLBlurView.h */,
 				EA9F49381B1C021F0037D188 /* BLBlurView.m */,
+				EAB60E391B26B29D00BE2874 /* BLLoginView.h */,
+				EAB60E3A1B26B29D00BE2874 /* BLLoginView.m */,
+				EAB60E4A1B2709A700BE2874 /* BLSignupView.h */,
+				EAB60E4B1B2709A700BE2874 /* BLSignupView.m */,
 				EA9F49831B1DB5AA0037D188 /* BLBaseTableViewCell.h */,
 				EA9F49841B1DB5AA0037D188 /* BLBaseTableViewCell.m */,
 				EA305EBC1B14773800DD904D /* BLGenderTableViewCell.h */,
@@ -401,6 +422,7 @@
 		EA6AAC2C1AF8739200ED3A55 /* biu */ = {
 			isa = PBXGroup;
 			children = (
+				EAB60E401B26C3CD00BE2874 /* UIUtil */,
 				EAA7FD701B12CFDF00C2B5C6 /* Model */,
 				EAA7FD6C1B0DD5D600C2B5C6 /* NetworkUtil */,
 				EA1E50491AFCB891004F7F6A /* CustomizeUI */,
@@ -478,6 +500,7 @@
 		EA6AAC5B1AF88DB600ED3A55 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				EAB60E481B26FDD100BE2874 /* login_signup_background.png */,
 				EAEC0B321B209529000A7C5B /* style */,
 				EAEC0B101B1EEAC7000A7C5B /* sexuality */,
 				EA9F495C1B1D5A750037D188 /* zodiac */,
@@ -513,6 +536,9 @@
 		EA9F495C1B1D5A750037D188 /* zodiac */ = {
 			isa = PBXGroup;
 			children = (
+				EAB60E441B26EB8E00BE2874 /* login_with_wechat_icon.png */,
+				EAB60E451B26EB8E00BE2874 /* login_with_weibo_icon.png */,
+				EAB60E3C1B26BCAF00BE2874 /* close_icon.png */,
 				EAEC0AE01B1EEAC2000A7C5B /* zodiac_selected_icon0.png */,
 				EAEC0AE11B1EEAC2000A7C5B /* zodiac_selected_icon1.png */,
 				EAEC0AE21B1EEAC2000A7C5B /* zodiac_selected_icon2.png */,
@@ -569,6 +595,15 @@
 				EAB60E361B257E8F00BE2874 /* BLProfileTest.m */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		EAB60E401B26C3CD00BE2874 /* UIUtil */ = {
+			isa = PBXGroup;
+			children = (
+				EAB60E411B26C45200BE2874 /* BLUIDrawer.h */,
+				EAB60E421B26C45200BE2874 /* BLUIDrawer.m */,
+			);
+			name = UIUtil;
 			sourceTree = "<group>";
 		};
 		EAEC0B101B1EEAC7000A7C5B /* sexuality */ = {
@@ -731,11 +766,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAEC0B271B1EEAE8000A7C5B /* sexuality_unselected_icon4.png in Resources */,
+				EAB60E471B26EB8E00BE2874 /* login_with_weibo_icon.png in Resources */,
 				EAEC0B0F1B1EEAC3000A7C5B /* zodiac_unselected_icon11.png in Resources */,
 				EAEC0B501B20953B000A7C5B /* style_man_unselected_icon2.png in Resources */,
 				EAE8E20C1B09CBF800C9038D /* logo.png in Resources */,
 				EAEC0B0A1B1EEAC3000A7C5B /* zodiac_unselected_icon6.png in Resources */,
 				A3CCFCFF1B1B602700C9BAE8 /* setting_icon.png in Resources */,
+				EAB60E3D1B26BCAF00BE2874 /* close_icon.png in Resources */,
 				A3CCFCFC1B1B602600C9BAE8 /* partner_icon.png in Resources */,
 				EA305EC81B14841600DD904D /* division_icon.png in Resources */,
 				EA9F493F1B1C6A7F0037D188 /* me_icon.png in Resources */,
@@ -761,6 +798,7 @@
 				EAEC0B281B1EEAE8000A7C5B /* sexuality_unselected_icon5.png in Resources */,
 				EAEC0B4A1B20953B000A7C5B /* style_woman_unselected_icon1.png in Resources */,
 				EA305EC31B147F0C00DD904D /* female_selected_icon.png in Resources */,
+				EAB60E461B26EB8E00BE2874 /* login_with_wechat_icon.png in Resources */,
 				EAEC0B4B1B20953B000A7C5B /* style_woman_unselected_icon0.png in Resources */,
 				A3CCFCFB1B1B602600C9BAE8 /* forward_icon2.png in Resources */,
 				EAEC0AFC1B1EEAC3000A7C5B /* zodiac_selected_icon4.png in Resources */,
@@ -778,6 +816,7 @@
 				EAEC0B261B1EEAE8000A7C5B /* sexuality_unselected_icon3.png in Resources */,
 				EA9F493B1B1C13C30037D188 /* test_avator.png in Resources */,
 				EAEC0B461B20953B000A7C5B /* style_woman_unselected_icon5.png in Resources */,
+				EAB60E491B26FDD100BE2874 /* login_signup_background.png in Resources */,
 				EAEC0B0D1B1EEAC3000A7C5B /* zodiac_unselected_icon9.png in Resources */,
 				EAEC0B2C1B1EEBAF000A7C5B /* sexuality_unselected_icon1.png in Resources */,
 				EA305EC41B147F0C00DD904D /* female_unselected_icon.png in Resources */,
@@ -914,8 +953,10 @@
 				A3039E9B1B1AEB4F006FB5E4 /* BLMenuViewController.m in Sources */,
 				EA9F49901B1DDB220037D188 /* BLMenuButton.m in Sources */,
 				EA305EBE1B14773800DD904D /* BLGenderTableViewCell.m in Sources */,
+				EAB60E4C1B2709A700BE2874 /* BLSignupView.m in Sources */,
 				A3039E961B19E9B1006FB5E4 /* BLMatchSwitch.m in Sources */,
 				EAFBEE841AFB3038006013CD /* KeychainItemWrapper.m in Sources */,
+				EAB60E3B1B26B29D00BE2874 /* BLLoginView.m in Sources */,
 				EAA7FD6F1B0DD64F00C2B5C6 /* BLHTTPClient.m in Sources */,
 				EAA7FD731B12CFF700C2B5C6 /* User.m in Sources */,
 				EA9F49981B1EB1EC0037D188 /* BLRingView.m in Sources */,
@@ -925,6 +966,7 @@
 				EA305ECD1B1570B300DD904D /* BLMatchViewController.m in Sources */,
 				EA9F49851B1DB5AA0037D188 /* BLBaseTableViewCell.m in Sources */,
 				EA6AAC331AF8739200ED3A55 /* AppDelegate.m in Sources */,
+				EAB60E431B26C45200BE2874 /* BLUIDrawer.m in Sources */,
 				EA113E8B1B0C511200EA6925 /* BLColorDefinition.m in Sources */,
 				EA6AAC301AF8739200ED3A55 /* main.m in Sources */,
 			);

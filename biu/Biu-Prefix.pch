@@ -20,6 +20,7 @@
     #import "BLHTTPClient.h"
     #import "BLColorDefinition.h"
     #import "BLFontDefinition.h"
+    #import "BLUIDrawer.h"
     #import "Profile.h"
     #import "Partner.h"
     #import "User.h"
