@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "BLLoginViewController.h"
 #import "BLLoginView.h"
+#import "BLSignupView.h"
 #import "BLSignupViewController.h"
 #import "BLMatchViewController.h"
 #import "KeychainItemWrapper.h"
@@ -275,8 +276,15 @@ static double ICON_INITIAL_SIZE = 147.5;
 }
 
 - (void)signup:(id)sender {
-    BLSignupViewController *signupViewController = [[BLSignupViewController alloc] initWithNibName:nil bundle:nil];
-    [self.navigationController pushViewController:signupViewController animated:YES];
+//    BLSignupViewController *signupViewController = [[BLSignupViewController alloc] initWithNibName:nil bundle:nil];
+//    [self.navigationController pushViewController:signupViewController animated:YES];
+    BLSignupView *signupView = [[BLSignupView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height)];
+    [self.view addSubview:signupView];
+    [UIView animateWithDuration:0.3f animations:^{
+        CGPoint center = signupView.center;
+        center.y = self.view.center.y;
+        signupView.center = center;
+    }];
 }
 
 @end

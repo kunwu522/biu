@@ -12,7 +12,7 @@
 
 #import "Masonry.h"
 
-@interface BLLoginView ()
+@interface BLLoginView () <UIGestureRecognizerDelegate>
 
 @property (strong, nonatomic) UIImageView *backgroundView;
 @property (strong, nonatomic) UIImageView *logoImageView;
@@ -26,7 +26,7 @@
 @property (strong, nonatomic) UIButton *btnLogin;
 @property (strong, nonatomic) UIButton *btnLoginWithWeChat;
 @property (strong, nonatomic) UIButton *btnLoginWithWeibo;
-
+@property (retain, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
 @end
 
 @implementation BLLoginView
@@ -93,6 +93,9 @@
         [_btnLoginWithWeibo setImage:[UIImage imageNamed:@"login_with_weibo_icon.png"] forState:UIControlStateNormal];
         [self addSubview:_btnLoginWithWeibo];
         
+        _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
+        _tapGestureRecognizer.delegate = self;
+        [self addGestureRecognizer:_tapGestureRecognizer];
     }
     return self;
 }
@@ -178,6 +181,12 @@
 
 - (void)login:(id)sender {
     
+}
+
+#pragma mark - handle tab gesture
+- (void)tapHandler:(UITapGestureRecognizer *)gesture {
+    [_tfPhoneNumber resignFirstResponder];
+    [_tfPassword resignFirstResponder];
 }
 
 /*
