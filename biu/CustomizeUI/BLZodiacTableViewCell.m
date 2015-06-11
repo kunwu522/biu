@@ -100,7 +100,7 @@ static const float CELL_HEIGHT = 109.3;
 
 #pragma mark - 
 - (void)setZodiac:(BLZodiac)zodiac {
-    NSIndexPath *indexPath = [[NSIndexPath alloc] initWithIndex:[[NSNumber numberWithInteger:zodiac] integerValue]];
+    NSIndexPath *indexPath = [[NSIndexPath alloc] initWithIndex:zodiac];
     [_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
 }
 

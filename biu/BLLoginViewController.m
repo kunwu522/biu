@@ -289,7 +289,7 @@ static const NSInteger TAG_PASSWORD = 1;
         [self showErrorMessage];
         
         // reset keychain if log in failed
-        AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+        BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
         [delegate.passwordItem resetKeychainItem];
     }];
 }
@@ -370,7 +370,7 @@ static const NSInteger TAG_PASSWORD = 1;
 }
 
 - (void)renderToMasterViewController {
-    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
     [self presentViewController:delegate.menuViewController animated:YES completion:nil];
 }
 

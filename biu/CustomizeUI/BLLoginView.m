@@ -180,7 +180,38 @@
 }
 
 - (void)login:(id)sender {
+    NSString *errMsg = [User validatePhoneNumber:_tfPhoneNumber.text];
+    if (errMsg) {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [av show];
+        return;
+    }
     
+    User *user = [User new];
+    user.phone = _tfPhoneNumber.text;
+    user.password = _tfPassword.text;
+    
+    BLHTTPClient *httpClient = [BLHTTPClient sharedBLHTTPClient];
+    [httpClient login:user success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"Response: %@", responseObject);
+        user.userId = [responseObject objectForKey:@"user_id"];
+        user.username = [responseObject objectForKey:@"username"];
+        [user save];
+        if (self.delegate) {
+            [self.delegate didLoginWithCurrentUser:user];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        if ([task.response isKindOfClass:[NSHTTPURLResponse class]]) {
+            NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+            NSLog(@"Status code: %ld", response.statusCode);
+        }
+        NSString *message = [BLHTTPClient responseMessage:task error:error];
+        if (!message) {
+            message = @"Log in failed. Please try again later";
+        }
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [av show];
+    }];
 }
 
 #pragma mark - handle tab gesture

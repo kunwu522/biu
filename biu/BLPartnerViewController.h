@@ -15,6 +15,9 @@ typedef NS_ENUM(NSUInteger, BLPartnerViewControllerType) {
     BLPartnerViewControllerUpdate,
 };
 
-@property (assign, nonatomic) BLPartnerViewControllerType type;
+@property (assign, nonatomic) BLPartnerViewControllerType partnerViewType;
+
+// it works when partnerViewType is create
+@property (strong, nonatomic) Profile *profile;
 
 @end

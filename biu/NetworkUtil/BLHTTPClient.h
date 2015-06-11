@@ -16,8 +16,13 @@
 @property (weak, nonatomic) id<BLHTTPClientDelegate> delegate;
 
 + (BLHTTPClient *)sharedBLHTTPClient;
++ (NSString *)responseMessage:(NSURLSessionDataTask *)task error:(NSError *)error;
+
 - (instancetype)initWithBaseURL:(NSURL *)url;
 
+- (void)passcode:(NSString *)code phoneNumber:(NSString *)phoneNumber
+         success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+         failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 - (void)signup:(User *)user
        success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
        failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
@@ -27,10 +32,13 @@
 - (void)logout:(User *)user
        success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
        failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
-- (void)createProfile:(User *)user
+- (void)createProfile:(Profile *)profile
               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
-- (void)createPartner:(User *)user
+- (void)createPartner:(Partner *)partner
+              success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+- (void)updateProfile:(Profile *)profile
               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 

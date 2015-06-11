@@ -12,10 +12,11 @@
 
 @interface User : NSObject
 
-@property (retain, nonatomic) NSNumber *userId;
-@property (retain, nonatomic) NSString *username;
-@property (retain, nonatomic) NSString *email;
-@property (retain, nonatomic) NSString *password;
+@property (strong, nonatomic) NSNumber *userId;
+@property (strong, nonatomic) NSString *username;
+@property (strong, nonatomic) NSString *email;
+@property (strong, nonatomic) NSString *phone;
+@property (strong, nonatomic) NSString *password;
 @property (strong, nonatomic) Profile *profile;
 @property (strong, nonatomic) Partner *partner;
 
@@ -27,6 +28,11 @@
  * return invalid reason otherwise return nil
  */
 + (NSString *)validatePassword:(NSString *)password;
+/*
+ * return invalid reason otherwise return nil
+ */
++ (NSString *)validatePhoneNumber:(NSString *)phoneNumber;
+
 + (BOOL)isEmailValid:(NSString*)email;
 
 - (id)initWithFromUserDefault;

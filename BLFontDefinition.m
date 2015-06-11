@@ -10,34 +10,30 @@
 
 @implementation BLFontDefinition
 
-static NSString *NORMAL_FONT = @"HelveticaNeue";
-
-+ (UIFont *)ultraLightFont:(CGFloat)fontSize {
-    return [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:fontSize];
-}
-
-+ (UIFont *)ultraLightItalic:(CGFloat)fontSize {
-    return [UIFont fontWithName:@"HelveticaNeue-UltraLightItalic" size:fontSize];
-}
+static NSString *FONT_LIGHT = @"FontLight";
+static NSString *FONT_LIGHT_ITALIC = @"FontLightItalic";
+static NSString *FONT_NORMAL = @"FontNormal";
+static NSString *FONT_NORMAL_ITALIC = @"FontNormalItalic";
+static NSString *FONT_BOLD = @"FontBold";
 
 + (UIFont *)lightFont:(CGFloat)fontSize {
-    return [UIFont fontWithName:@"HelveticaNeue-Light" size:fontSize];
+    return [UIFont fontWithName:NSLocalizedString(FONT_LIGHT, nil) size:fontSize];
 }
 
 + (UIFont *)lightItalicFont:(CGFloat)fontSize {
-    return [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:fontSize];
+    return [UIFont fontWithName:NSLocalizedString(FONT_LIGHT_ITALIC, nil) size:fontSize];
 }
 
 + (UIFont *)normalFont:(CGFloat)fontSize {
-    return [UIFont fontWithName:@"HelveticaNeue" size:fontSize];
+    return [UIFont fontWithName:NSLocalizedString(FONT_NORMAL, nil) size:fontSize];
 }
 
 + (UIFont *)italicFont:(CGFloat)fontSize {
-    return [UIFont fontWithName:@"HelveticaNeue-Italic" size:fontSize];
+    return [UIFont fontWithName:NSLocalizedString(FONT_NORMAL_ITALIC, nil) size:fontSize];
 }
 
 + (UIFont *)boldFont:(CGFloat)fontSize {
-    return [UIFont fontWithName:@"HelveticaNeue-Bold" size:fontSize];
+    return [UIFont fontWithName:NSLocalizedString(FONT_BOLD, nil) size:fontSize];
 }
 
 + (CGSize)normalFontSizeForString:(NSString *)string fontSize:(CGFloat)fontSize {

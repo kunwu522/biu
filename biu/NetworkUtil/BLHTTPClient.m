@@ -8,7 +8,7 @@
 
 #import "BLHTTPClient.h"
 
-static NSString* const BLBaseURLString = @"http://localhost:3000/api/v1/";
+static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
 
 @implementation BLHTTPClient
 
@@ -41,6 +41,18 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/api/v1/";
     return _sharedHttpClient;
 }
 
++ (NSString *)responseMessage:(NSURLSessionDataTask *)task error:(NSError *)error {
+    NSData *errorData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+    if (!errorData) {
+        return nil;
+    }
+    NSDictionary *serializedData = [NSJSONSerialization JSONObjectWithData: errorData options:kNilOptions error:nil];
+    if (!serializedData) {
+        return nil;
+    }
+    return [serializedData objectForKey:@"error_message"];
+}
+
 - (instancetype)initWithBaseURL:(NSURL *)url {
     self = [super initWithBaseURL:url];
     
@@ -52,6 +64,19 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/api/v1/";
     return self;
 }
 
+- (void)passcode:(NSString *)code phoneNumber:(NSString *)phoneNumber
+         success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+         failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    if (!self) {
+        return;
+    }
+    
+    NSDictionary *parameter = @{@"code" : code,
+                        @"phone_number" : phoneNumber};
+    
+    [self POST:@"passcode.json" parameters:parameter success:success failure:failure];
+}
+
 - (void)signup:(User *)user
        success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
        failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
@@ -59,10 +84,10 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/api/v1/";
         return;
     }
     
-    NSDictionary *parameter = @{@"username" : user.username,
-                                   @"email" : user.email,
-                                @"password" : user.password,
-                   @"password_confirmation" : user.password};
+    NSDictionary *parameter = @{@"user": @{@"username" : user.username,
+                                           @"phone" : user.phone,
+                                           @"password" : user.password,
+                                           @"password_confirmation" : user.password}};
     
     [self POST:@"users.json" parameters:parameter success:success failure:failure];
 }
@@ -74,7 +99,7 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/api/v1/";
         return;
     }
     
-    NSDictionary *parameter = @{@"email" : user.email,
+    NSDictionary *parameter = @{@"phone" : user.phone,
                                 @"password" : user.password};
     [self POST:@"login.json" parameters:parameter success:success failure:failure];
 }
@@ -89,33 +114,84 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/api/v1/";
     [self DELETE:@"logout.json" parameters:nil success:success failure:failure];
 }
 
-- (void)createProfile:(User *)user
+- (void)createProfile:(Profile *)profile
        success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
        failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
-    if (!self) {
+    if (!profile) {
         return;
     }
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-    NSString *dateString = [dateFormatter stringFromDate:user.profile.birthday];
+    NSString *dateString = [dateFormatter stringFromDate:profile.birthday];
     
-    NSDictionary *parameter = @{@"user_id" : user.userId,
-                                @"gender" : [NSNumber numberWithInteger:user.profile.gender],
-                                @"birthday" : dateString,
-                                @"zodiac_id" : [NSNumber numberWithInteger:user.profile.zodiac],
-                                @"style_id" : [NSNumber numberWithInteger:user.profile.style]};
+    NSDictionary *parameters = @{@"profile" : @{@"user_id" : profile.userId,
+                                                @"gender" : [NSNumber numberWithInteger:profile.gender],
+                                              @"birthday" : dateString,
+                                             @"zodiac_id" : [NSNumber numberWithInteger:profile.zodiac],
+                                              @"style_id" : [NSNumber numberWithInteger:profile.style]}};
     
-    [self POST:@"profiles.json" parameters:parameter success:success failure:failure];
+    [self POST:@"profiles.json" parameters:parameters success:success failure:failure];
 }
 
-- (void)createPartner:(User *)user
+- (void)updateProfile:(Profile *)profile
               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
-    if (!self) {
+    if (!profile) {
         return;
     }
     
+    if (!profile.profileId) {
+        return;
+    }
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *dateString = [dateFormatter stringFromDate:profile.birthday];
+    
+    NSDictionary *parameters = @{@"profile" : @{@"user_id" : profile.userId,
+                                                @"gender" : [NSNumber numberWithInteger:profile.gender],
+                                                @"birthday" : dateString,
+                                                @"zodiac_id" : [NSNumber numberWithInteger:profile.zodiac],
+                                                @"style_id" : [NSNumber numberWithInteger:profile.style]}};
+    
+    [self PUT:[NSString stringWithFormat:@"profiles/%@.json", profile.profileId] parameters:parameters success:success failure:failure];
+}
+
+- (void)createPartner:(Partner *)partner
+              success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    if (!partner) {
+        return;
+    }
+    
+    NSDictionary *parameters = @{@"partner" : @{@"user_id" : partner.userId,
+                                                @"sexuality" : [NSNumber numberWithInteger:partner.sexualityType],
+                                                @"min_age" : partner.minAge,
+                                                @"max_age" : partner.maxAge,
+                                                @"prefer_zodiacs" : partner.preferZodiacs,
+                                                @"prefer_styles" : partner.preferStyles}};
+    [self POST:@"partners.json" parameters:parameters success:success failure:failure];
+}
+
+- (void)updatePartner:(Partner *)partner
+              success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    if (!partner) {
+        return;
+    }
+    
+    if (!partner.partnerId) {
+        return;
+    }
+    
+    NSDictionary *parameters = @{@"partner" : @{@"user_id" : partner.userId,
+                                                @"sexuality" : [NSNumber numberWithInteger:partner.sexualityType],
+                                                @"min_age" : partner.minAge,
+                                                @"max_age" : partner.maxAge,
+                                                @"prefer_zodiacs" : partner.preferZodiacs,
+                                                @"prefer_styles" : partner.preferStyles}};
+    [self PUT:[NSString stringWithFormat:@"partners/%@.json", partner.partnerId] parameters:parameters success:success failure:failure];
 }
 
 @end

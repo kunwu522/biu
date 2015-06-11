@@ -55,6 +55,20 @@ static NSString *PREFER_STYLES = @"prefer_styles";
     }
 }
 
++ (NSString *)validatePhoneNumber:(NSString *)phoneNumber {
+    if (!phoneNumber) {
+        return @"phoneNumber can not be empty.";
+    }
+    
+    NSString *phoneRegStr = @"[0-9]{11}";
+    NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", phoneRegStr];
+    if ([phoneTest evaluateWithObject:phoneNumber]) {
+        return nil;
+    } else {
+        return @"Phone number is not validated";
+    }
+}
+
 + (BOOL)isEmailValid:(NSString*)email
 {
     NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
@@ -104,12 +118,12 @@ static NSString *PREFER_STYLES = @"prefer_styles";
 }
 
 - (void)save {
-    if ([self.email isEqualToString:@""] || [self.password isEqualToString:@""]) {
+    if ([self.phone isEqualToString:@""] || [self.password isEqualToString:@""]) {
         return;
     }
     
-    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    if (![self.email isEqualToString:[delegate.passwordItem objectForKey:(__bridge id)kSecAttrAccount]]) {
+    BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
+    if (![self.phone isEqualToString:[delegate.passwordItem objectForKey:(__bridge id)kSecAttrAccount]]) {
         [delegate.passwordItem setObject:self.email forKey:(__bridge id)kSecAttrAccount];
     }
     if (![self.password isEqualToString:[delegate.passwordItem objectForKey:(__bridge id)kSecValueData]]) {

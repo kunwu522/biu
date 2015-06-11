@@ -11,13 +11,19 @@
 "Sign up" = "Sign up";
 "Slogan" = "We help you to find your perfect one in close distance, and notify you from your new watch";
 "Username" = "Username";
+"Phone" = "Phone";
 "Password" = "Password";
 "Forgot password?" = "Forgot password?";
-"OR" = "OR";
+"Or" = "Or";
 "OR LOG IN WITH" = "OR LOG IN WITH";
 "Email" = "Email";
 "OR SIGN UP WITH" = "OR SIGN UP WITH";
 "Choose your Gender" = "Choose your Gender";
+"GETTING CODE" = "GETTING CODE";
+"Code" = "Code";
+"Accept:" = "Accept:";
+"Agreement of BIU" = "Agreement of BIU";
+"RESEND AFTER:" = "RESEND AFTER:";
 "male" = "male";
 "female" = "female";
 "Choose your date of birth" = "Choose your date of birth";
@@ -73,3 +79,10 @@
 "Godness" = "Godness";
 "Your zodia and age" = "Your zodia and age";
 "Age" = "Age";
+
+// Font
+"FontLight" = "HelveticaNeue-Light";
+"FontLightItalic" = "HelveticaNeue-LightItalic";
+"FontNormal" = "HelveticaNeue";
+"FontNormalItalic" = "HelveticaNeue-Italic";
+"FontBold" = "HelveticaNeue-Bold";

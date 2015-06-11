@@ -22,6 +22,7 @@
 @property (strong, nonatomic) NSArray *preferZodiacs;
 @property (strong, nonatomic) NSArray *preferStyles;
 
+@property (strong, nonatomic) UIButton *btnBack;
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) UIImageView *imageViewAvator;
 
@@ -46,21 +47,32 @@ static NSString *BL_PARTNER_AGERANGE_CELL_REUSEID = @"BLAgeRangeCell";
 static NSString *BL_PARTNER_ZODIAC_CELL_REUSEID = @"BLZodiacCell";
 static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
 
+#pragma mark - life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    _tableView = [[UITableView alloc] initWithFrame:self.view.frame];
-    _tableView.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:_tableView];
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
-    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView.allowsSelection = NO;
-    [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:BL_NORMAL_CELL_REUSEID];
-    [_tableView registerClass:[BLSexualityTableViewCell class] forCellReuseIdentifier:BL_PARTNER_SEXUALITY_CELL_REUSEID];
-    [_tableView registerClass:[BLAgeRangeTableViewCell class] forCellReuseIdentifier:BL_PARTNER_AGERANGE_CELL_REUSEID];
-    [_tableView registerClass:[BLZodiacTableViewCell class] forCellReuseIdentifier:BL_PARTNER_ZODIAC_CELL_REUSEID];
+    [self.view addSubview:self.tableView];
+    if (self.partnerViewType == BLPartnerViewControllerCreate) {
+        [self.view addSubview:self.btnBack];
+    }
+    
+    [self blLayoutSubViews];
+}
+
+- (void)blLayoutSubViews {
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
+    
+    if (self.partnerViewType == BLPartnerViewControllerCreate) {
+        [self.btnBack mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_btnBack.superview).with.offset(31.2f);
+            make.left.equalTo(_btnBack.superview).with.offset(20.8f);
+            make.width.equalTo(@45.3);
+            make.height.equalTo(@45.3);
+        }];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -68,7 +80,8 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - TableView Delegate and Data Source
+#pragma mark - Delegate
+#pragma mark - TableView Delegate and TableView DataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 4;
 }
@@ -141,7 +154,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
             [button setBackgroundColor:[BLColorDefinition fontGreenColor]];
             button.layer.cornerRadius = 5.0f;
             button.clipsToBounds = YES;
-            if (self.type == BLPartnerViewControllerCreate) {
+            if (self.partnerViewType == BLPartnerViewControllerCreate) {
                 [button setTitle:@"Find" forState:UIControlStateNormal];
                 [button addTarget:self action:@selector(createPartner:) forControlEvents:UIControlEventTouchDown];
             } else {
@@ -246,20 +259,45 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
 #pragma mark - handle action
 - (void)createPartner:(id)sender {
     
+//    [[BLHTTPClient sharedBLHTTPClient] createProfile:self.profile success:^(NSURLSessionDataTask *task, id responseObject) {
+//        NSLog(@"create profile profile successed...");
+//        delegate.currentUser.profile.profileId = [responseObject objectForKey:@"profile_id"];
+//        [delegate.currentUser save];
+//        
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        NSLog(@"create profile profile failed. Error: %@", error.description);
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Updating profile failed. Please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+//        [alertView show];
+//    }];
 }
 
 - (void)updatePartner:(id)sender {
     
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark - getting and Setting
+- (UIButton *)btnBack {
+    if (!_btnBack) {
+        _btnBack = [[UIButton alloc] init];
+        [_btnBack setImage:[UIImage imageNamed:@"back_icon2.png"] forState:UIControlStateNormal];
+    }
+    return _btnBack;
 }
-*/
+
+- (UITableView *)tableView {
+    if (!_tableView) {
+        _tableView = [[UITableView alloc] initWithFrame:self.view.frame];
+        _tableView.backgroundColor = [UIColor clearColor];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView.allowsSelection = NO;
+        [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:BL_NORMAL_CELL_REUSEID];
+        [_tableView registerClass:[BLSexualityTableViewCell class] forCellReuseIdentifier:BL_PARTNER_SEXUALITY_CELL_REUSEID];
+        [_tableView registerClass:[BLAgeRangeTableViewCell class] forCellReuseIdentifier:BL_PARTNER_AGERANGE_CELL_REUSEID];
+        [_tableView registerClass:[BLZodiacTableViewCell class] forCellReuseIdentifier:BL_PARTNER_ZODIAC_CELL_REUSEID];
+    }
+    return _tableView;
+}
 
 @end

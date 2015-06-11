@@ -10,8 +10,6 @@
 
 @interface BLFontDefinition : NSObject
 
-+ (UIFont *)ultraLightFont:(CGFloat)fontSize;
-+ (UIFont *)ultraLightItalic:(CGFloat)fontSize;
 + (UIFont *)lightFont:(CGFloat)fontSize;
 + (UIFont *)lightItalicFont:(CGFloat)fontSize;
 + (UIFont *)normalFont:(CGFloat)fontSize;

@@ -7,7 +7,7 @@
 //
 
 #import "BLWelcomeViewController.h"
-#import "AppDelegate.h"
+#import "BLAppDeleate.h"
 #import "BLLoginViewController.h"
 #import "BLLoginView.h"
 #import "BLSignupView.h"
@@ -19,7 +19,7 @@
 #import "BLTextField.h"
 
 
-@interface BLWelcomeViewController ()
+@interface BLWelcomeViewController () <BLSignupViewDelegate, BLLoginViewDelegate>
 
 @property (retain, nonatomic) KeychainItemWrapper *passwordItem;
 
@@ -49,9 +49,12 @@ static double ICON_INITIAL_SIZE = 147.5;
 
 @synthesize masterNavController;
 
+#pragma mark - Life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    NSLog(@"View frame: %f-%f", self.view.frame.size.width, self.view.frame.size.height);
     
     _isLoginLayout = NO;
     
@@ -112,7 +115,7 @@ static double ICON_INITIAL_SIZE = 147.5;
 - (void)viewDidAppear:(BOOL)animated {
     sleep(2);
     
-    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
     if (!delegate.currentUser) {
         [self showLoginUI];
     } else {
@@ -128,7 +131,7 @@ static double ICON_INITIAL_SIZE = 147.5;
         user.email = email;
         user.password = password;
         [[BLHTTPClient sharedBLHTTPClient] login:user success:^(NSURLSessionDataTask *task, id responseObject) {
-            AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+            BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
             [self presentViewController:delegate.menuViewController animated:YES completion:nil];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"Validate user failed: %@, code: %li", error.description, (long)error.code);
@@ -158,7 +161,7 @@ static double ICON_INITIAL_SIZE = 147.5;
 }
 
 - (BOOL)checkUserLogin {
-    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
     _passwordItem = delegate.passwordItem;
     
     NSString *username = [_passwordItem objectForKey:(__bridge id)kSecAttrAccount];
@@ -198,28 +201,8 @@ static double ICON_INITIAL_SIZE = 147.5;
         make.top.equalTo(_biuTitle.mas_bottom).with.offset(30.0f);
     }];
     
-//    _lbSlogan = [[UILabel alloc] init];
-//    _lbSlogan.text = @"We help you to find your perfect one in close distance, and notify you from your new watch";
-//    _lbSlogan.font = [BLFontDefinition normalFont:16];
-//    _lbSlogan.textColor = [UIColor whiteColor];
-//    _lbSlogan.textAlignment = NSTextAlignmentCenter;
-//    _lbSlogan.numberOfLines = 0;
-//    _lbSlogan.backgroundColor = [UIColor grayColor];
-    
-    //Set line space
-//    NSString *labelText = @"We help you to find your perfect one in close distance, and notify you from your new watch";
-//    NSString *labelText = NSLocalizedString(@"Slogan", nil);
-//    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:labelText];
-//    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-//    [paragraphStyle setLineSpacing:15];
-//    [paragraphStyle setAlignment:NSTextAlignmentCenter];
-//    [attrString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [labelText length])];
-//    _lbSlogan.attributedText = attrString;
-//    _lbSlogan.alpha = 0;
-//    [self.view addSubview:_lbSlogan];
-    
     _btnLogin = [[UIButton alloc] init];
-    [_btnLogin addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchDown];
+    [_btnLogin addTarget:self action:@selector(showLoginView:) forControlEvents:UIControlEventTouchDown];
     [_btnLogin setTitle:NSLocalizedString(@"Login", nil) forState:UIControlStateNormal];
     _btnLogin.titleLabel.font = [BLFontDefinition normalFont:16];
     _btnLogin.titleLabel.textColor = [UIColor whiteColor];
@@ -229,7 +212,7 @@ static double ICON_INITIAL_SIZE = 147.5;
     _btnLogin.alpha = 0;
     
     _btnSignup = [[UIButton alloc] init];
-    [_btnSignup addTarget:self action:@selector(signup:) forControlEvents:UIControlEventTouchDown];
+    [_btnSignup addTarget:self action:@selector(showSignupView:) forControlEvents:UIControlEventTouchDown];
     [_btnSignup setTitle:NSLocalizedString(@"Sign up", nil) forState:UIControlStateNormal];
     _btnSignup.titleLabel.font = [BLFontDefinition normalFont:16];
     _btnSignup.titleLabel.textColor = [UIColor whiteColor];
@@ -262,10 +245,9 @@ static double ICON_INITIAL_SIZE = 147.5;
     }];
 }
 
-- (void)login:(id)sender {
-//    BLLoginViewController *loginViewController = [[BLLoginViewController alloc] initWithNibName:nil bundle:nil];
-//    [self.navigationController pushViewController:loginViewController animated:YES];
+- (void)showLoginView:(id)sender {
     BLLoginView *loginView = [[BLLoginView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height)];
+    loginView.delegate = self;
     [self.view addSubview:loginView];
     
     [UIView animateWithDuration:0.3f animations:^{
@@ -275,16 +257,26 @@ static double ICON_INITIAL_SIZE = 147.5;
     }];
 }
 
-- (void)signup:(id)sender {
-//    BLSignupViewController *signupViewController = [[BLSignupViewController alloc] initWithNibName:nil bundle:nil];
-//    [self.navigationController pushViewController:signupViewController animated:YES];
+- (void)showSignupView:(id)sender {
     BLSignupView *signupView = [[BLSignupView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height)];
+    signupView.delegate = self;
     [self.view addSubview:signupView];
     [UIView animateWithDuration:0.3f animations:^{
         CGPoint center = signupView.center;
         center.y = self.view.center.y;
         signupView.center = center;
     }];
+}
+
+#pragma mark - BLLoginView delegate and BLSignupView delegate
+- (void)didLoginWithCurrentUser:(User *)user {
+    BLAppDeleate *appDelegate = [[UIApplication sharedApplication] delegate];
+    [self presentViewController:appDelegate.menuViewController animated:YES completion:nil];
+}
+
+- (void)didSignupWithNewUser:(User *)user {
+    BLAppDeleate *appDelegate = [[UIApplication sharedApplication] delegate];
+    [self presentViewController:appDelegate.fillingInfoNavController animated:YES completion:nil];
 }
 
 @end

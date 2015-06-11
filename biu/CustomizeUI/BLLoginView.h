@@ -8,6 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol BLLoginViewDelegate <NSObject>
+
+@required
+- (void)didLoginWithCurrentUser:(User *)user;
+
+@end
+
 @interface BLLoginView : UIView
+
+@property (weak, nonatomic) id<BLLoginViewDelegate> delegate;
 
 @end

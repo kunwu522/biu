@@ -15,7 +15,7 @@ typedef NS_ENUM(NSUInteger, BLProfileViewType) {
     BLProfileViewTypeUpdate = 1,
 };
 
-@property (assign, nonatomic) BLProfileViewType type; //default is BLProfileViewTypeCreate
+@property (assign, nonatomic) BLProfileViewType profileViewType; //default is BLProfileViewTypeCreate
 
 @end
 

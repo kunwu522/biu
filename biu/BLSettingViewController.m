@@ -51,7 +51,7 @@
         NSLog(@"User log out failed. Error: %@", error.description);
     }];
     
-    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
     [delegate.passwordItem resetKeychainItem];
     
     [delegate.currentUser removeFromUserDefault];

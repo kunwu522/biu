@@ -279,7 +279,7 @@ static const NSInteger INDEX_PASSWORD = 2;
         return;
     }
     
-    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
     User *user = [User new];
     delegate.currentUser = user;
     delegate.currentUser.email = _tfEmail.text;
@@ -296,7 +296,7 @@ static const NSInteger INDEX_PASSWORD = 2;
         [delegate.currentUser save];
         [ai stopAnimating];
         BLProfileViewController *profileViewController = [[BLProfileViewController alloc] initWithNibName:nil bundle:nil];
-        profileViewController.type = BLProfileViewTypeCreate;
+        profileViewController.profileViewType = BLProfileViewTypeCreate;
         [self.navigationController pushViewController:profileViewController animated:YES];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [ai stopAnimating];

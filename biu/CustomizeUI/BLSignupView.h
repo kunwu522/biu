@@ -8,6 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol BLSignupViewDelegate <NSObject>
+
+@required
+- (void)didSignupWithNewUser:(User *)user;
+
+@end
+
 @interface BLSignupView : UIView
+
+@property (weak, nonatomic) id<BLSignupViewDelegate> delegate;
 
 @end

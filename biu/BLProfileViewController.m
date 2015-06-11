@@ -30,7 +30,7 @@
 
 @implementation BLProfileViewController
 
-@synthesize type;
+@synthesize profileViewType;
 
 static const NSInteger SECTION_HEADER = 0;
 static const NSInteger SECTION_GENDER = 1;
@@ -47,10 +47,11 @@ static NSString *BL_PROFIEL_STYLE_CELL_REUSEID = @"BLStyleCell";
 
 static const float AVATOR_WIDTH = 163.0f;
 
+#pragma mark - life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
     _currentUser = delegate.currentUser;
     _gender = _currentUser.profile.gender;
     _birthday = _currentUser.profile.birthday;
@@ -85,8 +86,8 @@ static const float AVATOR_WIDTH = 163.0f;
     // Pass the selected object to the new view controller.
 }
 */
-
-#pragma mark - TableView Delegate and Data Source
+#pragma mark - Delegate
+#pragma mark - TableViewDelegate and TableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 6;
 }
@@ -162,7 +163,7 @@ static const float AVATOR_WIDTH = 163.0f;
             [button setBackgroundColor:[BLColorDefinition fontGreenColor]];
             button.layer.cornerRadius = 5.0f;
             button.clipsToBounds = YES;
-            if (self.type == BLProfileViewTypeCreate) {
+            if (self.profileViewType == BLProfileViewTypeCreate) {
                 [button setTitle:@"Continue" forState:UIControlStateNormal];
                 [button addTarget:self action:@selector(createProfile:) forControlEvents:UIControlEventTouchDown];
             } else {
@@ -249,7 +250,7 @@ static const float AVATOR_WIDTH = 163.0f;
     return nil;
 }
 
-#pragma mark - handle cell delegate
+#pragma mark - BLBaseTableViewCell Delegate
 - (void)tableViewCell:(BLBaseTableViewCell *)cell didChangeValue:(id)value {
     switch (cell.tag) {
         case SECTION_GENDER:
@@ -292,24 +293,13 @@ static const float AVATOR_WIDTH = 163.0f;
 }
 
 - (void)createProfile:(id)sender {
-    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    delegate.currentUser.profile = [Profile new];
-    delegate.currentUser.profile.gender = _gender;
-    delegate.currentUser.profile.birthday = _birthday;
-    delegate.currentUser.profile.zodiac = _zodiac;
-    delegate.currentUser.profile.style = _style;
+    Profile *profile = [Profile new];
+    profile.gender = _gender;
+    profile.birthday = _birthday;
+    profile.zodiac = _zodiac;
+    profile.style = _style;
     
-    [[BLHTTPClient sharedBLHTTPClient] createProfile:delegate.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"create profile profile successed...");
-        delegate.currentUser.profile.profileId = [responseObject objectForKey:@"profile_id"];
-        [delegate.currentUser save];
-        BLPartnerViewController *partnerController = [[BLPartnerViewController alloc] initWithNibName:nil bundle:nil];
-        [self.navigationController pushViewController:partnerController animated:YES];
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"create profile profile failed. Error: %@", error.description);
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Updating profile failed. Please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alertView show];
-    }];
+    BLPartnerViewController *partnerController = [[BLPartnerViewController alloc] initWithNibName:nil bundle:nil];
+    [self.navigationController pushViewController:partnerController animated:YES];
 }
-
 @end
