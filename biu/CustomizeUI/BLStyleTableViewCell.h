@@ -18,6 +18,6 @@
 @property (assign, nonatomic) BOOL allowMultiSelected;
 // working when isAllowMultiSelected == YES
 @property (assign, nonatomic) BLSexualityType sexuality;
-@property (assign, nonatomic) NSMutableDictionary *preferStyles;
+@property (strong, nonatomic) NSMutableArray *preferStyles;
 
 @end

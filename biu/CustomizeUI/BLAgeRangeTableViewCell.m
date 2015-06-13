@@ -31,6 +31,9 @@ static const int BL_AGE_RANGE_MAX_PICKER = 1;
     if (self) {
         self.title.text = NSLocalizedString(@"Age range you like", nil);
         
+        _minAge = 20;
+        _maxAge = 25;
+        
         _ageRange = [[NSMutableArray alloc] init];
         for (int i = 16; i < 101; i++) {
             [_ageRange addObject:[NSString stringWithFormat:@"%d",i]];
@@ -101,8 +104,10 @@ static const int BL_AGE_RANGE_MAX_PICKER = 1;
     } else {
         self.maxAge = [[_ageRange objectAtIndex:row] integerValue];
     }
+    NSDictionary *rangeDictionary = @{@"min_age" : [NSNumber numberWithInteger:self.minAge],
+                                      @"max_age" : [NSNumber numberWithInteger:self.maxAge]};
     if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
-        [self.delegate tableViewCell:self didChangeValue:[_ageRange objectAtIndex:row]];
+        [self.delegate tableViewCell:self didChangeValue:rangeDictionary];
     }
 }
 

@@ -73,8 +73,8 @@ static const float BL_SEXUALITY_CELL_WIDTH = 100.0f;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    self.sexuality = (BLSexualityType)indexPath.item;
-    if ([self respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
+    self.sexuality = [self sexualityFromIndexItem:indexPath.item];
+    if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
         [self.delegate tableViewCell:self didChangeValue:[NSNumber numberWithInteger:self.sexuality]];
     }
 }
@@ -84,13 +84,10 @@ static const float BL_SEXUALITY_CELL_WIDTH = 100.0f;
                             (self.content.bounds.size.height - BL_SEXUALITY_CELL_WIDTH) * 0.5f, 0);
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+#pragma mark - private method
+- (BLSexualityType)sexualityFromIndexItem:(NSInteger)item {
+    return item + 1;
 }
-*/
 
 @end
 

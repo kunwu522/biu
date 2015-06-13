@@ -11,45 +11,47 @@
 @interface Profile : NSObject
 
 typedef NS_ENUM(NSInteger, BLGender) {
-    BLGenderFemale = 0,
+    BLGenderNone = 0,
     BLGenderMale = 1,
-    BLGenderNone = 2
+    BLGenderFemale = 2
 };
 
 typedef NS_ENUM(NSUInteger, BLZodiac) {
-    BLZodiacAries = 0,
-    BLZodiacTaurus = 1,
-    BLZodiacGemini = 2,
-    BLZodiacCancer = 3,
-    BLZodiacLeo = 4,
-    BLZodiacVirgo = 5,
-    BLZodiacLibra = 6,
-    BLZodiacScorpio = 7,
-    BLZodiacSagittarius = 8,
-    BLZodiacCapricorn = 9,
-    BLZodiacAquarius = 10,
-    BLZodiacPisces = 11
+    BLZodiacNone = 0,
+    BLZodiacAries = 1,
+    BLZodiacTaurus = 2,
+    BLZodiacGemini = 3,
+    BLZodiacCancer = 4,
+    BLZodiacLeo = 5,
+    BLZodiacVirgo = 6,
+    BLZodiacLibra = 7,
+    BLZodiacScorpio = 8,
+    BLZodiacSagittarius = 9,
+    BLZodiacCapricorn = 10,
+    BLZodiacAquarius = 11,
+    BLZodiacPisces = 12,
 };
 
 typedef NS_ENUM(NSUInteger, BLStyleType) {
-    BLStyleTypeManRich = 0,
-    BLStyleTypeManGFS = 1,
-    BLStyleTypeManDS = 2,
-    BLStyleTypeManTalent = 3,
-    BLStyleTypeManSport = 4,
-    BLStyleTypeManFashion = 5,
-    BLStyleTypeManYoung = 6,
-    BLStyleTypeManCommon = 7,
-    BLStyleTypeManAll = 8,
-    BLStyleTypeWomanGodness = 0,
-    BLStyleTypeWomanBFM = 1,
-    BLStyleTypeWomanDS = 2,
-    BLStyleTypeWomanTalent = 3,
-    BLStyleTypeWomanSport = 4,
-    BLStyleTypeWomanSexy = 5,
-    BLStyleTypeWomanLovely = 6,
-    BLStyleTypeWomanSuccessFul = 7,
-    BLStyleTypeWomanAll = 8,
+    BLStyleTypeNone = 0,
+    BLStyleTypeManRich = 1,
+    BLStyleTypeManGFS = 2,
+    BLStyleTypeManDS = 3,
+    BLStyleTypeManTalent = 4,
+    BLStyleTypeManSport = 5,
+    BLStyleTypeManFashion = 6,
+    BLStyleTypeManYoung = 7,
+    BLStyleTypeManCommon = 8,
+    BLStyleTypeManAll = 9,
+    BLStyleTypeWomanGodness = 10,
+    BLStyleTypeWomanBFM = 11,
+    BLStyleTypeWomanDS = 12,
+    BLStyleTypeWomanTalent = 13,
+    BLStyleTypeWomanSport = 14,
+    BLStyleTypeWomanSexy = 15,
+    BLStyleTypeWomanLovely = 16,
+    BLStyleTypeWomanSuccessFul = 17,
+    BLStyleTypeWomanAll = 18
 };
 
 @property (strong, nonatomic) NSNumber *profileId;
@@ -61,6 +63,7 @@ typedef NS_ENUM(NSUInteger, BLStyleType) {
 @property (assign, nonatomic) BLGender gender;
 @property (assign, nonatomic) BLStyleType style;
 
+- (id)initWithDictionary:(NSDictionary *)dictionary;
 - (void)save;
 
 + (NSUInteger)getAgeFromBirthday:(NSDate *)birthday;

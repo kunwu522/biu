@@ -12,6 +12,18 @@
 
 @synthesize profileId, userId, username, gender, birthday, zodiac, style;
 
+- (id)initWithDictionary:(NSDictionary *)dictionary {
+    self = [Profile new];
+    if (self) {
+        self.profileId = [dictionary objectForKey:@"profile_id"];
+        self.gender = (BLGender)[[dictionary objectForKey:@"gender"] integerValue];
+        self.birthday = [[Profile dateFormatter] dateFromString:[dictionary objectForKey:@"birthday"]];
+        self.style = (BLStyleType)[[dictionary objectForKey:@"style"] integerValue];
+        self.zodiac = (BLZodiac)[[dictionary objectForKey:@"zodiac"] integerValue];
+    }
+    return self;
+}
+
 - (void)save {
     NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:[NSString stringWithFormat:@"%@_profile", self.userId]];
     [defaults setObject:self.profileId forKey:@"id"];
@@ -22,6 +34,12 @@
     [defaults setObject:[NSNumber numberWithInteger:self.zodiac] forKey:@"zodiac"];
     [defaults setObject:[NSNumber numberWithInteger:self.style] forKey:@"style"];
     [defaults synchronize];
+}
+
++ (NSDateFormatter *)dateFormatter {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"yyyy-MM-dd";
+    return dateFormatter;
 }
 
 + (BLZodiac)getZodiacFromBirthday:(NSDate *)birthday {

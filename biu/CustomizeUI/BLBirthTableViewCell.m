@@ -20,11 +20,17 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.title.text = NSLocalizedString(@"Choose your Date of birth", nil);
+        self.title.text = NSLocalizedString(@"Choose your date of birth", nil);
         
         _datePicker = [[UIDatePicker alloc] init];
         [_datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
         _datePicker.datePickerMode = UIDatePickerModeDate;
+        
+        NSString *defaultDate = @"1990-01-01";
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd"];
+        _datePicker.date = [formatter dateFromString:defaultDate];
+        
         [self.content addSubview:_datePicker];
         
         [self layout];
@@ -44,7 +50,6 @@
 #pragma mark - handle changing date
 - (void)dateChanged:(id)sender {
     UIDatePicker *picker = sender;
-    NSLog(@"Pick date: %@", picker.date);
     _birthday = picker.date;
     if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
         [self.delegate tableViewCell:self didChangeValue:self.birthday];

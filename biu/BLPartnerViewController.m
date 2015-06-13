@@ -16,6 +16,7 @@
 
 @interface BLPartnerViewController () <UITableViewDataSource, UITableViewDelegate, BLTableViewCellDeletage>
 
+@property (strong, nonatomic) User *currentUser;
 @property (assign, nonatomic) BLSexualityType sexualityType;
 @property (strong, nonatomic) NSNumber *minAge;
 @property (strong, nonatomic) NSNumber *maxAge;
@@ -25,6 +26,9 @@
 @property (strong, nonatomic) UIButton *btnBack;
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) UIImageView *imageViewAvator;
+
+@property (assign, nonatomic) BOOL didCreateProfile;
+@property (assign, nonatomic) BOOL didCreatePartner;
 
 @end
 
@@ -41,7 +45,8 @@ typedef NS_ENUM(NSUInteger, BLPartnerSection) {
     BLPartnerSectionButton
 };
 
-static NSString *BL_NORMAL_CELL_REUSEID = @"BLNormalCell";
+static NSString *BL_PLACEHOLDER_CELL_REUSEID = @"BLPlaceHolderCell";
+static NSString *BL_BUTTON_CELL_REUSEID = @"BLButtonCell";
 static NSString *BL_PARTNER_SEXUALITY_CELL_REUSEID = @"BLSexualityCell";
 static NSString *BL_PARTNER_AGERANGE_CELL_REUSEID = @"BLAgeRangeCell";
 static NSString *BL_PARTNER_ZODIAC_CELL_REUSEID = @"BLZodiacCell";
@@ -51,6 +56,14 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    self.view.backgroundColor = [BLColorDefinition backgroundGrayColor];
+    
+    BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
+    _currentUser = delegate.currentUser;
+    
+    _didCreatePartner = NO;
+    _didCreateProfile = NO;
     
     [self.view addSubview:self.tableView];
     if (self.partnerViewType == BLPartnerViewControllerCreate) {
@@ -83,7 +96,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
 #pragma mark - Delegate
 #pragma mark - TableView Delegate and TableView DataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    return 6;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -94,7 +107,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
     switch (indexPath.section) {
         case BLPartnerSectionHeader:
         {
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BL_NORMAL_CELL_REUSEID forIndexPath:indexPath];
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BL_PLACEHOLDER_CELL_REUSEID forIndexPath:indexPath];
             cell.backgroundColor = [BLColorDefinition backgroundGrayColor];
             cell.tag = BLPartnerSectionHeader;
             return cell;
@@ -129,6 +142,8 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
             }
             cell.delegate = self;
             cell.tag = BLPartnerSectionZodiac;
+            cell.title.text = NSLocalizedString(@"Zodiacs you prefer", nil);
+            cell.allowMultiSelected = YES;
             return cell;
             break;
         }
@@ -140,13 +155,16 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
             }
             cell.allowMultiSelected = YES;
             cell.sexuality = _sexualityType;
+            cell.title.text = NSLocalizedString(@"Styles you prefer", nil);
             cell.delegate = self;
             cell.tag = BLPartnerSectionStyle;
             return cell;
+            break;
         }
         case BLPartnerSectionButton:
         {
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BL_NORMAL_CELL_REUSEID forIndexPath:indexPath];
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BL_BUTTON_CELL_REUSEID forIndexPath:indexPath];
+            cell.backgroundColor = [UIColor clearColor];
             UIButton *button = [[UIButton alloc] init];
             button.titleLabel.font = [BLFontDefinition boldFont:20.0f];
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -169,7 +187,8 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
                 make.bottom.equalTo(button.superview).with.offset(-20.0f);
                 make.right.equalTo(button.superview).with.offset(-20.0f);
             }];
-
+            return cell;
+            break;
         }
         default:
             break;
@@ -191,6 +210,11 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
         case BLPartnerSectionZodiac:
             return 640.0f;
             break;
+        case BLPartnerSectionStyle:
+            return 500.0f;
+            break;
+        case BLPartnerSectionButton:
+            return 90.0f;
         default:
             break;
     }
@@ -220,6 +244,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
         _imageViewAvator.layer.borderColor = [UIColor whiteColor].CGColor;
         _imageViewAvator.layer.borderWidth = 4.0f;
         _imageViewAvator.image = [UIImage imageNamed:@"partner_avator.png"];
+        _imageViewAvator.clipsToBounds = YES;
         [sectionHeaderView addSubview:_imageViewAvator];
         
         [_imageViewAvator mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -236,8 +261,8 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
 - (void)tableViewCell:(BLBaseTableViewCell *)cell didChangeValue:(id)value {
     switch (cell.tag) {
         case BLPartnerSectionSexuality:
-            _sexualityType = (BLSexualityType)value;
-            [_tableView reloadData];
+            _sexualityType = (BLSexualityType)[value integerValue];
+            [self.tableView reloadData];
             break;
         case BLPartnerSectionAgeRange:
             _minAge = [(NSDictionary *)value objectForKey:@"min_age"];
@@ -258,21 +283,64 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
 
 #pragma mark - handle action
 - (void)createPartner:(id)sender {
+    Partner *partner = [Partner new];
+    partner.userId = _currentUser.userId;
+    partner.sexualityType = _sexualityType;
+    partner.minAge = _minAge;
+    partner.maxAge = _maxAge;
+    partner.preferZodiacs = _preferZodiacs;
+    partner.preferStyles = _preferStyles;
     
-//    [[BLHTTPClient sharedBLHTTPClient] createProfile:self.profile success:^(NSURLSessionDataTask *task, id responseObject) {
-//        NSLog(@"create profile profile successed...");
-//        delegate.currentUser.profile.profileId = [responseObject objectForKey:@"profile_id"];
-//        [delegate.currentUser save];
-//        
-//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//        NSLog(@"create profile profile failed. Error: %@", error.description);
-//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Updating profile failed. Please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-//        [alertView show];
-//    }];
+    if (self.profile) {
+        [[BLHTTPClient sharedBLHTTPClient] createProfile:self.profile success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"create profile successed...");
+            self.profile.profileId = [responseObject objectForKey:@"profile_id"];
+            BLAppDeleate *blDelegate = [[UIApplication sharedApplication] delegate];
+            blDelegate.currentUser.profile = self.profile;
+            [blDelegate.currentUser save];
+            _didCreateProfile = YES;
+            [self presentMatchView];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"create profile profile failed. Error: %@", error.description);
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Updating profile failed. Please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alertView show];
+        }];
+    } else {
+        NSLog(@"Error: profile is null.");
+    }
+    
+    [[BLHTTPClient sharedBLHTTPClient] createPartner:partner success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"create profile successed, partner id: %@.", [responseObject objectForKey:@"partner_id"]);
+        partner.partnerId = [responseObject objectForKey:@"partner_id"];
+        BLAppDeleate *blDelegate = [[UIApplication sharedApplication] delegate];
+        blDelegate.currentUser.partner = partner;
+        [blDelegate.currentUser save];
+        _didCreatePartner = YES;
+        [self presentMatchView];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSString *message = [BLHTTPClient responseMessage:task error:error];
+        if (!message) {
+            message = NSLocalizedString(@"create profile failed, please try again later.", nil);
+        }
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [av show];
+    }];
+}
+
+- (void)back:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)updatePartner:(id)sender {
     
+}
+
+#pragma mark - private
+- (void)presentMatchView {
+    if (_didCreatePartner || _didCreateProfile) {
+        BLAppDeleate *blDelegate = [[UIApplication sharedApplication] delegate];
+        [self presentViewController:blDelegate.menuViewController animated:YES completion:nil];
+    }
 }
 
 #pragma mark - getting and Setting
@@ -280,6 +348,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
     if (!_btnBack) {
         _btnBack = [[UIButton alloc] init];
         [_btnBack setImage:[UIImage imageNamed:@"back_icon2.png"] forState:UIControlStateNormal];
+        [_btnBack addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchDown];
     }
     return _btnBack;
 }
@@ -292,10 +361,12 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
         _tableView.dataSource = self;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.allowsSelection = NO;
-        [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:BL_NORMAL_CELL_REUSEID];
+        [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:BL_PLACEHOLDER_CELL_REUSEID];
+        [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:BL_BUTTON_CELL_REUSEID];
         [_tableView registerClass:[BLSexualityTableViewCell class] forCellReuseIdentifier:BL_PARTNER_SEXUALITY_CELL_REUSEID];
         [_tableView registerClass:[BLAgeRangeTableViewCell class] forCellReuseIdentifier:BL_PARTNER_AGERANGE_CELL_REUSEID];
         [_tableView registerClass:[BLZodiacTableViewCell class] forCellReuseIdentifier:BL_PARTNER_ZODIAC_CELL_REUSEID];
+        [_tableView registerClass:[BLStyleTableViewCell class] forCellReuseIdentifier:BL_PARTNER_STYLE_CELL_REUSEID];
     }
     return _tableView;
 }

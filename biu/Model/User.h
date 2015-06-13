@@ -36,6 +36,7 @@
 + (BOOL)isEmailValid:(NSString*)email;
 
 - (id)initWithFromUserDefault;
+- (id)initWithDictionary:(NSDictionary *)dictionary;
 - (void)removeFromUserDefault;
 - (void)save;
 

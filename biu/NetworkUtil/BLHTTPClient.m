@@ -169,8 +169,8 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
                                                 @"sexuality" : [NSNumber numberWithInteger:partner.sexualityType],
                                                 @"min_age" : partner.minAge,
                                                 @"max_age" : partner.maxAge,
-                                                @"prefer_zodiacs" : partner.preferZodiacs,
-                                                @"prefer_styles" : partner.preferStyles}};
+                                                @"zodiac_ids" : partner.preferZodiacs,
+                                                @"style_ids" : partner.preferStyles}};
     [self POST:@"partners.json" parameters:parameters success:success failure:failure];
 }
 
@@ -189,8 +189,8 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
                                                 @"sexuality" : [NSNumber numberWithInteger:partner.sexualityType],
                                                 @"min_age" : partner.minAge,
                                                 @"max_age" : partner.maxAge,
-                                                @"prefer_zodiacs" : partner.preferZodiacs,
-                                                @"prefer_styles" : partner.preferStyles}};
+                                                @"zodiac_ids" : partner.preferZodiacs,
+                                                @"style_ids" : partner.preferStyles}};
     [self PUT:[NSString stringWithFormat:@"partners/%@.json", partner.partnerId] parameters:parameters success:success failure:failure];
 }
 

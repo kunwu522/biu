@@ -30,7 +30,7 @@
 
 @implementation BLProfileViewController
 
-@synthesize profileViewType;
+@synthesize profileViewType = _profileViewType;
 
 static const NSInteger SECTION_HEADER = 0;
 static const NSInteger SECTION_GENDER = 1;
@@ -39,7 +39,8 @@ static const NSInteger SECTION_ZODIAC_AND_AGE = 3;
 static const NSInteger SECTION_STYLE = 4;
 static const NSInteger SECTION_BUTTON = 5;
 
-static NSString *BL_NORMAL_CELL_REUSEID = @"BLNormalCell";
+static NSString *BL_PLACEHOLDER_CELL_REUSEID = @"BLPlaceHolderCell";
+static NSString *BL_BUTTON_CELL_REUSEID = @"BLButtonCell";
 static NSString *BL_PROFILE_GENDER_CELL_REUSEID = @"BLGenderCell";
 static NSString *BL_PROFILE_BIRTH_CELL_REUSEID = @"BLBirthCell";
 static NSString *BL_PROFILE_ZODIAC_AND_AGE_CELL_REUSEID = @"BLZodiacAndAgeCell";
@@ -51,12 +52,14 @@ static const float AVATOR_WIDTH = 163.0f;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.view.backgroundColor = [BLColorDefinition backgroundGrayColor];
+    
     BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
     _currentUser = delegate.currentUser;
-    _gender = _currentUser.profile.gender;
-    _birthday = _currentUser.profile.birthday;
-    _zodiac = _currentUser.profile.zodiac;
-    _style = _currentUser.profile.style;
+    _gender = BLGenderMale;
+    _birthday = nil;
+    _zodiac = BLZodiacNone;
+    _style = BLStyleTypeNone;
     
     _tableView = [[UITableView alloc] initWithFrame:self.view.frame];
     _tableView.backgroundColor = [UIColor clearColor];
@@ -65,7 +68,8 @@ static const float AVATOR_WIDTH = 163.0f;
     _tableView.dataSource = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.allowsSelection = NO;
-    [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:BL_NORMAL_CELL_REUSEID];
+    [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:BL_PLACEHOLDER_CELL_REUSEID];
+    [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:BL_BUTTON_CELL_REUSEID];
     [_tableView registerClass:[BLGenderTableViewCell class] forCellReuseIdentifier:BL_PROFILE_GENDER_CELL_REUSEID];
     [_tableView registerClass:[BLBirthTableViewCell class] forCellReuseIdentifier:BL_PROFILE_BIRTH_CELL_REUSEID];
     [_tableView registerClass:[BLZodiacAndAgeTableViewCell class] forCellReuseIdentifier:BL_PROFILE_ZODIAC_AND_AGE_CELL_REUSEID];
@@ -100,7 +104,11 @@ static const float AVATOR_WIDTH = 163.0f;
     switch (indexPath.section) {
         case SECTION_HEADER:
         {
-            UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_NORMAL_CELL_REUSEID forIndexPath:indexPath];
+            UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_PLACEHOLDER_CELL_REUSEID forIndexPath:indexPath];
+            if (!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PLACEHOLDER_CELL_REUSEID];
+                
+            }
             cell.backgroundColor = [BLColorDefinition backgroundGrayColor];
             return cell;
         }
@@ -155,7 +163,12 @@ static const float AVATOR_WIDTH = 163.0f;
         }
         case SECTION_BUTTON:
         {
-            UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_NORMAL_CELL_REUSEID forIndexPath:indexPath];
+            UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_BUTTON_CELL_REUSEID forIndexPath:indexPath];
+            if (!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_BUTTON_CELL_REUSEID];
+                
+            }
+            cell.backgroundColor = [UIColor clearColor];
             UIButton *button = [[UIButton alloc] init];
             button.titleLabel.font = [BLFontDefinition boldFont:20.0f];
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -237,6 +250,7 @@ static const float AVATOR_WIDTH = 163.0f;
         _imageViewAvator.layer.borderColor = [UIColor whiteColor].CGColor;
         _imageViewAvator.layer.borderWidth = 4.0f;
         _imageViewAvator.image = [UIImage imageNamed:@"partner_avator.png"];
+        _imageViewAvator.clipsToBounds = YES;
         [sectionHeaderView addSubview:_imageViewAvator];
         
         [_imageViewAvator mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -294,12 +308,30 @@ static const float AVATOR_WIDTH = 163.0f;
 
 - (void)createProfile:(id)sender {
     Profile *profile = [Profile new];
+    profile.userId = _currentUser.userId;
     profile.gender = _gender;
     profile.birthday = _birthday;
     profile.zodiac = _zodiac;
     profile.style = _style;
     
     BLPartnerViewController *partnerController = [[BLPartnerViewController alloc] initWithNibName:nil bundle:nil];
+    partnerController.profile = profile;
     [self.navigationController pushViewController:partnerController animated:YES];
+}
+
+#pragma mark - Getting and Setting
+- (void)setProfileViewType:(BLProfileViewType)profileViewType {
+    _profileViewType = profileViewType;
+    if (profileViewType == BLProfileViewTypeUpdate) {
+        BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
+        _currentUser = delegate.currentUser;
+        _gender = _currentUser.profile.gender;
+        _birthday = _currentUser.profile.birthday;
+        _zodiac = _currentUser.profile.zodiac;
+        _style = _currentUser.profile.style;
+    }
+}
+- (BLProfileViewType)profileViewType {
+    return _profileViewType;
 }
 @end

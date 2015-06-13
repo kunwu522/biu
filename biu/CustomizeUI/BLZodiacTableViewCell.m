@@ -21,13 +21,13 @@
 @interface BLZodiacTableViewCell () <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (retain, nonatomic) UICollectionView *collectionView;
-@property (retain, nonatomic) NSDictionary *stringOfZodiac;
 
 @end
 
 @implementation BLZodiacTableViewCell
 
-@synthesize zodiac;
+@synthesize zodiac = _zodiac;
+@synthesize allowMultiSelected = _allowMultiSelected;
 
 static const float INSET_LEFT_RIGHT = 42.7f;
 static const float MIN_INTERITEM_SPACING = 5.0f;
@@ -38,37 +38,7 @@ static const float CELL_HEIGHT = 109.3;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.title.text = NSLocalizedString(@"Choose your Zodiac", nil);
-        
-        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        layout.sectionInset = UIEdgeInsetsMake(40, INSET_LEFT_RIGHT, 20, INSET_LEFT_RIGHT);
-        layout.minimumInteritemSpacing = MIN_INTERITEM_SPACING;
-        layout.minimumLineSpacing = MIN_LINE_SPACING;
-        CGFloat width = (self.frame.size.width - (INSET_LEFT_RIGHT * 2) - (MIN_INTERITEM_SPACING * 2)) / 3;
-        layout.itemSize = CGSizeMake(width, CELL_HEIGHT);
-        
-        _collectionView = [[UICollectionView alloc] initWithFrame:self.content.bounds collectionViewLayout:layout];
-        _collectionView.backgroundColor = [UIColor clearColor];
-        _collectionView.delegate = self;
-        _collectionView.dataSource = self;
-        _collectionView.scrollEnabled = NO;
-        _collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        [_collectionView registerClass:[BLZodiacCollectionViewCell class]
-            forCellWithReuseIdentifier:NSStringFromClass([BLZodiacCollectionViewCell class])];
-        
-        _stringOfZodiac = @{[NSNumber numberWithInteger:BLZodiacAries] : NSLocalizedString(@"Aries", nil),
-                            [NSNumber numberWithInteger:BLZodiacTaurus] : NSLocalizedString(@"Taurus", nil),
-                            [NSNumber numberWithInteger:BLZodiacGemini] : NSLocalizedString(@"Gemini", nil),
-                            [NSNumber numberWithInteger:BLZodiacCancer] : NSLocalizedString(@"Cancer", nil),
-                            [NSNumber numberWithInteger:BLZodiacLeo] : NSLocalizedString(@"Leo", nil),
-                            [NSNumber numberWithInteger:BLZodiacVirgo] : NSLocalizedString(@"Virgo", nil),
-                            [NSNumber numberWithInteger:BLZodiacLibra] : NSLocalizedString(@"Libra", nil),
-                            [NSNumber numberWithInteger:BLZodiacScorpio] : NSLocalizedString(@"Scorpio", nil),
-                            [NSNumber numberWithInteger:BLZodiacSagittarius] : NSLocalizedString(@"Sagittarius", nil),
-                            [NSNumber numberWithInteger:BLZodiacCapricorn] : NSLocalizedString(@"Capricorn", nil),
-                            [NSNumber numberWithInteger:BLZodiacAquarius] : NSLocalizedString(@"Aquarius", nil),
-                            [NSNumber numberWithInteger:BLZodiacPisces] : NSLocalizedString(@"Pisces", nil)};
-        
-        [self.content addSubview:_collectionView];
+        [self.content addSubview:self.collectionView];
     }
     return self;
 }
@@ -84,24 +54,93 @@ static const float CELL_HEIGHT = 109.3;
 
 - (BLZodiacCollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     BLZodiacCollectionViewCell *cell = (BLZodiacCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([BLZodiacCollectionViewCell class]) forIndexPath:indexPath];
-    cell.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"zodiac_selected_icon%li", indexPath.item]];
-    cell.unselectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"zodiac_unselected_icon%li", indexPath.item]];
+    BLZodiac zodiac = [self zodiacFromIndexItem:indexPath.item];
+    cell.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"zodiac_selected_icon%li", (NSInteger)zodiac]];
+    cell.unselectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"zodiac_unselected_icon%li", (NSInteger)zodiac]];
     cell.imageView.image = cell.unselectedImage;
-    cell.lbZoidac.text = [_stringOfZodiac objectForKey:[NSNumber numberWithInteger:indexPath.item]];
+    cell.lbZoidac.text = [Profile getZodiacNameFromZodiac:[self zodiacFromIndexItem:indexPath.item] isShotVersion:YES];
     return cell;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    self.zodiac = indexPath.item;
-    if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
-        [self.delegate tableViewCell:self didChangeValue:[NSNumber numberWithInteger:self.zodiac]];
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self.preferZodiacs count] >= 3) {
+        return NO;
+    } else {
+        return YES;
     }
 }
 
-#pragma mark - 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.allowMultiSelected) {
+        if ([self.preferZodiacs count] < 3) {
+            [self.preferZodiacs addObject:[NSNumber numberWithInteger:[self zodiacFromIndexItem:indexPath.item]]];
+            if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
+                [self.delegate tableViewCell:self didChangeValue:self.preferZodiacs];
+            }
+        }
+    } else {
+        self.zodiac = [self zodiacFromIndexItem:indexPath.item];
+        if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
+            [self.delegate tableViewCell:self didChangeValue:[NSNumber numberWithInteger:self.zodiac]];
+        }
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.allowMultiSelected) {
+        if ([self.preferZodiacs count] > 0) {
+            [self.preferZodiacs removeObject:[NSNumber numberWithInteger:[self zodiacFromIndexItem:indexPath.item]]];
+        }
+    } else {
+        _zodiac = BLZodiacNone;
+    }
+}
+
+#pragma mark - private methods
+- (NSUInteger)indexItemFromZodiac:(BLZodiac)zodiac {
+    return zodiac - 1;
+}
+
+- (BLZodiac)zodiacFromIndexItem:(NSUInteger)item {
+    return item + 1;
+}
+
+#pragma mark - getting and setting
 - (void)setZodiac:(BLZodiac)zodiac {
+    _zodiac = zodiac;
     NSIndexPath *indexPath = [[NSIndexPath alloc] initWithIndex:zodiac];
     [_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+}
+
+- (void)setAllowMultiSelected:(BOOL)allowMultiSelected {
+    _allowMultiSelected = allowMultiSelected;
+    _collectionView.allowsMultipleSelection = allowMultiSelected;
+}
+
+- (NSMutableArray *)preferZodiacs {
+    if (!_preferZodiacs) {
+        _preferZodiacs = [NSMutableArray array];
+    }
+    return _preferZodiacs;
+}
+
+- (UICollectionView *)collectionView {
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    layout.sectionInset = UIEdgeInsetsMake(40, INSET_LEFT_RIGHT, 20, INSET_LEFT_RIGHT);
+    layout.minimumInteritemSpacing = MIN_INTERITEM_SPACING;
+    layout.minimumLineSpacing = MIN_LINE_SPACING;
+    CGFloat width = (self.frame.size.width - (INSET_LEFT_RIGHT * 2) - (MIN_INTERITEM_SPACING * 2)) / 3;
+    layout.itemSize = CGSizeMake(width, CELL_HEIGHT);
+    
+    _collectionView = [[UICollectionView alloc] initWithFrame:self.content.bounds collectionViewLayout:layout];
+    _collectionView.backgroundColor = [UIColor clearColor];
+    _collectionView.delegate = self;
+    _collectionView.dataSource = self;
+    _collectionView.scrollEnabled = NO;
+    _collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [_collectionView registerClass:[BLZodiacCollectionViewCell class]
+        forCellWithReuseIdentifier:NSStringFromClass([BLZodiacCollectionViewCell class])];
+    return _collectionView;
 }
 
 @end

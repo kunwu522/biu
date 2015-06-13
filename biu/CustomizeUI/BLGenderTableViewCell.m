@@ -29,14 +29,10 @@
 
 @implementation BLGenderTableViewCell
 
+@synthesize gender = _gender;
+
 - (void)awakeFromNib {
     // Initialization code
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -56,14 +52,12 @@
         _maleView = [[UIView alloc] init];
         _maleView.backgroundColor = [UIColor clearColor];
         _imageViewMale = [[UIImageView alloc] initWithFrame:_maleView.frame];
-        _imageViewMale.image = _imageMaleUnselected;
         [_maleView addSubview:_imageViewMale];
         [self.content addSubview:_maleView];
         
         _femaleView = [[UIView alloc] init];
         _femaleView.backgroundColor = [UIColor clearColor];
         _imageViewFemale = [[UIImageView alloc] initWithFrame:_femaleView.frame];
-        _imageViewFemale.image = _imageFemaleUnselected;
         [_femaleView addSubview:_imageViewFemale];
         [self.content addSubview:_femaleView];
         
@@ -78,38 +72,11 @@
         [self layout];
         
         // default is male
-        self.gender = BLGenderMale;
+        _gender = BLGenderMale;
+        _imageViewMale.image = _imageMaleSelected;
+        _imageViewFemale.image = _imageFemaleUnselected;
     }
     return self;
-}
-
-- (void)setGender:(BLGender)gender {
-    if (gender == BLGenderNone) {
-        _imageViewMale.image = _imageMaleUnselected;
-        _imageViewFemale.image = _imageFemaleUnselected;
-        return;
-    }
-    
-    if (_gender == BLGenderNone) {
-        switch (gender) {
-            case BLGenderMale:
-                _imageViewMale.image = _imageMaleSelected;
-                break;
-            case BLGenderFemale:
-                _imageViewFemale.image = _imageFemaleSelected;
-                break;
-            default:
-                break;
-        }
-    }
-    
-    if (_gender != gender) {
-        [self switchGender];
-        _gender = gender;
-        if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
-            [self.delegate tableViewCell:self didChangeValue:[NSNumber numberWithInteger:_gender]];
-        }
-    }
 }
 
 #pragma mark - private
@@ -147,7 +114,7 @@
 }
 
 - (void)switchGender {
-    switch (_gender) {
+    switch (self.gender) {
         case BLGenderMale:
             _imageViewMale.image = _imageMaleUnselected;
             _imageViewFemale.image = _imageFemaleSelected;
@@ -167,6 +134,28 @@
 
 - (void)tapFemaleHandler:(UITapGestureRecognizer *)recognizer {
     [self setGender:BLGenderFemale];
+}
+
+#pragma mark - Getting and Setting
+- (void)setGender:(BLGender)gender {
+    if (gender == BLGenderNone) {
+        return;
+    }
+    
+    if (_gender != gender) {
+        [self switchGender];
+        _gender = gender;
+        if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
+            [self.delegate tableViewCell:self didChangeValue:[NSNumber numberWithInteger:_gender]];
+        }
+    }
+}
+
+- (BLGender)gender {
+    if (_gender == BLGenderNone) {
+        _gender = BLGenderMale;
+    }
+    return _gender;
 }
 
 @end

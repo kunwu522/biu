@@ -13,4 +13,8 @@
 
 @property (assign, nonatomic) BLZodiac zodiac;
 
+@property (assign, nonatomic) BOOL allowMultiSelected;
+// working when isAllowMultiSelected == YES
+@property (strong, nonatomic) NSMutableArray *preferZodiacs;
+
 @end

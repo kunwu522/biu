@@ -73,7 +73,7 @@ static double ICON_INITIAL_SIZE = 147.5;
     [self.view addSubview:_logo];
     
     _biuTitle = [[UILabel alloc] init];
-    _biuTitle.text = @"BIU";
+    _biuTitle.text = NSLocalizedString(@"BIU", nil);
     _biuTitle.font = [BLFontDefinition boldFont:45.0f];
     _biuTitle.textColor = [UIColor whiteColor];
     _biuTitle.textAlignment = NSTextAlignmentCenter;
@@ -81,7 +81,7 @@ static double ICON_INITIAL_SIZE = 147.5;
     [self.view addSubview:_biuTitle];
     
     _biuSubtitle = [[UILabel alloc] init];
-    _biuSubtitle.text = @"I ' M   C L O S E";
+    _biuSubtitle.text = NSLocalizedString(@"I ' M   C L O S E", nil);
     _biuSubtitle.font = [BLFontDefinition boldFont:15.0f];
     _biuSubtitle.textColor = [UIColor colorWithRed:89.0 / 255.0 green:96.0 / 255.0 blue:104.0 / 255.0 alpha:1];
     _biuSubtitle.textAlignment = NSTextAlignmentCenter;
@@ -119,16 +119,16 @@ static double ICON_INITIAL_SIZE = 147.5;
     if (!delegate.currentUser) {
         [self showLoginUI];
     } else {
-        NSString *email = [delegate.passwordItem objectForKey:(__bridge id)kSecAttrAccount];
+        NSString *phone = [delegate.passwordItem objectForKey:(__bridge id)kSecAttrAccount];
         NSData *pwd = [delegate.passwordItem objectForKey:(__bridge id)(kSecValueData)];
         NSString *password = [[NSString alloc] initWithData:pwd encoding:NSUTF8StringEncoding];
-        if ([email isEqualToString:@""] || [password isEqualToString:@""]) {
+        if ([phone isEqualToString:@""] || [password isEqualToString:@""]) {
             [self showLoginUI];
             return;
         }
         
         User *user = [User new];
-        user.email = email;
+        user.phone = phone;
         user.password = password;
         [[BLHTTPClient sharedBLHTTPClient] login:user success:^(NSURLSessionDataTask *task, id responseObject) {
             BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
@@ -270,13 +270,22 @@ static double ICON_INITIAL_SIZE = 147.5;
 
 #pragma mark - BLLoginView delegate and BLSignupView delegate
 - (void)didLoginWithCurrentUser:(User *)user {
+    [self saveCurrentUser:user];
     BLAppDeleate *appDelegate = [[UIApplication sharedApplication] delegate];
     [self presentViewController:appDelegate.menuViewController animated:YES completion:nil];
 }
 
 - (void)didSignupWithNewUser:(User *)user {
+    [self saveCurrentUser:user];
     BLAppDeleate *appDelegate = [[UIApplication sharedApplication] delegate];
     [self presentViewController:appDelegate.fillingInfoNavController animated:YES completion:nil];
+}
+
+#pragma mark - private method
+- (void)saveCurrentUser:(User *)user {
+    BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
+    delegate.currentUser = user;
+    [delegate.currentUser save];
 }
 
 @end

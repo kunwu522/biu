@@ -57,6 +57,24 @@
 		EA9B08DB1B29AFE30059DBA7 /* Lantinghei.ttc in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08DA1B29AFBA0059DBA7 /* Lantinghei.ttc */; };
 		EA9B08DD1B29B90B0059DBA7 /* Launch.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08DC1B29B90B0059DBA7 /* Launch.png */; };
 		EA9B08DF1B29BADF0059DBA7 /* Launch_debug.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08DE1B29BADF0059DBA7 /* Launch_debug.png */; };
+		EA9B08E91B2A97860059DBA7 /* style_man_selected_icon0.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08E01B2A97860059DBA7 /* style_man_selected_icon0.png */; };
+		EA9B08EA1B2A97860059DBA7 /* style_man_selected_icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08E11B2A97860059DBA7 /* style_man_selected_icon1.png */; };
+		EA9B08EB1B2A97860059DBA7 /* style_man_selected_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08E21B2A97860059DBA7 /* style_man_selected_icon2.png */; };
+		EA9B08EC1B2A97860059DBA7 /* style_man_selected_icon3.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08E31B2A97860059DBA7 /* style_man_selected_icon3.png */; };
+		EA9B08ED1B2A97860059DBA7 /* style_man_selected_icon4.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08E41B2A97860059DBA7 /* style_man_selected_icon4.png */; };
+		EA9B08EE1B2A97860059DBA7 /* style_man_selected_icon5.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08E51B2A97860059DBA7 /* style_man_selected_icon5.png */; };
+		EA9B08EF1B2A97860059DBA7 /* style_man_selected_icon6.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08E61B2A97860059DBA7 /* style_man_selected_icon6.png */; };
+		EA9B08F01B2A97860059DBA7 /* style_man_selected_icon7.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08E71B2A97860059DBA7 /* style_man_selected_icon7.png */; };
+		EA9B08F11B2A97860059DBA7 /* style_man_selected_icon8.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08E81B2A97860059DBA7 /* style_man_selected_icon8.png */; };
+		EA9B08FB1B2A97930059DBA7 /* style_woman_selected_icon0.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08F21B2A97930059DBA7 /* style_woman_selected_icon0.png */; };
+		EA9B08FC1B2A97930059DBA7 /* style_woman_selected_icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08F31B2A97930059DBA7 /* style_woman_selected_icon1.png */; };
+		EA9B08FD1B2A97930059DBA7 /* style_woman_selected_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08F41B2A97930059DBA7 /* style_woman_selected_icon2.png */; };
+		EA9B08FE1B2A97930059DBA7 /* style_woman_selected_icon3.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08F51B2A97930059DBA7 /* style_woman_selected_icon3.png */; };
+		EA9B08FF1B2A97930059DBA7 /* style_woman_selected_icon4.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08F61B2A97930059DBA7 /* style_woman_selected_icon4.png */; };
+		EA9B09001B2A97930059DBA7 /* style_woman_selected_icon5.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08F71B2A97930059DBA7 /* style_woman_selected_icon5.png */; };
+		EA9B09011B2A97930059DBA7 /* style_woman_selected_icon6.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08F81B2A97930059DBA7 /* style_woman_selected_icon6.png */; };
+		EA9B09021B2A97930059DBA7 /* style_woman_selected_icon7.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08F91B2A97930059DBA7 /* style_woman_selected_icon7.png */; };
+		EA9B09031B2A97930059DBA7 /* style_woman_selected_icon8.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08FA1B2A97930059DBA7 /* style_woman_selected_icon8.png */; };
 		EA9F49391B1C021F0037D188 /* BLBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9F49381B1C021F0037D188 /* BLBlurView.m */; };
 		EA9F493B1B1C13C30037D188 /* test_avator.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9F493A1B1C13C30037D188 /* test_avator.png */; };
 		EA9F493F1B1C6A7F0037D188 /* me_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9F493E1B1C6A7F0037D188 /* me_icon.png */; };
@@ -85,30 +103,30 @@
 		EAE8E20C1B09CBF800C9038D /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE8E20B1B09CBF800C9038D /* logo.png */; };
 		EAE8E2111B09F34300C9038D /* BLLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE8E2101B09F34300C9038D /* BLLoginViewController.m */; };
 		EAEA27D11B256776006967A1 /* BLZodiacAndAgeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAEA27D01B256776006967A1 /* BLZodiacAndAgeTableViewCell.m */; };
-		EAEC0AF81B1EEAC3000A7C5B /* zodiac_selected_icon0.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE01B1EEAC2000A7C5B /* zodiac_selected_icon0.png */; };
-		EAEC0AF91B1EEAC3000A7C5B /* zodiac_selected_icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE11B1EEAC2000A7C5B /* zodiac_selected_icon1.png */; };
-		EAEC0AFA1B1EEAC3000A7C5B /* zodiac_selected_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE21B1EEAC2000A7C5B /* zodiac_selected_icon2.png */; };
-		EAEC0AFB1B1EEAC3000A7C5B /* zodiac_selected_icon3.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE31B1EEAC2000A7C5B /* zodiac_selected_icon3.png */; };
-		EAEC0AFC1B1EEAC3000A7C5B /* zodiac_selected_icon4.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE41B1EEAC2000A7C5B /* zodiac_selected_icon4.png */; };
-		EAEC0AFD1B1EEAC3000A7C5B /* zodiac_selected_icon5.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE51B1EEAC2000A7C5B /* zodiac_selected_icon5.png */; };
-		EAEC0AFE1B1EEAC3000A7C5B /* zodiac_selected_icon6.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE61B1EEAC2000A7C5B /* zodiac_selected_icon6.png */; };
-		EAEC0AFF1B1EEAC3000A7C5B /* zodiac_selected_icon7.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE71B1EEAC2000A7C5B /* zodiac_selected_icon7.png */; };
-		EAEC0B001B1EEAC3000A7C5B /* zodiac_selected_icon8.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE81B1EEAC2000A7C5B /* zodiac_selected_icon8.png */; };
-		EAEC0B011B1EEAC3000A7C5B /* zodiac_selected_icon9.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE91B1EEAC2000A7C5B /* zodiac_selected_icon9.png */; };
-		EAEC0B021B1EEAC3000A7C5B /* zodiac_selected_icon10.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AEA1B1EEAC2000A7C5B /* zodiac_selected_icon10.png */; };
-		EAEC0B031B1EEAC3000A7C5B /* zodiac_selected_icon11.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AEB1B1EEAC2000A7C5B /* zodiac_selected_icon11.png */; };
-		EAEC0B041B1EEAC3000A7C5B /* zodiac_unselected_icon0.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AEC1B1EEAC2000A7C5B /* zodiac_unselected_icon0.png */; };
-		EAEC0B051B1EEAC3000A7C5B /* zodiac_unselected_icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AED1B1EEAC2000A7C5B /* zodiac_unselected_icon1.png */; };
-		EAEC0B061B1EEAC3000A7C5B /* zodiac_unselected_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AEE1B1EEAC2000A7C5B /* zodiac_unselected_icon2.png */; };
-		EAEC0B071B1EEAC3000A7C5B /* zodiac_unselected_icon3.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AEF1B1EEAC2000A7C5B /* zodiac_unselected_icon3.png */; };
-		EAEC0B081B1EEAC3000A7C5B /* zodiac_unselected_icon4.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AF01B1EEAC3000A7C5B /* zodiac_unselected_icon4.png */; };
-		EAEC0B091B1EEAC3000A7C5B /* zodiac_unselected_icon5.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AF11B1EEAC3000A7C5B /* zodiac_unselected_icon5.png */; };
-		EAEC0B0A1B1EEAC3000A7C5B /* zodiac_unselected_icon6.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AF21B1EEAC3000A7C5B /* zodiac_unselected_icon6.png */; };
-		EAEC0B0B1B1EEAC3000A7C5B /* zodiac_unselected_icon7.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AF31B1EEAC3000A7C5B /* zodiac_unselected_icon7.png */; };
-		EAEC0B0C1B1EEAC3000A7C5B /* zodiac_unselected_icon8.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AF41B1EEAC3000A7C5B /* zodiac_unselected_icon8.png */; };
-		EAEC0B0D1B1EEAC3000A7C5B /* zodiac_unselected_icon9.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AF51B1EEAC3000A7C5B /* zodiac_unselected_icon9.png */; };
-		EAEC0B0E1B1EEAC3000A7C5B /* zodiac_unselected_icon10.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AF61B1EEAC3000A7C5B /* zodiac_unselected_icon10.png */; };
-		EAEC0B0F1B1EEAC3000A7C5B /* zodiac_unselected_icon11.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AF71B1EEAC3000A7C5B /* zodiac_unselected_icon11.png */; };
+		EAEC0AF81B1EEAC3000A7C5B /* zodiac_selected_icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE01B1EEAC2000A7C5B /* zodiac_selected_icon1.png */; };
+		EAEC0AF91B1EEAC3000A7C5B /* zodiac_selected_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE11B1EEAC2000A7C5B /* zodiac_selected_icon2.png */; };
+		EAEC0AFA1B1EEAC3000A7C5B /* zodiac_selected_icon3.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE21B1EEAC2000A7C5B /* zodiac_selected_icon3.png */; };
+		EAEC0AFB1B1EEAC3000A7C5B /* zodiac_selected_icon4.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE31B1EEAC2000A7C5B /* zodiac_selected_icon4.png */; };
+		EAEC0AFC1B1EEAC3000A7C5B /* zodiac_selected_icon5.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE41B1EEAC2000A7C5B /* zodiac_selected_icon5.png */; };
+		EAEC0AFD1B1EEAC3000A7C5B /* zodiac_selected_icon6.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE51B1EEAC2000A7C5B /* zodiac_selected_icon6.png */; };
+		EAEC0AFE1B1EEAC3000A7C5B /* zodiac_selected_icon7.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE61B1EEAC2000A7C5B /* zodiac_selected_icon7.png */; };
+		EAEC0AFF1B1EEAC3000A7C5B /* zodiac_selected_icon8.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE71B1EEAC2000A7C5B /* zodiac_selected_icon8.png */; };
+		EAEC0B001B1EEAC3000A7C5B /* zodiac_selected_icon9.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE81B1EEAC2000A7C5B /* zodiac_selected_icon9.png */; };
+		EAEC0B011B1EEAC3000A7C5B /* zodiac_selected_icon10.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE91B1EEAC2000A7C5B /* zodiac_selected_icon10.png */; };
+		EAEC0B021B1EEAC3000A7C5B /* zodiac_selected_icon11.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AEA1B1EEAC2000A7C5B /* zodiac_selected_icon11.png */; };
+		EAEC0B031B1EEAC3000A7C5B /* zodiac_selected_icon12.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AEB1B1EEAC2000A7C5B /* zodiac_selected_icon12.png */; };
+		EAEC0B041B1EEAC3000A7C5B /* zodiac_unselected_icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AEC1B1EEAC2000A7C5B /* zodiac_unselected_icon1.png */; };
+		EAEC0B051B1EEAC3000A7C5B /* zodiac_unselected_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AED1B1EEAC2000A7C5B /* zodiac_unselected_icon2.png */; };
+		EAEC0B061B1EEAC3000A7C5B /* zodiac_unselected_icon3.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AEE1B1EEAC2000A7C5B /* zodiac_unselected_icon3.png */; };
+		EAEC0B071B1EEAC3000A7C5B /* zodiac_unselected_icon4.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AEF1B1EEAC2000A7C5B /* zodiac_unselected_icon4.png */; };
+		EAEC0B081B1EEAC3000A7C5B /* zodiac_unselected_icon5.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AF01B1EEAC3000A7C5B /* zodiac_unselected_icon5.png */; };
+		EAEC0B091B1EEAC3000A7C5B /* zodiac_unselected_icon6.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AF11B1EEAC3000A7C5B /* zodiac_unselected_icon6.png */; };
+		EAEC0B0A1B1EEAC3000A7C5B /* zodiac_unselected_icon7.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AF21B1EEAC3000A7C5B /* zodiac_unselected_icon7.png */; };
+		EAEC0B0B1B1EEAC3000A7C5B /* zodiac_unselected_icon8.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AF31B1EEAC3000A7C5B /* zodiac_unselected_icon8.png */; };
+		EAEC0B0C1B1EEAC3000A7C5B /* zodiac_unselected_icon9.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AF41B1EEAC3000A7C5B /* zodiac_unselected_icon9.png */; };
+		EAEC0B0D1B1EEAC3000A7C5B /* zodiac_unselected_icon10.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AF51B1EEAC3000A7C5B /* zodiac_unselected_icon10.png */; };
+		EAEC0B0E1B1EEAC3000A7C5B /* zodiac_unselected_icon11.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AF61B1EEAC3000A7C5B /* zodiac_unselected_icon11.png */; };
+		EAEC0B0F1B1EEAC3000A7C5B /* zodiac_unselected_icon12.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AF71B1EEAC3000A7C5B /* zodiac_unselected_icon12.png */; };
 		EAEC0B1D1B1EEAE8000A7C5B /* sexuality_selected_icon0.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0B111B1EEAE8000A7C5B /* sexuality_selected_icon0.png */; };
 		EAEC0B1E1B1EEAE8000A7C5B /* sexuality_selected_icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0B121B1EEAE8000A7C5B /* sexuality_selected_icon1.png */; };
 		EAEC0B1F1B1EEAE8000A7C5B /* sexuality_selected_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0B131B1EEAE8000A7C5B /* sexuality_selected_icon2.png */; };
@@ -231,6 +249,24 @@
 		EA9B08DA1B29AFBA0059DBA7 /* Lantinghei.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = Lantinghei.ttc; path = Font/Lantinghei.ttc; sourceTree = "<group>"; };
 		EA9B08DC1B29B90B0059DBA7 /* Launch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Launch.png; path = images/Launch.png; sourceTree = "<group>"; };
 		EA9B08DE1B29BADF0059DBA7 /* Launch_debug.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Launch_debug.png; path = images/Launch_debug.png; sourceTree = "<group>"; };
+		EA9B08E01B2A97860059DBA7 /* style_man_selected_icon0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_man_selected_icon0.png; path = images/style/style_man_selected_icon0.png; sourceTree = "<group>"; };
+		EA9B08E11B2A97860059DBA7 /* style_man_selected_icon1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_man_selected_icon1.png; path = images/style/style_man_selected_icon1.png; sourceTree = "<group>"; };
+		EA9B08E21B2A97860059DBA7 /* style_man_selected_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_man_selected_icon2.png; path = images/style/style_man_selected_icon2.png; sourceTree = "<group>"; };
+		EA9B08E31B2A97860059DBA7 /* style_man_selected_icon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_man_selected_icon3.png; path = images/style/style_man_selected_icon3.png; sourceTree = "<group>"; };
+		EA9B08E41B2A97860059DBA7 /* style_man_selected_icon4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_man_selected_icon4.png; path = images/style/style_man_selected_icon4.png; sourceTree = "<group>"; };
+		EA9B08E51B2A97860059DBA7 /* style_man_selected_icon5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_man_selected_icon5.png; path = images/style/style_man_selected_icon5.png; sourceTree = "<group>"; };
+		EA9B08E61B2A97860059DBA7 /* style_man_selected_icon6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_man_selected_icon6.png; path = images/style/style_man_selected_icon6.png; sourceTree = "<group>"; };
+		EA9B08E71B2A97860059DBA7 /* style_man_selected_icon7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_man_selected_icon7.png; path = images/style/style_man_selected_icon7.png; sourceTree = "<group>"; };
+		EA9B08E81B2A97860059DBA7 /* style_man_selected_icon8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_man_selected_icon8.png; path = images/style/style_man_selected_icon8.png; sourceTree = "<group>"; };
+		EA9B08F21B2A97930059DBA7 /* style_woman_selected_icon0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_woman_selected_icon0.png; path = images/style/style_woman_selected_icon0.png; sourceTree = "<group>"; };
+		EA9B08F31B2A97930059DBA7 /* style_woman_selected_icon1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_woman_selected_icon1.png; path = images/style/style_woman_selected_icon1.png; sourceTree = "<group>"; };
+		EA9B08F41B2A97930059DBA7 /* style_woman_selected_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_woman_selected_icon2.png; path = images/style/style_woman_selected_icon2.png; sourceTree = "<group>"; };
+		EA9B08F51B2A97930059DBA7 /* style_woman_selected_icon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_woman_selected_icon3.png; path = images/style/style_woman_selected_icon3.png; sourceTree = "<group>"; };
+		EA9B08F61B2A97930059DBA7 /* style_woman_selected_icon4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_woman_selected_icon4.png; path = images/style/style_woman_selected_icon4.png; sourceTree = "<group>"; };
+		EA9B08F71B2A97930059DBA7 /* style_woman_selected_icon5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_woman_selected_icon5.png; path = images/style/style_woman_selected_icon5.png; sourceTree = "<group>"; };
+		EA9B08F81B2A97930059DBA7 /* style_woman_selected_icon6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_woman_selected_icon6.png; path = images/style/style_woman_selected_icon6.png; sourceTree = "<group>"; };
+		EA9B08F91B2A97930059DBA7 /* style_woman_selected_icon7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_woman_selected_icon7.png; path = images/style/style_woman_selected_icon7.png; sourceTree = "<group>"; };
+		EA9B08FA1B2A97930059DBA7 /* style_woman_selected_icon8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_woman_selected_icon8.png; path = images/style/style_woman_selected_icon8.png; sourceTree = "<group>"; };
 		EA9F49371B1C021F0037D188 /* BLBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLBlurView.h; path = CustomizeUI/BLBlurView.h; sourceTree = "<group>"; };
 		EA9F49381B1C021F0037D188 /* BLBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLBlurView.m; path = CustomizeUI/BLBlurView.m; sourceTree = "<group>"; };
 		EA9F493A1B1C13C30037D188 /* test_avator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = test_avator.png; path = images/test_avator.png; sourceTree = "<group>"; };
@@ -278,30 +314,30 @@
 		EAE8E2101B09F34300C9038D /* BLLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLLoginViewController.m; sourceTree = "<group>"; };
 		EAEA27CF1B256776006967A1 /* BLZodiacAndAgeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLZodiacAndAgeTableViewCell.h; path = CustomizeUI/BLZodiacAndAgeTableViewCell.h; sourceTree = "<group>"; };
 		EAEA27D01B256776006967A1 /* BLZodiacAndAgeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLZodiacAndAgeTableViewCell.m; path = CustomizeUI/BLZodiacAndAgeTableViewCell.m; sourceTree = "<group>"; };
-		EAEC0AE01B1EEAC2000A7C5B /* zodiac_selected_icon0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon0.png; path = images/zodiac/zodiac_selected_icon0.png; sourceTree = "<group>"; };
-		EAEC0AE11B1EEAC2000A7C5B /* zodiac_selected_icon1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon1.png; path = images/zodiac/zodiac_selected_icon1.png; sourceTree = "<group>"; };
-		EAEC0AE21B1EEAC2000A7C5B /* zodiac_selected_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon2.png; path = images/zodiac/zodiac_selected_icon2.png; sourceTree = "<group>"; };
-		EAEC0AE31B1EEAC2000A7C5B /* zodiac_selected_icon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon3.png; path = images/zodiac/zodiac_selected_icon3.png; sourceTree = "<group>"; };
-		EAEC0AE41B1EEAC2000A7C5B /* zodiac_selected_icon4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon4.png; path = images/zodiac/zodiac_selected_icon4.png; sourceTree = "<group>"; };
-		EAEC0AE51B1EEAC2000A7C5B /* zodiac_selected_icon5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon5.png; path = images/zodiac/zodiac_selected_icon5.png; sourceTree = "<group>"; };
-		EAEC0AE61B1EEAC2000A7C5B /* zodiac_selected_icon6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon6.png; path = images/zodiac/zodiac_selected_icon6.png; sourceTree = "<group>"; };
-		EAEC0AE71B1EEAC2000A7C5B /* zodiac_selected_icon7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon7.png; path = images/zodiac/zodiac_selected_icon7.png; sourceTree = "<group>"; };
-		EAEC0AE81B1EEAC2000A7C5B /* zodiac_selected_icon8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon8.png; path = images/zodiac/zodiac_selected_icon8.png; sourceTree = "<group>"; };
-		EAEC0AE91B1EEAC2000A7C5B /* zodiac_selected_icon9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon9.png; path = images/zodiac/zodiac_selected_icon9.png; sourceTree = "<group>"; };
-		EAEC0AEA1B1EEAC2000A7C5B /* zodiac_selected_icon10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon10.png; path = images/zodiac/zodiac_selected_icon10.png; sourceTree = "<group>"; };
-		EAEC0AEB1B1EEAC2000A7C5B /* zodiac_selected_icon11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon11.png; path = images/zodiac/zodiac_selected_icon11.png; sourceTree = "<group>"; };
-		EAEC0AEC1B1EEAC2000A7C5B /* zodiac_unselected_icon0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon0.png; path = images/zodiac/zodiac_unselected_icon0.png; sourceTree = "<group>"; };
-		EAEC0AED1B1EEAC2000A7C5B /* zodiac_unselected_icon1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon1.png; path = images/zodiac/zodiac_unselected_icon1.png; sourceTree = "<group>"; };
-		EAEC0AEE1B1EEAC2000A7C5B /* zodiac_unselected_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon2.png; path = images/zodiac/zodiac_unselected_icon2.png; sourceTree = "<group>"; };
-		EAEC0AEF1B1EEAC2000A7C5B /* zodiac_unselected_icon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon3.png; path = images/zodiac/zodiac_unselected_icon3.png; sourceTree = "<group>"; };
-		EAEC0AF01B1EEAC3000A7C5B /* zodiac_unselected_icon4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon4.png; path = images/zodiac/zodiac_unselected_icon4.png; sourceTree = "<group>"; };
-		EAEC0AF11B1EEAC3000A7C5B /* zodiac_unselected_icon5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon5.png; path = images/zodiac/zodiac_unselected_icon5.png; sourceTree = "<group>"; };
-		EAEC0AF21B1EEAC3000A7C5B /* zodiac_unselected_icon6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon6.png; path = images/zodiac/zodiac_unselected_icon6.png; sourceTree = "<group>"; };
-		EAEC0AF31B1EEAC3000A7C5B /* zodiac_unselected_icon7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon7.png; path = images/zodiac/zodiac_unselected_icon7.png; sourceTree = "<group>"; };
-		EAEC0AF41B1EEAC3000A7C5B /* zodiac_unselected_icon8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon8.png; path = images/zodiac/zodiac_unselected_icon8.png; sourceTree = "<group>"; };
-		EAEC0AF51B1EEAC3000A7C5B /* zodiac_unselected_icon9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon9.png; path = images/zodiac/zodiac_unselected_icon9.png; sourceTree = "<group>"; };
-		EAEC0AF61B1EEAC3000A7C5B /* zodiac_unselected_icon10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon10.png; path = images/zodiac/zodiac_unselected_icon10.png; sourceTree = "<group>"; };
-		EAEC0AF71B1EEAC3000A7C5B /* zodiac_unselected_icon11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon11.png; path = images/zodiac/zodiac_unselected_icon11.png; sourceTree = "<group>"; };
+		EAEC0AE01B1EEAC2000A7C5B /* zodiac_selected_icon1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon1.png; path = images/zodiac/zodiac_selected_icon1.png; sourceTree = "<group>"; };
+		EAEC0AE11B1EEAC2000A7C5B /* zodiac_selected_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon2.png; path = images/zodiac/zodiac_selected_icon2.png; sourceTree = "<group>"; };
+		EAEC0AE21B1EEAC2000A7C5B /* zodiac_selected_icon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon3.png; path = images/zodiac/zodiac_selected_icon3.png; sourceTree = "<group>"; };
+		EAEC0AE31B1EEAC2000A7C5B /* zodiac_selected_icon4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon4.png; path = images/zodiac/zodiac_selected_icon4.png; sourceTree = "<group>"; };
+		EAEC0AE41B1EEAC2000A7C5B /* zodiac_selected_icon5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon5.png; path = images/zodiac/zodiac_selected_icon5.png; sourceTree = "<group>"; };
+		EAEC0AE51B1EEAC2000A7C5B /* zodiac_selected_icon6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon6.png; path = images/zodiac/zodiac_selected_icon6.png; sourceTree = "<group>"; };
+		EAEC0AE61B1EEAC2000A7C5B /* zodiac_selected_icon7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon7.png; path = images/zodiac/zodiac_selected_icon7.png; sourceTree = "<group>"; };
+		EAEC0AE71B1EEAC2000A7C5B /* zodiac_selected_icon8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon8.png; path = images/zodiac/zodiac_selected_icon8.png; sourceTree = "<group>"; };
+		EAEC0AE81B1EEAC2000A7C5B /* zodiac_selected_icon9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon9.png; path = images/zodiac/zodiac_selected_icon9.png; sourceTree = "<group>"; };
+		EAEC0AE91B1EEAC2000A7C5B /* zodiac_selected_icon10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon10.png; path = images/zodiac/zodiac_selected_icon10.png; sourceTree = "<group>"; };
+		EAEC0AEA1B1EEAC2000A7C5B /* zodiac_selected_icon11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon11.png; path = images/zodiac/zodiac_selected_icon11.png; sourceTree = "<group>"; };
+		EAEC0AEB1B1EEAC2000A7C5B /* zodiac_selected_icon12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon12.png; path = images/zodiac/zodiac_selected_icon12.png; sourceTree = "<group>"; };
+		EAEC0AEC1B1EEAC2000A7C5B /* zodiac_unselected_icon1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon1.png; path = images/zodiac/zodiac_unselected_icon1.png; sourceTree = "<group>"; };
+		EAEC0AED1B1EEAC2000A7C5B /* zodiac_unselected_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon2.png; path = images/zodiac/zodiac_unselected_icon2.png; sourceTree = "<group>"; };
+		EAEC0AEE1B1EEAC2000A7C5B /* zodiac_unselected_icon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon3.png; path = images/zodiac/zodiac_unselected_icon3.png; sourceTree = "<group>"; };
+		EAEC0AEF1B1EEAC2000A7C5B /* zodiac_unselected_icon4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon4.png; path = images/zodiac/zodiac_unselected_icon4.png; sourceTree = "<group>"; };
+		EAEC0AF01B1EEAC3000A7C5B /* zodiac_unselected_icon5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon5.png; path = images/zodiac/zodiac_unselected_icon5.png; sourceTree = "<group>"; };
+		EAEC0AF11B1EEAC3000A7C5B /* zodiac_unselected_icon6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon6.png; path = images/zodiac/zodiac_unselected_icon6.png; sourceTree = "<group>"; };
+		EAEC0AF21B1EEAC3000A7C5B /* zodiac_unselected_icon7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon7.png; path = images/zodiac/zodiac_unselected_icon7.png; sourceTree = "<group>"; };
+		EAEC0AF31B1EEAC3000A7C5B /* zodiac_unselected_icon8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon8.png; path = images/zodiac/zodiac_unselected_icon8.png; sourceTree = "<group>"; };
+		EAEC0AF41B1EEAC3000A7C5B /* zodiac_unselected_icon9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon9.png; path = images/zodiac/zodiac_unselected_icon9.png; sourceTree = "<group>"; };
+		EAEC0AF51B1EEAC3000A7C5B /* zodiac_unselected_icon10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon10.png; path = images/zodiac/zodiac_unselected_icon10.png; sourceTree = "<group>"; };
+		EAEC0AF61B1EEAC3000A7C5B /* zodiac_unselected_icon11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon11.png; path = images/zodiac/zodiac_unselected_icon11.png; sourceTree = "<group>"; };
+		EAEC0AF71B1EEAC3000A7C5B /* zodiac_unselected_icon12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_unselected_icon12.png; path = images/zodiac/zodiac_unselected_icon12.png; sourceTree = "<group>"; };
 		EAEC0B111B1EEAE8000A7C5B /* sexuality_selected_icon0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sexuality_selected_icon0.png; path = images/sexuality/sexuality_selected_icon0.png; sourceTree = "<group>"; };
 		EAEC0B121B1EEAE8000A7C5B /* sexuality_selected_icon1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sexuality_selected_icon1.png; path = images/sexuality/sexuality_selected_icon1.png; sourceTree = "<group>"; };
 		EAEC0B131B1EEAE8000A7C5B /* sexuality_selected_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sexuality_selected_icon2.png; path = images/sexuality/sexuality_selected_icon2.png; sourceTree = "<group>"; };
@@ -572,30 +608,30 @@
 		EA9F495C1B1D5A750037D188 /* zodiac */ = {
 			isa = PBXGroup;
 			children = (
-				EAEC0AE01B1EEAC2000A7C5B /* zodiac_selected_icon0.png */,
-				EAEC0AE11B1EEAC2000A7C5B /* zodiac_selected_icon1.png */,
-				EAEC0AE21B1EEAC2000A7C5B /* zodiac_selected_icon2.png */,
-				EAEC0AE31B1EEAC2000A7C5B /* zodiac_selected_icon3.png */,
-				EAEC0AE41B1EEAC2000A7C5B /* zodiac_selected_icon4.png */,
-				EAEC0AE51B1EEAC2000A7C5B /* zodiac_selected_icon5.png */,
-				EAEC0AE61B1EEAC2000A7C5B /* zodiac_selected_icon6.png */,
-				EAEC0AE71B1EEAC2000A7C5B /* zodiac_selected_icon7.png */,
-				EAEC0AE81B1EEAC2000A7C5B /* zodiac_selected_icon8.png */,
-				EAEC0AE91B1EEAC2000A7C5B /* zodiac_selected_icon9.png */,
-				EAEC0AEA1B1EEAC2000A7C5B /* zodiac_selected_icon10.png */,
-				EAEC0AEB1B1EEAC2000A7C5B /* zodiac_selected_icon11.png */,
-				EAEC0AEC1B1EEAC2000A7C5B /* zodiac_unselected_icon0.png */,
-				EAEC0AED1B1EEAC2000A7C5B /* zodiac_unselected_icon1.png */,
-				EAEC0AEE1B1EEAC2000A7C5B /* zodiac_unselected_icon2.png */,
-				EAEC0AEF1B1EEAC2000A7C5B /* zodiac_unselected_icon3.png */,
-				EAEC0AF01B1EEAC3000A7C5B /* zodiac_unselected_icon4.png */,
-				EAEC0AF11B1EEAC3000A7C5B /* zodiac_unselected_icon5.png */,
-				EAEC0AF21B1EEAC3000A7C5B /* zodiac_unselected_icon6.png */,
-				EAEC0AF31B1EEAC3000A7C5B /* zodiac_unselected_icon7.png */,
-				EAEC0AF41B1EEAC3000A7C5B /* zodiac_unselected_icon8.png */,
-				EAEC0AF51B1EEAC3000A7C5B /* zodiac_unselected_icon9.png */,
-				EAEC0AF61B1EEAC3000A7C5B /* zodiac_unselected_icon10.png */,
-				EAEC0AF71B1EEAC3000A7C5B /* zodiac_unselected_icon11.png */,
+				EAEC0AE01B1EEAC2000A7C5B /* zodiac_selected_icon1.png */,
+				EAEC0AE11B1EEAC2000A7C5B /* zodiac_selected_icon2.png */,
+				EAEC0AE21B1EEAC2000A7C5B /* zodiac_selected_icon3.png */,
+				EAEC0AE31B1EEAC2000A7C5B /* zodiac_selected_icon4.png */,
+				EAEC0AE41B1EEAC2000A7C5B /* zodiac_selected_icon5.png */,
+				EAEC0AE51B1EEAC2000A7C5B /* zodiac_selected_icon6.png */,
+				EAEC0AE61B1EEAC2000A7C5B /* zodiac_selected_icon7.png */,
+				EAEC0AE71B1EEAC2000A7C5B /* zodiac_selected_icon8.png */,
+				EAEC0AE81B1EEAC2000A7C5B /* zodiac_selected_icon9.png */,
+				EAEC0AE91B1EEAC2000A7C5B /* zodiac_selected_icon10.png */,
+				EAEC0AEA1B1EEAC2000A7C5B /* zodiac_selected_icon11.png */,
+				EAEC0AEB1B1EEAC2000A7C5B /* zodiac_selected_icon12.png */,
+				EAEC0AEC1B1EEAC2000A7C5B /* zodiac_unselected_icon1.png */,
+				EAEC0AED1B1EEAC2000A7C5B /* zodiac_unselected_icon2.png */,
+				EAEC0AEE1B1EEAC2000A7C5B /* zodiac_unselected_icon3.png */,
+				EAEC0AEF1B1EEAC2000A7C5B /* zodiac_unselected_icon4.png */,
+				EAEC0AF01B1EEAC3000A7C5B /* zodiac_unselected_icon5.png */,
+				EAEC0AF11B1EEAC3000A7C5B /* zodiac_unselected_icon6.png */,
+				EAEC0AF21B1EEAC3000A7C5B /* zodiac_unselected_icon7.png */,
+				EAEC0AF31B1EEAC3000A7C5B /* zodiac_unselected_icon8.png */,
+				EAEC0AF41B1EEAC3000A7C5B /* zodiac_unselected_icon9.png */,
+				EAEC0AF51B1EEAC3000A7C5B /* zodiac_unselected_icon10.png */,
+				EAEC0AF61B1EEAC3000A7C5B /* zodiac_unselected_icon11.png */,
+				EAEC0AF71B1EEAC3000A7C5B /* zodiac_unselected_icon12.png */,
 			);
 			name = zodiac;
 			sourceTree = "<group>";
@@ -661,6 +697,24 @@
 		EAEC0B321B209529000A7C5B /* style */ = {
 			isa = PBXGroup;
 			children = (
+				EA9B08F21B2A97930059DBA7 /* style_woman_selected_icon0.png */,
+				EA9B08F31B2A97930059DBA7 /* style_woman_selected_icon1.png */,
+				EA9B08F41B2A97930059DBA7 /* style_woman_selected_icon2.png */,
+				EA9B08F51B2A97930059DBA7 /* style_woman_selected_icon3.png */,
+				EA9B08F61B2A97930059DBA7 /* style_woman_selected_icon4.png */,
+				EA9B08F71B2A97930059DBA7 /* style_woman_selected_icon5.png */,
+				EA9B08F81B2A97930059DBA7 /* style_woman_selected_icon6.png */,
+				EA9B08F91B2A97930059DBA7 /* style_woman_selected_icon7.png */,
+				EA9B08FA1B2A97930059DBA7 /* style_woman_selected_icon8.png */,
+				EA9B08E01B2A97860059DBA7 /* style_man_selected_icon0.png */,
+				EA9B08E11B2A97860059DBA7 /* style_man_selected_icon1.png */,
+				EA9B08E21B2A97860059DBA7 /* style_man_selected_icon2.png */,
+				EA9B08E31B2A97860059DBA7 /* style_man_selected_icon3.png */,
+				EA9B08E41B2A97860059DBA7 /* style_man_selected_icon4.png */,
+				EA9B08E51B2A97860059DBA7 /* style_man_selected_icon5.png */,
+				EA9B08E61B2A97860059DBA7 /* style_man_selected_icon6.png */,
+				EA9B08E71B2A97860059DBA7 /* style_man_selected_icon7.png */,
+				EA9B08E81B2A97860059DBA7 /* style_man_selected_icon8.png */,
 				A30D96671B20BD8800A1CF88 /* style_man_unselected_icon8.png */,
 				A30D96681B20BD8800A1CF88 /* style_woman_unselected_icon8.png */,
 				EAEC0B331B20953B000A7C5B /* style_man_unselected_icon3.png */,
@@ -802,82 +856,100 @@
 				EA9B08DB1B29AFE30059DBA7 /* Lantinghei.ttc in Resources */,
 				EAEC0B271B1EEAE8000A7C5B /* sexuality_unselected_icon4.png in Resources */,
 				EAB60E471B26EB8E00BE2874 /* login_with_weibo_icon.png in Resources */,
-				EAEC0B0F1B1EEAC3000A7C5B /* zodiac_unselected_icon11.png in Resources */,
+				EAEC0B0F1B1EEAC3000A7C5B /* zodiac_unselected_icon12.png in Resources */,
 				EAEC0B501B20953B000A7C5B /* style_man_unselected_icon2.png in Resources */,
 				EAE8E20C1B09CBF800C9038D /* logo.png in Resources */,
-				EAEC0B0A1B1EEAC3000A7C5B /* zodiac_unselected_icon6.png in Resources */,
+				EA9B08F01B2A97860059DBA7 /* style_man_selected_icon7.png in Resources */,
+				EAEC0B0A1B1EEAC3000A7C5B /* zodiac_unselected_icon7.png in Resources */,
 				A3CCFCFF1B1B602700C9BAE8 /* setting_icon.png in Resources */,
 				EAB60E3D1B26BCAF00BE2874 /* close_icon.png in Resources */,
 				A3CCFCFC1B1B602600C9BAE8 /* partner_icon.png in Resources */,
+				EA9B08EE1B2A97860059DBA7 /* style_man_selected_icon5.png in Resources */,
 				EA305EC81B14841600DD904D /* division_icon.png in Resources */,
 				EA9F493F1B1C6A7F0037D188 /* me_icon.png in Resources */,
 				EA9F49431B1C87220037D188 /* partner_avator.png in Resources */,
-				EAEC0B091B1EEAC3000A7C5B /* zodiac_unselected_icon5.png in Resources */,
+				EAEC0B091B1EEAC3000A7C5B /* zodiac_unselected_icon6.png in Resources */,
 				EAEC0B4D1B20953B000A7C5B /* style_man_unselected_icon6.png in Resources */,
 				EA305EBB1B14744100DD904D /* padding.png in Resources */,
-				EAEC0B021B1EEAC3000A7C5B /* zodiac_selected_icon10.png in Resources */,
-				EAEC0AFA1B1EEAC3000A7C5B /* zodiac_selected_icon2.png in Resources */,
+				EA9B08EB1B2A97860059DBA7 /* style_man_selected_icon2.png in Resources */,
+				EAEC0B021B1EEAC3000A7C5B /* zodiac_selected_icon11.png in Resources */,
+				EAEC0AFA1B1EEAC3000A7C5B /* zodiac_selected_icon3.png in Resources */,
+				EA9B09011B2A97930059DBA7 /* style_woman_selected_icon6.png in Resources */,
 				EAEC0B1E1B1EEAE8000A7C5B /* sexuality_selected_icon1.png in Resources */,
 				EAEC0B491B20953B000A7C5B /* style_woman_unselected_icon2.png in Resources */,
-				EAEC0AFB1B1EEAC3000A7C5B /* zodiac_selected_icon3.png in Resources */,
-				EAEC0B031B1EEAC3000A7C5B /* zodiac_selected_icon11.png in Resources */,
+				EAEC0AFB1B1EEAC3000A7C5B /* zodiac_selected_icon4.png in Resources */,
+				EAEC0B031B1EEAC3000A7C5B /* zodiac_selected_icon12.png in Resources */,
 				EA9B08D71B299B9F0059DBA7 /* app_spotlight_icon.png in Resources */,
 				EA305ECF1B1575E900DD904D /* back_icon2.png in Resources */,
-				EAEC0B061B1EEAC3000A7C5B /* zodiac_unselected_icon2.png in Resources */,
+				EAEC0B061B1EEAC3000A7C5B /* zodiac_unselected_icon3.png in Resources */,
 				EA305ED11B1576DF00DD904D /* menu_icon.png in Resources */,
 				EAEC0B221B1EEAE8000A7C5B /* sexuality_selected_icon5.png in Resources */,
-				EAEC0AFE1B1EEAC3000A7C5B /* zodiac_selected_icon6.png in Resources */,
+				EAEC0AFE1B1EEAC3000A7C5B /* zodiac_selected_icon7.png in Resources */,
 				EAEC0B481B20953B000A7C5B /* style_woman_unselected_icon3.png in Resources */,
+				EA9B08EC1B2A97860059DBA7 /* style_man_selected_icon3.png in Resources */,
 				EAEC0B511B20953B000A7C5B /* style_man_unselected_icon1.png in Resources */,
 				EAEC0B451B20953B000A7C5B /* style_woman_unselected_icon6.png in Resources */,
+				EA9B08FC1B2A97930059DBA7 /* style_woman_selected_icon1.png in Resources */,
+				EA9B08FB1B2A97930059DBA7 /* style_woman_selected_icon0.png in Resources */,
+				EA9B08FE1B2A97930059DBA7 /* style_woman_selected_icon3.png in Resources */,
+				EA9B09001B2A97930059DBA7 /* style_woman_selected_icon5.png in Resources */,
 				EAEC0B281B1EEAE8000A7C5B /* sexuality_unselected_icon5.png in Resources */,
 				EAEC0B4A1B20953B000A7C5B /* style_woman_unselected_icon1.png in Resources */,
 				EA305EC31B147F0C00DD904D /* female_selected_icon.png in Resources */,
 				EAB60E461B26EB8E00BE2874 /* login_with_wechat_icon.png in Resources */,
 				EAEC0B4B1B20953B000A7C5B /* style_woman_unselected_icon0.png in Resources */,
+				EA9B08EF1B2A97860059DBA7 /* style_man_selected_icon6.png in Resources */,
+				EA9B08EA1B2A97860059DBA7 /* style_man_selected_icon1.png in Resources */,
 				A3CCFCFB1B1B602600C9BAE8 /* forward_icon2.png in Resources */,
-				EAEC0AFC1B1EEAC3000A7C5B /* zodiac_selected_icon4.png in Resources */,
+				EAEC0AFC1B1EEAC3000A7C5B /* zodiac_selected_icon5.png in Resources */,
+				EA9B09021B2A97930059DBA7 /* style_woman_selected_icon7.png in Resources */,
 				A3CCFD011B1B647300C9BAE8 /* avator_default.png in Resources */,
 				EAEC0B4E1B20953B000A7C5B /* style_man_unselected_icon5.png in Resources */,
 				EAEC0B2A1B1EEBA9000A7C5B /* sexuality_selected_icon4.png in Resources */,
-				EAEC0B041B1EEAC3000A7C5B /* zodiac_unselected_icon0.png in Resources */,
-				EAEC0B081B1EEAC3000A7C5B /* zodiac_unselected_icon4.png in Resources */,
-				EAEC0B0B1B1EEAC3000A7C5B /* zodiac_unselected_icon7.png in Resources */,
+				EAEC0B041B1EEAC3000A7C5B /* zodiac_unselected_icon1.png in Resources */,
+				EAEC0B081B1EEAC3000A7C5B /* zodiac_unselected_icon5.png in Resources */,
+				EAEC0B0B1B1EEAC3000A7C5B /* zodiac_unselected_icon8.png in Resources */,
 				A30D966A1B20BD8800A1CF88 /* style_woman_unselected_icon8.png in Resources */,
 				EA9B08DF1B29BADF0059DBA7 /* Launch_debug.png in Resources */,
-				EAEC0B051B1EEAC3000A7C5B /* zodiac_unselected_icon1.png in Resources */,
+				EAEC0B051B1EEAC3000A7C5B /* zodiac_unselected_icon2.png in Resources */,
 				EA7805321B0C7F0E00696FEF /* forward_icon.png in Resources */,
-				EAEC0B011B1EEAC3000A7C5B /* zodiac_selected_icon9.png in Resources */,
-				EAEC0AF91B1EEAC3000A7C5B /* zodiac_selected_icon1.png in Resources */,
+				EAEC0B011B1EEAC3000A7C5B /* zodiac_selected_icon10.png in Resources */,
+				EAEC0AF91B1EEAC3000A7C5B /* zodiac_selected_icon2.png in Resources */,
 				EAEC0B261B1EEAE8000A7C5B /* sexuality_unselected_icon3.png in Resources */,
 				EA9F493B1B1C13C30037D188 /* test_avator.png in Resources */,
 				EAEC0B461B20953B000A7C5B /* style_woman_unselected_icon5.png in Resources */,
 				EAB60E491B26FDD100BE2874 /* login_signup_background.png in Resources */,
-				EAEC0B0D1B1EEAC3000A7C5B /* zodiac_unselected_icon9.png in Resources */,
+				EAEC0B0D1B1EEAC3000A7C5B /* zodiac_unselected_icon10.png in Resources */,
 				EAEC0B2C1B1EEBAF000A7C5B /* sexuality_unselected_icon1.png in Resources */,
 				EA305EC41B147F0C00DD904D /* female_unselected_icon.png in Resources */,
 				A3CCFCFA1B1B602600C9BAE8 /* back_icon3.png in Resources */,
 				EA6AAC391AF8739200ED3A55 /* Main.storyboard in Resources */,
+				EA9B09031B2A97930059DBA7 /* style_woman_selected_icon8.png in Resources */,
 				EAEC0B201B1EEAE8000A7C5B /* sexuality_selected_icon3.png in Resources */,
+				EA9B08F11B2A97860059DBA7 /* style_man_selected_icon8.png in Resources */,
 				EAEC0B251B1EEAE8000A7C5B /* sexuality_unselected_icon2.png in Resources */,
-				EAEC0AFF1B1EEAC3000A7C5B /* zodiac_selected_icon7.png in Resources */,
-				EAEC0B0C1B1EEAC3000A7C5B /* zodiac_unselected_icon8.png in Resources */,
+				EAEC0AFF1B1EEAC3000A7C5B /* zodiac_selected_icon8.png in Resources */,
+				EAEC0B0C1B1EEAC3000A7C5B /* zodiac_unselected_icon9.png in Resources */,
 				EA9B08D61B299B9F0059DBA7 /* app_setting_icon.png in Resources */,
-				EAEC0B0E1B1EEAC3000A7C5B /* zodiac_unselected_icon10.png in Resources */,
-				EAEC0B071B1EEAC3000A7C5B /* zodiac_unselected_icon3.png in Resources */,
+				EAEC0B0E1B1EEAC3000A7C5B /* zodiac_unselected_icon11.png in Resources */,
+				EAEC0B071B1EEAC3000A7C5B /* zodiac_unselected_icon4.png in Resources */,
 				EA9B08DD1B29B90B0059DBA7 /* Launch.png in Resources */,
 				EAEC0B4C1B20953B000A7C5B /* style_man_unselected_icon7.png in Resources */,
+				EA9B08FD1B2A97930059DBA7 /* style_woman_selected_icon2.png in Resources */,
 				A3F7EC691B0AD6520084DA70 /* Localizable.strings in Resources */,
 				EAEC0B441B20953B000A7C5B /* style_woman_unselected_icon7.png in Resources */,
-				EAEC0AFD1B1EEAC3000A7C5B /* zodiac_selected_icon5.png in Resources */,
+				EAEC0AFD1B1EEAC3000A7C5B /* zodiac_selected_icon6.png in Resources */,
 				EA9F49411B1C713D0037D188 /* default_background.png in Resources */,
+				EA9B08E91B2A97860059DBA7 /* style_man_selected_icon0.png in Resources */,
 				EAEC0B521B20953B000A7C5B /* style_man_unselected_icon0.png in Resources */,
-				EAEC0B001B1EEAC3000A7C5B /* zodiac_selected_icon8.png in Resources */,
+				EAEC0B001B1EEAC3000A7C5B /* zodiac_selected_icon9.png in Resources */,
 				EAEC0B231B1EEAE8000A7C5B /* sexuality_unselected_icon0.png in Resources */,
+				EA9B08ED1B2A97860059DBA7 /* style_man_selected_icon4.png in Resources */,
 				EA305EC51B147F0C00DD904D /* male_unselected_icon.png in Resources */,
 				EA305EC61B147F0C00DD904D /* male_selected_icon.png in Resources */,
 				A3CCFCFD1B1B602600C9BAE8 /* password_icon.png in Resources */,
-				EAEC0AF81B1EEAC3000A7C5B /* zodiac_selected_icon0.png in Resources */,
+				EA9B08FF1B2A97930059DBA7 /* style_woman_selected_icon4.png in Resources */,
+				EAEC0AF81B1EEAC3000A7C5B /* zodiac_selected_icon1.png in Resources */,
 				EAEC0B1F1B1EEAE8000A7C5B /* sexuality_selected_icon2.png in Resources */,
 				EAEC0B431B20953B000A7C5B /* style_man_unselected_icon3.png in Resources */,
 				EA7805341B0C7F1500696FEF /* back_icon.png in Resources */,

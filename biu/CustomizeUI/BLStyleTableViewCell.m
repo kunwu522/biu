@@ -89,11 +89,7 @@ static const float CELL_HEIGHT = 109.3;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    if (self.gender == BLGenderMale) {
-        return _stringOfStyleMan.count;
-    } else {
-        return _stringOfSytleWoman.count;
-    }
+    return 9;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -102,45 +98,72 @@ static const float CELL_HEIGHT = 109.3;
         cell.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"style_man_selected_icon%ld.png", indexPath.item]];
         cell.unselectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"style_man_unselected_icon%ld.png", indexPath.item]];
         cell.imageView.image = cell.unselectedImage;
-        cell.style.text = [_stringOfStyleMan objectForKey:[NSNumber numberWithInteger:indexPath.item]];
     } else {
         cell.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"style_woman_selected_icon%ld.png", indexPath.item]];
         cell.unselectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"style_woman_unselected_icon%ld.png", indexPath.item]];
         cell.imageView.image = cell.unselectedImage;
-        cell.style.text = [_stringOfSytleWoman objectForKey:[NSNumber numberWithInteger:indexPath.item]];
     }
+    cell.style.text = [Partner getStyleNameFromZodiac:[self styleTypeFromIndexItem:indexPath.item]];
     return cell;
 }
 
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self.preferStyles count] >= 3) {
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    BLStyleType styleType = self.gender == BLGenderMale ? indexPath.row : (indexPath.row + 9);
+    BLStyleType styleType = [self styleTypeFromIndexItem:indexPath.item];
     if (!self.allowMultiSelected) {
-        self.style = styleType;
+        _style = styleType;
         if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
             [self.delegate tableViewCell:self didChangeValue:[NSNumber numberWithInteger:self.style]];
         }
     } else {
-        [self.preferStyles setObject:[NSNumber numberWithInteger:styleType] forKey:[NSNumber numberWithInteger:styleType]];
+        if ([self.preferStyles count] < 3) {
+            [self.preferStyles addObject:[NSNumber numberWithInteger:[self styleTypeFromIndexItem:indexPath.item]]];
+            if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
+                [self.delegate tableViewCell:self didChangeValue:self.preferStyles];
+            }
+        }
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.allowMultiSelected) {
+        [self.preferStyles removeObject:[NSNumber numberWithInteger:[self styleTypeFromIndexItem:indexPath.item]]];
         if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
             [self.delegate tableViewCell:self didChangeValue:self.preferStyles];
         }
     }
-    
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (!self.allowMultiSelected) {
+#pragma mark - private method
+- (BLStyleType)styleTypeFromIndexItem:(NSUInteger)item {
+    if (self.gender == BLGenderMale) {
+        return item + 1;
+    } else {
+        return item + 1 + 9;
+    }
+}
+
+- (NSUInteger)indexItemFromStyle:(BLStyleType)style {
+    if (self.gender == BLGenderMale) {
+        return (NSUInteger)style - 1;
+    } else {
+        return (NSUInteger)style - 1 - 9;
+    }
+}
+
+#pragma mark - Getting and Setting
+- (void)setGender:(BLGender)gender {
+    if (gender == BLGenderNone) {
         return;
     }
-    BLStyleType styleType = self.gender == BLGenderMale ? indexPath.row : (indexPath.row + 9);
-    [self.preferStyles removeObjectForKey:[NSNumber numberWithInteger:styleType]];
-    if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
-        [self.delegate tableViewCell:self didChangeValue:self.preferStyles];
-    }
-}
-
-#pragma mark
-- (void)setGender:(BLGender)gender {
+    
     if (self.gender == gender) {
         return;
     }
@@ -150,7 +173,7 @@ static const float CELL_HEIGHT = 109.3;
 }
 
 - (void)setSexuality:(BLSexualityType)sexuality {
-    if (self.sexuality == sexuality) {
+    if (_sexuality == sexuality) {
         return;
     }
     
@@ -180,20 +203,17 @@ static const float CELL_HEIGHT = 109.3;
 
 - (void)setAllowMultiSelected:(BOOL)allowMultiSelected {
     _allowMultiSelected = allowMultiSelected;
-    self.preferStyles = [NSMutableDictionary dictionary];
     _collectionView.allowsMultipleSelection = allowMultiSelected;
 }
 
-- (void)awakeFromNib {
-    // Initialization code
+- (NSMutableArray *)preferStyles {
+    if (!_preferStyles) {
+        _preferStyles = [NSMutableArray array];
+    }
+    return _preferStyles;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
-
+#pragma mark - override method
 - (BOOL)needShowPaddingImage {
     return NO;
 }

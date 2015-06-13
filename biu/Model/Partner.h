@@ -11,12 +11,13 @@
 @interface Partner : NSObject
 
 typedef NS_ENUM(NSUInteger, BLSexualityType) {
-    BLSexualityTypeMan = 0,
-    BLSexualityTypeWoman = 1,
-    BLSexualityTypeP = 2,
-    BLSexualityTypeT = 3,
-    BLSexualityType1 = 4,
-    BLSexualityType0 = 5,
+    BLSexualityTypeNone = 0,
+    BLSexualityTypeMan = 1,
+    BLSexualityTypeWoman = 2,
+    BLSexualityTypeP = 3,
+    BLSexualityTypeT = 4,
+    BLSexualityType1 = 5,
+    BLSexualityType0 = 6
 };
 
 @property (strong, nonatomic) NSNumber *partnerId;
@@ -27,6 +28,9 @@ typedef NS_ENUM(NSUInteger, BLSexualityType) {
 @property (strong, nonatomic) NSNumber *maxAge;
 @property (strong, nonatomic) NSArray *preferStyles;
 
+- (id)initWithDictionary:(NSDictionary *)dictionary;
 - (void)save;
+
++ (NSString *)getStyleNameFromZodiac:(BLStyleType)style;
 
 @end

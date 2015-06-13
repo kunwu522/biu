@@ -113,6 +113,17 @@ static NSString *PREFER_STYLES = @"prefer_styles";
     return self;
 }
 
+- (id)initWithDictionary:(NSDictionary *)dictionary {
+    self = [self init];
+    if (self) {
+        self.userId = [dictionary objectForKey:@"user_id"];
+        self.username = [dictionary objectForKey:@"username"];
+        self.profile = [[Profile alloc] initWithDictionary:[dictionary objectForKey:@"profile"]];
+        self.partner = [[Partner alloc] initWithDictionary:[dictionary objectForKey:@"partner"]];
+    }
+    return self;
+}
+
 - (void)removeFromUserDefault {
     [NSUserDefaults resetStandardUserDefaults];
 }
@@ -124,7 +135,7 @@ static NSString *PREFER_STYLES = @"prefer_styles";
     
     BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
     if (![self.phone isEqualToString:[delegate.passwordItem objectForKey:(__bridge id)kSecAttrAccount]]) {
-        [delegate.passwordItem setObject:self.email forKey:(__bridge id)kSecAttrAccount];
+        [delegate.passwordItem setObject:self.phone forKey:(__bridge id)kSecAttrAccount];
     }
     if (![self.password isEqualToString:[delegate.passwordItem objectForKey:(__bridge id)kSecValueData]]) {
         [delegate.passwordItem setObject:self.password forKey:(__bridge id)kSecValueData];

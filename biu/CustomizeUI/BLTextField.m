@@ -61,7 +61,7 @@
 
 - (void)drawPlaceholderInRect:(CGRect)rect {
     if (self.placeholder) {
-        UIFont *placeholderTextFont = [BLFontDefinition lightItalicFont:15.0f];
+        UIFont *placeholderTextFont = [BLFontDefinition lightItalicFont:13.0f];
         UIColor *placeholderTextColor = [BLColorDefinition grayColor];
         
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -75,6 +75,7 @@
 //        rect.origin.y = (rect.size.height - self.font.lineHeight) / 2.0f;
 //        rect.size.height = self.font.lineHeight;
         rect.origin.x += 1;
+        rect.origin.y += 1;
         
         [self.placeholder drawInRect:rect withAttributes:drawAttributes];
     }

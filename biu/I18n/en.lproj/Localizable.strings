@@ -5,6 +5,13 @@
   Created by WuTony on 5/12/15.
   Copyright (c) 2015 BiuLove. All rights reserved.
 */
+
+//Error message
+"create profile failed, please try again later." = "create profile failed, please try again later.";
+
+// View
+"BIU" = "BIU";
+"I ' M   C L O S E" = "I ' M   C L O S E";
 "Login" = "Login";
 "LOG IN" = "LOG IN";
 "SIGN UP" = "SIGN UP";
@@ -27,6 +34,7 @@
 "male" = "male";
 "female" = "female";
 "Choose your date of birth" = "Choose your date of birth";
+"Choose your style" = "Choose your style";
 "January" = "January";
 "February" = "February";
 "March" = "March";
@@ -54,8 +62,8 @@
 "Aquarius" = "Aquarius";
 "Choose your partner's sexuality" = "Choose your partner's sexuality";
 "Age range you like" = "Age range you like";
-"Zodic you prefer" =  "Zodic you prefer";
-"Choose your style" = "Choose your style";
+"Zodics you prefer" =  "Zodics you prefer";
+"Styles you prefer" = "Styles you prefer";
 "Set the distance" = "Set the distance (Meter)";
 "slide to love" = "slide to love";
 "Matching" = "Matching";

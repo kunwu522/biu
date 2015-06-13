@@ -119,13 +119,13 @@
     [_btnSignup addTarget:self action:@selector(signup:) forControlEvents:UIControlEventTouchDown];
     [_btnSignup setBackgroundColor:[BLColorDefinition greenColor]];
     [_btnSignup setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    _btnSignup.titleLabel.font = [BLFontDefinition normalFont:15.0f];
+    _btnSignup.titleLabel.font = [BLFontDefinition normalFont:13.0f];
     [_btnSignup setTitle:NSLocalizedString(@"Sign up", nil) forState:UIControlStateNormal];
     _btnSignup.layer.cornerRadius = 5.0f;
     [self addSubview:_btnSignup];
     
     _lbOr = [[UILabel alloc] init];
-    _lbOr.font = [BLFontDefinition normalFont:16.0f];
+    _lbOr.font = [BLFontDefinition normalFont:14.0f];
     _lbOr.textColor = [UIColor whiteColor];
     _lbOr.textAlignment = NSTextAlignmentCenter;
     _lbOr.text = NSLocalizedString(@"Or", nil);
@@ -319,9 +319,8 @@
     ai.hidesWhenStopped = YES;
     [ai startAnimating];
     [[BLHTTPClient sharedBLHTTPClient] signup:user success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSNumber *userId = [NSNumber numberWithInt:[[responseObject objectForKey:@"user_id"] intValue]];
-        NSLog(@"Sign up success!!! user id: %@", userId);
-        user.userId = userId;
+        NSLog(@"Sign up success!!! user id: %@", [responseObject objectForKey:@"user_id"]);
+        user.userId = [responseObject objectForKey:@"user_id"];
         [ai stopAnimating];
         if (self.delegate) {
             _code = @"";
@@ -330,7 +329,11 @@
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [ai stopAnimating];
         NSLog(@"Sign up failed, error: %@", error.description);
-        [self showErrorMessage:@"Sorry, failed to set up your account. Please try again."];
+        NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
+        if (!errMsg) {
+            errMsg = @"Sorry, failed to set up your account. Please try again.";
+        }
+        [self showErrorMessage:errMsg];
     }];
 }
 
@@ -343,16 +346,19 @@
     
     int code = arc4random() % 900000 + 100000;
     _code = [NSString stringWithFormat:@"%d", code];
-    [[BLHTTPClient sharedBLHTTPClient] passcode:_code phoneNumber:_tfPhoneNumber.text success:^(NSURLSessionDataTask *task, id responseObject) {
-        _secondLeftToResend = 60;
-        _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", _secondLeftToResend];
-        _btnGetCode.enabled = NO;
-        [self showSecondToResend];
-        _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerfired) userInfo:nil repeats:YES];
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"Sending passcode failed, error: %@", error.description);
-        [self showErrorMessage:@"Sorry, getting passcode failed. Please try again later."];
-    }];
+    
+    //For debug
+    NSLog(@"code: %@", _code);
+//    [[BLHTTPClient sharedBLHTTPClient] passcode:_code phoneNumber:_tfPhoneNumber.text success:^(NSURLSessionDataTask *task, id responseObject) {
+//        _secondLeftToResend = 60;
+//        _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", _secondLeftToResend];
+//        _btnGetCode.enabled = NO;
+//        [self showSecondToResend];
+//        _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerfired) userInfo:nil repeats:YES];
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        NSLog(@"Sending passcode failed, error: %@", error.description);
+//        [self showErrorMessage:error.localizedDescription];
+//    }];
 }
 
 - (void)showContract:(id)sender {
@@ -400,14 +406,5 @@
 - (void)showErrorMessage:(NSString *)message {
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
     [av show];
-//    [UIView animateWithDuration:0.2f animations:^{
-//        _lbErrorMsg.alpha = 0.8f;
-//    } completion:^(BOOL finished) {
-//        [UIView animateWithDuration:0.2f delay:2.0f options:UIViewAnimationOptionLayoutSubviews animations:^{
-//            _lbErrorMsg.alpha = 0.0f;
-//        } completion:^(BOOL finished) {
-//            ;
-//        }];
-//    }];
 }
 @end

@@ -32,6 +32,7 @@
     BLProfileViewController *profileViewController = [[BLProfileViewController alloc] initWithNibName:nil bundle:nil];
     profileViewController.profileViewType = BLProfileViewTypeCreate;
     self.fillingInfoNavController = [[UINavigationController alloc] initWithRootViewController:profileViewController];
+    self.fillingInfoNavController.navigationBarHidden = YES;
     
     // Create master navigation controller
     BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];

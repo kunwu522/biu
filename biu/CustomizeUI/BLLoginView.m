@@ -193,12 +193,12 @@
     
     BLHTTPClient *httpClient = [BLHTTPClient sharedBLHTTPClient];
     [httpClient login:user success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"Response: %@", responseObject);
-        user.userId = [responseObject objectForKey:@"user_id"];
-        user.username = [responseObject objectForKey:@"username"];
-        [user save];
+//        NSLog(@"Response: %@", responseObject);
+        User *loginUser = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
+        loginUser.phone = _tfPhoneNumber.text;
+        loginUser.password = _tfPassword.text;
         if (self.delegate) {
-            [self.delegate didLoginWithCurrentUser:user];
+            [self.delegate didLoginWithCurrentUser:loginUser];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         if ([task.response isKindOfClass:[NSHTTPURLResponse class]]) {
