@@ -62,6 +62,7 @@ typedef NS_ENUM(NSUInteger, BLStyleType) {
 @property (assign, nonatomic) BLZodiac zodiac;
 @property (assign, nonatomic) BLGender gender;
 @property (assign, nonatomic) BLStyleType style;
+@property (assign, nonatomic) NSString *avatarUrl;
 
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 - (void)save;

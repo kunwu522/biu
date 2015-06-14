@@ -7,6 +7,7 @@
 //
 
 #import "BLProfileViewController.h"
+#import "BLTakingPhotoViewController.h"
 #import "BLGenderTableViewCell.h"
 #import "BLBirthTableViewCell.h"
 #import "BLZodiacAndAgeTableViewCell.h"
@@ -24,7 +25,6 @@
 @property (assign, nonatomic) BLStyleType style;
 
 @property (retain, nonatomic) UITableView *tableView;
-@property (retain, nonatomic) UIImageView *imageViewAvator;
 
 @end
 
@@ -245,20 +245,40 @@ static const float AVATOR_WIDTH = 163.0f;
         imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [sectionHeaderView addSubview:imageView];
         
-        _imageViewAvator = [[UIImageView alloc] init];
-        _imageViewAvator.layer.cornerRadius = AVATOR_WIDTH / 2;
-        _imageViewAvator.layer.borderColor = [UIColor whiteColor].CGColor;
-        _imageViewAvator.layer.borderWidth = 4.0f;
-        _imageViewAvator.image = [UIImage imageNamed:@"partner_avator.png"];
-        _imageViewAvator.clipsToBounds = YES;
-        [sectionHeaderView addSubview:_imageViewAvator];
+        if (!self.currentUser.profile.avatarUrl) {
+            UIButton *uploadAvatar = [[UIButton alloc] init];
+            [uploadAvatar setImage:[UIImage imageNamed:@"avatar_upload_icon.png"] forState:UIControlStateNormal];
+            [uploadAvatar setImage:[UIImage imageNamed:@"avatar_upload_highlight_icon.png"] forState:UIControlStateHighlighted];
+            [uploadAvatar addTarget:self action:@selector(showTakingPhotoView:) forControlEvents:UIControlEventTouchDown];
+            uploadAvatar.layer.cornerRadius = AVATOR_WIDTH / 2;
+            uploadAvatar.layer.borderWidth = 4.0f;
+            uploadAvatar.layer.borderColor = [[UIColor whiteColor] CGColor];
+            uploadAvatar.clipsToBounds = YES;
+            [sectionHeaderView addSubview:uploadAvatar];
+            
+            [uploadAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerX.equalTo(uploadAvatar.superview.mas_centerX);
+                make.top.equalTo(uploadAvatar.superview).with.offset(95.8f);
+                make.width.equalTo([NSNumber numberWithFloat:AVATOR_WIDTH]);
+                make.height.equalTo([NSNumber numberWithFloat:AVATOR_WIDTH]);
+            }];
+        } else {
+            UIImageView *imageViewAvator = [[UIImageView alloc] init];
+            imageViewAvator.layer.cornerRadius = AVATOR_WIDTH / 2;
+            imageViewAvator.layer.borderColor = [UIColor whiteColor].CGColor;
+            imageViewAvator.layer.borderWidth = 4.0f;
+            imageViewAvator.image = [UIImage imageNamed:@"avator_upload_icon.png"];
+            imageViewAvator.clipsToBounds = YES;
+            [sectionHeaderView addSubview:imageViewAvator];
+            
+            [imageViewAvator mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerX.equalTo(imageViewAvator.superview.mas_centerX);
+                make.top.equalTo(imageViewAvator.superview).with.offset(95.8f);
+                make.width.equalTo([NSNumber numberWithFloat:AVATOR_WIDTH]);
+                make.height.equalTo([NSNumber numberWithFloat:AVATOR_WIDTH]);
+            }];
+        }
         
-        [_imageViewAvator mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(_imageViewAvator.superview.mas_centerX);
-            make.top.equalTo(_imageViewAvator.superview).with.offset(95.8f);
-            make.width.equalTo([NSNumber numberWithFloat:AVATOR_WIDTH]);
-            make.height.equalTo([NSNumber numberWithFloat:AVATOR_WIDTH]);
-        }];
         return sectionHeaderView;
     }
     return nil;
@@ -287,6 +307,11 @@ static const float AVATOR_WIDTH = 163.0f;
 }
 
 #pragma mark - handle action
+- (void)showTakingPhotoView:(id)sender {
+    BLTakingPhotoViewController *takingPhotoViewController = [[BLTakingPhotoViewController alloc] initWithNibName:nil bundle:nil];
+    [self presentViewController:takingPhotoViewController animated:YES completion:nil];
+}
+
 - (void)udpateProfile:(id)sender {
 //    Profile *profile = [Profile new];
 //    profile.gender = _gender;

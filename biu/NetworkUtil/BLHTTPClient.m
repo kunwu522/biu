@@ -194,4 +194,14 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
     [self PUT:[NSString stringWithFormat:@"partners/%@.json", partner.partnerId] parameters:parameters success:success failure:failure];
 }
 
+- (void)uploadAvatar:(Profile *)porfile
+              avatar:(UIImage *)avatar
+             success:(void (^)(NSURLSessionDataTask *, id))success
+             failure:(void (^)(NSURLSessionDataTask *, NSError *))failure {
+    
+    [self POST:@"avatar.json" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        [formData appendPartWithFileData:UIImageJPEGRepresentation(avatar, 1.0f) name:@"avatar" fileName:@"avatar.jpg" mimeType:@"image/jpg"];
+    } success:success failure:failure];
+}
+
 @end

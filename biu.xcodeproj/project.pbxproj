@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3A9496908D4A186AF79DA348 /* libPods-biu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 882ECF70E4E409F2CC245E63 /* libPods-biu.a */; };
-		5EF1C61ABC1EFE704512D0DC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A64B5C6900D2125C28CF587 /* libPods.a */; };
 		6558C9F54B9EEBDFACD01199 /* libPods-biuTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FF2F6A1D8073A5C8E135F00 /* libPods-biuTests.a */; };
 		A3039E901B1605B6006FB5E4 /* BLFontDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = A3039E8F1B1605B6006FB5E4 /* BLFontDefinition.m */; };
 		A3039E961B19E9B1006FB5E4 /* BLMatchSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = A3039E951B19E9B1006FB5E4 /* BLMatchSwitch.m */; };
@@ -49,6 +47,7 @@
 		EA6AAC3B1AF8739200ED3A55 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA6AAC3A1AF8739200ED3A55 /* Images.xcassets */; };
 		EA6AAC4A1AF8739200ED3A55 /* biuTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC491AF8739200ED3A55 /* biuTests.m */; };
 		EA6AAC641AF8940500ED3A55 /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = EA6AAC621AF8940500ED3A55 /* splash.png */; };
+		EA7682DE1B2C41DB00FACE87 /* libPods-biu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA7682DD1B2C41DB00FACE87 /* libPods-biu.a */; };
 		EA7805321B0C7F0E00696FEF /* forward_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA7805311B0C7F0E00696FEF /* forward_icon.png */; };
 		EA7805341B0C7F1500696FEF /* back_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA7805331B0C7F1500696FEF /* back_icon.png */; };
 		EA9B08D61B299B9F0059DBA7 /* app_setting_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08D31B299B9F0059DBA7 /* app_setting_icon.png */; };
@@ -75,6 +74,14 @@
 		EA9B09011B2A97930059DBA7 /* style_woman_selected_icon6.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08F81B2A97930059DBA7 /* style_woman_selected_icon6.png */; };
 		EA9B09021B2A97930059DBA7 /* style_woman_selected_icon7.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08F91B2A97930059DBA7 /* style_woman_selected_icon7.png */; };
 		EA9B09031B2A97930059DBA7 /* style_woman_selected_icon8.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08FA1B2A97930059DBA7 /* style_woman_selected_icon8.png */; };
+		EA9B09061B2C0E740059DBA7 /* avatar_upload_hightlight_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B09041B2C0E740059DBA7 /* avatar_upload_hightlight_icon.png */; };
+		EA9B09071B2C0E740059DBA7 /* avatar_upload_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B09051B2C0E740059DBA7 /* avatar_upload_icon.png */; };
+		EA9B090D1B2C147E0059DBA7 /* BLAVCamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9B090C1B2C147E0059DBA7 /* BLAVCamPreviewView.m */; };
+		EA9B09141B2C32AF0059DBA7 /* camera_light_switch_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B09101B2C32AF0059DBA7 /* camera_light_switch_icon.png */; };
+		EA9B09151B2C32AF0059DBA7 /* taking_photo_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B09111B2C32AF0059DBA7 /* taking_photo_icon.png */; };
+		EA9B09161B2C32AF0059DBA7 /* choosing_photo_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B09121B2C32AF0059DBA7 /* choosing_photo_icon.png */; };
+		EA9B09171B2C32AF0059DBA7 /* camera_flip_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B09131B2C32AF0059DBA7 /* camera_flip_icon.png */; };
+		EA9B091A1B2C36720059DBA7 /* BLTakingPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9B09191B2C36720059DBA7 /* BLTakingPhotoViewController.m */; };
 		EA9F49391B1C021F0037D188 /* BLBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9F49381B1C021F0037D188 /* BLBlurView.m */; };
 		EA9F493B1B1C13C30037D188 /* test_avator.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9F493A1B1C13C30037D188 /* test_avator.png */; };
 		EA9F493F1B1C6A7F0037D188 /* me_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9F493E1B1C6A7F0037D188 /* me_icon.png */; };
@@ -241,6 +248,8 @@
 		EA6AAC481AF8739200ED3A55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA6AAC491AF8739200ED3A55 /* biuTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = biuTests.m; sourceTree = "<group>"; };
 		EA6AAC621AF8940500ED3A55 /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = splash.png; path = images/splash.png; sourceTree = "<group>"; };
+		EA7682DB1B2C41C800FACE87 /* libPods-biu.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-biu.a"; path = "Pods/../build/Debug-iphoneos/libPods-biu.a"; sourceTree = "<group>"; };
+		EA7682DD1B2C41DB00FACE87 /* libPods-biu.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-biu.a"; path = "Pods/../build/Debug-iphoneos/libPods-biu.a"; sourceTree = "<group>"; };
 		EA7805311B0C7F0E00696FEF /* forward_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = forward_icon.png; path = images/forward_icon.png; sourceTree = "<group>"; };
 		EA7805331B0C7F1500696FEF /* back_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = back_icon.png; path = images/back_icon.png; sourceTree = "<group>"; };
 		EA9B08D31B299B9F0059DBA7 /* app_setting_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_setting_icon.png; path = images/app_setting_icon.png; sourceTree = "<group>"; };
@@ -267,6 +276,16 @@
 		EA9B08F81B2A97930059DBA7 /* style_woman_selected_icon6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_woman_selected_icon6.png; path = images/style/style_woman_selected_icon6.png; sourceTree = "<group>"; };
 		EA9B08F91B2A97930059DBA7 /* style_woman_selected_icon7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_woman_selected_icon7.png; path = images/style/style_woman_selected_icon7.png; sourceTree = "<group>"; };
 		EA9B08FA1B2A97930059DBA7 /* style_woman_selected_icon8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = style_woman_selected_icon8.png; path = images/style/style_woman_selected_icon8.png; sourceTree = "<group>"; };
+		EA9B09041B2C0E740059DBA7 /* avatar_upload_hightlight_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = avatar_upload_hightlight_icon.png; path = images/avatar_upload_hightlight_icon.png; sourceTree = "<group>"; };
+		EA9B09051B2C0E740059DBA7 /* avatar_upload_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = avatar_upload_icon.png; path = images/avatar_upload_icon.png; sourceTree = "<group>"; };
+		EA9B090B1B2C147E0059DBA7 /* BLAVCamPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLAVCamPreviewView.h; path = CustomizeUI/BLAVCamPreviewView.h; sourceTree = "<group>"; };
+		EA9B090C1B2C147E0059DBA7 /* BLAVCamPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLAVCamPreviewView.m; path = CustomizeUI/BLAVCamPreviewView.m; sourceTree = "<group>"; };
+		EA9B09101B2C32AF0059DBA7 /* camera_light_switch_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_light_switch_icon.png; sourceTree = "<group>"; };
+		EA9B09111B2C32AF0059DBA7 /* taking_photo_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = taking_photo_icon.png; sourceTree = "<group>"; };
+		EA9B09121B2C32AF0059DBA7 /* choosing_photo_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = choosing_photo_icon.png; sourceTree = "<group>"; };
+		EA9B09131B2C32AF0059DBA7 /* camera_flip_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_flip_icon.png; sourceTree = "<group>"; };
+		EA9B09181B2C36720059DBA7 /* BLTakingPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLTakingPhotoViewController.h; path = ../../../../Work/Biu/biu/biu/BLTakingPhotoViewController.h; sourceTree = "<group>"; };
+		EA9B09191B2C36720059DBA7 /* BLTakingPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLTakingPhotoViewController.m; path = ../../../../Work/Biu/biu/biu/BLTakingPhotoViewController.m; sourceTree = "<group>"; };
 		EA9F49371B1C021F0037D188 /* BLBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLBlurView.h; path = CustomizeUI/BLBlurView.h; sourceTree = "<group>"; };
 		EA9F49381B1C021F0037D188 /* BLBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLBlurView.m; path = CustomizeUI/BLBlurView.m; sourceTree = "<group>"; };
 		EA9F493A1B1C13C30037D188 /* test_avator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = test_avator.png; path = images/test_avator.png; sourceTree = "<group>"; };
@@ -379,9 +398,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA7682DE1B2C41DB00FACE87 /* libPods-biu.a in Frameworks */,
 				EAFBEE7D1AFB2F94006013CD /* Security.framework in Frameworks */,
-				3A9496908D4A186AF79DA348 /* libPods-biu.a in Frameworks */,
-				5EF1C61ABC1EFE704512D0DC /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,6 +445,8 @@
 				EAB60E3A1B26B29D00BE2874 /* BLLoginView.m */,
 				EAB60E4A1B2709A700BE2874 /* BLSignupView.h */,
 				EAB60E4B1B2709A700BE2874 /* BLSignupView.m */,
+				EA9B090B1B2C147E0059DBA7 /* BLAVCamPreviewView.h */,
+				EA9B090C1B2C147E0059DBA7 /* BLAVCamPreviewView.m */,
 				EA9F49831B1DB5AA0037D188 /* BLBaseTableViewCell.h */,
 				EA9F49841B1DB5AA0037D188 /* BLBaseTableViewCell.m */,
 				EA305EBC1B14773800DD904D /* BLGenderTableViewCell.h */,
@@ -499,6 +519,8 @@
 				EA9F49811B1DB2F10037D188 /* BLPartnerViewController.m */,
 				EA9F49891B1DC3DF0037D188 /* BLSettingViewController.h */,
 				EA9F498A1B1DC3DF0037D188 /* BLSettingViewController.m */,
+				EA9B09181B2C36720059DBA7 /* BLTakingPhotoViewController.h */,
+				EA9B09191B2C36720059DBA7 /* BLTakingPhotoViewController.m */,
 				EA6AAC371AF8739200ED3A55 /* Main.storyboard */,
 				EA6AAC3A1AF8739200ED3A55 /* Images.xcassets */,
 				EA6AAC3C1AF8739200ED3A55 /* LaunchScreen.xib */,
@@ -548,6 +570,12 @@
 		EA6AAC5B1AF88DB600ED3A55 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				EA9B09101B2C32AF0059DBA7 /* camera_light_switch_icon.png */,
+				EA9B09111B2C32AF0059DBA7 /* taking_photo_icon.png */,
+				EA9B09121B2C32AF0059DBA7 /* choosing_photo_icon.png */,
+				EA9B09131B2C32AF0059DBA7 /* camera_flip_icon.png */,
+				EA9B09041B2C0E740059DBA7 /* avatar_upload_hightlight_icon.png */,
+				EA9B09051B2C0E740059DBA7 /* avatar_upload_icon.png */,
 				EA9B08DC1B29B90B0059DBA7 /* Launch.png */,
 				EA9B08DE1B29BADF0059DBA7 /* Launch_debug.png */,
 				EAB60E481B26FDD100BE2874 /* login_signup_background.png */,
@@ -749,6 +777,8 @@
 		FD0D0DFF07202ECE53987CA7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EA7682DD1B2C41DB00FACE87 /* libPods-biu.a */,
+				EA7682DB1B2C41C800FACE87 /* libPods-biu.a */,
 				EAFBEE7C1AFB2F94006013CD /* Security.framework */,
 				882ECF70E4E409F2CC245E63 /* libPods-biu.a */,
 				9FF2F6A1D8073A5C8E135F00 /* libPods-biuTests.a */,
@@ -860,12 +890,14 @@
 				EAEC0B501B20953B000A7C5B /* style_man_unselected_icon2.png in Resources */,
 				EAE8E20C1B09CBF800C9038D /* logo.png in Resources */,
 				EA9B08F01B2A97860059DBA7 /* style_man_selected_icon7.png in Resources */,
+				EA9B09061B2C0E740059DBA7 /* avatar_upload_hightlight_icon.png in Resources */,
 				EAEC0B0A1B1EEAC3000A7C5B /* zodiac_unselected_icon7.png in Resources */,
 				A3CCFCFF1B1B602700C9BAE8 /* setting_icon.png in Resources */,
 				EAB60E3D1B26BCAF00BE2874 /* close_icon.png in Resources */,
 				A3CCFCFC1B1B602600C9BAE8 /* partner_icon.png in Resources */,
 				EA9B08EE1B2A97860059DBA7 /* style_man_selected_icon5.png in Resources */,
 				EA305EC81B14841600DD904D /* division_icon.png in Resources */,
+				EA9B09171B2C32AF0059DBA7 /* camera_flip_icon.png in Resources */,
 				EA9F493F1B1C6A7F0037D188 /* me_icon.png in Resources */,
 				EA9F49431B1C87220037D188 /* partner_avator.png in Resources */,
 				EAEC0B091B1EEAC3000A7C5B /* zodiac_unselected_icon6.png in Resources */,
@@ -902,6 +934,7 @@
 				EA9B08EA1B2A97860059DBA7 /* style_man_selected_icon1.png in Resources */,
 				A3CCFCFB1B1B602600C9BAE8 /* forward_icon2.png in Resources */,
 				EAEC0AFC1B1EEAC3000A7C5B /* zodiac_selected_icon5.png in Resources */,
+				EA9B09071B2C0E740059DBA7 /* avatar_upload_icon.png in Resources */,
 				EA9B09021B2A97930059DBA7 /* style_woman_selected_icon7.png in Resources */,
 				A3CCFD011B1B647300C9BAE8 /* avator_default.png in Resources */,
 				EAEC0B4E1B20953B000A7C5B /* style_man_unselected_icon5.png in Resources */,
@@ -926,6 +959,7 @@
 				EA6AAC391AF8739200ED3A55 /* Main.storyboard in Resources */,
 				EA9B09031B2A97930059DBA7 /* style_woman_selected_icon8.png in Resources */,
 				EAEC0B201B1EEAE8000A7C5B /* sexuality_selected_icon3.png in Resources */,
+				EA9B09141B2C32AF0059DBA7 /* camera_light_switch_icon.png in Resources */,
 				EA9B08F11B2A97860059DBA7 /* style_man_selected_icon8.png in Resources */,
 				EAEC0B251B1EEAE8000A7C5B /* sexuality_unselected_icon2.png in Resources */,
 				EAEC0AFF1B1EEAC3000A7C5B /* zodiac_selected_icon8.png in Resources */,
@@ -937,6 +971,7 @@
 				EAEC0B4C1B20953B000A7C5B /* style_man_unselected_icon7.png in Resources */,
 				EA9B08FD1B2A97930059DBA7 /* style_woman_selected_icon2.png in Resources */,
 				A3F7EC691B0AD6520084DA70 /* Localizable.strings in Resources */,
+				EA9B09151B2C32AF0059DBA7 /* taking_photo_icon.png in Resources */,
 				EAEC0B441B20953B000A7C5B /* style_woman_unselected_icon7.png in Resources */,
 				EAEC0AFD1B1EEAC3000A7C5B /* zodiac_selected_icon6.png in Resources */,
 				EA9F49411B1C713D0037D188 /* default_background.png in Resources */,
@@ -953,6 +988,7 @@
 				EAEC0B1F1B1EEAE8000A7C5B /* sexuality_selected_icon2.png in Resources */,
 				EAEC0B431B20953B000A7C5B /* style_man_unselected_icon3.png in Resources */,
 				EA7805341B0C7F1500696FEF /* back_icon.png in Resources */,
+				EA9B09161B2C32AF0059DBA7 /* choosing_photo_icon.png in Resources */,
 				EAEC0B471B20953B000A7C5B /* style_woman_unselected_icon4.png in Resources */,
 				EAEC0B4F1B20953B000A7C5B /* style_man_unselected_icon4.png in Resources */,
 				EAEC0B311B1F0EE1000A7C5B /* arrow_icon.png in Resources */,
@@ -1045,10 +1081,12 @@
 			files = (
 				A30D96A81B24433500A1CF88 /* Partner.m in Sources */,
 				EA305ED91B16F32100DD904D /* BLPickerView.m in Sources */,
+				EA9B091A1B2C36720059DBA7 /* BLTakingPhotoViewController.m in Sources */,
 				EAEC0B2F1B1F06ED000A7C5B /* BLAgeRangeTableViewCell.m in Sources */,
 				EA9F49391B1C021F0037D188 /* BLBlurView.m in Sources */,
 				EA9F49931B1EA5890037D188 /* BLSexualityTableViewCell.m in Sources */,
 				EA9F49821B1DB2F10037D188 /* BLPartnerViewController.m in Sources */,
+				EA9B090D1B2C147E0059DBA7 /* BLAVCamPreviewView.m in Sources */,
 				EA9F497A1B1D5BD90037D188 /* UIImage+ImageEffects.m in Sources */,
 				EA9F497F1B1D8BA30037D188 /* BLStyleTableViewCell.m in Sources */,
 				A30D96A51B24414900A1CF88 /* Profile.m in Sources */,
@@ -1225,6 +1263,10 @@
 				INFOPLIST_FILE = biu/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1243,6 +1285,10 @@
 				INFOPLIST_FILE = biu/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};

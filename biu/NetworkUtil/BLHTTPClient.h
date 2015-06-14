@@ -41,6 +41,9 @@
 - (void)updateProfile:(Profile *)profile
               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+- (void)uploadAvatar:(Profile *)porfile avatar:(UIImage *)avatar
+             success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+             failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
 @end
 

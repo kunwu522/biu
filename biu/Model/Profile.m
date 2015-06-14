@@ -10,7 +10,7 @@
 
 @implementation Profile
 
-@synthesize profileId, userId, username, gender, birthday, zodiac, style;
+@synthesize profileId, userId, username, gender, birthday, zodiac, style, avatarUrl;
 
 - (id)initWithDictionary:(NSDictionary *)dictionary {
     self = [Profile new];
@@ -20,6 +20,7 @@
         self.birthday = [[Profile dateFormatter] dateFromString:[dictionary objectForKey:@"birthday"]];
         self.style = (BLStyleType)[[dictionary objectForKey:@"style"] integerValue];
         self.zodiac = (BLZodiac)[[dictionary objectForKey:@"zodiac"] integerValue];
+        self.avatarUrl = [dictionary objectForKey:@"avatar_url"];
     }
     return self;
 }
@@ -33,6 +34,7 @@
     [defaults setObject:self.birthday forKey:@"birthday"];
     [defaults setObject:[NSNumber numberWithInteger:self.zodiac] forKey:@"zodiac"];
     [defaults setObject:[NSNumber numberWithInteger:self.style] forKey:@"style"];
+    [defaults setObject:self.avatarUrl forKey:@"avatar_url"];
     [defaults synchronize];
 }
 
