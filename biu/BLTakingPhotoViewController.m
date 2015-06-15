@@ -38,7 +38,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [self.view addSubview:_previewView];
+    [self.view addSubview:self.previewView];
+    [self.view addSubview:self.maskView];
     [self.view addSubview:self.btnCameraFlip];
     [self.view addSubview:self.btnCameraLightSwitch];
     [self.view addSubview:self.btnClose];
@@ -56,16 +57,16 @@
 - (void)layoutSubViews {
     [self.btnClose mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.btnClose.superview).with.offset(31.2f);
-        make.right.equalTo(self.btnClose.superview).with.offset(20.8f);
-        make.width.equalTo(@35.0f);
-        make.height.equalTo(@35.0f);
+        make.left.equalTo(self.btnClose.superview).with.offset(20.8f);
+        make.width.equalTo(@45.3f);
+        make.height.equalTo(@45.3f);
     }];
     
     [self.btnCameraFlip mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.btnCameraFlip.superview).with.offset(31.2f);
         make.right.equalTo(self.btnCameraFlip.superview).with.offset(-20.8f);
-        make.width.equalTo(@35.0f);
-        make.height.equalTo(@35.0f);
+        make.width.equalTo(@45.3f);
+        make.height.equalTo(@45.3f);
     }];
     
     [self.btnTakingPhoto mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -77,16 +78,16 @@
     
     [self.btnChoosePhoto mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.btnChoosePhoto.superview).with.offset(60.0f);
-        make.centerY.equalTo(self.btnChoosePhoto.superview.mas_centerY);
-        make.width.equalTo(@35.0f);
-        make.height.equalTo(@35.0f);
+        make.centerY.equalTo(self.btnTakingPhoto.mas_centerY);
+        make.width.equalTo(@45.3f);
+        make.height.equalTo(@45.3f);
     }];
     
     [self.btnCameraLightSwitch mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.btnCameraLightSwitch.superview).with.offset(-60.0f);
-        make.centerY.equalTo(self.btnCameraLightSwitch.superview.mas_centerY);
-        make.width.equalTo(@35.0f);
-        make.height.equalTo(@35.0f);
+        make.right.equalTo(self.btnCameraLightSwitch.superview).with.offset(-60.0f);
+        make.centerY.equalTo(self.btnTakingPhoto.mas_centerY);
+        make.width.equalTo(@45.3f);
+        make.height.equalTo(@45.3f);
     }];
 }
 
@@ -121,8 +122,9 @@
 }
 
 - (BLCropImageMaskView *)maskView {
-    if (_maskView) {
-        _maskView = [[BLCropImageMaskView alloc] init];
+    if (!_maskView) {
+        _maskView = [[BLCropImageMaskView alloc] initWithFrame:self.view.frame];
+//        _maskView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _maskView.backgroundColor = [UIColor clearColor];
         _maskView.userInteractionEnabled = NO;
         [_maskView setCropSize:CGSizeMake(337.0f, 337.0f)];
@@ -149,7 +151,7 @@
 }
 
 - (UIButton *)btnChoosePhoto {
-    if (_btnChoosePhoto) {
+    if (!_btnChoosePhoto) {
         _btnChoosePhoto = [[UIButton alloc] init];
         [_btnChoosePhoto setImage:[UIImage imageNamed:@"choosing_photo_icon.png"] forState:UIControlStateNormal];
         [_btnChoosePhoto addTarget:self action:@selector(choosePhoto:) forControlEvents:UIControlEventTouchDown];
@@ -158,7 +160,7 @@
 }
 
 - (UIButton *)btnTakingPhoto {
-    if (_btnTakingPhoto) {
+    if (!_btnTakingPhoto) {
         _btnTakingPhoto = [[UIButton alloc] init];
         [_btnTakingPhoto setImage:[UIImage imageNamed:@"taking_photo_icon.png"] forState:UIControlStateNormal];
         [_btnTakingPhoto addTarget:self action:@selector(takePhoto:) forControlEvents:UIControlEventTouchDown];
@@ -167,7 +169,7 @@
 }
 
 - (UIButton *)btnCameraLightSwitch {
-    if (_btnCameraLightSwitch) {
+    if (!_btnCameraLightSwitch) {
         _btnCameraLightSwitch = [[UIButton alloc] init];
         [_btnCameraLightSwitch setImage:[UIImage imageNamed:@"camera_light_switch_icon.png"] forState:UIControlStateNormal];
         [_btnCameraLightSwitch addTarget:self action:@selector(switchCameraLight:) forControlEvents:UIControlEventTouchDown];
@@ -201,8 +203,8 @@
     CGContextSetRGBFillColor(ctx, 0, 0, 0, .4);
     CGContextFillRect(ctx, self.bounds);
     
-    CGContextSetStrokeColorWithColor(ctx, [UIColor grayColor].CGColor);
-    CGContextStrokeRectWithWidth(ctx, _cropRect, 2.0f);
+//    CGContextSetStrokeColorWithColor(ctx, [UIColor grayColor].CGColor);
+//    CGContextStrokeRectWithWidth(ctx, _cropRect, 2.0f);
     CGContextStrokeEllipseInRect(ctx, _cropRect);
     
     CGContextClearRect(ctx, _cropRect);

@@ -166,7 +166,7 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
     }
     
     NSDictionary *parameters = @{@"partner" : @{@"user_id" : partner.userId,
-                                                @"sexuality" : [NSNumber numberWithInteger:partner.sexualityType],
+                                                @"sexuality_id" : [NSNumber numberWithInteger:partner.sexualityType],
                                                 @"min_age" : partner.minAge,
                                                 @"max_age" : partner.maxAge,
                                                 @"zodiac_ids" : partner.preferZodiacs,
@@ -186,7 +186,7 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
     }
     
     NSDictionary *parameters = @{@"partner" : @{@"user_id" : partner.userId,
-                                                @"sexuality" : [NSNumber numberWithInteger:partner.sexualityType],
+                                                @"sexuality_id" : [NSNumber numberWithInteger:partner.sexualityType],
                                                 @"min_age" : partner.minAge,
                                                 @"max_age" : partner.maxAge,
                                                 @"zodiac_ids" : partner.preferZodiacs,

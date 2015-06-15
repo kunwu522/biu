@@ -16,7 +16,6 @@
 
 @property (retain, nonatomic) UIView *background;
 @property (retain, nonatomic) UIImageView *test;
-@property (retain, nonatomic) UIButton *btnBack;
 @property (retain, nonatomic) UIButton *btnMenu;
 @property (retain, nonatomic) UILabel *lbTitle;
 @property (retain, nonatomic) BLPickerView *pickViewDistance;
@@ -37,10 +36,6 @@
     _background = [[UIView alloc] initWithFrame:self.view.frame];
     _background.backgroundColor = [BLColorDefinition backgroundGrayColor];
     [self.view addSubview:_background];
-    
-    _btnBack = [[UIButton alloc] init];
-    [_btnBack setBackgroundImage:[UIImage imageNamed:@"back_icon2.png"] forState:UIControlStateNormal];
-    [self.view addSubview:_btnBack];
     
     _lbTitle = [[UILabel alloc] init];
     _lbTitle.font = [BLFontDefinition normalFont:20.0f];
@@ -74,13 +69,6 @@
     _matchSwith.backgroundColor = [UIColor clearColor];
     [_matchSwith addTarget:self action:@selector(matchToLove:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:_matchSwith];
-    
-    [_btnBack mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).with.offset(31.2);
-        make.left.equalTo(self.view).with.offset(20.8);
-        make.width.equalTo(@45.3);
-        make.height.equalTo(@45.3);
-    }];
     
     [_lbTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).with.offset(135.7);

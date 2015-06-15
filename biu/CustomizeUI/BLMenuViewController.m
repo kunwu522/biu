@@ -33,7 +33,6 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
 @property (retain, nonatomic) UIView *menuView;
 @property (retain, nonatomic) BLBlurView *blurView;
 @property (retain, nonatomic) UIButton *btnBack;
-@property (retain, nonatomic) UIButton *btnForward;
 @property (retain, nonatomic) UIImageView *avatorImageView;
 @property (retain, nonatomic) UILabel *lbUsername;
 @property (retain, nonatomic) UIImageView *photoImageView;
@@ -102,6 +101,9 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
 
 - (void)selectController:(BLSubViewController)controller {
     if (_selectedController != controller) {
+        if (controller != BLSubViewControllerRoot) {
+            _btnBack.alpha = 1.0f;
+        }
         _selectedViewController = [_subViewControllers objectForKey:[NSNumber numberWithInteger:controller]];
         _selectedController = controller;
         
@@ -148,6 +150,7 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
     _contentView.center = center;
     [self.view insertSubview:_contentView belowSubview:_btnMenu];
     
+    _btnBack.alpha = 0.0f;
     [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
         CGPoint center1 = tmpView.center;
         CGPoint center2 = _contentView.center;
@@ -168,16 +171,6 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
     }];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 #pragma mark - setup menu view and button
 - (void)setupMenuButton {
     _btnMenu = [[UIButton alloc] init];
@@ -188,6 +181,7 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
     _btnBack = [[UIButton alloc] init];
     [_btnBack setBackgroundImage:[UIImage imageNamed:@"back_icon2.png"] forState:UIControlStateNormal];
     [_btnBack addTarget:self action:@selector(backToRoot:) forControlEvents:UIControlEventTouchDown];
+    _btnBack.alpha = 0.0f;
     [self.view addSubview:_btnBack];
     
     [_btnMenu mas_makeConstraints:^(MASConstraintMaker *make) {
