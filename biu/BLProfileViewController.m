@@ -12,19 +12,24 @@
 #import "BLBirthTableViewCell.h"
 #import "BLZodiacAndAgeTableViewCell.h"
 #import "BLStyleTableViewCell.h"
-
 #import "BLPartnerViewController.h"
+#import "UIViewController+BLBlurMenu.h"
 #import "Masonry.h"
+
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface BLProfileViewController () <UITableViewDataSource, UITableViewDelegate, BLTableViewCellDeletage>
 
-@property (strong, nonatomic) User *currentUser;
+@property (strong, nonatomic) User *currentUser; //works if profileViewType is BLProfileViewTypeUpdate
+
 @property (assign, nonatomic) BLGender gender;
 @property (strong, nonatomic) NSDate *birthday;
 @property (assign, nonatomic) BLZodiac zodiac;
 @property (assign, nonatomic) BLStyleType style;
 
 @property (retain, nonatomic) UITableView *tableView;
+@property (strong, nonatomic) UIButton *btnMenu;
+@property (strong, nonatomic) UIButton *btnBackToRoot;
 
 @end
 
@@ -54,12 +59,16 @@ static const float AVATOR_WIDTH = 163.0f;
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [BLColorDefinition backgroundGrayColor];
     
-    BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
-    _currentUser = delegate.currentUser;
-    _gender = BLGenderMale;
-    _birthday = nil;
-    _zodiac = BLZodiacNone;
-    _style = BLStyleTypeNone;
+    if (self.profileViewType == BLProfileViewTypeUpdate && self.currentUser) {
+        self.gender = self.currentUser.profile.gender;
+        self.birthday = self.currentUser.profile.birthday;
+        self.style = self.currentUser.profile.style;
+    } else {
+        self.gender = BLGenderMale;
+        self.birthday = nil;
+        self.zodiac = BLZodiacNone;
+        self.style = BLStyleTypeNone;
+    }
     
     _tableView = [[UITableView alloc] initWithFrame:self.view.frame];
     _tableView.backgroundColor = [UIColor clearColor];
@@ -74,6 +83,25 @@ static const float AVATOR_WIDTH = 163.0f;
     [_tableView registerClass:[BLBirthTableViewCell class] forCellReuseIdentifier:BL_PROFILE_BIRTH_CELL_REUSEID];
     [_tableView registerClass:[BLZodiacAndAgeTableViewCell class] forCellReuseIdentifier:BL_PROFILE_ZODIAC_AND_AGE_CELL_REUSEID];
     [_tableView registerClass:[BLStyleTableViewCell class] forCellReuseIdentifier:BL_PROFIEL_STYLE_CELL_REUSEID];
+    
+    if (self.profileViewType == BLProfileViewTypeUpdate) {
+        [self.view addSubview:self.btnMenu];
+        [self.view addSubview:self.btnBackToRoot];
+        
+        [self.btnMenu mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.btnMenu.superview).with.offset(31.2);
+            make.right.equalTo(self.btnMenu.superview).with.offset(-20.8);
+            make.width.equalTo(@45.3);
+            make.height.equalTo(@45.3);
+        }];
+        
+        [self.btnBackToRoot mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.btnBackToRoot.superview).with.offset(31.2f);
+            make.left.equalTo(self.btnBackToRoot.superview).with.offset(20.8f);
+            make.width.equalTo(@45.3);
+            make.height.equalTo(@45.3);
+        }];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -245,39 +273,28 @@ static const float AVATOR_WIDTH = 163.0f;
         imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [sectionHeaderView addSubview:imageView];
         
-        if (!self.currentUser.profile.avatarUrl) {
-            UIButton *uploadAvatar = [[UIButton alloc] init];
-            [uploadAvatar setImage:[UIImage imageNamed:@"avatar_upload_icon.png"] forState:UIControlStateNormal];
-            [uploadAvatar setImage:[UIImage imageNamed:@"avatar_upload_highlight_icon.png"] forState:UIControlStateHighlighted];
-            [uploadAvatar addTarget:self action:@selector(showTakingPhotoView:) forControlEvents:UIControlEventTouchDown];
-            uploadAvatar.layer.cornerRadius = AVATOR_WIDTH / 2;
-            uploadAvatar.layer.borderWidth = 4.0f;
-            uploadAvatar.layer.borderColor = [[UIColor whiteColor] CGColor];
-            uploadAvatar.clipsToBounds = YES;
-            [sectionHeaderView addSubview:uploadAvatar];
-            
-            [uploadAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(uploadAvatar.superview.mas_centerX);
-                make.top.equalTo(uploadAvatar.superview).with.offset(95.8f);
-                make.width.equalTo([NSNumber numberWithFloat:AVATOR_WIDTH]);
-                make.height.equalTo([NSNumber numberWithFloat:AVATOR_WIDTH]);
-            }];
-        } else {
-            UIImageView *imageViewAvator = [[UIImageView alloc] init];
-            imageViewAvator.layer.cornerRadius = AVATOR_WIDTH / 2;
-            imageViewAvator.layer.borderColor = [UIColor whiteColor].CGColor;
-            imageViewAvator.layer.borderWidth = 4.0f;
-            imageViewAvator.image = [UIImage imageNamed:@"avator_upload_icon.png"];
-            imageViewAvator.clipsToBounds = YES;
-            [sectionHeaderView addSubview:imageViewAvator];
-            
-            [imageViewAvator mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(imageViewAvator.superview.mas_centerX);
-                make.top.equalTo(imageViewAvator.superview).with.offset(95.8f);
-                make.width.equalTo([NSNumber numberWithFloat:AVATOR_WIDTH]);
-                make.height.equalTo([NSNumber numberWithFloat:AVATOR_WIDTH]);
-            }];
-        }
+        UIImageView *imageViewAvator = [[UIImageView alloc] init];
+        [imageViewAvator sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@avatar/%@",
+                                                            [BLHTTPClient blBaseURL],
+                                                            self.currentUser.profile.profileId]]
+                     placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
+                              options:SDWebImageRefreshCached];
+        imageViewAvator.layer.cornerRadius = AVATOR_WIDTH / 2;
+        imageViewAvator.layer.borderColor = [UIColor whiteColor].CGColor;
+        imageViewAvator.layer.borderWidth = 4.0f;
+        imageViewAvator.clipsToBounds = YES;
+        imageViewAvator.userInteractionEnabled = YES;
+        [sectionHeaderView addSubview:imageViewAvator];
+        
+        [imageViewAvator mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(imageViewAvator.superview.mas_centerX);
+            make.top.equalTo(imageViewAvator.superview).with.offset(95.8f);
+            make.width.equalTo([NSNumber numberWithFloat:AVATOR_WIDTH]);
+            make.height.equalTo([NSNumber numberWithFloat:AVATOR_WIDTH]);
+        }];
+        
+        UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showTakingPhotoView:)];
+        [imageViewAvator addGestureRecognizer:tapGestureRecognizer];
         
         return sectionHeaderView;
     }
@@ -306,13 +323,21 @@ static const float AVATOR_WIDTH = 163.0f;
     }
 }
 
-#pragma mark - handle action
+#pragma mark - Actions
 - (void)showTakingPhotoView:(id)sender {
     BLTakingPhotoViewController *takingPhotoViewController = [[BLTakingPhotoViewController alloc] initWithNibName:nil bundle:nil];
-    [self presentViewController:takingPhotoViewController animated:YES completion:nil];
+    [self.navigationController presentViewController:takingPhotoViewController animated:YES completion:nil];
 }
 
-- (void)udpateProfile:(id)sender {
+- (void)showMenu:(id)sender {
+    [self presentMenuViewController:sender];
+}
+
+- (void)backToRoot:(id)sender {
+    [self backToRootViewController:sender];
+}
+
+- (void)udpateProfile:(UITapGestureRecognizer *)gestureRecogizer {
 //    Profile *profile = [Profile new];
 //    profile.gender = _gender;
 //    profile.birthday = _birthday;
@@ -344,7 +369,8 @@ static const float AVATOR_WIDTH = 163.0f;
     [self.navigationController pushViewController:partnerController animated:YES];
 }
 
-#pragma mark - Getting and Setting
+#pragma mark - 
+#pragma mark Setter
 - (void)setProfileViewType:(BLProfileViewType)profileViewType {
     _profileViewType = profileViewType;
     if (profileViewType == BLProfileViewTypeUpdate) {
@@ -356,7 +382,35 @@ static const float AVATOR_WIDTH = 163.0f;
         _style = _currentUser.profile.style;
     }
 }
+
+#pragma mark Getter
+- (UIButton *)btnMenu {
+    if (!_btnMenu) {
+        _btnMenu = [[UIButton alloc] init];
+        [_btnMenu setBackgroundImage:[UIImage imageNamed:@"menu_icon.png"] forState:UIControlStateNormal];
+        [_btnMenu addTarget:self action:@selector(showMenu:) forControlEvents:UIControlEventTouchDown];
+    }
+    return _btnMenu;
+}
+
+- (UIButton *)btnBackToRoot {
+    if (!_btnBackToRoot) {
+        _btnBackToRoot = [[UIButton alloc] init];
+        [_btnBackToRoot setBackgroundImage:[UIImage imageNamed:@"back_icon2.png"] forState:UIControlStateNormal];
+        [_btnBackToRoot addTarget:self action:@selector(backToRoot:) forControlEvents:UIControlEventTouchDown];
+    }
+    return _btnBackToRoot;
+}
+
 - (BLProfileViewType)profileViewType {
     return _profileViewType;
+}
+
+- (User *)currentUser {
+    if (!_currentUser) {
+        BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
+        _currentUser = delegate.currentUser;
+    }
+    return _currentUser;
 }
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "BLAppDeleate.h"
-
+#import "BLWelcomeViewController.h"
 #import "BLMatchViewController.h"
 #import "BLProfileViewController.h"
 
@@ -17,14 +17,18 @@
 
 @implementation BLAppDeleate
 
-@synthesize passwordItem, menuViewController, welNavController;
+@synthesize passwordItem, blurMenu, welNavController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
      self.passwordItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"Password" accessGroup:nil];
     
+    // Get current user
+    self.currentUser = [[User alloc] initWithFromUserDefault];
+    
     // Add Navigation
-    self.welNavController = [[UINavigationController alloc] initWithRootViewController:self.window.rootViewController];
+    BLWelcomeViewController *welcomeViewController = [[BLWelcomeViewController alloc] initWithNibName:nil bundle:nil];
+    self.welNavController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
     self.welNavController.navigationBarHidden = YES;
     self.window.rootViewController = self.welNavController;
     
@@ -36,12 +40,14 @@
     
     // Create master navigation controller
     BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
+    BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
+    UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
+    masterNavViewController.navigationBarHidden = YES;
     
     // Create BL Menu view controller
-    self.menuViewController = [[BLMenuViewController alloc] initWithRootViewControllr:matchViewController];
+    self.blurMenu = [[BLBlurMenu alloc] initWithRootViewController:masterNavViewController
+                                                menuViewController:menuViewController];
     
-    // Get current user
-    self.currentUser = [[User alloc] initWithFromUserDefault];
     return YES;
 }
 

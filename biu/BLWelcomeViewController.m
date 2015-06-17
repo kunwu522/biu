@@ -132,7 +132,7 @@ static double ICON_INITIAL_SIZE = 147.5;
         user.password = password;
         [[BLHTTPClient sharedBLHTTPClient] login:user success:^(NSURLSessionDataTask *task, id responseObject) {
             BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
-            [self presentViewController:delegate.menuViewController animated:YES completion:nil];
+            [self presentViewController:delegate.blurMenu animated:YES completion:nil];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"Validate user failed: %@, code: %li", error.description, (long)error.code);
             [self showLoginUI];
@@ -272,7 +272,7 @@ static double ICON_INITIAL_SIZE = 147.5;
 - (void)didLoginWithCurrentUser:(User *)user {
     [self saveCurrentUser:user];
     BLAppDeleate *appDelegate = [[UIApplication sharedApplication] delegate];
-    [self presentViewController:appDelegate.menuViewController animated:YES completion:nil];
+    [self presentViewController:appDelegate.blurMenu animated:YES completion:nil];
 }
 
 - (void)didSignupWithNewUser:(User *)user {

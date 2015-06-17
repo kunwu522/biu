@@ -28,6 +28,9 @@
 @property (strong, nonatomic) UIButton *btnChoosePhoto;
 @property (strong, nonatomic) UIButton *btnTakingPhoto;
 @property (strong, nonatomic) UIButton *btnCameraLightSwitch;
+//for AVCaptureSession
+@property (strong, nonatomic) AVCaptureSession *session;
+@property (nonatomic) BOOL deviceAuthorized;
 
 @end
 
@@ -37,6 +40,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+//    self.view.backgroundColor = [UIColor clearColor];
     
     [self.view addSubview:self.previewView];
     [self.view addSubview:self.maskView];
@@ -47,6 +51,34 @@
     [self.view addSubview:self.btnTakingPhoto];
     
     [self layoutSubViews];
+    
+    [self checkDeviceAuthorizationStatus];
+    NSError *error = nil;
+    AVCaptureDevice *videoDevice = [BLTakingPhotoViewController deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionFront];
+    AVCaptureDeviceInput *deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:&error];
+    if (error) {
+        NSLog(@"%@", error.localizedDescription);
+    }
+    
+    if ([_session canAddInput:deviceInput]) {
+        [_session addInput:deviceInput];
+        [[(AVCaptureVideoPreviewLayer *)[_previewView layer] connection] setVideoOrientation:AVCaptureVideoOrientationPortrait];
+    }
+    
+    AVCaptureStillImageOutput *stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
+    if ([_session canAddOutput:stillImageOutput])
+    {
+        [stillImageOutput setOutputSettings:@{AVVideoCodecKey : AVVideoCodecJPEG}];
+        [_session addOutput:stillImageOutput];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self.session startRunning];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self.session stopRunning];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -55,18 +87,26 @@
 }
 
 - (void)layoutSubViews {
+    [self.previewView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.previewView.superview);
+    }];
+    
+//    [self.maskView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.edges.equalTo(self.previewView.superview);
+//    }];
+    
     [self.btnClose mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.btnClose.superview).with.offset(31.2f);
         make.left.equalTo(self.btnClose.superview).with.offset(20.8f);
-        make.width.equalTo(@45.3f);
-        make.height.equalTo(@45.3f);
+        make.width.equalTo(@35.3f);
+        make.height.equalTo(@35.3f);
     }];
     
     [self.btnCameraFlip mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.btnCameraFlip.superview).with.offset(31.2f);
         make.right.equalTo(self.btnCameraFlip.superview).with.offset(-20.8f);
-        make.width.equalTo(@45.3f);
-        make.height.equalTo(@45.3f);
+        make.width.equalTo(@40.3f);
+        make.height.equalTo(@40.3f);
     }];
     
     [self.btnTakingPhoto mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -77,17 +117,17 @@
     }];
     
     [self.btnChoosePhoto mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.btnChoosePhoto.superview).with.offset(60.0f);
+        make.left.equalTo(self.btnChoosePhoto.superview).with.offset(55.0f);
         make.centerY.equalTo(self.btnTakingPhoto.mas_centerY);
-        make.width.equalTo(@45.3f);
-        make.height.equalTo(@45.3f);
+        make.width.equalTo(@40.0f);
+        make.height.equalTo(@40.0f);
     }];
     
     [self.btnCameraLightSwitch mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.btnCameraLightSwitch.superview).with.offset(-60.0f);
+        make.right.equalTo(self.btnCameraLightSwitch.superview).with.offset(-55.0f);
         make.centerY.equalTo(self.btnTakingPhoto.mas_centerY);
-        make.width.equalTo(@45.3f);
-        make.height.equalTo(@45.3f);
+        make.width.equalTo(@40.0f);
+        make.height.equalTo(@40.0f);
     }];
 }
 
@@ -97,7 +137,7 @@
 }
 
 - (void)close:(id)sender {
-    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)choosePhoto:(id)sender {
@@ -112,19 +152,51 @@
     
 }
 
+#pragma mark - private method
++ (AVCaptureDevice *)deviceWithMediaType:(NSString *)mediaType preferringPosition:(AVCaptureDevicePosition)position
+{
+    NSArray *devices = [AVCaptureDevice devicesWithMediaType:mediaType];
+    AVCaptureDevice *captureDevice = [devices firstObject];
+    
+    for (AVCaptureDevice *device in devices)
+    {
+        if ([device position] == position)
+        {
+            captureDevice = device;
+            break;
+        }
+    }
+    
+    return captureDevice;
+}
+
+- (void)checkDeviceAuthorizationStatus
+{
+    NSString *mediaType = AVMediaTypeVideo;
+    
+    [AVCaptureDevice requestAccessForMediaType:mediaType completionHandler:^(BOOL granted) {
+        if (granted) {
+            self.deviceAuthorized = YES;
+        } else {
+            NSLog(@"Camera doesn't have permission to use.");
+            self.deviceAuthorized = NO;
+        }
+    }];
+}
+
 #pragma mark - Getting and Setting
 - (BLAVCamPreviewView *)previewView {
     if (!_previewView) {
         _previewView = [[BLAVCamPreviewView alloc] init];
-        _previewView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        _session = [[AVCaptureSession alloc] init];
+        [_previewView setSession:_session];
     }
     return _previewView;
 }
 
 - (BLCropImageMaskView *)maskView {
     if (!_maskView) {
-        _maskView = [[BLCropImageMaskView alloc] initWithFrame:self.view.frame];
-//        _maskView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        _maskView = [[BLCropImageMaskView alloc] initWithFrame:self.view.bounds];
         _maskView.backgroundColor = [UIColor clearColor];
         _maskView.userInteractionEnabled = NO;
         [_maskView setCropSize:CGSizeMake(337.0f, 337.0f)];
@@ -144,7 +216,7 @@
 - (UIButton *)btnClose {
     if (!_btnClose) {
         _btnClose = [[UIButton alloc] init];
-        [_btnClose setImage:[UIImage imageNamed:@"back_icon.png"] forState:UIControlStateNormal];
+        [_btnClose setImage:[UIImage imageNamed:@"close_icon2.png"] forState:UIControlStateNormal];
         [_btnClose addTarget:self action:@selector(close:) forControlEvents:UIControlEventTouchDown];
     }
     return _btnClose;
@@ -183,7 +255,7 @@
 
 - (void)setCropSize:(CGSize)size {
     CGFloat x = (CGRectGetWidth(self.bounds) - size.width) / 2;
-    CGFloat y = (CGRectGetHeight(self.bounds) - size.height) / 2;
+    CGFloat y = (CGRectGetHeight(self.bounds) - size.height) / 2 - 60;
     _cropRect = CGRectMake(x, y, size.width, size.height);
     
     [self setNeedsDisplay];
@@ -203,11 +275,12 @@
     CGContextSetRGBFillColor(ctx, 0, 0, 0, .4);
     CGContextFillRect(ctx, self.bounds);
     
-//    CGContextSetStrokeColorWithColor(ctx, [UIColor grayColor].CGColor);
-//    CGContextStrokeRectWithWidth(ctx, _cropRect, 2.0f);
-    CGContextStrokeEllipseInRect(ctx, _cropRect);
+    CGRect clippingEllipseRect = _cropRect;
+    CGContextAddEllipseInRect(ctx, clippingEllipseRect);
     
-    CGContextClearRect(ctx, _cropRect);
+    CGContextClip(ctx);
+    
+    CGContextClearRect(ctx, clippingEllipseRect);
 }
 
 @end

@@ -371,7 +371,7 @@ static const NSInteger TAG_PASSWORD = 1;
 
 - (void)renderToMasterViewController {
     BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
-    [self presentViewController:delegate.menuViewController animated:YES completion:nil];
+    [self presentViewController:delegate.blurMenu animated:YES completion:nil];
 }
 
 

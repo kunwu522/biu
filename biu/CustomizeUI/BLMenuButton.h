@@ -10,4 +10,10 @@
 
 @interface BLMenuButton : UIButton
 
+@property (strong, nonatomic) UIImage *icon;
+@property (strong, nonatomic) UIImage *highlightIcon;
+@property (strong, nonatomic) UIColor *blTitleColor;
+@property (strong, nonatomic) UIColor *highlightColor;
+@property (strong, nonatomic) NSString *blTitle;
+
 @end

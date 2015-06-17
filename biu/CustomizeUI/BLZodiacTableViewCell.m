@@ -55,8 +55,8 @@ static const float CELL_HEIGHT = 109.3;
 - (BLZodiacCollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     BLZodiacCollectionViewCell *cell = (BLZodiacCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([BLZodiacCollectionViewCell class]) forIndexPath:indexPath];
     BLZodiac zodiac = [self zodiacFromIndexItem:indexPath.item];
-    cell.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"zodiac_selected_icon%li", (NSInteger)zodiac]];
-    cell.unselectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"zodiac_unselected_icon%li", (NSInteger)zodiac]];
+    cell.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"zodiac_selected_icon%li", (long)zodiac]];
+    cell.unselectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"zodiac_unselected_icon%li", (long)zodiac]];
     cell.imageView.image = cell.unselectedImage;
     cell.lbZoidac.text = [Profile getZodiacNameFromZodiac:[self zodiacFromIndexItem:indexPath.item] isShotVersion:YES];
     return cell;

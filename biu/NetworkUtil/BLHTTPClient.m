@@ -8,7 +8,8 @@
 
 #import "BLHTTPClient.h"
 
-static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
+static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
+//static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
 
 @implementation BLHTTPClient
 
@@ -39,6 +40,10 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
     });
     
     return _sharedHttpClient;
+}
+
++ (NSString *)blBaseURL {
+    return BLBaseURLString;
 }
 
 + (NSString *)responseMessage:(NSURLSessionDataTask *)task error:(NSError *)error {

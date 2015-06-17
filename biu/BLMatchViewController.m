@@ -9,19 +9,18 @@
 #import "BLMatchViewController.h"
 #import "BLPickerView.h"
 #import "BLMatchSwitch.h"
-
+#import "BLBlurMenu.h"
+#import "UIViewController+BLBlurMenu.h"
 #import "Masonry.h"
 
 @interface BLMatchViewController () <BLPickerViewDataSource, BLPickerViewDelegate>
 
 @property (retain, nonatomic) UIView *background;
-@property (retain, nonatomic) UIImageView *test;
-@property (retain, nonatomic) UIButton *btnMenu;
+@property (strong, nonatomic) UIButton *btnMenu;
 @property (retain, nonatomic) UILabel *lbTitle;
 @property (retain, nonatomic) BLPickerView *pickViewDistance;
 @property (retain, nonatomic) UILabel *pickViewMask;
 @property (retain, nonatomic) BLMatchSwitch *matchSwith;
-
 @property (retain, nonatomic) UIPickerView *pickerView;
 @property (retain, nonatomic) NSArray *arrayDistanceData;
 
@@ -36,6 +35,8 @@
     _background = [[UIView alloc] initWithFrame:self.view.frame];
     _background.backgroundColor = [BLColorDefinition backgroundGrayColor];
     [self.view addSubview:_background];
+    
+    [self.view addSubview:self.btnMenu];
     
     _lbTitle = [[UILabel alloc] init];
     _lbTitle.font = [BLFontDefinition normalFont:20.0f];
@@ -81,6 +82,13 @@
         make.width.equalTo(@250.0f);
         make.height.equalTo(@78.0f);
     }];
+    
+    [self.btnMenu mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.btnMenu.superview).with.offset(31.2);
+        make.right.equalTo(self.btnMenu.superview).with.offset(-20.8);
+        make.width.equalTo(@45.3);
+        make.height.equalTo(@45.3);
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -101,37 +109,6 @@
     NSLog(@"Select distance: %@", [_arrayDistanceData objectAtIndex:row]);
 }
 
-//- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-//    return 1;
-//}
-//
-//- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-//    return _arrayDistanceData.count;
-//}
-//
-//- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-//    return [_arrayDistanceData objectAtIndex:row];
-//}
-//
-//- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
-//    return 50;
-//}
-//
-//- (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component {
-//    NSString *title = [_arrayDistanceData objectAtIndex:row];
-//    UIColor *color = [UIColor colorWithRed:28.0 / 255.0 green:184.0 / 255.0 blue:134.0 / 255.0 alpha:1.0f];
-//    UIFont *font = nil;
-//    if (row == 1) {
-//        font = [BLFontDefinition italicFont:40];
-//    } else {
-//        font = [BLFontDefinition boldFont:40.0f];
-//    }
-//    
-//    NSDictionary *attributes = @{NSForegroundColorAttributeName : color,
-//                                            NSFontAttributeName : font};
-//    return [[NSAttributedString alloc] initWithString:title attributes:attributes];
-//}
-
 #pragma mark - Handle Switch
 - (void)matchToLove:(BLMatchSwitch *)sender {
     if (sender.on) {
@@ -139,6 +116,22 @@
     } else {
         NSLog(@"Finish Matching...");
     }
+}
+
+#pragma mark - Actions
+- (void)showMenu:(id)sender {
+    [self presentMenuViewController:sender];
+}
+
+#pragma mark - 
+#pragma mark Getter
+- (UIButton *)btnMenu {
+    if (!_btnMenu) {
+        _btnMenu = [[UIButton alloc] init];
+        [_btnMenu setBackgroundImage:[UIImage imageNamed:@"menu_icon.png"] forState:UIControlStateNormal];
+        [_btnMenu addTarget:self action:@selector(showMenu:) forControlEvents:UIControlEventTouchDown];
+    }
+    return _btnMenu;
 }
 
 @end

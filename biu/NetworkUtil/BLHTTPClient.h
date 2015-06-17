@@ -17,6 +17,7 @@
 
 + (BLHTTPClient *)sharedBLHTTPClient;
 + (NSString *)responseMessage:(NSURLSessionDataTask *)task error:(NSError *)error;
++ (NSString *)blBaseURL;
 
 - (instancetype)initWithBaseURL:(NSURL *)url;
 

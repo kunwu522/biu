@@ -339,7 +339,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
 - (void)presentMatchView {
     if (_didCreatePartner || _didCreateProfile) {
         BLAppDeleate *blDelegate = [[UIApplication sharedApplication] delegate];
-        [self.navigationController presentViewController:blDelegate.menuViewController animated:YES completion:nil];
+        [self.navigationController presentViewController:blDelegate.blurMenu animated:YES completion:nil];
     }
 }
 

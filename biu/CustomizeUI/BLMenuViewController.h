@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "User.h"
 
 @interface BLMenuViewController : UIViewController
-
-- (id)initWithRootViewControllr:(UIViewController *)rootController;
 
 @end

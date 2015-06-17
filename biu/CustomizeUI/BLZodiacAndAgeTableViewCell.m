@@ -126,7 +126,7 @@ static const float LINE_SPACING = 10.0f;
     _imageViewZodiac.image = [UIImage imageNamed:[NSString stringWithFormat:@"zodiac_selected_icon%@.png", [NSNumber numberWithInteger:_zodiac]]];
     _lbZodiac.text = [Profile getZodiacNameFromZodiac:_zodiac isShotVersion:YES];
     
-    _lbAgeNumber.text = [NSString stringWithFormat:@"%lu", age];
+    _lbAgeNumber.text = [NSString stringWithFormat:@"%lu", (unsigned long)age];
     
     if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
         [self.delegate tableViewCell:self didChangeValue:[NSNumber numberWithInteger:_zodiac]];

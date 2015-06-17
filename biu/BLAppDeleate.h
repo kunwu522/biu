@@ -10,6 +10,7 @@
 #import "BLMenuViewController.h"
 #import "KeychainItemWrapper.h"
 #import "User.h"
+#import "BLBlurMenu.h"
 
 @class KeychainItemWrapper;
 
@@ -21,7 +22,7 @@
 
 @property (strong, nonatomic) UINavigationController *welNavController;
 @property (strong, nonatomic) UINavigationController *fillingInfoNavController;
-@property (nonatomic, retain) BLMenuViewController *menuViewController;
+@property (nonatomic, retain) BLBlurMenu *blurMenu;
 
 @property (nonatomic, retain) KeychainItemWrapper *passwordItem;
 

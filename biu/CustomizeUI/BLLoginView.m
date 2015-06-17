@@ -203,7 +203,7 @@
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         if ([task.response isKindOfClass:[NSHTTPURLResponse class]]) {
             NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
-            NSLog(@"Status code: %ld", response.statusCode);
+            NSLog(@"Status code: %ld", (long)response.statusCode);
         }
         NSString *message = [BLHTTPClient responseMessage:task error:error];
         if (!message) {

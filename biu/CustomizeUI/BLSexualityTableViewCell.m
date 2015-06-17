@@ -66,8 +66,8 @@ static const float BL_SEXUALITY_CELL_WIDTH = 100.0f;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     BLSexualityCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([BLSexualityCollectionViewCell class])
                                                                                     forIndexPath:indexPath];
-    cell.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"sexuality_selected_icon%li", indexPath.item]];
-    cell.unselectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"sexuality_unselected_icon%li", indexPath.item]];
+    cell.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"sexuality_selected_icon%li", (long)indexPath.item]];
+    cell.unselectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"sexuality_unselected_icon%li", (long)indexPath.item]];
     cell.imageView.image = cell.unselectedImage;
     return cell;
 }

@@ -16,7 +16,7 @@
 		A30D96A51B24414900A1CF88 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = A30D96A41B24414900A1CF88 /* Profile.m */; };
 		A30D96A81B24433500A1CF88 /* Partner.m in Sources */ = {isa = PBXBuildFile; fileRef = A30D96A71B24433500A1CF88 /* Partner.m */; };
 		A3BD9E4B1B0CC37D00815100 /* BLSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3BD9E4A1B0CC37D00815100 /* BLSignupViewController.m */; };
-		A3CCFCFA1B1B602600C9BAE8 /* back_icon3.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFCF41B1B602600C9BAE8 /* back_icon3.png */; };
+		A3CCFCFA1B1B602600C9BAE8 /* close_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFCF41B1B602600C9BAE8 /* close_icon2.png */; };
 		A3CCFCFB1B1B602600C9BAE8 /* forward_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFCF51B1B602600C9BAE8 /* forward_icon2.png */; };
 		A3CCFCFC1B1B602600C9BAE8 /* partner_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFCF61B1B602600C9BAE8 /* partner_icon.png */; };
 		A3CCFCFD1B1B602600C9BAE8 /* password_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFCF71B1B602600C9BAE8 /* password_icon.png */; };
@@ -50,6 +50,9 @@
 		EA7682DE1B2C41DB00FACE87 /* libPods-biu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA7682DD1B2C41DB00FACE87 /* libPods-biu.a */; };
 		EA7805321B0C7F0E00696FEF /* forward_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA7805311B0C7F0E00696FEF /* forward_icon.png */; };
 		EA7805341B0C7F1500696FEF /* back_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA7805331B0C7F1500696FEF /* back_icon.png */; };
+		EA9A30371B31491500B2DD94 /* me_icon_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9A30361B31491500B2DD94 /* me_icon_highlight.png */; };
+		EA9A305D1B31633900B2DD94 /* UIViewController+BLBlurMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9A305C1B31633900B2DD94 /* UIViewController+BLBlurMenu.m */; };
+		EA9A30601B31637600B2DD94 /* BLBlurMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9A305F1B31637600B2DD94 /* BLBlurMenu.m */; };
 		EA9B08D61B299B9F0059DBA7 /* app_setting_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08D31B299B9F0059DBA7 /* app_setting_icon.png */; };
 		EA9B08D71B299B9F0059DBA7 /* app_spotlight_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08D41B299B9F0059DBA7 /* app_spotlight_icon.png */; };
 		EA9B08D81B299B9F0059DBA7 /* app_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08D51B299B9F0059DBA7 /* app_icon.png */; };
@@ -107,6 +110,10 @@
 		EAB60E471B26EB8E00BE2874 /* login_with_weibo_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EAB60E451B26EB8E00BE2874 /* login_with_weibo_icon.png */; };
 		EAB60E491B26FDD100BE2874 /* login_signup_background.png in Resources */ = {isa = PBXBuildFile; fileRef = EAB60E481B26FDD100BE2874 /* login_signup_background.png */; };
 		EAB60E4C1B2709A700BE2874 /* BLSignupView.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB60E4B1B2709A700BE2874 /* BLSignupView.m */; };
+		EAE285EF1B31755C00340C1B /* setting_icon_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE285EB1B31755C00340C1B /* setting_icon_highlight.png */; };
+		EAE285F01B31755C00340C1B /* photo_icon_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE285EC1B31755C00340C1B /* photo_icon_highlight.png */; };
+		EAE285F11B31755C00340C1B /* password_icon_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE285ED1B31755C00340C1B /* password_icon_highlight.png */; };
+		EAE285F21B31755C00340C1B /* partner_icon_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE285EE1B31755C00340C1B /* partner_icon_highlight.png */; };
 		EAE8E20C1B09CBF800C9038D /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE8E20B1B09CBF800C9038D /* logo.png */; };
 		EAE8E2111B09F34300C9038D /* BLLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE8E2101B09F34300C9038D /* BLLoginViewController.m */; };
 		EAEA27D11B256776006967A1 /* BLZodiacAndAgeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAEA27D01B256776006967A1 /* BLZodiacAndAgeTableViewCell.m */; };
@@ -200,7 +207,7 @@
 		A30D96A71B24433500A1CF88 /* Partner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Partner.m; path = Model/Partner.m; sourceTree = "<group>"; };
 		A3BD9E491B0CC37D00815100 /* BLSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLSignupViewController.h; sourceTree = "<group>"; };
 		A3BD9E4A1B0CC37D00815100 /* BLSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLSignupViewController.m; sourceTree = "<group>"; };
-		A3CCFCF41B1B602600C9BAE8 /* back_icon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = back_icon3.png; path = images/back_icon3.png; sourceTree = "<group>"; };
+		A3CCFCF41B1B602600C9BAE8 /* close_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = close_icon2.png; path = images/close_icon2.png; sourceTree = "<group>"; };
 		A3CCFCF51B1B602600C9BAE8 /* forward_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = forward_icon2.png; path = images/forward_icon2.png; sourceTree = "<group>"; };
 		A3CCFCF61B1B602600C9BAE8 /* partner_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = partner_icon.png; path = images/partner_icon.png; sourceTree = "<group>"; };
 		A3CCFCF71B1B602600C9BAE8 /* password_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = password_icon.png; path = images/password_icon.png; sourceTree = "<group>"; };
@@ -252,6 +259,11 @@
 		EA7682DD1B2C41DB00FACE87 /* libPods-biu.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-biu.a"; path = "Pods/../build/Debug-iphoneos/libPods-biu.a"; sourceTree = "<group>"; };
 		EA7805311B0C7F0E00696FEF /* forward_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = forward_icon.png; path = images/forward_icon.png; sourceTree = "<group>"; };
 		EA7805331B0C7F1500696FEF /* back_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = back_icon.png; path = images/back_icon.png; sourceTree = "<group>"; };
+		EA9A30361B31491500B2DD94 /* me_icon_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = me_icon_highlight.png; path = images/me_icon_highlight.png; sourceTree = "<group>"; };
+		EA9A305B1B31633900B2DD94 /* UIViewController+BLBlurMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+BLBlurMenu.h"; path = "Category/UIViewController+BLBlurMenu.h"; sourceTree = "<group>"; };
+		EA9A305C1B31633900B2DD94 /* UIViewController+BLBlurMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+BLBlurMenu.m"; path = "Category/UIViewController+BLBlurMenu.m"; sourceTree = "<group>"; };
+		EA9A305E1B31637600B2DD94 /* BLBlurMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLBlurMenu.h; path = CustomizeUI/BLBlurMenu.h; sourceTree = "<group>"; };
+		EA9A305F1B31637600B2DD94 /* BLBlurMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLBlurMenu.m; path = CustomizeUI/BLBlurMenu.m; sourceTree = "<group>"; };
 		EA9B08D31B299B9F0059DBA7 /* app_setting_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_setting_icon.png; path = images/app_setting_icon.png; sourceTree = "<group>"; };
 		EA9B08D41B299B9F0059DBA7 /* app_spotlight_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_spotlight_icon.png; path = images/app_spotlight_icon.png; sourceTree = "<group>"; };
 		EA9B08D51B299B9F0059DBA7 /* app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_icon.png; path = images/app_icon.png; sourceTree = "<group>"; };
@@ -328,6 +340,10 @@
 		EAB60E481B26FDD100BE2874 /* login_signup_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = login_signup_background.png; path = images/login_signup_background.png; sourceTree = "<group>"; };
 		EAB60E4A1B2709A700BE2874 /* BLSignupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLSignupView.h; path = CustomizeUI/BLSignupView.h; sourceTree = "<group>"; };
 		EAB60E4B1B2709A700BE2874 /* BLSignupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLSignupView.m; path = CustomizeUI/BLSignupView.m; sourceTree = "<group>"; };
+		EAE285EB1B31755C00340C1B /* setting_icon_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = setting_icon_highlight.png; path = images/setting_icon_highlight.png; sourceTree = "<group>"; };
+		EAE285EC1B31755C00340C1B /* photo_icon_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = photo_icon_highlight.png; path = images/photo_icon_highlight.png; sourceTree = "<group>"; };
+		EAE285ED1B31755C00340C1B /* password_icon_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = password_icon_highlight.png; path = images/password_icon_highlight.png; sourceTree = "<group>"; };
+		EAE285EE1B31755C00340C1B /* partner_icon_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = partner_icon_highlight.png; path = images/partner_icon_highlight.png; sourceTree = "<group>"; };
 		EAE8E20B1B09CBF800C9038D /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = images/logo.png; sourceTree = "<group>"; };
 		EAE8E20F1B09F34300C9038D /* BLLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLLoginViewController.h; sourceTree = "<group>"; };
 		EAE8E2101B09F34300C9038D /* BLLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLLoginViewController.m; sourceTree = "<group>"; };
@@ -441,6 +457,8 @@
 				A3039E951B19E9B1006FB5E4 /* BLMatchSwitch.m */,
 				EA9F49371B1C021F0037D188 /* BLBlurView.h */,
 				EA9F49381B1C021F0037D188 /* BLBlurView.m */,
+				EA9A305E1B31637600B2DD94 /* BLBlurMenu.h */,
+				EA9A305F1B31637600B2DD94 /* BLBlurMenu.m */,
 				EAB60E391B26B29D00BE2874 /* BLLoginView.h */,
 				EAB60E3A1B26B29D00BE2874 /* BLLoginView.m */,
 				EAB60E4A1B2709A700BE2874 /* BLSignupView.h */,
@@ -563,6 +581,8 @@
 			children = (
 				EA9F49781B1D5BD90037D188 /* UIImage+ImageEffects.h */,
 				EA9F49791B1D5BD90037D188 /* UIImage+ImageEffects.m */,
+				EA9A305B1B31633900B2DD94 /* UIViewController+BLBlurMenu.h */,
+				EA9A305C1B31633900B2DD94 /* UIViewController+BLBlurMenu.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -570,6 +590,11 @@
 		EA6AAC5B1AF88DB600ED3A55 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				EAE285EB1B31755C00340C1B /* setting_icon_highlight.png */,
+				EAE285EC1B31755C00340C1B /* photo_icon_highlight.png */,
+				EAE285ED1B31755C00340C1B /* password_icon_highlight.png */,
+				EAE285EE1B31755C00340C1B /* partner_icon_highlight.png */,
+				EA9A30361B31491500B2DD94 /* me_icon_highlight.png */,
 				EA9B09101B2C32AF0059DBA7 /* camera_light_switch_icon.png */,
 				EA9B09111B2C32AF0059DBA7 /* taking_photo_icon.png */,
 				EA9B09121B2C32AF0059DBA7 /* choosing_photo_icon.png */,
@@ -594,7 +619,7 @@
 				A3CCFD001B1B647300C9BAE8 /* avator_default.png */,
 				EA7805331B0C7F1500696FEF /* back_icon.png */,
 				EA305ECE1B1575E900DD904D /* back_icon2.png */,
-				A3CCFCF41B1B602600C9BAE8 /* back_icon3.png */,
+				A3CCFCF41B1B602600C9BAE8 /* close_icon2.png */,
 				A3CCFCF51B1B602600C9BAE8 /* forward_icon2.png */,
 				A3CCFCF61B1B602600C9BAE8 /* partner_icon.png */,
 				A3CCFCF71B1B602600C9BAE8 /* password_icon.png */,
@@ -851,6 +876,7 @@
 				TargetAttributes = {
 					EA6AAC291AF8739200ED3A55 = {
 						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = ZH6YFMTCH8;
 					};
 					EA6AAC421AF8739200ED3A55 = {
 						CreatedOnToolsVersion = 6.3.1;
@@ -899,6 +925,7 @@
 				EA305EC81B14841600DD904D /* division_icon.png in Resources */,
 				EA9B09171B2C32AF0059DBA7 /* camera_flip_icon.png in Resources */,
 				EA9F493F1B1C6A7F0037D188 /* me_icon.png in Resources */,
+				EAE285F11B31755C00340C1B /* password_icon_highlight.png in Resources */,
 				EA9F49431B1C87220037D188 /* partner_avator.png in Resources */,
 				EAEC0B091B1EEAC3000A7C5B /* zodiac_unselected_icon6.png in Resources */,
 				EAEC0B4D1B20953B000A7C5B /* style_man_unselected_icon6.png in Resources */,
@@ -935,12 +962,14 @@
 				A3CCFCFB1B1B602600C9BAE8 /* forward_icon2.png in Resources */,
 				EAEC0AFC1B1EEAC3000A7C5B /* zodiac_selected_icon5.png in Resources */,
 				EA9B09071B2C0E740059DBA7 /* avatar_upload_icon.png in Resources */,
+				EAE285EF1B31755C00340C1B /* setting_icon_highlight.png in Resources */,
 				EA9B09021B2A97930059DBA7 /* style_woman_selected_icon7.png in Resources */,
 				A3CCFD011B1B647300C9BAE8 /* avator_default.png in Resources */,
 				EAEC0B4E1B20953B000A7C5B /* style_man_unselected_icon5.png in Resources */,
 				EAEC0B2A1B1EEBA9000A7C5B /* sexuality_selected_icon4.png in Resources */,
 				EAEC0B041B1EEAC3000A7C5B /* zodiac_unselected_icon1.png in Resources */,
 				EAEC0B081B1EEAC3000A7C5B /* zodiac_unselected_icon5.png in Resources */,
+				EA9A30371B31491500B2DD94 /* me_icon_highlight.png in Resources */,
 				EAEC0B0B1B1EEAC3000A7C5B /* zodiac_unselected_icon8.png in Resources */,
 				A30D966A1B20BD8800A1CF88 /* style_woman_unselected_icon8.png in Resources */,
 				EA9B08DF1B29BADF0059DBA7 /* Launch_debug.png in Resources */,
@@ -955,7 +984,7 @@
 				EAEC0B0D1B1EEAC3000A7C5B /* zodiac_unselected_icon10.png in Resources */,
 				EAEC0B2C1B1EEBAF000A7C5B /* sexuality_unselected_icon1.png in Resources */,
 				EA305EC41B147F0C00DD904D /* female_unselected_icon.png in Resources */,
-				A3CCFCFA1B1B602600C9BAE8 /* back_icon3.png in Resources */,
+				A3CCFCFA1B1B602600C9BAE8 /* close_icon2.png in Resources */,
 				EA6AAC391AF8739200ED3A55 /* Main.storyboard in Resources */,
 				EA9B09031B2A97930059DBA7 /* style_woman_selected_icon8.png in Resources */,
 				EAEC0B201B1EEAE8000A7C5B /* sexuality_selected_icon3.png in Resources */,
@@ -964,12 +993,14 @@
 				EAEC0B251B1EEAE8000A7C5B /* sexuality_unselected_icon2.png in Resources */,
 				EAEC0AFF1B1EEAC3000A7C5B /* zodiac_selected_icon8.png in Resources */,
 				EAEC0B0C1B1EEAC3000A7C5B /* zodiac_unselected_icon9.png in Resources */,
+				EAE285F01B31755C00340C1B /* photo_icon_highlight.png in Resources */,
 				EA9B08D61B299B9F0059DBA7 /* app_setting_icon.png in Resources */,
 				EAEC0B0E1B1EEAC3000A7C5B /* zodiac_unselected_icon11.png in Resources */,
 				EAEC0B071B1EEAC3000A7C5B /* zodiac_unselected_icon4.png in Resources */,
 				EA9B08DD1B29B90B0059DBA7 /* Launch.png in Resources */,
 				EAEC0B4C1B20953B000A7C5B /* style_man_unselected_icon7.png in Resources */,
 				EA9B08FD1B2A97930059DBA7 /* style_woman_selected_icon2.png in Resources */,
+				EAE285F21B31755C00340C1B /* partner_icon_highlight.png in Resources */,
 				A3F7EC691B0AD6520084DA70 /* Localizable.strings in Resources */,
 				EA9B09151B2C32AF0059DBA7 /* taking_photo_icon.png in Resources */,
 				EAEC0B441B20953B000A7C5B /* style_woman_unselected_icon7.png in Resources */,
@@ -1114,9 +1145,11 @@
 				EA305ECD1B1570B300DD904D /* BLMatchViewController.m in Sources */,
 				EA9F49851B1DB5AA0037D188 /* BLBaseTableViewCell.m in Sources */,
 				EA6AAC331AF8739200ED3A55 /* BLAppDeleate.m in Sources */,
+				EA9A305D1B31633900B2DD94 /* UIViewController+BLBlurMenu.m in Sources */,
 				EAB60E431B26C45200BE2874 /* BLUIDrawer.m in Sources */,
 				EA113E8B1B0C511200EA6925 /* BLColorDefinition.m in Sources */,
 				EA6AAC301AF8739200ED3A55 /* main.m in Sources */,
+				EA9A30601B31637600B2DD94 /* BLBlurMenu.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1258,6 +1291,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "biu/Biu-Prefix.pch";
 				INFOPLIST_FILE = biu/Info.plist;
@@ -1280,6 +1314,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "biu/Biu-Prefix.pch";
 				INFOPLIST_FILE = biu/Info.plist;

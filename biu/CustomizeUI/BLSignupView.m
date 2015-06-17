@@ -376,7 +376,7 @@
 - (void)timerfired {
     if (_secondLeftToResend > 0) {
         _secondLeftToResend -= 1;
-        _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", _secondLeftToResend];
+        _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", (long)_secondLeftToResend];
     } else {
         [_timer invalidate];
         [self hideSecondToRsend];
