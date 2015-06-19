@@ -7,7 +7,7 @@
 //
 
 #import "BLProfileViewController.h"
-#import "BLTakingPhotoViewController.h"
+#import "BLCamViewController.h"
 #import "BLGenderTableViewCell.h"
 #import "BLBirthTableViewCell.h"
 #import "BLZodiacAndAgeTableViewCell.h"
@@ -18,7 +18,7 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
-@interface BLProfileViewController () <UITableViewDataSource, UITableViewDelegate, BLTableViewCellDeletage>
+@interface BLProfileViewController () <UITableViewDataSource, UITableViewDelegate, BLTableViewCellDeletage, BLCamViewControllerDelegate>
 
 @property (strong, nonatomic) User *currentUser; //works if profileViewType is BLProfileViewTypeUpdate
 
@@ -118,8 +118,8 @@ static const float AVATOR_WIDTH = 163.0f;
     // Pass the selected object to the new view controller.
 }
 */
-#pragma mark - Delegate
-#pragma mark - TableViewDelegate and TableViewDataSource
+#pragma mark - Delegates
+#pragma mark TableViewDelegate and TableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 6;
 }
@@ -184,8 +184,8 @@ static const float AVATOR_WIDTH = 163.0f;
             }
             cell.delegate = self;
             cell.tag = SECTION_STYLE;
-            cell.gender = _gender;
-            cell.style = _style;
+            cell.gender = self.gender;
+            cell.style = self.style;
             return cell;
             break;
         }
@@ -274,7 +274,7 @@ static const float AVATOR_WIDTH = 163.0f;
         [sectionHeaderView addSubview:imageView];
         
         UIImageView *imageViewAvator = [[UIImageView alloc] init];
-        [imageViewAvator sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@avatar/%@",
+        [imageViewAvator sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@",
                                                             [BLHTTPClient blBaseURL],
                                                             self.currentUser.profile.profileId]]
                      placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
@@ -301,7 +301,7 @@ static const float AVATOR_WIDTH = 163.0f;
     return nil;
 }
 
-#pragma mark - BLBaseTableViewCell Delegate
+#pragma mark Customized Delegate
 - (void)tableViewCell:(BLBaseTableViewCell *)cell didChangeValue:(id)value {
     switch (cell.tag) {
         case SECTION_GENDER:
@@ -323,9 +323,41 @@ static const float AVATOR_WIDTH = 163.0f;
     }
 }
 
+- (void)didFinishTakeOrChooseImage:(UIImage *)image orignalImage:(UIImage *)orignalImage {
+    //Restore Image to SDWebImage cache
+    [[SDImageCache sharedImageCache]storeImage:image forKey:[NSString stringWithFormat:@"%@cycle/avatar/%@",
+                                                             [BLHTTPClient blBaseURL],
+                                                             self.currentUser.profile.profileId]];
+    [self.tableView reloadData];
+    [self dismissViewControllerAnimated:NO completion:nil];
+    
+    [[BLHTTPClient sharedBLHTTPClient] uploadAvatar:self.currentUser.profile avatar:image isRect:NO success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"Upload avatar cycle successed.");
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
+        if (!errMsg) {
+            errMsg = NSLocalizedString(@"Opps, upload avatar failed, please try later", nil);
+        }
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [av show];
+    }];
+    
+    [[BLHTTPClient sharedBLHTTPClient] uploadAvatar:self.currentUser.profile avatar:orignalImage isRect:YES success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"Upload avatar rectangle successed.");
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
+        if (!errMsg) {
+            errMsg = NSLocalizedString(@"Opps, upload avatar failed, please try later", nil);
+        }
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [av show];
+    }];
+}
+
 #pragma mark - Actions
 - (void)showTakingPhotoView:(id)sender {
-    BLTakingPhotoViewController *takingPhotoViewController = [[BLTakingPhotoViewController alloc] initWithNibName:nil bundle:nil];
+    BLCamViewController *takingPhotoViewController = [[BLCamViewController alloc] initWithNibName:nil bundle:nil];
+    takingPhotoViewController.delegate = self;
     [self.navigationController presentViewController:takingPhotoViewController animated:YES completion:nil];
 }
 
@@ -338,22 +370,24 @@ static const float AVATOR_WIDTH = 163.0f;
 }
 
 - (void)udpateProfile:(UITapGestureRecognizer *)gestureRecogizer {
-//    Profile *profile = [Profile new];
-//    profile.gender = _gender;
-//    profile.birthday = _birthday;
-//    profile.zodiac = _zodiac;
-//    profile.style = _style;
-//    [profile save];
-//    
-//    [[BLHTTPClient sharedBLHTTPClient] createProfile:profile success:^(NSURLSessionDataTask *task, id responseObject) {
-//        NSLog(@"Creating profile successed...");
-//        BLPartnerViewController *partnerController = [[BLPartnerViewController alloc] initWithNibName:nil bundle:nil];
-//        [self.navigationController pushViewController:partnerController animated:YES];
-//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//        NSLog(@"Creating profile failed. Error: %@", error.description);
-//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Creating profile failed. Please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-//        [alertView show];
-//    }];
+    self.currentUser.profile.gender = _gender;
+    self.currentUser.profile.birthday = _birthday;
+    self.currentUser.profile.zodiac = _zodiac;
+    self.currentUser.profile.style = _style;
+    
+    [[BLHTTPClient sharedBLHTTPClient] updateProfile:self.currentUser.profile success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"Update profile successed...");
+        [self.currentUser.profile save];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"Creating profile failed. Error: %@", error.description);
+        NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
+        if (!errMsg) {
+            errMsg = NSLocalizedString(@"Creating profile failed. Please try again", nil);
+        }
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+        [alertView show];
+    }];
 }
 
 - (void)createProfile:(id)sender {

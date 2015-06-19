@@ -84,6 +84,14 @@ static const float BL_SEXUALITY_CELL_WIDTH = 100.0f;
                             (self.content.bounds.size.height - BL_SEXUALITY_CELL_WIDTH) * 0.5f, 0);
 }
 
+#pragma mark
+#pragma Getter and Setter
+- (void)setSexuality:(BLSexualityType)sexuality {
+    _sexuality = sexuality;
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:sexuality - 1 inSection:0];
+    [_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+}
+
 #pragma mark - private method
 - (BLSexualityType)sexualityFromIndexItem:(NSInteger)item {
     return item + 1;

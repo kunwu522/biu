@@ -138,7 +138,7 @@
     }
     
     NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-    CGSize firstSize = [self collectionView:self.collectionView layout:self.collectionView.collectionViewLayout sizeForItemAtIndexPath:firstIndexPath];
+    CGSize firstSize = [self collectionView:_collectionView layout:_collectionView.collectionViewLayout sizeForItemAtIndexPath:firstIndexPath];
     NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:0];
     CGSize selectedSize = [self collectionView:self.collectionView layout:self.collectionView.collectionViewLayout sizeForItemAtIndexPath:selectedIndexPath];
     offset -= (firstSize.height - selectedSize.height) / 2;

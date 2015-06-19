@@ -42,9 +42,14 @@
 - (void)updateProfile:(Profile *)profile
               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
-- (void)uploadAvatar:(Profile *)porfile avatar:(UIImage *)avatar
+- (void)uploadAvatar:(Profile *)porfile
+              avatar:(UIImage *)avatar
+              isRect:(BOOL)isRect
              success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+- (void)updatePartner:(Partner *)partner
+              success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
 @end
 

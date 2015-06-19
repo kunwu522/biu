@@ -8,8 +8,8 @@
 
 #import "BLHTTPClient.h"
 
-static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
-//static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
+//static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
+static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
 
 @implementation BLHTTPClient
 
@@ -199,13 +199,23 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
     [self PUT:[NSString stringWithFormat:@"partners/%@.json", partner.partnerId] parameters:parameters success:success failure:failure];
 }
 
-- (void)uploadAvatar:(Profile *)porfile
+- (void)uploadAvatar:(Profile *)profile
               avatar:(UIImage *)avatar
+              isRect:(BOOL)isRect
              success:(void (^)(NSURLSessionDataTask *, id))success
              failure:(void (^)(NSURLSessionDataTask *, NSError *))failure {
+    NSString *url = nil;
+    NSString *fileName = nil;
+    if (isRect) {
+        url = [NSString stringWithFormat:@"rect/avatar/%@.json", profile.profileId];
+        fileName = @"avatar_rect.jpg";
+    } else {
+        url = [NSString stringWithFormat:@"cycle/avatar/%@.json", profile.profileId];
+        fileName = @"avatar_cycle.jpg";
+    }
     
-    [self POST:@"avatar.json" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        [formData appendPartWithFileData:UIImageJPEGRepresentation(avatar, 1.0f) name:@"avatar" fileName:@"avatar.jpg" mimeType:@"image/jpg"];
+    [self POST:url parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        [formData appendPartWithFileData:UIImageJPEGRepresentation(avatar, 1.0f) name:@"avatar" fileName:fileName mimeType:@"image/jpg"];
     } success:success failure:failure];
 }
 

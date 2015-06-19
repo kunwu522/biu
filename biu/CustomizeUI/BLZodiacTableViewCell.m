@@ -28,6 +28,7 @@
 
 @synthesize zodiac = _zodiac;
 @synthesize allowMultiSelected = _allowMultiSelected;
+@synthesize preferZodiacs = _preferZodiacs;
 
 static const float INSET_LEFT_RIGHT = 42.7f;
 static const float MIN_INTERITEM_SPACING = 5.0f;
@@ -105,16 +106,27 @@ static const float CELL_HEIGHT = 109.3;
     return item + 1;
 }
 
-#pragma mark - getting and setting
+#pragma mark - Getter and Setter
 - (void)setZodiac:(BLZodiac)zodiac {
     _zodiac = zodiac;
-    NSIndexPath *indexPath = [[NSIndexPath alloc] initWithIndex:zodiac];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:(zodiac - 1) inSection:0];
     [_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
 }
 
 - (void)setAllowMultiSelected:(BOOL)allowMultiSelected {
     _allowMultiSelected = allowMultiSelected;
     _collectionView.allowsMultipleSelection = allowMultiSelected;
+}
+
+- (void)setPreferZodiacs:(NSMutableArray *)preferZodiacs {
+    if (!preferZodiacs) {
+        return;
+    }
+    _preferZodiacs = preferZodiacs;
+    for (NSNumber *zodiac in _preferZodiacs) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[self indexItemFromZodiac:(BLZodiac)zodiac.integerValue] inSection:0];
+        [_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+    }
 }
 
 - (NSMutableArray *)preferZodiacs {

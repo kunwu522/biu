@@ -80,11 +80,7 @@
 		EA9B09061B2C0E740059DBA7 /* avatar_upload_hightlight_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B09041B2C0E740059DBA7 /* avatar_upload_hightlight_icon.png */; };
 		EA9B09071B2C0E740059DBA7 /* avatar_upload_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B09051B2C0E740059DBA7 /* avatar_upload_icon.png */; };
 		EA9B090D1B2C147E0059DBA7 /* BLAVCamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9B090C1B2C147E0059DBA7 /* BLAVCamPreviewView.m */; };
-		EA9B09141B2C32AF0059DBA7 /* camera_light_switch_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B09101B2C32AF0059DBA7 /* camera_light_switch_icon.png */; };
-		EA9B09151B2C32AF0059DBA7 /* taking_photo_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B09111B2C32AF0059DBA7 /* taking_photo_icon.png */; };
-		EA9B09161B2C32AF0059DBA7 /* choosing_photo_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B09121B2C32AF0059DBA7 /* choosing_photo_icon.png */; };
-		EA9B09171B2C32AF0059DBA7 /* camera_flip_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B09131B2C32AF0059DBA7 /* camera_flip_icon.png */; };
-		EA9B091A1B2C36720059DBA7 /* BLTakingPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9B09191B2C36720059DBA7 /* BLTakingPhotoViewController.m */; };
+		EA9B091A1B2C36720059DBA7 /* BLCamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9B09191B2C36720059DBA7 /* BLCamViewController.m */; };
 		EA9F49391B1C021F0037D188 /* BLBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9F49381B1C021F0037D188 /* BLBlurView.m */; };
 		EA9F493B1B1C13C30037D188 /* test_avator.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9F493A1B1C13C30037D188 /* test_avator.png */; };
 		EA9F493F1B1C6A7F0037D188 /* me_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9F493E1B1C6A7F0037D188 /* me_icon.png */; };
@@ -114,6 +110,14 @@
 		EAE285F01B31755C00340C1B /* photo_icon_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE285EC1B31755C00340C1B /* photo_icon_highlight.png */; };
 		EAE285F11B31755C00340C1B /* password_icon_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE285ED1B31755C00340C1B /* password_icon_highlight.png */; };
 		EAE285F21B31755C00340C1B /* partner_icon_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE285EE1B31755C00340C1B /* partner_icon_highlight.png */; };
+		EAE285F71B327F0C00340C1B /* BLCropImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE285F61B327F0C00340C1B /* BLCropImageViewController.m */; };
+		EAE285FA1B327F7B00340C1B /* BLCropImageMaskView.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE285F91B327F7B00340C1B /* BLCropImageMaskView.m */; };
+		EAE286001B3283D000340C1B /* crop_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE285FB1B3283D000340C1B /* crop_icon.png */; };
+		EAE286011B3283D000340C1B /* camera_light_switch_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE285FC1B3283D000340C1B /* camera_light_switch_icon.png */; };
+		EAE286021B3283D000340C1B /* taking_photo_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE285FD1B3283D000340C1B /* taking_photo_icon.png */; };
+		EAE286031B3283D000340C1B /* choosing_photo_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE285FE1B3283D000340C1B /* choosing_photo_icon.png */; };
+		EAE286041B3283D000340C1B /* camera_flip_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE285FF1B3283D000340C1B /* camera_flip_icon.png */; };
+		EAE286081B33CD4100340C1B /* camera_light_switch_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE286071B33CD4100340C1B /* camera_light_switch_icon2.png */; };
 		EAE8E20C1B09CBF800C9038D /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE8E20B1B09CBF800C9038D /* logo.png */; };
 		EAE8E2111B09F34300C9038D /* BLLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE8E2101B09F34300C9038D /* BLLoginViewController.m */; };
 		EAEA27D11B256776006967A1 /* BLZodiacAndAgeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAEA27D01B256776006967A1 /* BLZodiacAndAgeTableViewCell.m */; };
@@ -292,12 +296,8 @@
 		EA9B09051B2C0E740059DBA7 /* avatar_upload_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = avatar_upload_icon.png; path = images/avatar_upload_icon.png; sourceTree = "<group>"; };
 		EA9B090B1B2C147E0059DBA7 /* BLAVCamPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLAVCamPreviewView.h; path = CustomizeUI/BLAVCamPreviewView.h; sourceTree = "<group>"; };
 		EA9B090C1B2C147E0059DBA7 /* BLAVCamPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLAVCamPreviewView.m; path = CustomizeUI/BLAVCamPreviewView.m; sourceTree = "<group>"; };
-		EA9B09101B2C32AF0059DBA7 /* camera_light_switch_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_light_switch_icon.png; sourceTree = "<group>"; };
-		EA9B09111B2C32AF0059DBA7 /* taking_photo_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = taking_photo_icon.png; sourceTree = "<group>"; };
-		EA9B09121B2C32AF0059DBA7 /* choosing_photo_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = choosing_photo_icon.png; sourceTree = "<group>"; };
-		EA9B09131B2C32AF0059DBA7 /* camera_flip_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_flip_icon.png; sourceTree = "<group>"; };
-		EA9B09181B2C36720059DBA7 /* BLTakingPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLTakingPhotoViewController.h; path = ../../../../Work/Biu/biu/biu/BLTakingPhotoViewController.h; sourceTree = "<group>"; };
-		EA9B09191B2C36720059DBA7 /* BLTakingPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLTakingPhotoViewController.m; path = ../../../../Work/Biu/biu/biu/BLTakingPhotoViewController.m; sourceTree = "<group>"; };
+		EA9B09181B2C36720059DBA7 /* BLCamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCamViewController.h; sourceTree = "<group>"; };
+		EA9B09191B2C36720059DBA7 /* BLCamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCamViewController.m; sourceTree = "<group>"; };
 		EA9F49371B1C021F0037D188 /* BLBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLBlurView.h; path = CustomizeUI/BLBlurView.h; sourceTree = "<group>"; };
 		EA9F49381B1C021F0037D188 /* BLBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLBlurView.m; path = CustomizeUI/BLBlurView.m; sourceTree = "<group>"; };
 		EA9F493A1B1C13C30037D188 /* test_avator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = test_avator.png; path = images/test_avator.png; sourceTree = "<group>"; };
@@ -344,6 +344,16 @@
 		EAE285EC1B31755C00340C1B /* photo_icon_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = photo_icon_highlight.png; path = images/photo_icon_highlight.png; sourceTree = "<group>"; };
 		EAE285ED1B31755C00340C1B /* password_icon_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = password_icon_highlight.png; path = images/password_icon_highlight.png; sourceTree = "<group>"; };
 		EAE285EE1B31755C00340C1B /* partner_icon_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = partner_icon_highlight.png; path = images/partner_icon_highlight.png; sourceTree = "<group>"; };
+		EAE285F51B327F0C00340C1B /* BLCropImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCropImageViewController.h; sourceTree = "<group>"; };
+		EAE285F61B327F0C00340C1B /* BLCropImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCropImageViewController.m; sourceTree = "<group>"; };
+		EAE285F81B327F7B00340C1B /* BLCropImageMaskView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLCropImageMaskView.h; path = CustomizeUI/BLCropImageMaskView.h; sourceTree = "<group>"; };
+		EAE285F91B327F7B00340C1B /* BLCropImageMaskView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLCropImageMaskView.m; path = CustomizeUI/BLCropImageMaskView.m; sourceTree = "<group>"; };
+		EAE285FB1B3283D000340C1B /* crop_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = crop_icon.png; path = images/crop_icon.png; sourceTree = "<group>"; };
+		EAE285FC1B3283D000340C1B /* camera_light_switch_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera_light_switch_icon.png; path = images/camera_light_switch_icon.png; sourceTree = "<group>"; };
+		EAE285FD1B3283D000340C1B /* taking_photo_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = taking_photo_icon.png; path = images/taking_photo_icon.png; sourceTree = "<group>"; };
+		EAE285FE1B3283D000340C1B /* choosing_photo_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = choosing_photo_icon.png; path = images/choosing_photo_icon.png; sourceTree = "<group>"; };
+		EAE285FF1B3283D000340C1B /* camera_flip_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera_flip_icon.png; path = images/camera_flip_icon.png; sourceTree = "<group>"; };
+		EAE286071B33CD4100340C1B /* camera_light_switch_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera_light_switch_icon2.png; path = images/camera_light_switch_icon2.png; sourceTree = "<group>"; };
 		EAE8E20B1B09CBF800C9038D /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = images/logo.png; sourceTree = "<group>"; };
 		EAE8E20F1B09F34300C9038D /* BLLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLLoginViewController.h; sourceTree = "<group>"; };
 		EAE8E2101B09F34300C9038D /* BLLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLLoginViewController.m; sourceTree = "<group>"; };
@@ -481,6 +491,8 @@
 				EAEC0B2E1B1F06ED000A7C5B /* BLAgeRangeTableViewCell.m */,
 				EAEA27CF1B256776006967A1 /* BLZodiacAndAgeTableViewCell.h */,
 				EAEA27D01B256776006967A1 /* BLZodiacAndAgeTableViewCell.m */,
+				EAE285F81B327F7B00340C1B /* BLCropImageMaskView.h */,
+				EAE285F91B327F7B00340C1B /* BLCropImageMaskView.m */,
 			);
 			name = CustomizeUI;
 			sourceTree = "<group>";
@@ -537,8 +549,10 @@
 				EA9F49811B1DB2F10037D188 /* BLPartnerViewController.m */,
 				EA9F49891B1DC3DF0037D188 /* BLSettingViewController.h */,
 				EA9F498A1B1DC3DF0037D188 /* BLSettingViewController.m */,
-				EA9B09181B2C36720059DBA7 /* BLTakingPhotoViewController.h */,
-				EA9B09191B2C36720059DBA7 /* BLTakingPhotoViewController.m */,
+				EA9B09181B2C36720059DBA7 /* BLCamViewController.h */,
+				EA9B09191B2C36720059DBA7 /* BLCamViewController.m */,
+				EAE285F51B327F0C00340C1B /* BLCropImageViewController.h */,
+				EAE285F61B327F0C00340C1B /* BLCropImageViewController.m */,
 				EA6AAC371AF8739200ED3A55 /* Main.storyboard */,
 				EA6AAC3A1AF8739200ED3A55 /* Images.xcassets */,
 				EA6AAC3C1AF8739200ED3A55 /* LaunchScreen.xib */,
@@ -590,15 +604,17 @@
 		EA6AAC5B1AF88DB600ED3A55 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				EAE286071B33CD4100340C1B /* camera_light_switch_icon2.png */,
+				EAE285FB1B3283D000340C1B /* crop_icon.png */,
+				EAE285FC1B3283D000340C1B /* camera_light_switch_icon.png */,
+				EAE285FD1B3283D000340C1B /* taking_photo_icon.png */,
+				EAE285FE1B3283D000340C1B /* choosing_photo_icon.png */,
+				EAE285FF1B3283D000340C1B /* camera_flip_icon.png */,
 				EAE285EB1B31755C00340C1B /* setting_icon_highlight.png */,
 				EAE285EC1B31755C00340C1B /* photo_icon_highlight.png */,
 				EAE285ED1B31755C00340C1B /* password_icon_highlight.png */,
 				EAE285EE1B31755C00340C1B /* partner_icon_highlight.png */,
 				EA9A30361B31491500B2DD94 /* me_icon_highlight.png */,
-				EA9B09101B2C32AF0059DBA7 /* camera_light_switch_icon.png */,
-				EA9B09111B2C32AF0059DBA7 /* taking_photo_icon.png */,
-				EA9B09121B2C32AF0059DBA7 /* choosing_photo_icon.png */,
-				EA9B09131B2C32AF0059DBA7 /* camera_flip_icon.png */,
 				EA9B09041B2C0E740059DBA7 /* avatar_upload_hightlight_icon.png */,
 				EA9B09051B2C0E740059DBA7 /* avatar_upload_icon.png */,
 				EA9B08DC1B29B90B0059DBA7 /* Launch.png */,
@@ -915,6 +931,7 @@
 				EAEC0B0F1B1EEAC3000A7C5B /* zodiac_unselected_icon12.png in Resources */,
 				EAEC0B501B20953B000A7C5B /* style_man_unselected_icon2.png in Resources */,
 				EAE8E20C1B09CBF800C9038D /* logo.png in Resources */,
+				EAE286001B3283D000340C1B /* crop_icon.png in Resources */,
 				EA9B08F01B2A97860059DBA7 /* style_man_selected_icon7.png in Resources */,
 				EA9B09061B2C0E740059DBA7 /* avatar_upload_hightlight_icon.png in Resources */,
 				EAEC0B0A1B1EEAC3000A7C5B /* zodiac_unselected_icon7.png in Resources */,
@@ -923,13 +940,13 @@
 				A3CCFCFC1B1B602600C9BAE8 /* partner_icon.png in Resources */,
 				EA9B08EE1B2A97860059DBA7 /* style_man_selected_icon5.png in Resources */,
 				EA305EC81B14841600DD904D /* division_icon.png in Resources */,
-				EA9B09171B2C32AF0059DBA7 /* camera_flip_icon.png in Resources */,
 				EA9F493F1B1C6A7F0037D188 /* me_icon.png in Resources */,
 				EAE285F11B31755C00340C1B /* password_icon_highlight.png in Resources */,
 				EA9F49431B1C87220037D188 /* partner_avator.png in Resources */,
 				EAEC0B091B1EEAC3000A7C5B /* zodiac_unselected_icon6.png in Resources */,
 				EAEC0B4D1B20953B000A7C5B /* style_man_unselected_icon6.png in Resources */,
 				EA305EBB1B14744100DD904D /* padding.png in Resources */,
+				EAE286081B33CD4100340C1B /* camera_light_switch_icon2.png in Resources */,
 				EA9B08EB1B2A97860059DBA7 /* style_man_selected_icon2.png in Resources */,
 				EAEC0B021B1EEAC3000A7C5B /* zodiac_selected_icon11.png in Resources */,
 				EAEC0AFA1B1EEAC3000A7C5B /* zodiac_selected_icon3.png in Resources */,
@@ -937,6 +954,7 @@
 				EAEC0B1E1B1EEAE8000A7C5B /* sexuality_selected_icon1.png in Resources */,
 				EAEC0B491B20953B000A7C5B /* style_woman_unselected_icon2.png in Resources */,
 				EAEC0AFB1B1EEAC3000A7C5B /* zodiac_selected_icon4.png in Resources */,
+				EAE286041B3283D000340C1B /* camera_flip_icon.png in Resources */,
 				EAEC0B031B1EEAC3000A7C5B /* zodiac_selected_icon12.png in Resources */,
 				EA9B08D71B299B9F0059DBA7 /* app_spotlight_icon.png in Resources */,
 				EA305ECF1B1575E900DD904D /* back_icon2.png in Resources */,
@@ -973,6 +991,7 @@
 				EAEC0B0B1B1EEAC3000A7C5B /* zodiac_unselected_icon8.png in Resources */,
 				A30D966A1B20BD8800A1CF88 /* style_woman_unselected_icon8.png in Resources */,
 				EA9B08DF1B29BADF0059DBA7 /* Launch_debug.png in Resources */,
+				EAE286031B3283D000340C1B /* choosing_photo_icon.png in Resources */,
 				EAEC0B051B1EEAC3000A7C5B /* zodiac_unselected_icon2.png in Resources */,
 				EA7805321B0C7F0E00696FEF /* forward_icon.png in Resources */,
 				EAEC0B011B1EEAC3000A7C5B /* zodiac_selected_icon10.png in Resources */,
@@ -988,7 +1007,6 @@
 				EA6AAC391AF8739200ED3A55 /* Main.storyboard in Resources */,
 				EA9B09031B2A97930059DBA7 /* style_woman_selected_icon8.png in Resources */,
 				EAEC0B201B1EEAE8000A7C5B /* sexuality_selected_icon3.png in Resources */,
-				EA9B09141B2C32AF0059DBA7 /* camera_light_switch_icon.png in Resources */,
 				EA9B08F11B2A97860059DBA7 /* style_man_selected_icon8.png in Resources */,
 				EAEC0B251B1EEAE8000A7C5B /* sexuality_unselected_icon2.png in Resources */,
 				EAEC0AFF1B1EEAC3000A7C5B /* zodiac_selected_icon8.png in Resources */,
@@ -997,12 +1015,12 @@
 				EA9B08D61B299B9F0059DBA7 /* app_setting_icon.png in Resources */,
 				EAEC0B0E1B1EEAC3000A7C5B /* zodiac_unselected_icon11.png in Resources */,
 				EAEC0B071B1EEAC3000A7C5B /* zodiac_unselected_icon4.png in Resources */,
+				EAE286021B3283D000340C1B /* taking_photo_icon.png in Resources */,
 				EA9B08DD1B29B90B0059DBA7 /* Launch.png in Resources */,
 				EAEC0B4C1B20953B000A7C5B /* style_man_unselected_icon7.png in Resources */,
 				EA9B08FD1B2A97930059DBA7 /* style_woman_selected_icon2.png in Resources */,
 				EAE285F21B31755C00340C1B /* partner_icon_highlight.png in Resources */,
 				A3F7EC691B0AD6520084DA70 /* Localizable.strings in Resources */,
-				EA9B09151B2C32AF0059DBA7 /* taking_photo_icon.png in Resources */,
 				EAEC0B441B20953B000A7C5B /* style_woman_unselected_icon7.png in Resources */,
 				EAEC0AFD1B1EEAC3000A7C5B /* zodiac_selected_icon6.png in Resources */,
 				EA9F49411B1C713D0037D188 /* default_background.png in Resources */,
@@ -1015,11 +1033,11 @@
 				EA305EC61B147F0C00DD904D /* male_selected_icon.png in Resources */,
 				A3CCFCFD1B1B602600C9BAE8 /* password_icon.png in Resources */,
 				EA9B08FF1B2A97930059DBA7 /* style_woman_selected_icon4.png in Resources */,
+				EAE286011B3283D000340C1B /* camera_light_switch_icon.png in Resources */,
 				EAEC0AF81B1EEAC3000A7C5B /* zodiac_selected_icon1.png in Resources */,
 				EAEC0B1F1B1EEAE8000A7C5B /* sexuality_selected_icon2.png in Resources */,
 				EAEC0B431B20953B000A7C5B /* style_man_unselected_icon3.png in Resources */,
 				EA7805341B0C7F1500696FEF /* back_icon.png in Resources */,
-				EA9B09161B2C32AF0059DBA7 /* choosing_photo_icon.png in Resources */,
 				EAEC0B471B20953B000A7C5B /* style_woman_unselected_icon4.png in Resources */,
 				EAEC0B4F1B20953B000A7C5B /* style_man_unselected_icon4.png in Resources */,
 				EAEC0B311B1F0EE1000A7C5B /* arrow_icon.png in Resources */,
@@ -1112,7 +1130,7 @@
 			files = (
 				A30D96A81B24433500A1CF88 /* Partner.m in Sources */,
 				EA305ED91B16F32100DD904D /* BLPickerView.m in Sources */,
-				EA9B091A1B2C36720059DBA7 /* BLTakingPhotoViewController.m in Sources */,
+				EA9B091A1B2C36720059DBA7 /* BLCamViewController.m in Sources */,
 				EAEC0B2F1B1F06ED000A7C5B /* BLAgeRangeTableViewCell.m in Sources */,
 				EA9F49391B1C021F0037D188 /* BLBlurView.m in Sources */,
 				EA9F49931B1EA5890037D188 /* BLSexualityTableViewCell.m in Sources */,
@@ -1141,12 +1159,14 @@
 				EA9F49981B1EB1EC0037D188 /* BLRingView.m in Sources */,
 				EA9F49771B1D5B0B0037D188 /* BLBirthTableViewCell.m in Sources */,
 				EA305EB71B13351600DD904D /* BLProfileViewController.m in Sources */,
+				EAE285F71B327F0C00340C1B /* BLCropImageViewController.m in Sources */,
 				A3039E901B1605B6006FB5E4 /* BLFontDefinition.m in Sources */,
 				EA305ECD1B1570B300DD904D /* BLMatchViewController.m in Sources */,
 				EA9F49851B1DB5AA0037D188 /* BLBaseTableViewCell.m in Sources */,
 				EA6AAC331AF8739200ED3A55 /* BLAppDeleate.m in Sources */,
 				EA9A305D1B31633900B2DD94 /* UIViewController+BLBlurMenu.m in Sources */,
 				EAB60E431B26C45200BE2874 /* BLUIDrawer.m in Sources */,
+				EAE285FA1B327F7B00340C1B /* BLCropImageMaskView.m in Sources */,
 				EA113E8B1B0C511200EA6925 /* BLColorDefinition.m in Sources */,
 				EA6AAC301AF8739200ED3A55 /* main.m in Sources */,
 				EA9A30601B31637600B2DD94 /* BLBlurMenu.m in Sources */,

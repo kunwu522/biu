@@ -11,6 +11,7 @@
 #import "BLAgeRangeTableViewCell.h"
 #import "BLZodiacTableViewCell.h"
 #import "BLStyleTableViewCell.h"
+#import "UIViewController+BLBlurMenu.h"
 
 #import "Masonry.h"
 
@@ -26,6 +27,8 @@
 @property (strong, nonatomic) UIButton *btnBack;
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) UIImageView *imageViewAvator;
+@property (strong, nonatomic) UIButton *btnMenu;
+@property (strong, nonatomic) UIButton *btnBackToRoot;
 
 @property (assign, nonatomic) BOOL didCreateProfile;
 @property (assign, nonatomic) BOOL didCreatePartner;
@@ -59,15 +62,43 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
     
     self.view.backgroundColor = [BLColorDefinition backgroundGrayColor];
     
-    BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
-    _currentUser = delegate.currentUser;
-    
     _didCreatePartner = NO;
     _didCreateProfile = NO;
+    
+    if (self.partnerViewType == BLPartnerViewControllerUpdate && self.currentUser.partner) {
+        _minAge = self.currentUser.partner.minAge;
+        _maxAge = self.currentUser.partner.maxAge;
+        _sexualityType = self.currentUser.partner.sexualityType;
+        _preferStyles = self.currentUser.partner.preferStyles;
+        _preferZodiacs = self.currentUser.partner.preferZodiacs;
+    } else {
+        _minAge = @20;
+        _maxAge = @25;
+        _sexualityType = BLSexualityTypeNone;
+        _preferZodiacs = [NSArray array];
+        _preferStyles = [NSArray array];
+    }
     
     [self.view addSubview:self.tableView];
     if (self.partnerViewType == BLPartnerViewControllerCreate) {
         [self.view addSubview:self.btnBack];
+    } else {
+        [self.view addSubview:self.btnMenu];
+        [self.view addSubview:self.btnBackToRoot];
+        
+        [self.btnMenu mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.btnMenu.superview).with.offset(31.2);
+            make.right.equalTo(self.btnMenu.superview).with.offset(-20.8);
+            make.width.equalTo(@45.3);
+            make.height.equalTo(@45.3);
+        }];
+        
+        [self.btnBackToRoot mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.btnBackToRoot.superview).with.offset(31.2f);
+            make.left.equalTo(self.btnBackToRoot.superview).with.offset(20.8f);
+            make.width.equalTo(@45.3);
+            make.height.equalTo(@45.3);
+        }];
     }
     
     [self blLayoutSubViews];
@@ -121,6 +152,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
             }
             cell.delegate = self;
             cell.tag = BLPartnerSectionSexuality;
+            cell.sexuality = _sexualityType;
             return cell;
         }
         case BLPartnerSectionAgeRange:
@@ -132,6 +164,8 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
             }
             cell.delegate = self;
             cell.tag = BLPartnerSectionAgeRange;
+            cell.minAge = _minAge.integerValue;
+            cell.maxAge = _maxAge.integerValue;
             return cell;
         }
         case BLPartnerSectionZodiac:
@@ -144,6 +178,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
             cell.tag = BLPartnerSectionZodiac;
             cell.title.text = NSLocalizedString(@"Zodiacs you prefer", nil);
             cell.allowMultiSelected = YES;
+            cell.preferZodiacs = [[NSMutableArray alloc] initWithArray:_preferZodiacs];
             return cell;
             break;
         }
@@ -158,6 +193,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
             cell.title.text = NSLocalizedString(@"Styles you prefer", nil);
             cell.delegate = self;
             cell.tag = BLPartnerSectionStyle;
+            cell.preferStyles = [[NSMutableArray alloc] initWithArray:_preferStyles];
             return cell;
             break;
         }
@@ -327,12 +363,38 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
     }];
 }
 
+- (void)updatePartner:(id)sender {
+    self.currentUser.partner.sexualityType = _sexualityType;
+    self.currentUser.partner.minAge = _minAge;
+    self.currentUser.partner.maxAge = _maxAge;
+    self.currentUser.partner.preferZodiacs = _preferZodiacs;
+    self.currentUser.partner.preferStyles = _preferStyles;
+    
+    [[BLHTTPClient sharedBLHTTPClient] updatePartner:self.currentUser.partner success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"Update partner successed...");
+        [self.currentUser.partner save];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"Update partner failed. Error: %@", error.localizedDescription);
+        NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
+        if (!errMsg) {
+            errMsg = NSLocalizedString(@"Update failed, please try later", nil);
+        }
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [av show];
+    }];
+}
+
 - (void)back:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)updatePartner:(id)sender {
-    
+- (void)showMenu:(id)sender {
+    [self presentMenuViewController:sender];
+}
+
+- (void)backToRoot:(id)sender {
+    [self backToRootViewController:sender];
 }
 
 #pragma mark - private
@@ -343,7 +405,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
     }
 }
 
-#pragma mark - getting and Setting
+#pragma mark - Getter and Setter
 - (UIButton *)btnBack {
     if (!_btnBack) {
         _btnBack = [[UIButton alloc] init];
@@ -351,6 +413,24 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
         [_btnBack addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchDown];
     }
     return _btnBack;
+}
+
+- (UIButton *)btnMenu {
+    if (!_btnMenu) {
+        _btnMenu = [[UIButton alloc] init];
+        [_btnMenu setBackgroundImage:[UIImage imageNamed:@"menu_icon.png"] forState:UIControlStateNormal];
+        [_btnMenu addTarget:self action:@selector(showMenu:) forControlEvents:UIControlEventTouchDown];
+    }
+    return _btnMenu;
+}
+
+- (UIButton *)btnBackToRoot {
+    if (!_btnBackToRoot) {
+        _btnBackToRoot = [[UIButton alloc] init];
+        [_btnBackToRoot setBackgroundImage:[UIImage imageNamed:@"back_icon2.png"] forState:UIControlStateNormal];
+        [_btnBackToRoot addTarget:self action:@selector(backToRoot:) forControlEvents:UIControlEventTouchDown];
+    }
+    return _btnBackToRoot;
 }
 
 - (UITableView *)tableView {
@@ -369,6 +449,14 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
         [_tableView registerClass:[BLStyleTableViewCell class] forCellReuseIdentifier:BL_PARTNER_STYLE_CELL_REUSEID];
     }
     return _tableView;
+}
+
+- (User *)currentUser {
+    if (!_currentUser) {
+        BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
+        _currentUser = delegate.currentUser;
+    }
+    return _currentUser;
 }
 
 @end

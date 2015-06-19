@@ -100,9 +100,9 @@ static const int BL_AGE_RANGE_MAX_PICKER = 1;
 
 - (void)pickerView:(BLPickerView *)pickerView didSelectRow:(NSInteger)row {
     if (pickerView.tag == BL_AGE_RANGE_MIN_PICKER) {
-        self.minAge = [[_ageRange objectAtIndex:row] integerValue];
+        _minAge = [[_ageRange objectAtIndex:row] integerValue];
     } else {
-        self.maxAge = [[_ageRange objectAtIndex:row] integerValue];
+        _maxAge = [[_ageRange objectAtIndex:row] integerValue];
     }
     NSDictionary *rangeDictionary = @{@"min_age" : [NSNumber numberWithInteger:self.minAge],
                                       @"max_age" : [NSNumber numberWithInteger:self.maxAge]};
@@ -111,15 +111,25 @@ static const int BL_AGE_RANGE_MAX_PICKER = 1;
     }
 }
 
-#pragma mark
-- (void)awakeFromNib {
-    // Initialization code
+#pragma mark -
+#pragma mark Setter
+- (void)setMinAge:(NSUInteger)minAge {
+    _minAge = minAge;
+    [_minAgePicker selectRow:[self rowFromAge:minAge] animated:YES notifySelection:NO];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
+- (void)setMaxAge:(NSUInteger)maxAge {
+    _maxAge = maxAge;
+    [_maxAgePicker selectRow:[self rowFromAge:maxAge] animated:YES notifySelection:NO];
+}
 
-    // Configure the view for the selected state
+#pragma mark - Private Method
+- (NSInteger)ageFormIndexRow:(NSInteger)row {
+    return row + 16;
+}
+
+- (NSInteger)rowFromAge:(NSInteger)age {
+    return age > 16 ? age - 16 : 0;
 }
 
 @end

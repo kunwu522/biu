@@ -41,5 +41,6 @@
 - (void)reloadData;
 - (void)scrollToRow:(NSUInteger)row animated:(BOOL)animated;
 - (void)selectRow:(NSUInteger)row animated:(BOOL)animated;
+- (void)selectRow:(NSUInteger)row animated:(BOOL)animated notifySelection:(BOOL)notifySelection;
 
 @end

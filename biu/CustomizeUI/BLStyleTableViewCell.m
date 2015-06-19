@@ -29,6 +29,7 @@
 
 @synthesize gender = _gender;
 @synthesize sexuality = _sexuality;
+@synthesize preferStyles = _preferStyles;
 
 static const float INSET_LEFT_RIGHT = 42.7f;
 static const float MIN_INTERITEM_SPACING = 5.0f;
@@ -152,13 +153,14 @@ static const float CELL_HEIGHT = 109.3;
 
 - (NSUInteger)indexItemFromStyle:(BLStyleType)style {
     if (self.gender == BLGenderMale) {
-        return (NSUInteger)style - 1;
+        return (NSUInteger)style > 1 ?  (NSUInteger)style - 1 : 0;
     } else {
-        return (NSUInteger)style - 1 - 9;
+        return (NSUInteger)style > 10 ? (NSUInteger)style - 1 - 9 : 0;
     }
 }
 
-#pragma mark - Getting and Setting
+#pragma mark -
+#pragma mark Setter
 - (void)setGender:(BLGender)gender {
     if (gender == BLGenderNone) {
         return;
@@ -196,9 +198,10 @@ static const float CELL_HEIGHT = 109.3;
 }
 
 - (void)setStyle:(BLStyleType)style {
-    NSIndexPath *indexPath = [[NSIndexPath alloc] initWithIndex:(style % 9)];
+    _style = style;
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[self indexItemFromStyle:style] inSection:0];
     [_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
-    
+    [_collectionView reloadData];
 }
 
 - (void)setAllowMultiSelected:(BOOL)allowMultiSelected {
@@ -206,6 +209,18 @@ static const float CELL_HEIGHT = 109.3;
     _collectionView.allowsMultipleSelection = allowMultiSelected;
 }
 
+- (void)setPreferStyles:(NSMutableArray *)preferStyles {
+    if (!preferStyles) {
+        return;
+    }
+    _preferStyles = preferStyles;
+    for (NSNumber *type in preferStyles) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[self indexItemFromStyle:(BLStyleType)type.integerValue] inSection:0];
+        [_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+    }
+}
+
+#pragma mark Getter
 - (NSMutableArray *)preferStyles {
     if (!_preferStyles) {
         _preferStyles = [NSMutableArray array];
