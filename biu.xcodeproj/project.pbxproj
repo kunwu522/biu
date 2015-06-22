@@ -15,6 +15,7 @@
 		A30D966A1B20BD8800A1CF88 /* style_woman_unselected_icon8.png in Resources */ = {isa = PBXBuildFile; fileRef = A30D96681B20BD8800A1CF88 /* style_woman_unselected_icon8.png */; };
 		A30D96A51B24414900A1CF88 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = A30D96A41B24414900A1CF88 /* Profile.m */; };
 		A30D96A81B24433500A1CF88 /* Partner.m in Sources */ = {isa = PBXBuildFile; fileRef = A30D96A71B24433500A1CF88 /* Partner.m */; };
+		A336158B1B3580F6002C892D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A336158A1B3580F6002C892D /* CoreLocation.framework */; };
 		A3BD9E4B1B0CC37D00815100 /* BLSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3BD9E4A1B0CC37D00815100 /* BLSignupViewController.m */; };
 		A3CCFCFA1B1B602600C9BAE8 /* close_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFCF41B1B602600C9BAE8 /* close_icon2.png */; };
 		A3CCFCFB1B1B602600C9BAE8 /* forward_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFCF51B1B602600C9BAE8 /* forward_icon2.png */; };
@@ -209,6 +210,7 @@
 		A30D96A41B24414900A1CF88 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Profile.m; path = Model/Profile.m; sourceTree = "<group>"; };
 		A30D96A61B24433500A1CF88 /* Partner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Partner.h; path = Model/Partner.h; sourceTree = "<group>"; };
 		A30D96A71B24433500A1CF88 /* Partner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Partner.m; path = Model/Partner.m; sourceTree = "<group>"; };
+		A336158A1B3580F6002C892D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		A3BD9E491B0CC37D00815100 /* BLSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLSignupViewController.h; sourceTree = "<group>"; };
 		A3BD9E4A1B0CC37D00815100 /* BLSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLSignupViewController.m; sourceTree = "<group>"; };
 		A3CCFCF41B1B602600C9BAE8 /* close_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = close_icon2.png; path = images/close_icon2.png; sourceTree = "<group>"; };
@@ -424,6 +426,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A336158B1B3580F6002C892D /* CoreLocation.framework in Frameworks */,
 				EA7682DE1B2C41DB00FACE87 /* libPods-biu.a in Frameworks */,
 				EAFBEE7D1AFB2F94006013CD /* Security.framework in Frameworks */,
 			);
@@ -818,6 +821,7 @@
 		FD0D0DFF07202ECE53987CA7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A336158A1B3580F6002C892D /* CoreLocation.framework */,
 				EA7682DD1B2C41DB00FACE87 /* libPods-biu.a */,
 				EA7682DB1B2C41C800FACE87 /* libPods-biu.a */,
 				EAFBEE7C1AFB2F94006013CD /* Security.framework */,
