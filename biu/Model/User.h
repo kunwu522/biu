@@ -19,6 +19,8 @@
 @property (strong, nonatomic) NSString *password;
 @property (strong, nonatomic) Profile *profile;
 @property (strong, nonatomic) Partner *partner;
+@property (strong, nonatomic) NSNumber *latitude;
+@property (strong, nonatomic) NSNumber *longitude;
 
 /*
  * return invalid reason otherwise return nil

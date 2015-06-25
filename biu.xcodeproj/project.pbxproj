@@ -41,6 +41,8 @@
 		EA305ECF1B1575E900DD904D /* back_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = EA305ECE1B1575E900DD904D /* back_icon2.png */; };
 		EA305ED11B1576DF00DD904D /* menu_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA305ED01B1576DF00DD904D /* menu_icon.png */; };
 		EA305ED91B16F32100DD904D /* BLPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA305ED81B16F32100DD904D /* BLPickerView.m */; };
+		EA4E80C61B381FE70087BBEB /* matching_right_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA4E80C41B381FE70087BBEB /* matching_right_icon.png */; };
+		EA4E80C71B381FE70087BBEB /* matching_left_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA4E80C51B381FE70087BBEB /* matching_left_icon.png */; };
 		EA6AAC301AF8739200ED3A55 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC2F1AF8739200ED3A55 /* main.m */; };
 		EA6AAC331AF8739200ED3A55 /* BLAppDeleate.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC321AF8739200ED3A55 /* BLAppDeleate.m */; };
 		EA6AAC361AF8739200ED3A55 /* BLWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC351AF8739200ED3A55 /* BLWelcomeViewController.m */; };
@@ -247,6 +249,8 @@
 		EA305ED01B1576DF00DD904D /* menu_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu_icon.png; path = images/menu_icon.png; sourceTree = "<group>"; };
 		EA305ED71B16F32100DD904D /* BLPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLPickerView.h; path = CustomizeUI/BLPickerView.h; sourceTree = "<group>"; };
 		EA305ED81B16F32100DD904D /* BLPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLPickerView.m; path = CustomizeUI/BLPickerView.m; sourceTree = "<group>"; };
+		EA4E80C41B381FE70087BBEB /* matching_right_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = matching_right_icon.png; path = images/matching_right_icon.png; sourceTree = "<group>"; };
+		EA4E80C51B381FE70087BBEB /* matching_left_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = matching_left_icon.png; path = images/matching_left_icon.png; sourceTree = "<group>"; };
 		EA6AAC2A1AF8739200ED3A55 /* biu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = biu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA6AAC2E1AF8739200ED3A55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA6AAC2F1AF8739200ED3A55 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -607,6 +611,8 @@
 		EA6AAC5B1AF88DB600ED3A55 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				EA4E80C41B381FE70087BBEB /* matching_right_icon.png */,
+				EA4E80C51B381FE70087BBEB /* matching_left_icon.png */,
 				EAE286071B33CD4100340C1B /* camera_light_switch_icon2.png */,
 				EAE285FB1B3283D000340C1B /* crop_icon.png */,
 				EAE285FC1B3283D000340C1B /* camera_light_switch_icon.png */,
@@ -970,6 +976,7 @@
 				EA9B08EC1B2A97860059DBA7 /* style_man_selected_icon3.png in Resources */,
 				EAEC0B511B20953B000A7C5B /* style_man_unselected_icon1.png in Resources */,
 				EAEC0B451B20953B000A7C5B /* style_woman_unselected_icon6.png in Resources */,
+				EA4E80C71B381FE70087BBEB /* matching_left_icon.png in Resources */,
 				EA9B08FC1B2A97930059DBA7 /* style_woman_selected_icon1.png in Resources */,
 				EA9B08FB1B2A97930059DBA7 /* style_woman_selected_icon0.png in Resources */,
 				EA9B08FE1B2A97930059DBA7 /* style_woman_selected_icon3.png in Resources */,
@@ -1023,6 +1030,7 @@
 				EA9B08DD1B29B90B0059DBA7 /* Launch.png in Resources */,
 				EAEC0B4C1B20953B000A7C5B /* style_man_unselected_icon7.png in Resources */,
 				EA9B08FD1B2A97930059DBA7 /* style_woman_selected_icon2.png in Resources */,
+				EA4E80C61B381FE70087BBEB /* matching_right_icon.png in Resources */,
 				EAE285F21B31755C00340C1B /* partner_icon_highlight.png in Resources */,
 				A3F7EC691B0AD6520084DA70 /* Localizable.strings in Resources */,
 				EAEC0B441B20953B000A7C5B /* style_woman_unselected_icon7.png in Resources */,

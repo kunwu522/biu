@@ -8,8 +8,8 @@
 
 #import "BLHTTPClient.h"
 
-//static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
-static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
+static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
+//static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
 
 @implementation BLHTTPClient
 
@@ -217,6 +217,22 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
     [self POST:url parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         [formData appendPartWithFileData:UIImageJPEGRepresentation(avatar, 1.0f) name:@"avatar" fileName:fileName mimeType:@"image/jpg"];
     } success:success failure:failure];
+}
+
+- (void)updateLocation:(User *)user
+               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    
+    NSDictionary *parameters = @{@"location" : @{@"latitude" : user.latitude,
+                                                @"longitude" : user.longitude}};
+    [self PUT:[NSString stringWithFormat:@"location/%@.json", user.userId] parameters:parameters success:success failure:failure];
+}
+
+- (void)matching:(User *)user
+         success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+         failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    
+    [self GET:[NSString stringWithFormat:@"match/%@", user.userId] parameters:nil success:success failure:failure];
 }
 
 @end

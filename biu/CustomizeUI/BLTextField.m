@@ -61,7 +61,7 @@
 
 - (void)drawPlaceholderInRect:(CGRect)rect {
     if (self.placeholder) {
-        UIFont *placeholderTextFont = [BLFontDefinition lightItalicFont:13.0f];
+        UIFont *placeholderTextFont = [BLFontDefinition lightItalicFont:15.0f];
         UIColor *placeholderTextColor = [BLColorDefinition grayColor];
         
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];

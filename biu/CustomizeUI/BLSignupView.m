@@ -90,14 +90,14 @@
     
     _lbContract = [[UILabel alloc] init];
     _lbContract.textColor = [UIColor whiteColor];
-    _lbContract.font = [BLFontDefinition lightFont:10.0f];
+    _lbContract.font = [BLFontDefinition lightFont:13.0f];
     _lbContract.text = NSLocalizedString(@"Accept:", nil);
     [self addSubview:_lbContract];
     
     _btnContract = [[UIButton alloc] init];
     [_btnContract addTarget:self action:@selector(showContract:) forControlEvents:UIControlEventTouchDown];
     [_btnContract setTitleColor:[BLColorDefinition fontGreenColor] forState:UIControlStateNormal];
-    _btnContract.titleLabel.font = [BLFontDefinition lightFont:10.0f];
+    _btnContract.titleLabel.font = [BLFontDefinition lightFont:13.0f];
     [_btnContract setTitle:NSLocalizedString(@"Agreement of BIU", nil) forState:UIControlStateNormal];
     [self addSubview:_btnContract];
     
@@ -110,7 +110,7 @@
     [_btnGetCode addTarget:self action:@selector(getCode:) forControlEvents:UIControlEventTouchDown];
     [_btnGetCode setTitleColor:[BLColorDefinition fontGreenColor] forState:UIControlStateNormal];
     [_btnGetCode setTitleColor:[BLColorDefinition fontGrayColor] forState:UIControlStateDisabled];
-    _btnGetCode.titleLabel.font = [BLFontDefinition lightFont:13.0f];
+    _btnGetCode.titleLabel.font = [BLFontDefinition lightFont:15.0f];
     [_btnGetCode setTitle:NSLocalizedString(@"GETTING CODE", nil) forState:UIControlStateNormal];
     [_btnGetCode setTitle:NSLocalizedString(@"RESEND AFTER:", nil) forState:UIControlStateDisabled];
     [self addSubview:_btnGetCode];
@@ -119,13 +119,13 @@
     [_btnSignup addTarget:self action:@selector(signup:) forControlEvents:UIControlEventTouchDown];
     [_btnSignup setBackgroundColor:[BLColorDefinition greenColor]];
     [_btnSignup setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    _btnSignup.titleLabel.font = [BLFontDefinition normalFont:13.0f];
+    _btnSignup.titleLabel.font = [BLFontDefinition normalFont:15.0f];
     [_btnSignup setTitle:NSLocalizedString(@"Sign up", nil) forState:UIControlStateNormal];
     _btnSignup.layer.cornerRadius = 5.0f;
     [self addSubview:_btnSignup];
     
     _lbOr = [[UILabel alloc] init];
-    _lbOr.font = [BLFontDefinition normalFont:14.0f];
+    _lbOr.font = [BLFontDefinition normalFont:16.0f];
     _lbOr.textColor = [UIColor whiteColor];
     _lbOr.textAlignment = NSTextAlignmentCenter;
     _lbOr.text = NSLocalizedString(@"Or", nil);
@@ -149,7 +149,7 @@
     [self addSubview:_btnSignupWithWeibo];
     
     _lbSecondLeft = [[UILabel alloc] init];
-    _lbSecondLeft.font = [BLFontDefinition lightFont:13.0f];
+    _lbSecondLeft.font = [BLFontDefinition lightFont:15.0f];
     _lbSecondLeft.textColor = [BLColorDefinition fontGrayColor];
     _lbSecondLeft.text = @"60";
     _lbSecondLeft.alpha = 0.0f;

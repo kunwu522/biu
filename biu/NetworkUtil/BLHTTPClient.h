@@ -51,6 +51,14 @@
               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
+- (void)updateLocation:(User *)user
+               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
+- (void)matching:(User *)user
+         success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+         failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
 @end
 
 @protocol BLHTTPClientDelegate <NSObject>
