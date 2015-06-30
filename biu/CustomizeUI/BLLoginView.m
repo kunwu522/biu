@@ -180,6 +180,17 @@
 }
 
 - (void)login:(id)sender {
+    if ([_tfPhoneNumber.text isEqualToString:@""]) {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Please input phone number.", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [av show];
+        return;
+    }
+    if ([_tfPassword.text isEqualToString:@""]) {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Please input password.", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [av show];
+        return;
+    }
+    
     NSString *errMsg = [User validatePhoneNumber:_tfPhoneNumber.text];
     if (errMsg) {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
@@ -191,15 +202,17 @@
     user.phone = _tfPhoneNumber.text;
     user.password = _tfPassword.text;
     
-    BLHTTPClient *httpClient = [BLHTTPClient sharedBLHTTPClient];
-    [httpClient login:user success:^(NSURLSessionDataTask *task, id responseObject) {
-//        NSLog(@"Response: %@", responseObject);
+    UIActivityIndicatorView *ai = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    ai.hidesWhenStopped = YES;
+    [ai startAnimating];
+    [[BLHTTPClient sharedBLHTTPClient] login:user success:^(NSURLSessionDataTask *task, id responseObject) {
         User *loginUser = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
         loginUser.phone = _tfPhoneNumber.text;
         loginUser.password = _tfPassword.text;
         if (self.delegate) {
             [self.delegate didLoginWithCurrentUser:loginUser];
         }
+        [ai stopAnimating];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         if ([task.response isKindOfClass:[NSHTTPURLResponse class]]) {
             NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
@@ -209,6 +222,7 @@
         if (!message) {
             message = @"Log in failed. Please try again later";
         }
+        [ai stopAnimating];
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [av show];
     }];
@@ -219,13 +233,5 @@
     [_tfPhoneNumber resignFirstResponder];
     [_tfPassword resignFirstResponder];
 }
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
 
 @end

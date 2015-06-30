@@ -113,7 +113,7 @@ static double ICON_INITIAL_SIZE = 147.5;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-//    sleep(2);
+    sleep(1);
     
     BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
     if (!delegate.currentUser) {

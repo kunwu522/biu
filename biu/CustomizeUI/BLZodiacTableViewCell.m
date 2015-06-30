@@ -58,8 +58,20 @@ static const float CELL_HEIGHT = 109.3;
     BLZodiac zodiac = [self zodiacFromIndexItem:indexPath.item];
     cell.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"zodiac_selected_icon%li", (long)zodiac]];
     cell.unselectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"zodiac_unselected_icon%li", (long)zodiac]];
-    cell.imageView.image = cell.unselectedImage;
     cell.lbZoidac.text = [Profile getZodiacNameFromZodiac:[self zodiacFromIndexItem:indexPath.item] isShotVersion:YES];
+    if (self.allowMultiSelected) {
+        if ([self.preferZodiacs containsObject:[NSNumber numberWithInteger:[self zodiacFromIndexItem:indexPath.item]]]) {
+            cell.imageView.image = cell.selectedImage;
+        } else {
+            cell.imageView.image = cell.unselectedImage;
+        }
+    } else {
+        if ([self indexItemFromZodiac:self.zodiac] == indexPath.item) {
+            cell.imageView.image = cell.selectedImage;
+        } else {
+            cell.imageView.image = cell.unselectedImage;
+        }
+    }
     return cell;
 }
 

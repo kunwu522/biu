@@ -98,11 +98,13 @@ static const float CELL_HEIGHT = 109.3;
     if (self.gender == BLGenderMale) {
         cell.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"style_man_selected_icon%ld.png", (long)indexPath.item]];
         cell.unselectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"style_man_unselected_icon%ld.png", (long)indexPath.item]];
-        cell.imageView.image = cell.unselectedImage;
+//        cell.imageView.image = cell.unselectedImage;
+        [self setImageForCell:cell cellForItemAtIndexPath:indexPath];
     } else {
         cell.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"style_woman_selected_icon%ld.png", (long)indexPath.item]];
         cell.unselectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"style_woman_unselected_icon%ld.png", (long)indexPath.item]];
         cell.imageView.image = cell.unselectedImage;
+        [self setImageForCell:cell cellForItemAtIndexPath:indexPath];
     }
     cell.style.text = [Partner getStyleNameFromZodiac:[self styleTypeFromIndexItem:indexPath.item]];
     return cell;
@@ -151,11 +153,30 @@ static const float CELL_HEIGHT = 109.3;
     }
 }
 
-- (NSUInteger)indexItemFromStyle:(BLStyleType)style {
+- (NSInteger)indexItemFromStyle:(BLStyleType)style {
+    if (style == BLStyleTypeNone) {
+        return -1;
+    }
     if (self.gender == BLGenderMale) {
         return (NSUInteger)style > 1 ?  (NSUInteger)style - 1 : 0;
     } else {
         return (NSUInteger)style > 10 ? (NSUInteger)style - 1 - 9 : 0;
+    }
+}
+
+- (void)setImageForCell:(BLStyleCollectionViewCell *)cell  cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.allowMultiSelected) {
+        if ([self.preferStyles containsObject:[NSNumber numberWithInteger:[self styleTypeFromIndexItem:indexPath.item]]]) {
+            cell.imageView.image = cell.selectedImage;
+        } else {
+            cell.imageView.image = cell.unselectedImage;
+        }
+    } else {
+        if ([self indexItemFromStyle:self.style] == indexPath.item) {
+            cell.imageView.image = cell.selectedImage;
+        } else {
+            cell.imageView.image = cell.unselectedImage;
+        }
     }
 }
 

@@ -16,6 +16,8 @@
 #import "BLMenuButton.h"
 #import "Masonry.h"
 
+#import <SDWebImage/UIImageView+WebCache.h>
+
 @interface BLMenuViewController ()
 
 typedef NS_ENUM(NSUInteger, BLSubViewController) {
@@ -58,6 +60,13 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
     
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideMenu:)];
     [self.view addGestureRecognizer:tapGestureRecognizer];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@", [BLHTTPClient blBaseURL], self.currentUser.profile.profileId]]
+                            placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
+                                     options:SDWebImageRefreshCached];
+    self.lbUsername.text = self.currentUser.username;
 }
 
 #pragma mark -
@@ -114,7 +123,6 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
 - (UIImageView *)avatarImageView {
     if (!_avatarImageView) {
         _avatarImageView = [[UIImageView alloc] init];
-        _avatarImageView.image = [UIImage imageNamed:@"test_avator.png"];
         _avatarImageView.layer.cornerRadius = 97.0 / 2;
         _avatarImageView.layer.borderWidth = 4.0f;
         _avatarImageView.layer.borderColor = [[UIColor whiteColor] CGColor];
@@ -127,7 +135,6 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
         _lbUsername = [[UILabel alloc] init];
         _lbUsername.font = [BLFontDefinition boldFont:15.0f];
         _lbUsername.textColor = [UIColor whiteColor];
-        _lbUsername.text = @"Tony";
     }
     return _lbUsername;
 }
@@ -186,6 +193,13 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
         [_btnSetting addTarget:self action:@selector(pressButton:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _btnSetting;
+}
+
+- (User *)currentUser {
+    if (!_currentUser) {
+        _currentUser = [[User alloc] initWithFromUserDefault];
+    }
+    return _currentUser;
 }
 
 #pragma mark -

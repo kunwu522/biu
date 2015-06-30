@@ -74,10 +74,18 @@ static const float BL_SEXUALITY_CELL_WIDTH = 100.0f;
                                                                                     forIndexPath:indexPath];
     cell.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"sexuality_selected_icon%li", [self sexualityFromIndexItem:indexPath.item]]];
     cell.unselectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"sexuality_unselected_icon%li", [self sexualityFromIndexItem:indexPath.item]]];
-    if ([self indexItemFromSexuality:_sexuality] == indexPath.item) {
-        cell.imageView.image = cell.selectedImage;
+    if (self.allowMutipleSelection) {
+        if ([self.sexualities containsObject:[NSNumber numberWithInteger:[self sexualityFromIndexItem:indexPath.item]]]) {
+            cell.imageView.image = cell.selectedImage;
+        } else {
+            cell.imageView.image = cell.unselectedImage;
+        }
     } else {
-        cell.imageView.image = cell.unselectedImage;
+        if ([self indexItemFromSexuality:_sexuality] == indexPath.item) {
+            cell.imageView.image = cell.selectedImage;
+        } else {
+            cell.imageView.image = cell.unselectedImage;
+        }
     }
     return cell;
 }

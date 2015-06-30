@@ -132,6 +132,7 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
     
     NSDictionary *parameters = @{@"profile" : @{@"user_id" : profile.userId,
                                                 @"gender" : [NSNumber numberWithInteger:profile.gender],
+                                                @"sexuality" : [NSNumber numberWithInteger:profile.sexuality],
                                               @"birthday" : dateString,
                                              @"zodiac_id" : [NSNumber numberWithInteger:profile.zodiac],
                                               @"style_id" : [NSNumber numberWithInteger:profile.style]}};

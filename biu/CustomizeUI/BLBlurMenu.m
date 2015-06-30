@@ -80,10 +80,6 @@
         [self.menuViewController removeFromParentViewController];
         [self.currentViewController didMoveToParentViewController:self];
     }];
-//    [self addMenuButton];
-//    if (self.currentViewController != self.rootViewController) {
-//        [self addBackButton];
-//    }
 }
 
 - (void)setContentViewController:(UIViewController *)contentViewController animated:(BOOL)animated {
@@ -96,8 +92,6 @@
         [contentViewController didMoveToParentViewController:self];
         self.currentViewController = contentViewController;
     }];
-//    [self addMenuButton];
-//    [self addBackButton];
 }
 
 - (void)backToRootViewController {
@@ -113,7 +107,6 @@
         [self.rootViewController didMoveToParentViewController:self];
         self.currentViewController = self.rootViewController;
     }];
-//    [self addMenuButton];
 }
 
 #pragma mark - 
@@ -126,8 +119,6 @@
     _currentViewController.view.frame = self.view.bounds;
     [self.view addSubview:_currentViewController.view];
     [_currentViewController didMoveToParentViewController:self];
-    
-//    [self addMenuButton];
 }
 
 - (void)didReceiveMemoryWarning {

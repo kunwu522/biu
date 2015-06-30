@@ -63,18 +63,6 @@ static const float AVATOR_WIDTH = 163.0f;
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [BLColorDefinition backgroundGrayColor];
     
-    if (self.profileViewType == BLProfileViewTypeUpdate && self.currentUser) {
-        self.gender = self.currentUser.profile.gender;
-        self.birthday = self.currentUser.profile.birthday;
-        self.style = self.currentUser.profile.style;
-    } else {
-        self.gender = BLGenderMale;
-        self.sexuality = BLSexualityTypeMan;
-        self.birthday = nil;
-        self.zodiac = BLZodiacNone;
-        self.style = BLStyleTypeNone;
-    }
-    
     _tableView = [[UITableView alloc] initWithFrame:self.view.frame];
     _tableView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_tableView];
@@ -107,6 +95,25 @@ static const float AVATOR_WIDTH = 163.0f;
             make.width.equalTo(@45.3);
             make.height.equalTo(@45.3);
         }];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    if (self.profileViewType == BLProfileViewTypeUpdate && self.currentUser) {
+        self.gender = self.currentUser.profile.gender;
+        self.sexuality = self.currentUser.profile.sexuality;
+        self.birthday = self.currentUser.profile.birthday;
+        self.zodiac = self.currentUser.profile.zodiac;
+        self.style = self.currentUser.profile.style;
+    } else {
+        self.gender = BLGenderMale;
+        self.sexuality = BLSexualityTypeMan;
+        NSString *defaultDate = @"1990-01-01";
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd"];
+        self.birthday = [formatter dateFromString:defaultDate];
+        self.zodiac = BLZodiacNone;
+        self.style = BLStyleTypeNone;
     }
 }
 
@@ -478,8 +485,7 @@ static const float AVATOR_WIDTH = 163.0f;
 
 - (User *)currentUser {
     if (!_currentUser) {
-        BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
-        _currentUser = delegate.currentUser;
+        _currentUser = [[User alloc] initWithFromUserDefault];
     }
     return _currentUser;
 }

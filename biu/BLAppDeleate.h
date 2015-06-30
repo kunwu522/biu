@@ -23,9 +23,9 @@
 
 @property (strong, nonatomic) UINavigationController *welNavController;
 @property (strong, nonatomic) UINavigationController *fillingInfoNavController;
-@property (nonatomic, retain) BLBlurMenu *blurMenu;
+@property (strong, nonatomic) BLBlurMenu *blurMenu;
 
-@property (nonatomic, retain) KeychainItemWrapper *passwordItem;
+@property (strong, nonatomic) KeychainItemWrapper *passwordItem;
 
 @end
 
