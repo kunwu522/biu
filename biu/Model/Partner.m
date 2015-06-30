@@ -10,13 +10,37 @@
 
 @implementation Partner
 
-@synthesize partnerId, userId, sexualityType, minAge, maxAge, preferZodiacs, preferStyles;
+static NSString *PARTNER_ID = @"partner_id";
+static NSString *SEXUALITIES = @"sexualities";
+static NSString *MIN_AGE = @"min_age";
+static NSString *MAX_AGE = @"max_age";
+static NSString *PREFER_ZODIACS = @"prefer_zodiacs";
+static NSString *PREFER_STYLES = @"prefer_styles";
+
+@synthesize partnerId, userId, sexualities, minAge, maxAge, preferZodiacs, preferStyles;
+
+- (id)initWithFromUserDefault {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    self = [Partner new];
+    if (self) {
+        self.partnerId = [defaults objectForKey:PARTNER_ID];
+        if (!self.partnerId) {
+            return nil;
+        }
+        self.sexualities = [defaults objectForKey:SEXUALITIES];
+        self.minAge = [defaults objectForKey:MIN_AGE];
+        self.maxAge = [defaults objectForKey:MAX_AGE];
+        self.preferZodiacs = [defaults objectForKey:PREFER_ZODIACS];
+        self.preferStyles = [defaults objectForKey:PREFER_STYLES];
+    }
+    return self;
+}
 
 - (id)initWithDictionary:(NSDictionary *)dictionary {
     self = [Partner new];
     if (self) {
         self.partnerId = [dictionary objectForKey:@"partner_id"];
-        self.sexualityType = (BLSexualityType)[[dictionary objectForKey:@"sexuality"] integerValue];
+        self.sexualities = [dictionary objectForKey:@"sexuality_ids"];
         self.minAge = [dictionary objectForKey:@"min_age"];
         self.maxAge = [dictionary objectForKey:@"max_age"];
         self.preferStyles = [dictionary objectForKey:@"style_ids"];
@@ -26,14 +50,13 @@
 }
 
 - (void)save {
-    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:@"%@_partner"];
-    [defaults setObject:self.partnerId forKey:@"partner_id"];
-    [defaults setObject:self.userId forKey:@"user_id"];
-    [defaults setObject:[NSNumber numberWithInteger:self.sexualityType] forKey:@"sexuality"];
-    [defaults setObject:self.minAge forKey:@"min_age"];
-    [defaults setObject:self.maxAge forKey:@"max_age"];
-    [defaults setObject:self.preferZodiacs forKey:@"prefer_zodiac"];
-    [defaults setObject:self.preferStyles forKey:@"prefer_style"];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:self.partnerId forKey:PARTNER_ID];
+    [defaults setObject:self.sexualities forKey:SEXUALITIES];
+    [defaults setObject:self.minAge forKey:MIN_AGE];
+    [defaults setObject:self.maxAge forKey:MAX_AGE];
+    [defaults setObject:self.preferZodiacs forKey:PREFER_ZODIACS];
+    [defaults setObject:self.preferStyles forKey:PREFER_STYLES];
     [defaults synchronize];
 }
 

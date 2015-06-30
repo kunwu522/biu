@@ -21,6 +21,7 @@
 
 @property (strong, nonatomic) UICollectionView *collectionView;
 @property (strong, nonatomic) NSDictionary *sexualityDictionary;
+@property (assign, nonatomic) BOOL allowMutipleSelection;
 
 @end
 
@@ -50,6 +51,7 @@ static const float BL_SEXUALITY_CELL_WIDTH = 100.0f;
             forCellWithReuseIdentifier:NSStringFromClass([BLSexualityCollectionViewCell class])];
         [self.content addSubview:_collectionView];
         
+        self.allowMutipleSelection = NO;
     }
     return self;
 }
@@ -60,41 +62,173 @@ static const float BL_SEXUALITY_CELL_WIDTH = 100.0f;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 6;
+    if (self.gender == BLGenderNone) {
+        return 6;
+    } else {
+        return 3;
+    }
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     BLSexualityCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([BLSexualityCollectionViewCell class])
                                                                                     forIndexPath:indexPath];
-    cell.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"sexuality_selected_icon%li", (long)indexPath.item]];
-    cell.unselectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"sexuality_unselected_icon%li", (long)indexPath.item]];
-    cell.imageView.image = cell.unselectedImage;
+    cell.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"sexuality_selected_icon%li", [self sexualityFromIndexItem:indexPath.item]]];
+    cell.unselectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"sexuality_unselected_icon%li", [self sexualityFromIndexItem:indexPath.item]]];
+    if ([self indexItemFromSexuality:_sexuality] == indexPath.item) {
+        cell.imageView.image = cell.selectedImage;
+    } else {
+        cell.imageView.image = cell.unselectedImage;
+    }
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    self.sexuality = [self sexualityFromIndexItem:indexPath.item];
-    if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
-        [self.delegate tableViewCell:self didChangeValue:[NSNumber numberWithInteger:self.sexuality]];
+    BLSexualityType sexuality = [self sexualityFromIndexItem:indexPath.item];
+    if (!self.sexualities) {
+        self.sexuality = sexuality;
+        if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
+            [self.delegate tableViewCell:self didChangeValue:[NSNumber numberWithInteger:self.sexuality]];
+        }
+    } else if (self.sexualities.count <= 3) {
+        [self.sexualities addObject:[NSNumber numberWithInteger:sexuality]];
+        if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
+            [self.delegate tableViewCell:self didChangeValue:self.sexualities];
+        }
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.sexualities) {
+        [self.sexualities removeObject:[NSNumber numberWithInteger:[self sexualityFromIndexItem:indexPath.item]]];
+        if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
+            [self.delegate tableViewCell:self didChangeValue:self.sexualities];
+        }
     }
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake((self.content.bounds.size.height - BL_SEXUALITY_CELL_WIDTH) * 0.5f, 0,
-                            (self.content.bounds.size.height - BL_SEXUALITY_CELL_WIDTH) * 0.5f, 0);
+    CGFloat insetVertical = (self.content.bounds.size.height - BL_SEXUALITY_CELL_WIDTH) * 0.5f;
+    CGFloat insetHorizontal = (self.content.bounds.size.width - ([collectionView numberOfItemsInSection:section] * ((UICollectionViewFlowLayout *)collectionViewLayout).itemSize.width
+                                     + ([collectionView numberOfItemsInSection:section] - 1) * ((UICollectionViewFlowLayout *)collectionViewLayout).minimumInteritemSpacing)) * 0.5;
+    if (self.gender == BLGenderNone) {
+        return UIEdgeInsetsMake(insetVertical, 0, insetVertical, 0);
+    } else {
+        return UIEdgeInsetsMake(insetVertical, insetHorizontal, insetVertical, insetHorizontal);
+    }
 }
 
 #pragma mark
 #pragma Getter and Setter
 - (void)setSexuality:(BLSexualityType)sexuality {
     _sexuality = sexuality;
-    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:sexuality - 1 inSection:0];
+    if (_sexuality == BLSexualityTypeNone) {
+        return;
+    }
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[self indexItemFromSexuality:sexuality] inSection:0];
     [_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+}
+
+- (void)setSexualities:(NSMutableArray *)sexualities {
+    if (!sexualities) {
+        return;
+    }
+    self.collectionView.allowsMultipleSelection = YES;
+    self.allowMutipleSelection = YES;
+
+    _sexualities = sexualities;
+    for (NSNumber *sexuality in _sexualities) {
+        if (sexuality == BLSexualityTypeNone) {
+            continue;
+        }
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[self indexItemFromSexuality:(BLSexualityType)sexuality.integerValue] inSection:0];
+        [_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+    }
+}
+
+- (void)setGender:(BLGender)gender {
+    _gender = gender;
+    [self.collectionView reloadData];
 }
 
 #pragma mark - private method
 - (BLSexualityType)sexualityFromIndexItem:(NSInteger)item {
-    return item + 1;
+    BLSexualityType sexuality;
+    switch (self.gender) {
+        case BLGenderMale:
+            switch (item) {
+                case 0:
+                    sexuality = BLSexualityTypeMan;
+                    break;
+                case 1:
+                    sexuality = BLSexualityType1;
+                    break;
+                case 2:
+                    sexuality = BLSexualityType0;
+                default:
+                    break;
+            }
+            break;
+        case BLGenderFemale:
+            switch (item) {
+                case 0:
+                    sexuality = BLSexualityTypeWoman;
+                    break;
+                case 1:
+                    sexuality = BLSexualityTypeT;
+                    break;
+                case 2:
+                    sexuality = BLSexualityTypeP;
+                default:
+                    break;
+            }
+            break;
+        default:
+            sexuality = item + 1;
+            break;
+    }
+    return sexuality;
+}
+- (NSInteger)indexItemFromSexuality:(BLSexualityType)sexuality {
+    NSInteger item = 0;
+    if (sexuality == BLSexualityTypeNone) {
+        return -1;
+    }
+    switch (self.gender) {
+        case BLGenderMale:
+            switch (sexuality) {
+                case BLSexualityTypeMan:
+                    item = 0;
+                    break;
+                case BLSexualityType1:
+                    item = 1;
+                    break;
+                case BLSexualityType0:
+                    item =2;
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case BLGenderFemale:
+            switch (sexuality) {
+                case BLSexualityTypeWoman:
+                    item = 0;
+                    break;
+                case BLSexualityTypeT:
+                    item = 1;
+                    break;
+                case BLSexualityTypeP:
+                    item = 2;
+                    break;
+                default:
+                    break;
+            }
+            break;
+        default:
+            item = sexuality > 1 ? sexuality - 1 : 0;
+            break;
+    }
+    return item;
 }
 
 @end

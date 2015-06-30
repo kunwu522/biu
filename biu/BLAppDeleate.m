@@ -13,6 +13,8 @@
 
 @interface BLAppDeleate ()
 
+@property (assign, nonatomic) NSInteger badgeCount;
+
 @end
 
 @implementation BLAppDeleate
@@ -48,6 +50,13 @@
     self.blurMenu = [[BLBlurMenu alloc] initWithRootViewController:masterNavViewController
                                                 menuViewController:menuViewController];
     
+    // Let the device know we want to receive push notifications
+    UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+    self.badgeCount = [UIApplication sharedApplication].applicationIconBadgeNumber;
+    
     return YES;
 }
 
@@ -71,6 +80,21 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark -
+#pragma mark Push Notification Delegate
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    self.deviceToken = [[[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]] stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSLog(@"Got device token as %@", self.deviceToken);
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    NSLog(@"Error in registration. Error: %@", error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    
 }
 
 @end

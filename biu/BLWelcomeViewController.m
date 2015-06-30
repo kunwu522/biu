@@ -113,26 +113,20 @@ static double ICON_INITIAL_SIZE = 147.5;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    sleep(2);
+//    sleep(2);
     
     BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
     if (!delegate.currentUser) {
         [self showLoginUI];
     } else {
-        NSString *phone = [delegate.passwordItem objectForKey:(__bridge id)kSecAttrAccount];
-        NSData *pwd = [delegate.passwordItem objectForKey:(__bridge id)(kSecValueData)];
-        NSString *password = [[NSString alloc] initWithData:pwd encoding:NSUTF8StringEncoding];
-        if ([phone isEqualToString:@""] || [password isEqualToString:@""]) {
-            [self showLoginUI];
-            return;
-        }
-        
-        User *user = [User new];
-        user.phone = phone;
-        user.password = password;
-        [[BLHTTPClient sharedBLHTTPClient] login:user success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[BLHTTPClient sharedBLHTTPClient] login:delegate.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
             BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
-            [self presentViewController:delegate.blurMenu animated:YES completion:nil];
+            if (delegate.currentUser.profile && delegate.currentUser.partner) {
+                [self dismissViewControllerAnimated:NO completion:nil];
+                [self presentViewController:delegate.blurMenu animated:YES completion:nil];
+            } else {
+                [self presentViewController:delegate.fillingInfoNavController animated:YES completion:nil];
+            }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"Validate user failed: %@, code: %li", error.description, (long)error.code);
             [self showLoginUI];
@@ -286,6 +280,14 @@ static double ICON_INITIAL_SIZE = 147.5;
     BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
     delegate.currentUser = user;
     [delegate.currentUser save];
+    
+    [[BLHTTPClient sharedBLHTTPClient] deviceToken:delegate.deviceToken user:delegate.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"regist device successed.");
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"Regist device failed, error: %@", error.localizedDescription);
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"System error", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [av show];
+    }];
 }
 
 @end

@@ -10,24 +10,15 @@
 
 @interface Partner : NSObject
 
-typedef NS_ENUM(NSUInteger, BLSexualityType) {
-    BLSexualityTypeNone = 0,
-    BLSexualityTypeMan = 1,
-    BLSexualityTypeWoman = 2,
-    BLSexualityTypeP = 3,
-    BLSexualityTypeT = 4,
-    BLSexualityType1 = 5,
-    BLSexualityType0 = 6
-};
-
 @property (strong, nonatomic) NSNumber *partnerId;
 @property (strong, nonatomic) NSNumber *userId;
-@property (assign, nonatomic) BLSexualityType sexualityType;
+@property (assign, nonatomic) NSArray *sexualities;
 @property (strong, nonatomic) NSArray *preferZodiacs;
 @property (strong, nonatomic) NSNumber *minAge;
 @property (strong, nonatomic) NSNumber *maxAge;
 @property (strong, nonatomic) NSArray *preferStyles;
 
+- (id)initWithFromUserDefault;
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 - (void)save;
 

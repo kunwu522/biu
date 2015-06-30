@@ -21,6 +21,11 @@
 
 - (instancetype)initWithBaseURL:(NSURL *)url;
 
+- (void)deviceToken:(NSString *)token
+               user:(User *)user
+            success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+            failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
 - (void)passcode:(NSString *)code phoneNumber:(NSString *)phoneNumber
          success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
          failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;

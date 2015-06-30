@@ -12,17 +12,6 @@
 
 static NSString *USER_ID = @"user_id";
 static NSString *USERNAME = @"username";
-static NSString *PROFILE_ID = @"profile_id";
-static NSString *GENDER = @"gender";
-static NSString *BIRTHDAY = @"birthday";
-static NSString *ZODIAC = @"zodiac";
-static NSString *STYLE = @"style";
-static NSString *PARTNER_ID = @"partner_id";
-static NSString *SEXUALITY = @"sexuality";
-static NSString *MIN_AGE = @"min_age";
-static NSString *MAX_AGE = @"max_age";
-static NSString *PREFER_ZODIACS = @"prefer_zodiacs";
-static NSString *PREFER_STYLES = @"prefer_styles";
 
 @synthesize userId, username, password, email;
 
@@ -79,36 +68,22 @@ static NSString *PREFER_STYLES = @"prefer_styles";
 - (id)initWithFromUserDefault {
     self = [User new];
     if (self) {
+        BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
+        self.phone = [delegate.passwordItem objectForKey:(__bridge id)kSecAttrAccount];
+        NSData *pwd = [delegate.passwordItem objectForKey:(__bridge id)(kSecValueData)];
+        self.password = [[NSString alloc] initWithData:pwd encoding:NSUTF8StringEncoding];
+        if ([self.phone isEqualToString:@""] || [self.password isEqualToString:@""]) {
+            return nil;
+        }
+        
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         self.userId = [defaults objectForKey:USER_ID];
         self.username = [defaults objectForKey:USERNAME];
         if (!self.userId || !self.username) {
             return nil;
         }
-        NSNumber *profileId = [defaults objectForKey:PROFILE_ID];
-        if (profileId) {
-            self.profile = [Profile new];
-            self.profile.profileId = profileId;
-            self.profile.gender = (BLGender)[[defaults objectForKey:GENDER] integerValue];
-            self.profile.birthday = [defaults objectForKey:BIRTHDAY];
-            self.profile.zodiac = (BLZodiac)[[defaults objectForKey:ZODIAC] integerValue];
-            self.profile.style = (BLStyleType)[[defaults objectForKey:STYLE] integerValue];
-        } else {
-            self.profile = nil;
-        }
-        
-        NSNumber *partnerId = [defaults objectForKey:PARTNER_ID];
-        if (partnerId) {
-            self.partner = [Partner new];
-            self.partner.partnerId = [defaults objectForKey:PARTNER_ID];
-            self.partner.sexualityType = (BLSexualityType)[[defaults objectForKey:SEXUALITY] integerValue];
-            self.partner.minAge = [defaults objectForKey:MIN_AGE];
-            self.partner.maxAge = [defaults objectForKey:MAX_AGE];
-            self.partner.preferZodiacs = [defaults objectForKey:PREFER_ZODIACS];
-            self.partner.preferStyles = [defaults objectForKey:PREFER_STYLES];
-        } else {
-            self.partner = nil;
-        }
+        self.profile = [[Profile alloc] initWithFromUserDefault];
+        self.partner = [[Partner alloc] initWithFromUserDefault];
     }
     return self;
 }
@@ -158,23 +133,13 @@ static NSString *PREFER_STYLES = @"prefer_styles";
         [defaults synchronize];
         return;
     }
-    [defaults setObject:self.profile.profileId forKey:PROFILE_ID];
-    [defaults setObject:[NSNumber numberWithInteger:self.profile.gender] forKey:GENDER];
-    [defaults setObject:self.profile.birthday forKey:BIRTHDAY];
-    [defaults setObject:[NSNumber numberWithInteger:self.profile.zodiac] forKey:ZODIAC];
-    [defaults setObject:[NSNumber numberWithInteger:self.profile.style] forKey:STYLE];
+    [self.profile save];
     
     if (self.partner == nil) {
         [defaults synchronize];
         return;
     }
-    
-    [defaults setObject:self.partner.partnerId forKey:PARTNER_ID];
-    [defaults setObject:[NSNumber numberWithInteger:self.partner.sexualityType] forKey:SEXUALITY];
-    [defaults setObject:self.partner.minAge forKey:MIN_AGE];
-    [defaults setObject:self.partner.maxAge forKey:MAX_AGE];
-    [defaults setObject:self.partner.preferZodiacs forKey:PREFER_ZODIACS];
-    [defaults setObject:self.partner.preferStyles forKey:PREFER_STYLES];
+    [self.partner save];
     
     [defaults synchronize];
 }

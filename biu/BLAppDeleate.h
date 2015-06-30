@@ -19,6 +19,7 @@
 @property (strong, nonatomic) UIWindow *window;
 
 @property (strong, nonatomic) User *currentUser;
+@property (strong, nonatomic) NSString *deviceToken;
 
 @property (strong, nonatomic) UINavigationController *welNavController;
 @property (strong, nonatomic) UINavigationController *fillingInfoNavController;

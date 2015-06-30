@@ -12,6 +12,7 @@
 #import "BLBirthTableViewCell.h"
 #import "BLZodiacAndAgeTableViewCell.h"
 #import "BLStyleTableViewCell.h"
+#import "BLSexualityTableViewCell.h"
 #import "BLPartnerViewController.h"
 #import "UIViewController+BLBlurMenu.h"
 #import "Masonry.h"
@@ -23,6 +24,7 @@
 @property (strong, nonatomic) User *currentUser; //works if profileViewType is BLProfileViewTypeUpdate
 
 @property (assign, nonatomic) BLGender gender;
+@property (assign, nonatomic) BLSexualityType sexuality;
 @property (strong, nonatomic) NSDate *birthday;
 @property (assign, nonatomic) BLZodiac zodiac;
 @property (assign, nonatomic) BLStyleType style;
@@ -39,10 +41,11 @@
 
 static const NSInteger SECTION_HEADER = 0;
 static const NSInteger SECTION_GENDER = 1;
-static const NSInteger SECTION_BIRTHDAY = 2;
-static const NSInteger SECTION_ZODIAC_AND_AGE = 3;
-static const NSInteger SECTION_STYLE = 4;
-static const NSInteger SECTION_BUTTON = 5;
+static const NSInteger SECTION_SEXUALITY = 2;
+static const NSInteger SECTION_BIRTHDAY = 3;
+static const NSInteger SECTION_ZODIAC_AND_AGE = 4;
+static const NSInteger SECTION_STYLE = 5;
+static const NSInteger SECTION_BUTTON = 6;
 
 static NSString *BL_PLACEHOLDER_CELL_REUSEID = @"BLPlaceHolderCell";
 static NSString *BL_BUTTON_CELL_REUSEID = @"BLButtonCell";
@@ -50,6 +53,7 @@ static NSString *BL_PROFILE_GENDER_CELL_REUSEID = @"BLGenderCell";
 static NSString *BL_PROFILE_BIRTH_CELL_REUSEID = @"BLBirthCell";
 static NSString *BL_PROFILE_ZODIAC_AND_AGE_CELL_REUSEID = @"BLZodiacAndAgeCell";
 static NSString *BL_PROFIEL_STYLE_CELL_REUSEID = @"BLStyleCell";
+static NSString *BL_PROFIEL_SEXUALITY_CELL_REUSEID = @"BLSexualityCell";
 
 static const float AVATOR_WIDTH = 163.0f;
 
@@ -65,6 +69,7 @@ static const float AVATOR_WIDTH = 163.0f;
         self.style = self.currentUser.profile.style;
     } else {
         self.gender = BLGenderMale;
+        self.sexuality = BLSexualityTypeMan;
         self.birthday = nil;
         self.zodiac = BLZodiacNone;
         self.style = BLStyleTypeNone;
@@ -83,6 +88,7 @@ static const float AVATOR_WIDTH = 163.0f;
     [_tableView registerClass:[BLBirthTableViewCell class] forCellReuseIdentifier:BL_PROFILE_BIRTH_CELL_REUSEID];
     [_tableView registerClass:[BLZodiacAndAgeTableViewCell class] forCellReuseIdentifier:BL_PROFILE_ZODIAC_AND_AGE_CELL_REUSEID];
     [_tableView registerClass:[BLStyleTableViewCell class] forCellReuseIdentifier:BL_PROFIEL_STYLE_CELL_REUSEID];
+    [_tableView registerClass:[BLSexualityTableViewCell class] forCellReuseIdentifier:BL_PROFIEL_SEXUALITY_CELL_REUSEID];
     
     if (self.profileViewType == BLProfileViewTypeUpdate) {
         [self.view addSubview:self.btnMenu];
@@ -121,7 +127,7 @@ static const float AVATOR_WIDTH = 163.0f;
 #pragma mark - Delegates
 #pragma mark TableViewDelegate and TableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 6;
+    return 7;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -149,6 +155,19 @@ static const float AVATOR_WIDTH = 163.0f;
             cell.gender = _gender;
             cell.delegate = self;
             cell.tag = SECTION_GENDER;
+            return cell;
+            break;
+        }
+        case SECTION_SEXUALITY:
+        {
+            BLSexualityTableViewCell *cell = (BLSexualityTableViewCell *)[tableView dequeueReusableCellWithIdentifier:BL_PROFIEL_SEXUALITY_CELL_REUSEID forIndexPath:indexPath];
+            if (!cell) {
+                cell = [[BLSexualityTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PROFIEL_SEXUALITY_CELL_REUSEID];
+            }
+            cell.gender = _gender;
+            cell.sexuality = _sexuality;
+            cell.delegate = self;
+            cell.tag = SECTION_SEXUALITY;
             return cell;
             break;
         }
@@ -237,6 +256,9 @@ static const float AVATOR_WIDTH = 163.0f;
         case SECTION_GENDER:
             return 287.0f;
             break;
+        case SECTION_SEXUALITY:
+            return 300.0f;
+            break;
         case SECTION_BIRTHDAY:
             return 343.9f;
             break;
@@ -306,7 +328,20 @@ static const float AVATOR_WIDTH = 163.0f;
     switch (cell.tag) {
         case SECTION_GENDER:
             _gender = (BLGender)[value integerValue];
+            switch (_gender) {
+                case BLGenderMale:
+                    _sexuality = BLSexualityTypeMan;
+                    break;
+                case BLGenderFemale:
+                    _sexuality = BLSexualityTypeWoman;
+                    break;
+                default:
+                    break;
+            }
             [_tableView reloadData];
+            break;
+        case SECTION_SEXUALITY:
+            _sexuality = (BLSexualityType)[value integerValue];
             break;
         case SECTION_BIRTHDAY:
             _birthday = (NSDate *)value;
@@ -397,6 +432,7 @@ static const float AVATOR_WIDTH = 163.0f;
     profile.birthday = _birthday;
     profile.zodiac = _zodiac;
     profile.style = _style;
+    profile.sexuality = _sexuality;
     
     BLPartnerViewController *partnerController = [[BLPartnerViewController alloc] initWithNibName:nil bundle:nil];
     partnerController.profile = profile;

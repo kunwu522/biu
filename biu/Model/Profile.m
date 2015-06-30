@@ -10,7 +10,30 @@
 
 @implementation Profile
 
+static NSString *PROFILE_ID = @"profile_id";
+static NSString *GENDER = @"gender";
+static NSString *BIRTHDAY = @"birthday";
+static NSString *ZODIAC = @"zodiac";
+static NSString *STYLE = @"style";
+static NSString *SEXUALITY = @"sexuality";
+
 @synthesize profileId, userId, username, gender, birthday, zodiac, style, avatarUrl;
+
+- (id)initWithFromUserDefault {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    self = [Profile new];
+    if (self) {
+        self.profileId = [defaults objectForKey:PROFILE_ID];
+        if (!self.profileId) {
+            return nil;
+        }
+        self.gender = (BLGender)[[defaults objectForKey:GENDER] integerValue];
+        self.birthday = [defaults objectForKey:BIRTHDAY];
+        self.zodiac = (BLZodiac)[[defaults objectForKey:ZODIAC] integerValue];
+        self.style = (BLStyleType)[[defaults objectForKey:STYLE] integerValue];
+    }
+    return self;
+}
 
 - (id)initWithDictionary:(NSDictionary *)dictionary {
     self = [Profile new];
@@ -21,20 +44,23 @@
         self.style = (BLStyleType)[[dictionary objectForKey:@"style"] integerValue];
         self.zodiac = (BLZodiac)[[dictionary objectForKey:@"zodiac"] integerValue];
         self.avatarUrl = [dictionary objectForKey:@"avatar_url"];
+        self.sexuality = (BLSexualityType)[[dictionary objectForKey:@"sexuality"] integerValue];
     }
     return self;
 }
 
 - (void)save {
-    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:[NSString stringWithFormat:@"%@_profile", self.userId]];
-    [defaults setObject:self.profileId forKey:@"id"];
-    [defaults setObject:self.userId forKey:@"user_id"];
-    [defaults setObject:self.username forKey:@"username"];
-    [defaults setObject:[NSNumber numberWithInteger:self.gender] forKey:@"gender"];
-    [defaults setObject:self.birthday forKey:@"birthday"];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:[NSNumber numberWithInteger:self.zodiac] forKey:@"zodiac"];
     [defaults setObject:[NSNumber numberWithInteger:self.style] forKey:@"style"];
-    [defaults setObject:self.avatarUrl forKey:@"avatar_url"];
+    
+    
+    [defaults setObject:self.profileId forKey:PROFILE_ID];
+    [defaults setObject:[NSNumber numberWithInteger:self.gender] forKey:GENDER];
+    [defaults setObject:self.birthday forKey:BIRTHDAY];
+    [defaults setObject:[NSNumber numberWithInteger:self.zodiac] forKey:ZODIAC];
+    [defaults setObject:[NSNumber numberWithInteger:self.style] forKey:STYLE];
+    [defaults setObject:[NSNumber numberWithInteger:self.sexuality] forKey:SEXUALITY];
     [defaults synchronize];
 }
 

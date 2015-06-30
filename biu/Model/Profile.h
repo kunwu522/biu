@@ -54,6 +54,16 @@ typedef NS_ENUM(NSUInteger, BLStyleType) {
     BLStyleTypeWomanAll = 18
 };
 
+typedef NS_ENUM(NSUInteger, BLSexualityType) {
+    BLSexualityTypeNone = 0,
+    BLSexualityTypeMan = 1,
+    BLSexualityTypeWoman = 2,
+    BLSexualityTypeP = 3,
+    BLSexualityTypeT = 4,
+    BLSexualityType1 = 5,
+    BLSexualityType0 = 6
+};
+
 @property (strong, nonatomic) NSNumber *profileId;
 @property (strong, nonatomic) NSNumber *userId;
 @property (strong, nonatomic) NSString *username;
@@ -63,7 +73,9 @@ typedef NS_ENUM(NSUInteger, BLStyleType) {
 @property (assign, nonatomic) BLGender gender;
 @property (assign, nonatomic) BLStyleType style;
 @property (assign, nonatomic) NSString *avatarUrl;
+@property (assign, nonatomic) BLSexualityType sexuality;
 
+- (id)initWithFromUserDefault;
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 - (void)save;
 

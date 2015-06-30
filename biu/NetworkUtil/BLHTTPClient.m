@@ -8,8 +8,8 @@
 
 #import "BLHTTPClient.h"
 
-static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
-//static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
+//static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
+static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
 
 @implementation BLHTTPClient
 
@@ -171,7 +171,7 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
     }
     
     NSDictionary *parameters = @{@"partner" : @{@"user_id" : partner.userId,
-                                                @"sexuality_id" : [NSNumber numberWithInteger:partner.sexualityType],
+                                                @"sexuality_ids" : partner.sexualities,
                                                 @"min_age" : partner.minAge,
                                                 @"max_age" : partner.maxAge,
                                                 @"zodiac_ids" : partner.preferZodiacs,
@@ -191,7 +191,7 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
     }
     
     NSDictionary *parameters = @{@"partner" : @{@"user_id" : partner.userId,
-                                                @"sexuality_id" : [NSNumber numberWithInteger:partner.sexualityType],
+                                                @"sexuality_ids" : partner.sexualities,
                                                 @"min_age" : partner.minAge,
                                                 @"max_age" : partner.maxAge,
                                                 @"zodiac_ids" : partner.preferZodiacs,
@@ -233,6 +233,18 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
          failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
     
     [self GET:[NSString stringWithFormat:@"match/%@", user.userId] parameters:nil success:success failure:failure];
+}
+
+- (void)deviceToken:(NSString *)token
+               user:(User *)user
+            success:(void (^)(NSURLSessionDataTask *, id))success
+            failure:(void (^)(NSURLSessionDataTask *, NSError *))failure {
+    if (!token || !user) {
+        return;
+    }
+    NSDictionary *parameters = @{@"device" : @{@"token" : token,
+                                               @"user_id" : user.userId}};
+    [self POST:@"device.json" parameters:parameters success:success failure:failure];
 }
 
 @end

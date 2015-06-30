@@ -11,5 +11,9 @@
 @interface BLSexualityTableViewCell : BLBaseTableViewCell
 
 @property (assign, nonatomic) BLSexualityType sexuality;
+@property (assign, nonatomic) BLGender gender;
+
+// working when isAllowMultiSelected == YES
+@property (strong, nonatomic) NSMutableArray *sexualities;
 
 @end
