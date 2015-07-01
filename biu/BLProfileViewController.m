@@ -29,7 +29,8 @@
 @property (assign, nonatomic) BLZodiac zodiac;
 @property (assign, nonatomic) BLStyleType style;
 
-@property (retain, nonatomic) UITableView *tableView;
+@property (strong, nonatomic) UITableView *tableView;
+@property (strong, nonatomic) UIImageView *imageViewAvatar;
 @property (strong, nonatomic) UIButton *btnMenu;
 @property (strong, nonatomic) UIButton *btnBackToRoot;
 
@@ -115,6 +116,11 @@ static const float AVATOR_WIDTH = 163.0f;
         self.zodiac = BLZodiacNone;
         self.style = BLStyleTypeNone;
     }
+    
+    [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@",
+                                                                   [BLHTTPClient blBaseURL],self.currentUser.userId]]
+                            placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
+                                     options:SDWebImageRefreshCached];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -302,28 +308,17 @@ static const float AVATOR_WIDTH = 163.0f;
         imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [sectionHeaderView addSubview:imageView];
         
-        UIImageView *imageViewAvator = [[UIImageView alloc] init];
-        [imageViewAvator sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@",
-                                                            [BLHTTPClient blBaseURL],
-                                                            self.currentUser.profile.profileId]]
-                     placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
-                              options:SDWebImageRefreshCached];
-        imageViewAvator.layer.cornerRadius = AVATOR_WIDTH / 2;
-        imageViewAvator.layer.borderColor = [UIColor whiteColor].CGColor;
-        imageViewAvator.layer.borderWidth = 4.0f;
-        imageViewAvator.clipsToBounds = YES;
-        imageViewAvator.userInteractionEnabled = YES;
-        [sectionHeaderView addSubview:imageViewAvator];
+        [sectionHeaderView addSubview:self.imageViewAvatar];
         
-        [imageViewAvator mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(imageViewAvator.superview.mas_centerX);
-            make.top.equalTo(imageViewAvator.superview).with.offset(95.8f);
+        [self.imageViewAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(self.imageViewAvatar.superview.mas_centerX);
+            make.top.equalTo(self.imageViewAvatar.superview).with.offset(95.8f);
             make.width.equalTo([NSNumber numberWithFloat:AVATOR_WIDTH]);
             make.height.equalTo([NSNumber numberWithFloat:AVATOR_WIDTH]);
         }];
         
         UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showTakingPhotoView:)];
-        [imageViewAvator addGestureRecognizer:tapGestureRecognizer];
+        [self.imageViewAvatar addGestureRecognizer:tapGestureRecognizer];
         
         return sectionHeaderView;
     }
@@ -369,11 +364,17 @@ static const float AVATOR_WIDTH = 163.0f;
     //Restore Image to SDWebImage cache
     [[SDImageCache sharedImageCache]storeImage:image forKey:[NSString stringWithFormat:@"%@cycle/avatar/%@",
                                                              [BLHTTPClient blBaseURL],
-                                                             self.currentUser.profile.profileId]];
+                                                             self.currentUser.userId]];
+    
+    [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@",
+                                                                   [BLHTTPClient blBaseURL],self.currentUser.userId]]
+                            placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
+                                     options:SDWebImageRefreshCached];
+    
     [self.tableView reloadData];
     [self dismissViewControllerAnimated:NO completion:nil];
     
-    [[BLHTTPClient sharedBLHTTPClient] uploadAvatar:self.currentUser.profile avatar:image isRect:NO success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[BLHTTPClient sharedBLHTTPClient] uploadAvatar:self.currentUser avatar:image isRect:NO success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Upload avatar cycle successed.");
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
@@ -384,7 +385,7 @@ static const float AVATOR_WIDTH = 163.0f;
         [av show];
     }];
     
-    [[BLHTTPClient sharedBLHTTPClient] uploadAvatar:self.currentUser.profile avatar:orignalImage isRect:YES success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[BLHTTPClient sharedBLHTTPClient] uploadAvatar:self.currentUser avatar:orignalImage isRect:YES success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Upload avatar rectangle successed.");
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
@@ -416,11 +417,13 @@ static const float AVATOR_WIDTH = 163.0f;
     self.currentUser.profile.birthday = _birthday;
     self.currentUser.profile.zodiac = _zodiac;
     self.currentUser.profile.style = _style;
+    self.currentUser.profile.sexuality = _sexuality;
     
-    [[BLHTTPClient sharedBLHTTPClient] updateProfile:self.currentUser.profile success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[BLHTTPClient sharedBLHTTPClient] updateProfile:self.currentUser.profile user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Update profile successed...");
         [self.currentUser.profile save];
-        [self dismissViewControllerAnimated:YES completion:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Save Successed!", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [av show];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"Creating profile failed. Error: %@", error.description);
         NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
@@ -434,7 +437,6 @@ static const float AVATOR_WIDTH = 163.0f;
 
 - (void)createProfile:(id)sender {
     Profile *profile = [Profile new];
-    profile.userId = _currentUser.userId;
     profile.gender = _gender;
     profile.birthday = _birthday;
     profile.zodiac = _zodiac;
@@ -488,5 +490,17 @@ static const float AVATOR_WIDTH = 163.0f;
         _currentUser = [[User alloc] initWithFromUserDefault];
     }
     return _currentUser;
+}
+
+- (UIImageView *)imageViewAvatar {
+    if (!_imageViewAvatar) {
+        _imageViewAvatar = [[UIImageView alloc] init];
+        _imageViewAvatar.layer.cornerRadius = AVATOR_WIDTH / 2;
+        _imageViewAvatar.layer.borderColor = [UIColor whiteColor].CGColor;
+        _imageViewAvatar.layer.borderWidth = 4.0f;
+        _imageViewAvatar.clipsToBounds = YES;
+        _imageViewAvatar.userInteractionEnabled = YES;
+    }
+    return _imageViewAvatar;
 }
 @end

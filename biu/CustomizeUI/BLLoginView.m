@@ -26,7 +26,7 @@
 @property (strong, nonatomic) UIButton *btnLogin;
 @property (strong, nonatomic) UIButton *btnLoginWithWeChat;
 @property (strong, nonatomic) UIButton *btnLoginWithWeibo;
-@property (retain, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
+@property (strong, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
 @end
 
 @implementation BLLoginView
@@ -48,11 +48,13 @@
         _tfPhoneNumber = [[BLTextField alloc] init];
         _tfPhoneNumber.placeholder = NSLocalizedString(@"Phone", nil);
         _tfPhoneNumber.keyboardType = UIKeyboardTypePhonePad;
+        [_tfPhoneNumber showClearButton];
         [self addSubview:_tfPhoneNumber];
         
         _tfPassword = [[BLTextField alloc] init];
         _tfPassword.placeholder = NSLocalizedString(@"Password", nil);
         _tfPassword.secureTextEntry = YES;
+        [_tfPassword showClearButton];
         [self addSubview:_tfPassword];
         
         _btnClose = [[UIButton alloc] init];

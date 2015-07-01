@@ -21,6 +21,8 @@
 @property (strong, nonatomic) Partner *partner;
 @property (strong, nonatomic) NSNumber *latitude;
 @property (strong, nonatomic) NSNumber *longitude;
+//@property (strong, nonatomic) NSString *avatarCycleUrl;
+//@property (strong, nonatomic) NSString *avatarRectangleUrl;
 
 /*
  * return invalid reason otherwise return nil

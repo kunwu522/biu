@@ -17,7 +17,7 @@ static NSString *MAX_AGE = @"max_age";
 static NSString *PREFER_ZODIACS = @"prefer_zodiacs";
 static NSString *PREFER_STYLES = @"prefer_styles";
 
-@synthesize partnerId, userId, sexualities, minAge, maxAge, preferZodiacs, preferStyles;
+@synthesize partnerId, sexualities, minAge, maxAge, preferZodiacs, preferStyles;
 
 - (id)initWithFromUserDefault {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -80,6 +80,57 @@ static NSString *PREFER_STYLES = @"prefer_styles";
                                      [NSNumber numberWithInteger:BLStyleTypeWomanSuccessFul] : NSLocalizedString(@"Business", nil),
                                      [NSNumber numberWithInteger:BLStyleTypeWomanAll] : NSLocalizedString(@"All", nil)};
     return [stringOfStyles objectForKey:[NSNumber numberWithInteger:style]];
+}
+
++ (BLGender)genderBySexuality:(BLSexualityType)sexuality {
+    BLGender gender = BLGenderNone;
+    switch (sexuality) {
+        case BLSexualityTypeMan:
+        case BLSexualityType1:
+        case BLSexualityType0:
+            gender = BLGenderMale;
+            break;
+        case BLSexualityTypeWoman:
+        case BLSexualityTypeT:
+        case BLSexualityTypeP:
+            gender = BLGenderFemale;
+            break;
+        default:
+            break;
+    }
+
+    return gender;
+}
+
++ (BLGender)genderByStyle:(BLStyleType)style {
+    BLGender gender = BLGenderNone;
+    switch (style) {
+        case BLStyleTypeManAll:
+        case BLStyleTypeManCommon:
+        case BLStyleTypeManDS:
+        case BLStyleTypeManFashion:
+        case BLStyleTypeManGFS:
+        case BLStyleTypeManRich:
+        case BLStyleTypeManSport:
+        case BLStyleTypeManTalent:
+        case BLStyleTypeManYoung:
+            gender = BLGenderMale;
+            break;
+        case BLStyleTypeWomanAll:
+        case BLStyleTypeWomanBFM:
+        case BLStyleTypeWomanDS:
+        case BLStyleTypeWomanGodness:
+        case BLStyleTypeWomanLovely:
+        case BLStyleTypeWomanSexy:
+        case BLStyleTypeWomanSport:
+        case BLStyleTypeWomanSuccessFul:
+        case BLStyleTypeWomanTalent:
+            gender = BLGenderFemale;
+            break;
+        default:
+            break;
+    }
+    return gender;
 }
 
 @end

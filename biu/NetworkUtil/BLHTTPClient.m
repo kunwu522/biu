@@ -8,8 +8,11 @@
 
 #import "BLHTTPClient.h"
 
-//static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
+#if TARGET_IPHONE_SIMULATOR
 static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
+#else
+static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
+#endif
 
 @implementation BLHTTPClient
 
@@ -120,8 +123,9 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
 }
 
 - (void)createProfile:(Profile *)profile
-       success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
-       failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+                 user:(User *)user
+              success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
     if (!profile) {
         return;
     }
@@ -130,9 +134,9 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSString *dateString = [dateFormatter stringFromDate:profile.birthday];
     
-    NSDictionary *parameters = @{@"profile" : @{@"user_id" : profile.userId,
+    NSDictionary *parameters = @{@"profile" : @{@"user_id" : user.userId,
                                                 @"gender" : [NSNumber numberWithInteger:profile.gender],
-                                                @"sexuality" : [NSNumber numberWithInteger:profile.sexuality],
+                                                @"sexuality_id" : [NSNumber numberWithInteger:profile.sexuality],
                                               @"birthday" : dateString,
                                              @"zodiac_id" : [NSNumber numberWithInteger:profile.zodiac],
                                               @"style_id" : [NSNumber numberWithInteger:profile.style]}};
@@ -141,6 +145,7 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
 }
 
 - (void)updateProfile:(Profile *)profile
+                 user:(User *)user
               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
     if (!profile) {
@@ -155,23 +160,25 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSString *dateString = [dateFormatter stringFromDate:profile.birthday];
     
-    NSDictionary *parameters = @{@"profile" : @{@"user_id" : profile.userId,
-                                                @"gender" : [NSNumber numberWithInteger:profile.gender],
-                                                @"birthday" : dateString,
-                                                @"zodiac_id" : [NSNumber numberWithInteger:profile.zodiac],
-                                                @"style_id" : [NSNumber numberWithInteger:profile.style]}};
+    NSDictionary *parameters = @{@"profile" : @{@"user_id" : user.userId,
+                                                 @"gender" : [NSNumber numberWithInteger:profile.gender],
+                                           @"sexuality_id" : [NSNumber numberWithInteger:profile.sexuality],
+                                               @"birthday" : dateString,
+                                              @"zodiac_id" : [NSNumber numberWithInteger:profile.zodiac],
+                                               @"style_id" : [NSNumber numberWithInteger:profile.style]}};
     
     [self PUT:[NSString stringWithFormat:@"profiles/%@.json", profile.profileId] parameters:parameters success:success failure:failure];
 }
 
 - (void)createPartner:(Partner *)partner
+                 user:(User *)user
               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
     if (!partner) {
         return;
     }
     
-    NSDictionary *parameters = @{@"partner" : @{@"user_id" : partner.userId,
+    NSDictionary *parameters = @{@"partner" : @{@"user_id" : user.userId,
                                                 @"sexuality_ids" : partner.sexualities,
                                                 @"min_age" : partner.minAge,
                                                 @"max_age" : partner.maxAge,
@@ -181,6 +188,7 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
 }
 
 - (void)updatePartner:(Partner *)partner
+                 user:(User *)user
               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
     if (!partner) {
@@ -191,16 +199,16 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
         return;
     }
     
-    NSDictionary *parameters = @{@"partner" : @{@"user_id" : partner.userId,
-                                                @"sexuality_ids" : partner.sexualities,
+    NSDictionary *parameters = @{@"partner" : @{@"user_id" : user.userId,
+                                          @"sexuality_ids" : partner.sexualities,
                                                 @"min_age" : partner.minAge,
                                                 @"max_age" : partner.maxAge,
-                                                @"zodiac_ids" : partner.preferZodiacs,
-                                                @"style_ids" : partner.preferStyles}};
+                                             @"zodiac_ids" : partner.preferZodiacs,
+                                              @"style_ids" : partner.preferStyles}};
     [self PUT:[NSString stringWithFormat:@"partners/%@.json", partner.partnerId] parameters:parameters success:success failure:failure];
 }
 
-- (void)uploadAvatar:(Profile *)profile
+- (void)uploadAvatar:(User *)user
               avatar:(UIImage *)avatar
               isRect:(BOOL)isRect
              success:(void (^)(NSURLSessionDataTask *, id))success
@@ -208,10 +216,10 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
     NSString *url = nil;
     NSString *fileName = nil;
     if (isRect) {
-        url = [NSString stringWithFormat:@"rect/avatar/%@.json", profile.profileId];
+        url = [NSString stringWithFormat:@"rect/avatar/%@.json", user.userId];
         fileName = @"avatar_rect.jpg";
     } else {
-        url = [NSString stringWithFormat:@"cycle/avatar/%@.json", profile.profileId];
+        url = [NSString stringWithFormat:@"cycle/avatar/%@.json", user.userId];
         fileName = @"avatar_cycle.jpg";
     }
     
@@ -244,7 +252,7 @@ static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
         return;
     }
     NSDictionary *parameters = @{@"device" : @{@"token" : token,
-                                               @"user_id" : user.userId}};
+                                             @"user_id" : user.userId}};
     [self POST:@"device.json" parameters:parameters success:success failure:failure];
 }
 

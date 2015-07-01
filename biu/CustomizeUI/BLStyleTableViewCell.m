@@ -111,7 +111,7 @@ static const float CELL_HEIGHT = 109.3;
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.preferStyles count] >= 3) {
+    if ([self numberOfSelectedPreferStyle] >= 3) {
         return NO;
     } else {
         return YES;
@@ -126,7 +126,7 @@ static const float CELL_HEIGHT = 109.3;
             [self.delegate tableViewCell:self didChangeValue:[NSNumber numberWithInteger:self.style]];
         }
     } else {
-        if ([self.preferStyles count] < 3) {
+        if ([self numberOfSelectedPreferStyle] < 3) {
             [self.preferStyles addObject:[NSNumber numberWithInteger:[self styleTypeFromIndexItem:indexPath.item]]];
             if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
                 [self.delegate tableViewCell:self didChangeValue:self.preferStyles];
@@ -178,6 +178,17 @@ static const float CELL_HEIGHT = 109.3;
             cell.imageView.image = cell.unselectedImage;
         }
     }
+}
+
+- (NSInteger)numberOfSelectedPreferStyle {
+    int count = 0;
+    for (NSNumber *style in self.preferStyles) {
+        BLGender gender = [Partner genderBySexuality:self.sexuality];
+        if ([Partner genderByStyle:style.integerValue] == gender) {
+            count++;
+        }
+    }
+    return count;
 }
 
 #pragma mark -

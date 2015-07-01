@@ -10,4 +10,6 @@
 
 @interface BLTextField : UITextField
 
+- (void)showClearButton;
+
 @end

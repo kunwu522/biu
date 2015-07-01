@@ -38,24 +38,27 @@
 - (void)logout:(User *)user
        success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
        failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
-- (void)createProfile:(Profile *)profile
-              success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
-              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
-- (void)createPartner:(Partner *)partner
-              success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
-              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
-- (void)updateProfile:(Profile *)profile
-              success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
-              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
-- (void)uploadAvatar:(Profile *)porfile
+- (void)uploadAvatar:(User *)user
               avatar:(UIImage *)avatar
               isRect:(BOOL)isRect
              success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
-- (void)updatePartner:(Partner *)partner
+- (void)createProfile:(Profile *)profile
+                 user:(User *)user
               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
-
+- (void)createPartner:(Partner *)partner
+                 user:(User *)user
+              success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+- (void)updateProfile:(Profile *)profile
+                 user:(User *)user
+              success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+- (void)updatePartner:(Partner *)partner
+                 user:(User *)user
+              success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 - (void)updateLocation:(User *)user
                success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
                failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;

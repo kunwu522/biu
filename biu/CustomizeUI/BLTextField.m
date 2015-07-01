@@ -17,6 +17,8 @@
 
 @implementation BLTextField
 
+#pragma mark -
+#pragma mark Initialization
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
@@ -38,6 +40,25 @@
     self.textColor = [UIColor whiteColor];
 }
 
+#pragma mark -
+#pragma mark Public method
+- (void)showClearButton {
+    UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [clearButton setImage:[UIImage imageNamed:@"close_icon.png"] forState:UIControlStateNormal];
+    [clearButton addTarget:self action:@selector(clearTextField:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.rightViewMode = UITextFieldViewModeWhileEditing; //can be changed to UITextFieldViewModeNever,    UITextFieldViewModeWhileEditing,   UITextFieldViewModeUnlessEditing
+    [self setRightView:clearButton];
+}
+
+#pragma mark -
+#pragma mark Actions
+- (void)clearTextField:(id)sender {
+    self.text = @"";
+}
+
+#pragma mark -
+#pragma mark Customize Textfield
 - (void)drawRect:(CGRect)rect {
     CALayer *border = [CALayer layer];
     CGFloat borderWidth = 1.0f;
@@ -57,6 +78,11 @@
 - (CGRect)editingRectForBounds:(CGRect)bounds {
     bounds.origin.x += 1;
     return bounds;
+}
+
+- (CGRect)rightViewRectForBounds:(CGRect)bounds {
+    CGFloat width = bounds.size.height - 5;
+    return CGRectMake(bounds.size.width - bounds.size.height, (bounds.size.height - width) * 0.5, width, width);
 }
 
 - (void)drawPlaceholderInRect:(CGRect)rect {

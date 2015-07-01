@@ -11,7 +11,7 @@
 @interface Partner : NSObject
 
 @property (strong, nonatomic) NSNumber *partnerId;
-@property (strong, nonatomic) NSNumber *userId;
+//@property (strong, nonatomic) NSNumber *userId;
 @property (assign, nonatomic) NSArray *sexualities;
 @property (strong, nonatomic) NSArray *preferZodiacs;
 @property (strong, nonatomic) NSNumber *minAge;
@@ -23,5 +23,7 @@
 - (void)save;
 
 + (NSString *)getStyleNameFromZodiac:(BLStyleType)style;
++ (BLGender)genderBySexuality:(BLSexualityType)sexuality;
++ (BLGender)genderByStyle:(BLStyleType)style;
 
 @end

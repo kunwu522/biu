@@ -72,19 +72,23 @@
     _tfPhoneNumber = [[BLTextField alloc] init];
     _tfPhoneNumber.placeholder = NSLocalizedString(@"Phone", nil);
     _tfPhoneNumber.keyboardType = UIKeyboardTypePhonePad;
+    _tfPhoneNumber.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self addSubview:_tfPhoneNumber];
     
     _tfPasscode = [[BLTextField alloc] init];
     _tfPasscode.placeholder = NSLocalizedString(@"Code", nil);
-    _tfPasscode.keyboardType = UIKeyboardTypePhonePad;
+    _tfPasscode.keyboardType = UIKeyboardTypeNumberPad;
+    _tfPasscode.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self addSubview:_tfPasscode];
     
     _tfUsername = [[BLTextField alloc] init];
     _tfUsername.placeholder = NSLocalizedString(@"Username", nil);
+    _tfUsername.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self addSubview:_tfUsername];
     
     _tfPassword = [[BLTextField alloc] init];
     _tfPassword.placeholder = NSLocalizedString(@"Password", nil);
+    _tfPasscode.clearButtonMode = UITextFieldViewModeWhileEditing;
     _tfPassword.secureTextEntry = YES;
     [self addSubview:_tfPassword];
     
@@ -369,6 +373,7 @@
 - (void)tapHandler:(UITapGestureRecognizer *)gesture {
     [_tfPhoneNumber resignFirstResponder];
     [_tfPasscode resignFirstResponder];
+    [_tfUsername resignFirstResponder];
     [_tfPassword resignFirstResponder];
 }
 

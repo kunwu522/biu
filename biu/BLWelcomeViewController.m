@@ -121,6 +121,8 @@ static double ICON_INITIAL_SIZE = 147.5;
     } else {
         [[BLHTTPClient sharedBLHTTPClient] login:delegate.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
             BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
+            delegate.currentUser = [[User alloc] initWithDictionary:responseObject];
+            [delegate.currentUser save];
             if (delegate.currentUser.profile && delegate.currentUser.partner) {
                 [self dismissViewControllerAnimated:NO completion:nil];
                 [self presentViewController:delegate.blurMenu animated:YES completion:nil];

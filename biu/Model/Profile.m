@@ -17,7 +17,7 @@ static NSString *ZODIAC = @"zodiac";
 static NSString *STYLE = @"style";
 static NSString *SEXUALITY = @"sexuality";
 
-@synthesize profileId, userId, username, gender, birthday, zodiac, style, avatarUrl;
+@synthesize profileId, username, gender, birthday, zodiac, style;
 
 - (id)initWithFromUserDefault {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -43,7 +43,6 @@ static NSString *SEXUALITY = @"sexuality";
         self.birthday = [[Profile dateFormatter] dateFromString:[dictionary objectForKey:@"birthday"]];
         self.style = (BLStyleType)[[dictionary objectForKey:@"style"] integerValue];
         self.zodiac = (BLZodiac)[[dictionary objectForKey:@"zodiac"] integerValue];
-        self.avatarUrl = [dictionary objectForKey:@"avatar_url"];
         self.sexuality = (BLSexualityType)[[dictionary objectForKey:@"sexuality"] integerValue];
     }
     return self;
@@ -51,10 +50,6 @@ static NSString *SEXUALITY = @"sexuality";
 
 - (void)save {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[NSNumber numberWithInteger:self.zodiac] forKey:@"zodiac"];
-    [defaults setObject:[NSNumber numberWithInteger:self.style] forKey:@"style"];
-    
-    
     [defaults setObject:self.profileId forKey:PROFILE_ID];
     [defaults setObject:[NSNumber numberWithInteger:self.gender] forKey:GENDER];
     [defaults setObject:self.birthday forKey:BIRTHDAY];

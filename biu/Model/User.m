@@ -12,6 +12,8 @@
 
 static NSString *USER_ID = @"user_id";
 static NSString *USERNAME = @"username";
+static NSString *AVATAR_CYCLE_URL = @"avatar_cycle_url";
+static NSString *AVATAR_RECTANGLE_URL = @"avatar_rectangle_url";
 
 @synthesize userId, username, password, email;
 
@@ -70,8 +72,12 @@ static NSString *USERNAME = @"username";
     if (self) {
         BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
         self.phone = [delegate.passwordItem objectForKey:(__bridge id)kSecAttrAccount];
-        NSData *pwd = [delegate.passwordItem objectForKey:(__bridge id)(kSecValueData)];
-        self.password = [[NSString alloc] initWithData:pwd encoding:NSUTF8StringEncoding];
+        NSObject *pwd = [delegate.passwordItem objectForKey:(__bridge id)(kSecValueData)];
+        if ([pwd isKindOfClass:[NSData class]]) {
+            self.password = [[NSString alloc] initWithData:(NSData *)pwd encoding:NSUTF8StringEncoding];
+        } else if ([pwd isKindOfClass:[NSString class]]) {
+            self.password = (NSString *)pwd;
+        }
         if ([self.phone isEqualToString:@""] || [self.password isEqualToString:@""]) {
             return nil;
         }
@@ -79,6 +85,8 @@ static NSString *USERNAME = @"username";
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         self.userId = [defaults objectForKey:USER_ID];
         self.username = [defaults objectForKey:USERNAME];
+//        self.avatarCycleUrl = [defaults objectForKey:AVATAR_CYCLE_URL];
+//        self.avatarRectangleUrl = [defaults objectForKey:AVATAR_RECTANGLE_URL];
         if (!self.userId || !self.username) {
             return nil;
         }
@@ -109,6 +117,7 @@ static NSString *USERNAME = @"username";
     }
     
     BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
+    
     if (![self.phone isEqualToString:[delegate.passwordItem objectForKey:(__bridge id)kSecAttrAccount]]) {
         [delegate.passwordItem setObject:self.phone forKey:(__bridge id)kSecAttrAccount];
     }
@@ -121,13 +130,10 @@ static NSString *USERNAME = @"username";
         return;
     }
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if (![defaults objectForKey:USER_ID]) {
-        [defaults setObject:self.userId forKey:USER_ID];
-    }
-    
-    if (![self.username isEqualToString:[defaults objectForKey:USERNAME]]) {
-        [defaults setObject:self.username forKey:USERNAME];
-    }
+    [defaults setObject:self.userId forKey:USER_ID];
+    [defaults setObject:self.username forKey:USERNAME];
+//    [defaults setObject:self.avatarCycleUrl forKey:AVATAR_CYCLE_URL];
+//    [defaults setObject:self.avatarRectangleUrl forKey:AVATAR_RECTANGLE_URL];
     
     if (self.profile == nil) {
         [defaults synchronize];

@@ -222,6 +222,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
                 }
             } else {
                 cell.sexuality = ((NSNumber *)self.sexualities.firstObject).integerValue;
+                
                 cell.title.text = NSLocalizedString(@"Styles you prefer", nil);
             }
             cell.allowMultiSelected = YES;
@@ -333,6 +334,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
     switch (cell.tag) {
         case BLPartnerSectionSexuality:
             _sexualities = (NSArray *)value;
+            [self removePreferStylesBaseOnSexuality];
             [self.tableView reloadData];
             break;
         case BLPartnerSectionAgeRange:
@@ -355,7 +357,6 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
 #pragma mark - handle action
 - (void)createPartner:(id)sender {
     Partner *partner = [Partner new];
-    partner.userId = self.currentUser.userId;
     partner.sexualities = _sexualities;
     partner.minAge = _minAge;
     partner.maxAge = _maxAge;
@@ -365,7 +366,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(timerfired) userInfo:nil repeats:YES];
     if (self.profile) {
         _createProfileState = BLRequestStateStarted;
-        [[BLHTTPClient sharedBLHTTPClient] createProfile:self.profile success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[BLHTTPClient sharedBLHTTPClient] createProfile:self.profile user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"create profile successed...");
             self.profile.profileId = [responseObject objectForKey:@"profile_id"];
             BLAppDeleate *blDelegate = [[UIApplication sharedApplication] delegate];
@@ -382,7 +383,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
     }
     
     _createPartnerState = BLRequestStateStarted;
-    [[BLHTTPClient sharedBLHTTPClient] createPartner:partner success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[BLHTTPClient sharedBLHTTPClient] createPartner:partner user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"create profile successed, partner id: %@.", [responseObject objectForKey:@"partner_id"]);
         partner.partnerId = [responseObject objectForKey:@"partner_id"];
         BLAppDeleate *blDelegate = [[UIApplication sharedApplication] delegate];
@@ -406,10 +407,11 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
     self.currentUser.partner.preferZodiacs = _preferZodiacs;
     self.currentUser.partner.preferStyles = _preferStyles;
     
-    [[BLHTTPClient sharedBLHTTPClient] updatePartner:self.currentUser.partner success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[BLHTTPClient sharedBLHTTPClient] updatePartner:self.currentUser.partner user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Update partner successed...");
         [self.currentUser.partner save];
-        [self dismissViewControllerAnimated:YES completion:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Save Successed!", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [av show];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"Update partner failed. Error: %@", error.localizedDescription);
         NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
@@ -473,6 +475,19 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
     return NO;
 }
 
+- (void)removePreferStylesBaseOnSexuality {
+    if (![self isBisexual]) {
+        BLGender gender = [Partner genderBySexuality:((NSNumber *)self.sexualities.firstObject).integerValue];
+        NSMutableArray *preferStyles = [NSMutableArray array];
+        for (NSNumber *style in self.preferStyles) {
+            if ([Partner genderByStyle:style.integerValue] == gender) {
+                [preferStyles addObject:style];
+            }
+        }
+        self.preferStyles = (NSArray *)preferStyles;
+    }
+}
+
 #pragma mark - Getter and Setter
 - (UIButton *)btnBack {
     if (!_btnBack) {
@@ -521,8 +536,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
 
 - (User *)currentUser {
     if (!_currentUser) {
-        BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
-        _currentUser = delegate.currentUser;
+        _currentUser = [[User alloc] initWithFromUserDefault];
     }
     return _currentUser;
 }

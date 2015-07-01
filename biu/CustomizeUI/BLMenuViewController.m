@@ -63,7 +63,7 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@", [BLHTTPClient blBaseURL], self.currentUser.profile.profileId]]
+    [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@", [BLHTTPClient blBaseURL], self.currentUser.userId]]
                             placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
                                      options:SDWebImageRefreshCached];
     self.lbUsername.text = self.currentUser.username;
@@ -126,6 +126,7 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
         _avatarImageView.layer.cornerRadius = 97.0 / 2;
         _avatarImageView.layer.borderWidth = 4.0f;
         _avatarImageView.layer.borderColor = [[UIColor whiteColor] CGColor];
+        _avatarImageView.clipsToBounds = YES;
     }
     return _avatarImageView;
 }
