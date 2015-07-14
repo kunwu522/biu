@@ -31,10 +31,9 @@
 @synthesize sexuality = _sexuality;
 @synthesize preferStyles = _preferStyles;
 
-static const float INSET_LEFT_RIGHT = 42.7f;
-static const float MIN_INTERITEM_SPACING = 5.0f;
-static const float MIN_LINE_SPACING = 21.5f;
-static const float CELL_HEIGHT = 109.3;
+static const float MIN_LINE_SPACING = 21.0f;
+static const float CELL_HEIGHT = 120.0;
+static const float CELL_WIDTH = 90.0;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -44,11 +43,12 @@ static const float CELL_HEIGHT = 109.3;
         self.gender = BLGenderMale;
         
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        layout.sectionInset = UIEdgeInsetsMake(30, INSET_LEFT_RIGHT, 30, INSET_LEFT_RIGHT);
-        layout.minimumInteritemSpacing = MIN_INTERITEM_SPACING;
+        CGFloat interitemSpacing = ([[UIScreen mainScreen] bounds].size.width - ([BLGenernalDefinition resolutionForDevices:CELL_WIDTH] * 3)) / 4;
+        layout.sectionInset = UIEdgeInsetsMake([BLGenernalDefinition resolutionForDevices:30.0f], interitemSpacing,
+                                               [BLGenernalDefinition resolutionForDevices:30.0f], interitemSpacing);
+        layout.minimumInteritemSpacing = interitemSpacing;
         layout.minimumLineSpacing = MIN_LINE_SPACING;
-        CGFloat width = (self.frame.size.width - (INSET_LEFT_RIGHT * 2) - (MIN_INTERITEM_SPACING * 2)) / 3;
-        layout.itemSize = CGSizeMake(width, CELL_HEIGHT);
+        layout.itemSize = CGSizeMake([BLGenernalDefinition resolutionForDevices:CELL_WIDTH], [BLGenernalDefinition resolutionForDevices:CELL_HEIGHT]);
         
         _collectionView = [[UICollectionView alloc] initWithFrame:self.content.bounds collectionViewLayout:layout];
         _collectionView.backgroundColor = [UIColor clearColor];
@@ -289,10 +289,10 @@ static const float CELL_HEIGHT = 109.3;
     self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.width)];
     [self addSubview:self.imageView];
     
-    UIFont *font = [BLFontDefinition normalFont:20.0f];
+    UIFont *font = [BLFontDefinition normalFont:18.0f];
     self.style = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height - font.lineHeight, self.frame.size.width, font.lineHeight)];
     self.style.backgroundColor = [UIColor clearColor];
-    self.style.font = [BLFontDefinition normalFont:20.0f];
+    self.style.font = [BLFontDefinition normalFont:18.0f];
     self.style.textColor = [BLColorDefinition fontGrayColor];
     self.style.textAlignment = NSTextAlignmentCenter;
     self.style.numberOfLines = 1;

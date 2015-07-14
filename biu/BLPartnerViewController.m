@@ -11,7 +11,10 @@
 #import "BLAgeRangeTableViewCell.h"
 #import "BLZodiacTableViewCell.h"
 #import "BLStyleTableViewCell.h"
-#import "UIViewController+BLBlurMenu.h"
+#import "BLMatchViewController.h"
+#import "BLMenuNavController.h"
+#import "BLMenuViewController.h"
+#import "UIViewController+BLMenuNavController.h"
 
 #import "Masonry.h"
 
@@ -30,16 +33,13 @@ typedef NS_ENUM(NSUInteger, BLRequestState) {
 @property (strong, nonatomic) NSNumber *maxAge;
 @property (strong, nonatomic) NSArray *preferZodiacs;
 @property (strong, nonatomic) NSArray *preferStyles;
-
 @property (strong, nonatomic) UIButton *btnBack;
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) UIImageView *imageViewAvator;
 @property (strong, nonatomic) UIButton *btnMenu;
 @property (strong, nonatomic) UIButton *btnBackToRoot;
-
 @property (assign, nonatomic) BLRequestState createProfileState;
 @property (assign, nonatomic) BLRequestState createPartnerState;
-
 @property (strong, nonatomic) NSTimer *timer;
 
 @end
@@ -68,9 +68,32 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
     self.view.backgroundColor = [BLColorDefinition backgroundGrayColor];
     
+    [self.view addSubview:self.tableView];
+    if (self.partnerViewType == BLPartnerViewControllerCreate) {
+        [self.view addSubview:self.btnBack];
+    } else {
+        [self.view addSubview:self.btnMenu];
+        [self.view addSubview:self.btnBackToRoot];
+        
+        [self.btnMenu mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.btnMenu.superview).with.offset([BLGenernalDefinition resolutionForDevices:31.2f]);
+            make.right.equalTo(self.btnMenu.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.8f]);
+            make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:45.3]]);
+        }];
+        
+        [self.btnBackToRoot mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.btnBackToRoot.superview).with.offset([BLGenernalDefinition resolutionForDevices:31.2f]);
+            make.left.equalTo(self.btnBackToRoot.superview).with.offset([BLGenernalDefinition resolutionForDevices:20.8f]);
+            make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:45.3]]);
+        }];
+    }
+    
+    [self blLayoutSubViews];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
     if (self.partnerViewType == BLPartnerViewControllerUpdate && self.currentUser.partner) {
         _minAge = self.currentUser.partner.minAge;
         _maxAge = self.currentUser.partner.maxAge;
@@ -84,30 +107,6 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
         _preferZodiacs = [NSArray array];
         _preferStyles = [NSArray array];
     }
-    
-    [self.view addSubview:self.tableView];
-    if (self.partnerViewType == BLPartnerViewControllerCreate) {
-        [self.view addSubview:self.btnBack];
-    } else {
-        [self.view addSubview:self.btnMenu];
-        [self.view addSubview:self.btnBackToRoot];
-        
-        [self.btnMenu mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.btnMenu.superview).with.offset(31.2);
-            make.right.equalTo(self.btnMenu.superview).with.offset(-20.8);
-            make.width.equalTo(@45.3);
-            make.height.equalTo(@45.3);
-        }];
-        
-        [self.btnBackToRoot mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.btnBackToRoot.superview).with.offset(31.2f);
-            make.left.equalTo(self.btnBackToRoot.superview).with.offset(20.8f);
-            make.width.equalTo(@45.3);
-            make.height.equalTo(@45.3);
-        }];
-    }
-    
-    [self blLayoutSubViews];
 }
 
 - (void)blLayoutSubViews {
@@ -117,10 +116,9 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
     
     if (self.partnerViewType == BLPartnerViewControllerCreate) {
         [self.btnBack mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_btnBack.superview).with.offset(31.2f);
-            make.left.equalTo(_btnBack.superview).with.offset(20.8f);
-            make.width.equalTo(@45.3);
-            make.height.equalTo(@45.3);
+            make.top.equalTo(_btnBack.superview).with.offset([BLGenernalDefinition resolutionForDevices:31.2f]);
+            make.left.equalTo(_btnBack.superview).with.offset([BLGenernalDefinition resolutionForDevices:20.8f]);
+            make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:45.3]]);
         }];
     }
 }
@@ -254,9 +252,8 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
             
             [button mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(button.superview);
-                make.left.equalTo(button.superview).with.offset(20.0f);
-                make.bottom.equalTo(button.superview).with.offset(-20.0f);
-                make.right.equalTo(button.superview).with.offset(-20.0f);
+                make.left.equalTo(button.superview).with.offset([BLGenernalDefinition resolutionForDevices:20.0f]);
+                make.bottom.right.equalTo(button.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.0f]);
             }];
             return cell;
             break;
@@ -273,19 +270,19 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
             return 10.0f;
             break;
         case BLPartnerSectionSexuality:
-            return 300.0f;
+            return [BLGenernalDefinition resolutionForDevices:300.0f];
             break;
         case BLPartnerSectionAgeRange:
-            return 350.0f;
+            return [BLGenernalDefinition resolutionForDevices:350.0f];
             break;
         case BLPartnerSectionZodiac:
-            return 640.0f;
+            return [BLGenernalDefinition resolutionForDevices:670.0f];
             break;
         case BLPartnerSectionStyle:
-            return 500.0f;
+            return [BLGenernalDefinition resolutionForDevices:530.0f];
             break;
         case BLPartnerSectionButton:
-            return 90.0f;
+            return [BLGenernalDefinition resolutionForDevices:90.0f];
         default:
             break;
     }
@@ -294,7 +291,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (section == BLPartnerSectionHeader) {
-        return 231.8f;
+        return [BLGenernalDefinition resolutionForDevices:231.8f];
     }
     return 0;
 }
@@ -311,7 +308,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
         [sectionHeaderView addSubview:imageView];
         
         _imageViewAvator = [[UIImageView alloc] init];
-        _imageViewAvator.layer.cornerRadius = AVATOR_WIDTH / 2;
+        _imageViewAvator.layer.cornerRadius = [BLGenernalDefinition resolutionForDevices:AVATOR_WIDTH] / 2;
         _imageViewAvator.layer.borderColor = [UIColor whiteColor].CGColor;
         _imageViewAvator.layer.borderWidth = 4.0f;
         _imageViewAvator.image = [UIImage imageNamed:@"partner_avator.png"];
@@ -320,9 +317,9 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
         
         [_imageViewAvator mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(_imageViewAvator.superview.mas_centerX);
-            make.top.equalTo(_imageViewAvator.superview).with.offset(95.8f);
-            make.width.equalTo([NSNumber numberWithFloat:AVATOR_WIDTH]);
-            make.height.equalTo([NSNumber numberWithFloat:AVATOR_WIDTH]);
+            make.top.equalTo(_imageViewAvator.superview).with.offset([BLGenernalDefinition resolutionForDevices:95.8f]);
+            make.width.equalTo([NSNumber numberWithFloat:[BLGenernalDefinition resolutionForDevices:AVATOR_WIDTH]]);
+            make.height.equalTo([NSNumber numberWithFloat:[BLGenernalDefinition resolutionForDevices:AVATOR_WIDTH]]);
         }];
         return sectionHeaderView;
     }
@@ -369,8 +366,6 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
         [[BLHTTPClient sharedBLHTTPClient] createProfile:self.profile user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"create profile successed...");
             self.profile.profileId = [responseObject objectForKey:@"profile_id"];
-            BLAppDeleate *blDelegate = [[UIApplication sharedApplication] delegate];
-            blDelegate.currentUser.profile = self.profile;
             [self.profile save];
             _createProfileState = BLRequestStateFinished;
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -386,8 +381,6 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
     [[BLHTTPClient sharedBLHTTPClient] createPartner:partner user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"create profile successed, partner id: %@.", [responseObject objectForKey:@"partner_id"]);
         partner.partnerId = [responseObject objectForKey:@"partner_id"];
-        BLAppDeleate *blDelegate = [[UIApplication sharedApplication] delegate];
-        blDelegate.currentUser.partner = partner;
         [partner save];
         _createPartnerState = BLRequestStateFinished;
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -437,9 +430,17 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
 
 - (void)timerfired {
     if (_createPartnerState == BLRequestStateFinished && _createProfileState == BLRequestStateFinished) {
-        BLAppDeleate *blDelegate = [[UIApplication sharedApplication] delegate];
+
+        // Create master navigation controller
+        BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
+        BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
+        UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
+        masterNavViewController.navigationBarHidden = YES;
+        // Create BL Menu view controller
+        BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
+                                                                  menuViewController:menuViewController];
         [self dismissViewControllerAnimated:NO completion:nil];
-        [self.navigationController presentViewController:blDelegate.blurMenu animated:YES completion:nil];
+        [self presentViewController:menuNavController animated:YES completion:nil];
         [_timer invalidate];
     }
     if (_createProfileState == BLRequestStateFailed || _createPartnerState == BLRequestStateFailed) {

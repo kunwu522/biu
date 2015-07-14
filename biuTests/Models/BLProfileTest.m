@@ -63,7 +63,7 @@
     NSUInteger expectedAge = 27;
     NSUInteger age = [Profile getAgeFromBirthday:birthday];
     
-    XCTAssertEqual(age, expectedAge, @"Age(%ld) did not match the expected age(%ld)", age, expectedAge);
+    XCTAssertEqual(age, expectedAge, @"Age(%ld) did not match the expected age(%ld)", (unsigned long)(unsigned long)(unsigned long)age, expectedAge);
 }
 
 - (void)testGetZodiac {

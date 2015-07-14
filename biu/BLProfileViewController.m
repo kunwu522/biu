@@ -14,7 +14,7 @@
 #import "BLStyleTableViewCell.h"
 #import "BLSexualityTableViewCell.h"
 #import "BLPartnerViewController.h"
-#import "UIViewController+BLBlurMenu.h"
+#import "UIViewController+BLMenuNavController.h"
 #import "Masonry.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
@@ -84,17 +84,15 @@ static const float AVATOR_WIDTH = 163.0f;
         [self.view addSubview:self.btnBackToRoot];
         
         [self.btnMenu mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.btnMenu.superview).with.offset(31.2);
-            make.right.equalTo(self.btnMenu.superview).with.offset(-20.8);
-            make.width.equalTo(@45.3);
-            make.height.equalTo(@45.3);
+            make.top.equalTo(self.btnMenu.superview).with.offset([BLGenernalDefinition resolutionForDevices:31.2f]);
+            make.right.equalTo(self.btnMenu.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.8f]);
+            make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:45.3f]]);
         }];
         
         [self.btnBackToRoot mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.btnBackToRoot.superview).with.offset(31.2f);
-            make.left.equalTo(self.btnBackToRoot.superview).with.offset(20.8f);
-            make.width.equalTo(@45.3);
-            make.height.equalTo(@45.3);
+            make.top.equalTo(self.btnBackToRoot.superview).with.offset([BLGenernalDefinition resolutionForDevices:31.2f]);
+            make.left.equalTo(self.btnBackToRoot.superview).with.offset([BLGenernalDefinition resolutionForDevices:20.8f]);
+            make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:45.3f]]);
         }];
     }
 }
@@ -120,7 +118,7 @@ static const float AVATOR_WIDTH = 163.0f;
     [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@",
                                                                    [BLHTTPClient blBaseURL],self.currentUser.userId]]
                             placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
-                                     options:SDWebImageRefreshCached];
+                                     options:SDWebImageRefreshCached | SDWebImageHandleCookies];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -247,9 +245,8 @@ static const float AVATOR_WIDTH = 163.0f;
             
             [button mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(button.superview);
-                make.left.equalTo(button.superview).with.offset(20.0f);
-                make.bottom.equalTo(button.superview).with.offset(-20.0f);
-                make.right.equalTo(button.superview).with.offset(-20.0f);
+                make.left.equalTo(button.superview).with.offset([BLGenernalDefinition resolutionForDevices:20.0f]);
+                make.bottom.right.equalTo(button.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.0f]);
             }];
             
             return cell;
@@ -267,22 +264,22 @@ static const float AVATOR_WIDTH = 163.0f;
             return 10.0f;
             break;
         case SECTION_GENDER:
-            return 287.0f;
+            return [BLGenernalDefinition resolutionForDevices:287.0f];
             break;
         case SECTION_SEXUALITY:
-            return 300.0f;
+            return [BLGenernalDefinition resolutionForDevices:300.0f];
             break;
         case SECTION_BIRTHDAY:
-            return 343.9f;
+            return [BLGenernalDefinition resolutionForDevices:343.9f];
             break;
         case SECTION_ZODIAC_AND_AGE:
-            return 250.0f;
+            return [BLGenernalDefinition resolutionForDevices:250.0f];
             break;
         case SECTION_STYLE:
-            return 500.0f;
+            return [BLGenernalDefinition resolutionForDevices:520.0f];
             break;
         case SECTION_BUTTON:
-            return 90.0f;
+            return [BLGenernalDefinition resolutionForDevices:90.0f];
             break;
         default:
             break;
@@ -292,7 +289,7 @@ static const float AVATOR_WIDTH = 163.0f;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (section == SECTION_HEADER) {
-        return 231.8f;
+        return [BLGenernalDefinition resolutionForDevices:231.8f];
     }
     return 0;
 }
@@ -312,9 +309,8 @@ static const float AVATOR_WIDTH = 163.0f;
         
         [self.imageViewAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self.imageViewAvatar.superview.mas_centerX);
-            make.top.equalTo(self.imageViewAvatar.superview).with.offset(95.8f);
-            make.width.equalTo([NSNumber numberWithFloat:AVATOR_WIDTH]);
-            make.height.equalTo([NSNumber numberWithFloat:AVATOR_WIDTH]);
+            make.top.equalTo(self.imageViewAvatar.superview).with.offset([BLGenernalDefinition resolutionForDevices:95.8f]);
+            make.width.height.equalTo([NSNumber numberWithFloat:[BLGenernalDefinition resolutionForDevices:AVATOR_WIDTH]]);
         }];
         
         UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showTakingPhotoView:)];
@@ -453,7 +449,7 @@ static const float AVATOR_WIDTH = 163.0f;
 - (void)setProfileViewType:(BLProfileViewType)profileViewType {
     _profileViewType = profileViewType;
     if (profileViewType == BLProfileViewTypeUpdate) {
-        BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
+        BLAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
         _currentUser = delegate.currentUser;
         _gender = _currentUser.profile.gender;
         _birthday = _currentUser.profile.birthday;
@@ -495,7 +491,7 @@ static const float AVATOR_WIDTH = 163.0f;
 - (UIImageView *)imageViewAvatar {
     if (!_imageViewAvatar) {
         _imageViewAvatar = [[UIImageView alloc] init];
-        _imageViewAvatar.layer.cornerRadius = AVATOR_WIDTH / 2;
+        _imageViewAvatar.layer.cornerRadius = [BLGenernalDefinition resolutionForDevices:AVATOR_WIDTH] / 2;
         _imageViewAvatar.layer.borderColor = [UIColor whiteColor].CGColor;
         _imageViewAvatar.layer.borderWidth = 4.0f;
         _imageViewAvatar.clipsToBounds = YES;

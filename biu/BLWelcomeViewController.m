@@ -7,13 +7,14 @@
 //
 
 #import "BLWelcomeViewController.h"
-#import "BLAppDeleate.h"
-#import "BLLoginViewController.h"
+#import "BLAppDelegate.h"
 #import "BLLoginView.h"
 #import "BLSignupView.h"
-#import "BLSignupViewController.h"
 #import "BLMatchViewController.h"
+#import "BLMenuNavController.h"
+#import "BLMenuViewController.h"
 #import "KeychainItemWrapper.h"
+#import "BLProfileViewController.h"
 #import "Masonry.h"
 
 #import "BLTextField.h"
@@ -21,25 +22,16 @@
 
 @interface BLWelcomeViewController () <BLSignupViewDelegate, BLLoginViewDelegate>
 
-@property (retain, nonatomic) KeychainItemWrapper *passwordItem;
-
-@property (retain, nonatomic) UIImageView * logo;
-@property (retain, nonatomic) UILabel * biuTitle;
-@property (retain, nonatomic) UILabel * biuSubtitle;
-
-//For login view
-@property (retain, nonatomic) BLTextField * tfEmail;
-@property (retain, nonatomic) BLTextField * txtPassword;
-@property (retain, nonatomic) UILabel *lbLoginWith;
-@property (retain, nonatomic) UIButton *btnLogin;
-@property (retain, nonatomic) UIButton *btnSignup;
-@property (retain, nonatomic) UILabel *lbSlogan;
-
-@property (retain, nonatomic) UIView *background;
-@property (retain, nonatomic) UIImageView *imageView;
-
+@property (strong, nonatomic) UIImageView * logo;
+@property (strong, nonatomic) UILabel * biuTitle;
+@property (strong, nonatomic) UILabel * biuSubtitle;
+@property (strong, nonatomic) UIButton *btnLogin;
+@property (strong, nonatomic) UIButton *btnSignup;
+@property (strong, nonatomic) UILabel *lbSlogan;
+@property (strong, nonatomic) UIView *background;
+@property (strong, nonatomic) UIImageView *imageView;
+@property (strong, nonatomic) UINavigationController *fillingInfoNavController;
 @property (nonatomic) BOOL isLoginLayout;
-
 
 @end
 
@@ -47,7 +39,7 @@
 
 static double ICON_INITIAL_SIZE = 147.5;
 
-@synthesize masterNavController;
+//@synthesize masterNavController;
 
 #pragma mark - Life cycle
 - (void)viewDidLoad {
@@ -91,19 +83,18 @@ static double ICON_INITIAL_SIZE = 147.5;
     // Create constraints
     [_logo mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view.mas_centerX);
-        make.top.equalTo(self.view).with.offset(191.8);
-        make.height.equalTo([NSNumber numberWithDouble:ICON_INITIAL_SIZE]);
-        make.width.equalTo([NSNumber numberWithDouble:ICON_INITIAL_SIZE]);
+        make.top.equalTo(self.view).with.offset([BLGenernalDefinition resolutionForDevices:191.8f]);
+        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:ICON_INITIAL_SIZE]]);
     }];
     
     [_biuTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_logo.mas_centerX);
-        make.top.equalTo(_logo.mas_bottom).with.offset(79.7);
+        make.top.equalTo(_logo.mas_bottom).with.offset([BLGenernalDefinition resolutionForDevices:79.7f]);
     }];
     
     [_biuSubtitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_logo.mas_centerX);
-        make.top.equalTo(_biuTitle.mas_bottom).with.offset(40);
+        make.top.equalTo(_biuTitle.mas_bottom).with.offset([BLGenernalDefinition resolutionForDevices:40.0f]);
     }];
 }
 
@@ -115,19 +106,41 @@ static double ICON_INITIAL_SIZE = 147.5;
 - (void)viewDidAppear:(BOOL)animated {
     sleep(1);
     
-    BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
-    if (!delegate.currentUser) {
+//    BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
+    User *currentUser = [[User alloc] initWithFromUserDefault];
+    if (!currentUser) {
         [self showLoginUI];
     } else {
-        [[BLHTTPClient sharedBLHTTPClient] login:delegate.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
-            BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
-            delegate.currentUser = [[User alloc] initWithDictionary:responseObject];
-            [delegate.currentUser save];
-            if (delegate.currentUser.profile && delegate.currentUser.partner) {
+        [[BLHTTPClient sharedBLHTTPClient] login:currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
+            User *user = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
+            [user save];
+            BLAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+            if (!user.token) {
+                [[BLHTTPClient sharedBLHTTPClient] registToken:delegate.deviceToken user:user success:^(NSURLSessionDataTask *task, id responseObject) {
+                    NSLog(@"Regist device token successed.");
+                } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                    NSLog(@"Regist device token failed.");
+                }];
+            } else if (![user.token isEqualToString:delegate.deviceToken]) {
+                [[BLHTTPClient sharedBLHTTPClient] updateToken:delegate.deviceToken user:user success:^(NSURLSessionDataTask *task, id responseObject) {
+                    NSLog(@"Update device token successed.");
+                } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                    NSLog(@"Update device token failed.");
+                }];
+            }
+            
+            if (user.profile && user.partner) {
+                BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
+                BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
+                UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
+                masterNavViewController.navigationBarHidden = YES;
+                // Create BL Menu view controller
+                BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
+                                                                 menuViewController:menuViewController];
                 [self dismissViewControllerAnimated:NO completion:nil];
-                [self presentViewController:delegate.blurMenu animated:YES completion:nil];
+                [self presentViewController:menuNavController animated:YES completion:nil];
             } else {
-                [self presentViewController:delegate.fillingInfoNavController animated:YES completion:nil];
+                [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"Validate user failed: %@, code: %li", error.description, (long)error.code);
@@ -147,7 +160,6 @@ static double ICON_INITIAL_SIZE = 147.5;
         [self.view layoutIfNeeded];
         _biuTitle.transform = CGAffineTransformScale(_biuTitle.transform, 0.67, 0.67);
     } completion:^(BOOL finished) {
-        // TODO: show login input and button
         [UIView animateWithDuration:1.0 animations:^{
             _btnLogin.alpha = 1;
             _btnSignup.alpha = 1;
@@ -156,45 +168,19 @@ static double ICON_INITIAL_SIZE = 147.5;
     _isLoginLayout = YES;
 }
 
-- (BOOL)checkUserLogin {
-    BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
-    _passwordItem = delegate.passwordItem;
-    
-    NSString *username = [_passwordItem objectForKey:(__bridge id)kSecAttrAccount];
-    NSString *password = [_passwordItem objectForKey:(__bridge id)kSecValueData];
-    
-    if ([username isEqualToString:@""] || [password isEqualToString:@""]) {
-        return NO;
-    }
-    
-    //TODO: validate username&password by connection with server
-    
-    
-    return YES;
-}
-
-- (void)login {
-    
-}
-
-- (void)signup {
-    
-}
-
 - (void)loginViewLayout {
     [_logo mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).with.offset(120.7);
-        make.height.equalTo(@120.0);
-        make.width.equalTo(@120.0);
+        make.top.equalTo(self.view).with.offset([BLGenernalDefinition resolutionForDevices:120.7f]);
+        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:120.0f]]);
     }];
     
     [_biuTitle mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_logo.mas_bottom).with.offset(30.0f);
+        make.top.equalTo(_logo.mas_bottom).with.offset([BLGenernalDefinition resolutionForDevices:30.0f]);
     }];
     
     [_biuSubtitle mas_updateConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_logo.mas_centerX);
-        make.top.equalTo(_biuTitle.mas_bottom).with.offset(30.0f);
+        make.top.equalTo(_biuTitle.mas_bottom).with.offset([BLGenernalDefinition resolutionForDevices:30.0f]);
     }];
     
     _btnLogin = [[UIButton alloc] init];
@@ -218,25 +204,24 @@ static double ICON_INITIAL_SIZE = 147.5;
     _btnSignup.alpha = 0;
 
     [_lbSlogan mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_biuTitle.mas_bottom).with.offset(25.0);
-        make.left.equalTo(self.view).with.offset(47.2);
-        make.right.equalTo(self.view).with.offset(-47.2);
-        make.height.equalTo(@100);
+        make.top.equalTo(_biuTitle.mas_bottom).with.offset([BLGenernalDefinition resolutionForDevices:25.0f]);
+        make.left.equalTo(self.view).with.offset([BLGenernalDefinition resolutionForDevices:47.2f]);
+        make.right.equalTo(self.view).with.offset([BLGenernalDefinition resolutionForDevices:-47.2f]);
+        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:100.0f]]);
     }];
     
     [_btnLogin mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(_btnSignup.superview).with.offset(-5);
         make.left.equalTo(self.view).with.offset(5);
         make.right.equalTo(_btnSignup.mas_left).with.offset(-3);
-        make.height.equalTo(@40.0f);
+        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:40.0f]]);
         make.width.equalTo(_btnSignup.mas_width);
     }];
     
     [_btnSignup mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(_btnLogin.superview).with.offset(-5);
-//        make.left.equalTo(_btnLogin.mas_right).with.offset(5);
         make.right.equalTo(self.view).with.offset(-5);
-        make.height.equalTo(@40.0f);
+        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:40.0f]]);
         make.width.equalTo(_btnLogin.mas_width);
     }];
 }
@@ -267,29 +252,47 @@ static double ICON_INITIAL_SIZE = 147.5;
 #pragma mark - BLLoginView delegate and BLSignupView delegate
 - (void)didLoginWithCurrentUser:(User *)user {
     [self saveCurrentUser:user];
-    BLAppDeleate *appDelegate = [[UIApplication sharedApplication] delegate];
-    [self presentViewController:appDelegate.blurMenu animated:YES completion:nil];
+    BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
+    BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
+    UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
+    masterNavViewController.navigationBarHidden = YES;
+    // Create BL Menu view controller
+    BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
+                                                                menuViewController:menuViewController];
+    [self presentViewController:menuNavController animated:YES completion:nil];
 }
 
 - (void)didSignupWithNewUser:(User *)user {
     [self saveCurrentUser:user];
-    BLAppDeleate *appDelegate = [[UIApplication sharedApplication] delegate];
-    [self presentViewController:appDelegate.fillingInfoNavController animated:YES completion:nil];
+    [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
 }
 
 #pragma mark - private method
 - (void)saveCurrentUser:(User *)user {
-    BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
+    BLAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     delegate.currentUser = user;
     [delegate.currentUser save];
     
-    [[BLHTTPClient sharedBLHTTPClient] deviceToken:delegate.deviceToken user:delegate.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[BLHTTPClient sharedBLHTTPClient] registToken:delegate.deviceToken user:delegate.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"regist device successed.");
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"Regist device failed, error: %@", error.localizedDescription);
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"System error", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [av show];
     }];
+}
+
+#pragma mark -
+#pragma mark Getter
+- (UINavigationController *)fillingInfoNavController {
+    if (!_fillingInfoNavController) {
+        // Create filling information navigation controller
+        BLProfileViewController *profileViewController = [[BLProfileViewController alloc] initWithNibName:nil bundle:nil];
+        profileViewController.profileViewType = BLProfileViewTypeCreate;
+        _fillingInfoNavController = [[UINavigationController alloc] initWithRootViewController:profileViewController];
+        _fillingInfoNavController.navigationBarHidden = YES;
+    }
+    return _fillingInfoNavController;
 }
 
 @end

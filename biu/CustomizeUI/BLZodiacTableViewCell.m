@@ -30,10 +30,9 @@
 @synthesize allowMultiSelected = _allowMultiSelected;
 @synthesize preferZodiacs = _preferZodiacs;
 
-static const float INSET_LEFT_RIGHT = 42.7f;
-static const float MIN_INTERITEM_SPACING = 5.0f;
-static const float MIN_LINE_SPACING = 21.5f;
-static const float CELL_HEIGHT = 109.3;
+static const float MIN_LINE_SPACING = 21.0f;
+static const float CELL_HEIGHT = 120.0f;
+static const float CELL_WIDTH = 90.0f;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -150,11 +149,12 @@ static const float CELL_HEIGHT = 109.3;
 
 - (UICollectionView *)collectionView {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.sectionInset = UIEdgeInsetsMake(40, INSET_LEFT_RIGHT, 20, INSET_LEFT_RIGHT);
-    layout.minimumInteritemSpacing = MIN_INTERITEM_SPACING;
+    CGFloat interitemSpacing = ([[UIScreen mainScreen] bounds].size.width - ([BLGenernalDefinition resolutionForDevices:CELL_WIDTH] * 3)) / 4;
+    layout.sectionInset = UIEdgeInsetsMake([BLGenernalDefinition resolutionForDevices:30.0f], interitemSpacing,
+                                           [BLGenernalDefinition resolutionForDevices:30.0f], interitemSpacing);
+    layout.minimumInteritemSpacing = interitemSpacing;
     layout.minimumLineSpacing = MIN_LINE_SPACING;
-    CGFloat width = (self.frame.size.width - (INSET_LEFT_RIGHT * 2) - (MIN_INTERITEM_SPACING * 2)) / 3;
-    layout.itemSize = CGSizeMake(width, CELL_HEIGHT);
+    layout.itemSize = CGSizeMake([BLGenernalDefinition resolutionForDevices:CELL_WIDTH], [BLGenernalDefinition resolutionForDevices:CELL_HEIGHT]);
     
     _collectionView = [[UICollectionView alloc] initWithFrame:self.content.bounds collectionViewLayout:layout];
     _collectionView.backgroundColor = [UIColor clearColor];

@@ -70,22 +70,22 @@ static const int BL_AGE_RANGE_MAX_PICKER = 1;
     [_arrowImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_arrowImageView.superview.mas_centerX);
         make.centerY.equalTo(_arrowImageView.superview.mas_centerY);
-        make.width.equalTo(@60);
-        make.height.equalTo(@10);
+        make.width.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:60.0f]]);
+        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:10.0f]]);
     }];
     
     [_minAgePicker mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(_minAgePicker.superview.mas_centerY);
-        make.centerX.equalTo(_arrowImageView.mas_centerX).with.offset(-100.0f);
-        make.width.equalTo(@50);
-        make.height.equalTo(@200);
+        make.centerX.equalTo(_arrowImageView.mas_centerX).with.offset([BLGenernalDefinition resolutionForDevices:-100.0f]);
+        make.width.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:50.0f]]);
+        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:200.0f]]);
     }];
 
     [_maxAgePicker mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(_maxAgePicker.superview.mas_centerY);
-        make.centerX.equalTo(_arrowImageView.mas_centerX).with.offset(100.0f);
-        make.width.equalTo(@50);
-        make.height.equalTo(@200);
+        make.centerX.equalTo(_arrowImageView.mas_centerX).with.offset([BLGenernalDefinition resolutionForDevices:100.0f]);
+        make.width.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:50.0f]]);
+        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:200.0f]]);
     }];
 }
 

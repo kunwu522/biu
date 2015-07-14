@@ -31,6 +31,7 @@ static NSString *SEXUALITY = @"sexuality";
         self.birthday = [defaults objectForKey:BIRTHDAY];
         self.zodiac = (BLZodiac)[[defaults objectForKey:ZODIAC] integerValue];
         self.style = (BLStyleType)[[defaults objectForKey:STYLE] integerValue];
+        self.sexuality = (BLSexualityType)[[defaults objectForKey:SEXUALITY] integerValue];
     }
     return self;
 }

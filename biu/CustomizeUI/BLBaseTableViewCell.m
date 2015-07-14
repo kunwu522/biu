@@ -51,7 +51,7 @@
 - (void)layout {
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.mas_centerX);
-        make.top.equalTo(self).with.offset(28.1f);
+        make.top.equalTo(self).with.offset([BLGenernalDefinition resolutionForDevices:28.1f]);
     }];
     
     [self.content mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -69,8 +69,8 @@
         [_imageViewPadding mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(_imageViewPadding.superview.mas_centerX);
             make.bottom.equalTo(_imageViewPadding.superview);
-            make.width.equalTo(@269.3f);
-            make.height.equalTo(@16.0f);
+            make.width.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:269.3f]]);
+            make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:16.0f]]);
         }];
     }
 }

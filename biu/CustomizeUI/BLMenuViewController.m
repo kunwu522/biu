@@ -11,8 +11,8 @@
 #import "BLPasswordViewController.h"
 #import "BLPartnerViewController.h"
 #import "BLSettingViewController.h"
-#import "UIViewController+BLBlurMenu.h"
-#import "BLBlurMenu.h"
+#import "UIViewController+BLMenuNavController.h"
+#import "BLMenuNavController.h"
 #import "BLMenuButton.h"
 #import "Masonry.h"
 
@@ -65,14 +65,14 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
 - (void)viewWillAppear:(BOOL)animated {
     [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@", [BLHTTPClient blBaseURL], self.currentUser.userId]]
                             placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
-                                     options:SDWebImageRefreshCached];
+                                     options:SDWebImageRefreshCached | SDWebImageHandleCookies];
     self.lbUsername.text = self.currentUser.username;
 }
 
 #pragma mark -
 #pragma mark Actions
 - (void)hideMenu:(UITapGestureRecognizer *)tapRecognized {
-    [self.blurMenuViewController hideMenuViewController];
+    [self.menuNavController hideMenuViewController];
 }
 
 - (void)pressButton:(UIButton *)sender {
@@ -83,26 +83,26 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
             profileViewController.profileViewType = BLProfileViewTypeUpdate;
             UINavigationController *profileNavViewController = [[UINavigationController alloc] initWithRootViewController:profileViewController];
             profileNavViewController.navigationBarHidden = YES;
-            [self.blurMenuViewController setContentViewController:profileNavViewController animated:YES];
+            [self.menuNavController setContentViewController:profileNavViewController animated:YES];
             break;
         }
         case BLSubViewControllerPartner:
         {
             BLPartnerViewController *partnerViewController = [[BLPartnerViewController alloc] init];
             partnerViewController.partnerViewType = BLPartnerViewControllerUpdate;
-            [self.blurMenuViewController setContentViewController:partnerViewController animated:YES];
+            [self.menuNavController setContentViewController:partnerViewController animated:YES];
             break;
         }
         case BLSubViewControllerPassword:
         {
             BLPasswordViewController *passwordViewController = [[BLPasswordViewController alloc] init];
-            [self.blurMenuViewController setContentViewController:passwordViewController animated:YES];
+            [self.menuNavController setContentViewController:passwordViewController animated:YES];
             break;
         }
         case BLSubViewControllerSetting:
         {
             BLSettingViewController *settingViewController = [[BLSettingViewController alloc] init];
-            [self.blurMenuViewController setContentViewController:settingViewController animated:YES];
+            [self.menuNavController setContentViewController:settingViewController animated:YES];
             break;
         }
         default:
@@ -123,8 +123,8 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
 - (UIImageView *)avatarImageView {
     if (!_avatarImageView) {
         _avatarImageView = [[UIImageView alloc] init];
-        _avatarImageView.layer.cornerRadius = 97.0 / 2;
-        _avatarImageView.layer.borderWidth = 4.0f;
+        _avatarImageView.layer.cornerRadius = [BLGenernalDefinition resolutionForDevices:(97.0f / 2)];
+        _avatarImageView.layer.borderWidth = 3.0f;
         _avatarImageView.layer.borderColor = [[UIColor whiteColor] CGColor];
         _avatarImageView.clipsToBounds = YES;
     }
@@ -144,7 +144,7 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
     if (!_btnMe) {
         _btnMe = [[BLMenuButton alloc] init];
         _btnMe.tag = BLSubViewControllerProfile;
-        _btnMe.blTitle = @"Me";
+        _btnMe.blTitle = NSLocalizedString(@"Me", nil);
         _btnMe.blTitleColor = [BLColorDefinition menuFontColor];
         _btnMe.highlightColor = [UIColor whiteColor];
         _btnMe.icon = [UIImage imageNamed:@"me_icon.png"];
@@ -158,7 +158,7 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
     if (!_btnPartner) {
         _btnPartner = [[BLMenuButton alloc] init];
         _btnPartner.tag = BLSubViewControllerPartner;
-        _btnPartner.blTitle = @"Partner";
+        _btnPartner.blTitle = NSLocalizedString(@"Partner", nil);
         _btnPartner.blTitleColor = [BLColorDefinition menuFontColor];
         _btnPartner.highlightColor = [UIColor whiteColor];
         _btnPartner.icon = [UIImage imageNamed:@"partner_icon.png"];
@@ -172,7 +172,7 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
     if (!_btnPassword) {
         _btnPassword = [[BLMenuButton alloc] init];
         _btnPassword.tag = BLSubViewControllerPassword;
-        _btnPassword.blTitle = @"Password";
+        _btnPassword.blTitle = NSLocalizedString(@"Password", nil);
         _btnPassword.blTitleColor = [BLColorDefinition menuFontColor];
         _btnPassword.highlightColor = [UIColor whiteColor];
         _btnPassword.icon = [UIImage imageNamed:@"password_icon.png"];
@@ -186,7 +186,7 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
     if (!_btnSetting) {
         _btnSetting = [[BLMenuButton alloc] init];
         _btnSetting.tag = BLSubViewControllerSetting;
-        _btnSetting.blTitle = @"Settings";
+        _btnSetting.blTitle = NSLocalizedString(@"Settings", nil);
         _btnSetting.blTitleColor = [BLColorDefinition menuFontColor];
         _btnSetting.highlightColor = [UIColor whiteColor];
         _btnSetting.icon = [UIImage imageNamed:@"setting_icon.png"];
@@ -211,43 +211,42 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
     }];
     
     [_avatarImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_avatarImageView.superview).with.offset(108.0);
+        make.top.equalTo(_avatarImageView.superview).with.offset([BLGenernalDefinition resolutionForDevices:108.0f]);
         make.centerX.equalTo(_avatarImageView.superview.mas_centerX);
-        make.width.equalTo(@97.0f);
-        make.height.equalTo(@97.0f);
+        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:97.0f]]);
     }];
     
     [_lbUsername mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_lbUsername.superview.mas_centerX);
-        make.top.equalTo(_avatarImageView.mas_bottom).with.offset(23.6f);
+        make.top.equalTo(_avatarImageView.mas_bottom).with.offset([BLGenernalDefinition resolutionForDevices:23.6f]);
     }];
     
     [self.btnSetting mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.btnSetting.superview).with.offset(70.8f);
-        make.bottom.equalTo(self.btnSetting.superview).with.offset(-79.0f);
-        make.height.equalTo(@35.4f);
-        make.width.equalTo(@180.0f);
+        make.left.equalTo(self.btnSetting.superview).with.offset([BLGenernalDefinition resolutionForDevices:70.8f]);
+        make.bottom.equalTo(self.btnSetting.superview).with.offset([BLGenernalDefinition resolutionForDevices:-79.0f]);
+        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:35.4f]]);
+        make.width.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:180.0f]]);
     }];
     
     [self.btnPartner mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.btnPartner.superview).with.offset(70.8f);
-        make.bottom.equalTo(self.btnSetting.mas_top).with.offset(-39.0f);
-        make.height.equalTo(@35.4f);
-        make.width.equalTo(@180.0f);
+        make.left.equalTo(self.btnPartner.superview).with.offset([BLGenernalDefinition resolutionForDevices:70.8f]);
+        make.bottom.equalTo(self.btnSetting.mas_top).with.offset([BLGenernalDefinition resolutionForDevices:-39.0f]);
+        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:35.4f]]);
+        make.width.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:180.0f]]);
     }];
     
     [self.btnPassword mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.btnPassword.superview).with.offset(70.8f);
-        make.bottom.equalTo(self.btnPartner.mas_top).with.offset(-39.0f);
-        make.height.equalTo(@35.4f);
-        make.width.equalTo(@180.0f);
+        make.left.equalTo(self.btnPassword.superview).with.offset([BLGenernalDefinition resolutionForDevices:70.8f]);
+        make.bottom.equalTo(self.btnPartner.mas_top).with.offset([BLGenernalDefinition resolutionForDevices:-39.0f]);
+        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:35.4f]]);
+        make.width.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:180.0f]]);
     }];
     
     [self.btnMe mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.btnMe.superview).with.offset(70.8f);
-        make.bottom.equalTo(self.btnPassword.mas_top).with.offset(-39.0f);
-        make.height.equalTo(@35.4f);
-        make.width.equalTo(@180.0f);
+        make.left.equalTo(self.btnMe.superview).with.offset([BLGenernalDefinition resolutionForDevices:70.8f]);
+        make.bottom.equalTo(self.btnPassword.mas_top).with.offset([BLGenernalDefinition resolutionForDevices:-39.0f]);
+        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:35.4f]]);
+        make.width.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:180.0f]]);
     }];
 }
 

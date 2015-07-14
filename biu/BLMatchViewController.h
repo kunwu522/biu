@@ -10,4 +10,6 @@
 
 @interface BLMatchViewController : UIViewController
 
+- (void)matched:(User *)matchedUser;
+
 @end

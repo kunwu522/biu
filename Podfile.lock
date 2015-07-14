@@ -20,19 +20,28 @@ PODS:
   - AFNetworking/UIKit (2.4.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - HexColors (2.2.1)
   - Masonry (0.5.3)
   - SDWebImage (3.7.2):
     - SDWebImage/Core (= 3.7.2)
   - SDWebImage/Core (3.7.2)
+  - SimulatorRemoteNotifications (0.0.3)
+  - TSMessages (0.9.12):
+    - HexColors
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
   - Masonry (~> 0.5.3)
-  - SDWebImage (~> 3.7)
+  - SDWebImage
+  - SimulatorRemoteNotifications (~> 0.0.3)
+  - TSMessages
 
 SPEC CHECKSUMS:
   AFNetworking: 41d45d2c14219af0fa5addf3cfd433a002c13c9f
+  HexColors: abfd172e329dab59888614ccba6f216cec59289d
   Masonry: 9f515466afe48632562342a40a1c224071a1a022
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
+  SimulatorRemoteNotifications: 1610643e0582b2af67bc254b071ace4077e8ef86
+  TSMessages: 2a52642128d7ab15b46930c810b9c9403a2b58f3
 
 COCOAPODS: 0.37.0

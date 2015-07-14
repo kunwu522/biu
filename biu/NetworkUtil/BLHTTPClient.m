@@ -23,7 +23,7 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _sharedHttpClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:BLBaseURLString]];
+        _sharedHttpClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:BLBaseURLString] sessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
         
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:BLBaseURLString]];
         NSOperationQueue *operationQueue = manager.operationQueue;
@@ -237,14 +237,28 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
     [self PUT:[NSString stringWithFormat:@"location/%@.json", user.userId] parameters:parameters success:success failure:failure];
 }
 
-- (void)matching:(User *)user
-         success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
-         failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+- (void)match:(User *)user
+        state:(BLMatchState)state
+     distance:(NSNumber *)distance
+  matchedUser:(User *)matchedUser
+      success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+      failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
     
-    [self GET:[NSString stringWithFormat:@"match/%@", user.userId] parameters:nil success:success failure:failure];
+    NSMutableDictionary *matchDictionary = [NSMutableDictionary dictionary];
+    [matchDictionary setObject:[NSNumber numberWithInteger:state] forKey:@"state"];
+    if (distance) {
+        [matchDictionary setObject:distance forKey:@"distance"];
+    }
+    if (matchedUser) {
+        [matchDictionary setObject:matchedUser.userId forKey:@"matched_user_id"];
+    }
+    
+    NSDictionary *parameters = @{@"match" : matchDictionary};
+    
+    [self PUT:[NSString stringWithFormat:@"match/%@", user.userId] parameters:parameters success:success failure:failure];
 }
 
-- (void)deviceToken:(NSString *)token
+- (void)registToken:(NSString *)token
                user:(User *)user
             success:(void (^)(NSURLSessionDataTask *, id))success
             failure:(void (^)(NSURLSessionDataTask *, NSError *))failure {
@@ -253,7 +267,19 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
     }
     NSDictionary *parameters = @{@"device" : @{@"token" : token,
                                              @"user_id" : user.userId}};
-    [self POST:@"device.json" parameters:parameters success:success failure:failure];
+    [self POST:@"devices.json" parameters:parameters success:success failure:failure];
+}
+
+- (void)updateToken:(NSString *)token
+               user:(User *)user
+            success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+            failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    if (!token || !user) {
+        return;
+    }
+    
+    NSDictionary *parameters = @{@"device" : @{@"token" : token}};
+    [self PUT:[NSString stringWithFormat:@"devices/%@", user.userId] parameters:parameters success:success failure:failure];
 }
 
 @end

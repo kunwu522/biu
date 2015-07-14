@@ -15,11 +15,12 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
-    #import "BLAppDeleate.h"
+    #import "BLAppDelegate.h"
     #import "AFNetworking.h"
     #import "BLHTTPClient.h"
     #import "BLColorDefinition.h"
     #import "BLFontDefinition.h"
+    #import "BLGenernalDefinition.h"
     #import "BLUIDrawer.h"
     #import "Profile.h"
     #import "Partner.h"

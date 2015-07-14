@@ -8,6 +8,7 @@
 
 #import "BLCropImageViewController.h"
 #import "BLCropImageMaskView.h"
+#import "BLImageUtil.h"
 #import "Masonry.h"
 
 @interface BLCropImageViewController ()
@@ -123,7 +124,10 @@
     CGRect maskRect = CGRectMake((self.maskView.cropBounds.origin.x - frameRect.origin.x) * ratio, (self.maskView.cropBounds.origin.y - frameRect.origin.y) * ratio, self.maskView.cropBounds.size.width * ratio, self.maskView.cropBounds.size.height * ratio);
     
     CGImageRef imageRef = CGImageCreateWithImageInRect([self.image CGImage], maskRect);
-    UIImage *cropImage = [UIImage imageWithCGImage:imageRef];
+    UIImage *cropImage = [UIImage imageWithCGImage:imageRef scale:1.0f orientation:UIImageOrientationUp];
+    
+    cropImage = [BLImageUtil imageWithCompress:cropImage];
+    self.image = [BLImageUtil imageWithCompress:self.image];
 
     if (self.delegate && [self.delegate respondsToSelector:@selector(didFinishCropImage:orignal:)]) {
         [self.delegate didFinishCropImage:cropImage orignal:self.image];

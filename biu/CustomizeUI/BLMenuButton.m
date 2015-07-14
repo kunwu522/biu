@@ -47,7 +47,7 @@
     _lbTitle = [[UILabel alloc] init];
     _lbTitle.backgroundColor = [UIColor clearColor];
     _lbTitle.textAlignment = NSTextAlignmentRight;
-    _lbTitle.font = [BLFontDefinition normalFont:20.0f];
+    _lbTitle.font = [BLFontDefinition normalFont:18.0f];
     _lbTitle.userInteractionEnabled = NO;
     [self addSubview:_lbTitle];
     
@@ -55,13 +55,13 @@
         make.left.equalTo(self.imageViewIcon.superview);
         make.top.equalTo(self.imageViewIcon.superview);
         make.bottom.equalTo(self.imageViewIcon.superview);
-        make.width.equalTo(@35.4f);
+        make.width.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:35.4f]]);
     }];
     
     [self.lbTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.lbTitle.superview);
         make.bottom.equalTo(self.lbTitle.superview);
-        make.left.equalTo(self.imageViewIcon.mas_right).with.offset(20.7f);
+        make.left.equalTo(self.imageViewIcon.mas_right).with.offset([BLGenernalDefinition resolutionForDevices:20.7f]);
     }];
 }
 

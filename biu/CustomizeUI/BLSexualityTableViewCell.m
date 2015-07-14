@@ -38,7 +38,7 @@ static const float BL_SEXUALITY_CELL_WIDTH = 100.0f;
         UICollectionViewFlowLayout *layout = [UICollectionViewFlowLayout alloc];
         layout.minimumInteritemSpacing = BL_SEXUALITY_MIN_INTER_SPACING;
         layout.minimumLineSpacing = BL_SEXUALITY_MIN_INTER_SPACING;
-        layout.itemSize = CGSizeMake(BL_SEXUALITY_CELL_WIDTH, BL_SEXUALITY_CELL_WIDTH);
+        layout.itemSize = CGSizeMake([BLGenernalDefinition resolutionForDevices:BL_SEXUALITY_CELL_WIDTH], [BLGenernalDefinition resolutionForDevices:BL_SEXUALITY_CELL_WIDTH]);
         layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         
         _collectionView = [[UICollectionView alloc] initWithFrame:self.content.bounds collectionViewLayout:layout];
@@ -72,8 +72,8 @@ static const float BL_SEXUALITY_CELL_WIDTH = 100.0f;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     BLSexualityCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([BLSexualityCollectionViewCell class])
                                                                                     forIndexPath:indexPath];
-    cell.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"sexuality_selected_icon%li", [self sexualityFromIndexItem:indexPath.item]]];
-    cell.unselectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"sexuality_unselected_icon%li", [self sexualityFromIndexItem:indexPath.item]]];
+    cell.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"sexuality_selected_icon%li", (unsigned long)[self sexualityFromIndexItem:indexPath.item]]];
+    cell.unselectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"sexuality_unselected_icon%li", (unsigned long)[self sexualityFromIndexItem:indexPath.item]]];
     if (self.allowMutipleSelection) {
         if ([self.sexualities containsObject:[NSNumber numberWithInteger:[self sexualityFromIndexItem:indexPath.item]]]) {
             cell.imageView.image = cell.selectedImage;

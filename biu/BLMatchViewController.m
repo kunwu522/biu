@@ -10,11 +10,20 @@
 #import "BLMatchViewController.h"
 #import "BLPickerView.h"
 #import "BLMatchSwitch.h"
-#import "BLBlurMenu.h"
-#import "UIViewController+BLBlurMenu.h"
+#import "BLMenuNavController.h"
+#import "BLMatchedViewController.h"
+#import "UIViewController+BLMenuNavController.h"
 #import "Masonry.h"
 
-@interface BLMatchViewController () <BLPickerViewDataSource, BLPickerViewDelegate, CLLocationManagerDelegate>
+@interface BLMatchViewController () <BLPickerViewDataSource, BLPickerViewDelegate, CLLocationManagerDelegate, BLMatchedViewControllerDelegate>
+
+typedef NS_ENUM(NSInteger, BLMatchEvent) {
+    BLMatchEventNone = 0,
+    BLMatchEventMatching = 1,
+    BLMatchEventMatched = 2,
+    BLMatchEventRecjected = 3,
+    BLMatchEventStop = 4
+};
 
 @property (strong, nonatomic) UIView *background;
 @property (strong, nonatomic) UIButton *btnMenu;
@@ -24,32 +33,37 @@
 @property (strong, nonatomic) BLMatchSwitch *matchSwith;
 @property (strong, nonatomic) UIPickerView *pickerView;
 @property (strong, nonatomic) NSArray *arrayDistanceData;
-@property (assign, nonatomic) NSInteger distance;
+@property (strong, nonatomic) NSNumber *distance;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 
 @property (strong, nonatomic) UIImageView *matchingLeft;
 @property (strong, nonatomic) UIImageView *matchingRight;
+@property (strong, nonatomic) UIImageView *matchedImageView;
 @property (assign, nonatomic) CGPoint startLeftCenter;
 @property (assign, nonatomic) CGPoint startRightCenter;
 
 @property (strong, nonatomic) User *currentUser;
-@property (strong, nonatomic) NSTimer *timer;
+@property (strong, nonatomic) User *matchedUser;
 @property (assign, nonatomic) BOOL hasUpdateFirstLoaction;
 
 @end
 
 @implementation BLMatchViewController
 
+
+#pragma mark -
+#pragma mark Life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    self.hasUpdateFirstLoaction = NO;
+    [self.currentUser updateState:BLMatchStateStop];
     
     _background = [[UIView alloc] initWithFrame:self.view.frame];
     _background.backgroundColor = [BLColorDefinition backgroundGrayColor];
     [self.view addSubview:_background];
     [self.view addSubview:self.btnMenu];
-    
-    self.hasUpdateFirstLoaction = NO;
     
     _lbTitle = [[UILabel alloc] init];
     _lbTitle.font = [BLFontDefinition normalFont:20.0f];
@@ -68,13 +82,14 @@
                                                           @"4000",
                                                           @"4500",
                                                           @"5000", nil];
-    _pickViewDistance = [[BLPickerView alloc] initWithFrame:CGRectMake(0, 200, self.view.frame.size.width, 225.0f)];
+    _pickViewDistance = [[BLPickerView alloc] initWithFrame:CGRectMake(0, [BLGenernalDefinition resolutionForDevices:200],
+                                                                       self.view.frame.size.width, [BLGenernalDefinition resolutionForDevices:225.0f])];
     _pickViewDistance.delegate = self;
     _pickViewDistance.dataSource = self;
     _pickViewDistance.fisheyeFactor = 0.001;
     [_pickViewDistance selectRow:3 animated:NO];
     [self.view addSubview:_pickViewDistance];
-    self.distance = [[_arrayDistanceData objectAtIndex:3] integerValue];
+    self.distance = [_arrayDistanceData objectAtIndex:3];
     
     _matchSwith = [[BLMatchSwitch alloc] init];
     _matchSwith.backgroundColor = [UIColor clearColor];
@@ -83,39 +98,46 @@
     
     [self.view addSubview:self.matchingLeft];
     [self.view addSubview:self.matchingRight];
+    [self.view addSubview:self.matchedImageView];
+    self.matchedImageView.alpha = 0.0f;
     self.matchingLeft.alpha = 0.0f;
     self.matchingRight.alpha = 0.0f;
     
     [_lbTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).with.offset(135.7);
+        make.top.equalTo(self.view).with.offset([BLGenernalDefinition resolutionForDevices:135.7f]);
         make.centerX.equalTo(self.view.mas_centerX);
     }];
     
     [_matchSwith mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view).with.offset(-64.9);
+        make.bottom.equalTo(self.view).with.offset([BLGenernalDefinition resolutionForDevices:-64.9f]);
         make.centerX.equalTo(self.view.mas_centerX);
-        make.width.equalTo(@250.0f);
-        make.height.equalTo(@78.0f);
+        make.width.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:250.0f]]);
+        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:78.0f]]);
     }];
     
     [self.btnMenu mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.btnMenu.superview).with.offset(31.2);
-        make.right.equalTo(self.btnMenu.superview).with.offset(-20.8);
-        make.width.equalTo(@45.3);
-        make.height.equalTo(@45.3);
+        make.top.equalTo(self.btnMenu.superview).with.offset([BLGenernalDefinition resolutionForDevices:31.2f]);
+        make.right.equalTo(self.btnMenu.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.8f]);
+        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:45.3f]]);
     }];
     
     [self.matchingLeft mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.matchingLeft.superview).with.offset(-40.0f);
-        make.centerY.equalTo(self.matchingLeft.superview).with.offset(-20.0f);
-        make.width.equalTo(@80.0f);
-        make.height.equalTo(@160.0f);
+        make.centerX.equalTo(self.matchingLeft.superview).with.offset([BLGenernalDefinition resolutionForDevices:-40.0f]);
+        make.centerY.equalTo(self.matchingLeft.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.0f]);
+        make.width.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:80.0f]]);
+        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:160.0f]]);
     }];
     [self.matchingRight mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.matchingRight.superview).with.offset(40.0f);
-        make.centerY.equalTo(self.matchingRight.superview).with.offset(-20.0f);
-        make.width.equalTo(@80.0f);
-        make.height.equalTo(@160.0f);
+        make.centerX.equalTo(self.matchingRight.superview).with.offset([BLGenernalDefinition resolutionForDevices:40.0f]);
+        make.centerY.equalTo(self.matchingRight.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.0f]);
+        make.width.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:80.0f]]);
+        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:160.0f]]);
+    }];
+    
+    [self.matchedImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.matchedImageView.superview);
+        make.centerY.equalTo(self.matchedImageView.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.0f]);
+        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:160.0f]]);
     }];
 }
 
@@ -123,6 +145,17 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark -
+#pragma mark Public Method
+- (void)matched:(User *)matchedUser {
+    if (!matchedUser) {
+        return;
+    }
+    self.matchedUser = matchedUser;
+    [self stateMachine:BLMatchEventMatched];
+}
+
 
 #pragma mark - 
 #pragma mark Picker View Delegate and Data Source
@@ -136,6 +169,7 @@
 
 - (void)pickerView:(BLPickerView *)pickerView didSelectRow:(NSInteger)row {
     NSLog(@"Select distance: %@", [_arrayDistanceData objectAtIndex:row]);
+    self.distance = [_arrayDistanceData objectAtIndex:row];
 }
 
 #pragma mark CLLocationManagerDelegate
@@ -148,14 +182,16 @@
         NSLog(@"latitude %+.6f, longitude %+.6f\n",
               location.coordinate.latitude,
               location.coordinate.longitude);
-//        [[BLHTTPClient sharedBLHTTPClient] updateLocation:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
-//            NSLog(@"Update location successed.");
-//            self.hasUpdateFirstLoaction = YES;
-//        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Can't connnect to server, please try again later.", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-//            [av show];
-//            [self stopMatching];
-//        }];
+        self.currentUser.latitude = [NSNumber numberWithDouble:location.coordinate.latitude];
+        self.currentUser.longitude = [NSNumber numberWithDouble:location.coordinate.longitude];
+        [[BLHTTPClient sharedBLHTTPClient] updateLocation:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"Update location successed.");
+            self.hasUpdateFirstLoaction = YES;
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Can't connnect to server, please try again later.", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            [av show];
+            [self stopMatching];
+        }];
     }
 }
 
@@ -180,23 +216,19 @@
     }
 }
 
+#pragma mark BLMatchedViewController Delegate
+- (void)didRejectedMatchedUser {
+    [self stateMachine:BLMatchEventMatching];
+}
 
 #pragma mark - Handle Switch
 - (void)matchToLove:(BLMatchSwitch *)sender {
     if (sender.on) {
         NSLog(@"Starting to Match...");
-        [UIView animateWithDuration:0.5f animations:^{
-            self.pickViewDistance.alpha = 0.0f;
-            self.matchingLeft.alpha = 1.0f;
-            self.matchingRight.alpha = 1.0f;
-        } completion:^(BOOL finished) {
-            [self startMatchingAnimation];
-            [self startStandardUpdates];
-//            self.timer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(timerfired) userInfo:nil repeats:YES];
-        }];
+        [self stateMachine:BLMatchEventMatching];
     } else {
         NSLog(@"Finish Matching...");
-        [self stopMatching];
+        [self stateMachine:BLMatchEventStop];
     }
 }
 
@@ -205,6 +237,222 @@
     [self presentMenuViewController:sender];
 }
 
+- (void)presentMatchedViewController {
+    BLMatchedViewController *matchedViewController = [[BLMatchedViewController alloc] init];
+    matchedViewController.matchedUser = self.matchedUser;
+    matchedViewController.delegate = self;
+    [self.navigationController pushViewController:matchedViewController animated:YES];
+}
+
+- (void)timerfired {
+    if (self.hasUpdateFirstLoaction) {
+//        [[BLHTTPClient sharedBLHTTPClient] matching:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
+//            User *matchedUser = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
+//            if (matchedUser) {
+//                // TODO: go to matched view;
+//            } else {
+//                NSLog(@"There no person matched...");
+//            }
+//        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Matching failed, please try again later", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
+//            [av show];
+//            [self stopMatching];
+//        }];
+    }
+}
+
+#pragma mark -
+#pragma mark Private Methods
+- (void)stateMachine:(BLMatchEvent)event {
+    switch (self.currentUser.state) {
+        case BLMatchStateStop:
+            [self matchStateStopWithEvent:event];
+            break;
+        case BLMatchStateMatching:
+            [self matchStateMatchingWithEvent:event];
+            break;
+        case BLMatchStateMatched:
+            [self matchStateMatchedWithEvent:event];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)matchStateStopWithEvent:(BLMatchEvent)event {
+    switch (event) {
+        case BLMatchEventMatching:
+        {
+            //start animation
+            [UIView animateWithDuration:0.5f animations:^{
+                self.pickViewDistance.alpha = 0.0f;
+                self.matchingLeft.alpha = 1.0f;
+                self.matchingRight.alpha = 1.0f;
+            } completion:^(BOOL finished) {
+                [self startMatchingAnimation];
+                //update location
+                [self startStandardUpdates];
+            }];
+            
+            //send http request to update match state
+            [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser state:BLMatchStateMatching distance:self.distance matchedUser:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+                NSLog(@"start matching");
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                NSLog(@"start match failed.");
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Matching failed, please try again later", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
+                [av show];
+                [self stopMatching];
+                self.matchSwith.on = NO;
+            }];
+            
+            //change current state
+            [self.currentUser updateState:BLMatchStateMatching];
+            break;
+        }
+        case BLMatchEventStop:
+        case BLMatchEventMatched:
+        case BLMatchEventNone:
+        default:
+            break;
+    }
+}
+
+- (void)matchStateMatchingWithEvent:(BLMatchEvent)event {
+    switch (event) {
+        case BLMatchEventMatching:
+            // Do nothing
+            break;
+        case BLMatchEventMatched:
+        {
+            // stop animation
+            [self stopMatchingAnimationWithCompletion:^(BOOL finished) {
+                self.matchingLeft.alpha = 0.0f;
+                self.matchingRight.alpha = 0.0f;
+                self.matchedImageView.alpha = 1.0f;
+                
+                // start heartbeat animation
+                [self startHeartbeatAnimation];
+            }];
+            [self stopStandarUpdates];
+            
+            // add gesture to present matched view
+            UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(presentMatchedViewController)];
+            [self.matchedImageView addGestureRecognizer:tapGestureRecognizer];
+            self.matchedImageView.userInteractionEnabled = YES;
+            
+            // change current state
+            [self.currentUser updateState:BLMatchStateMatched];
+            break;
+        }
+        case BLMatchEventStop:
+        {
+            // stop matching
+            [self stopMatching];
+            [self.currentUser updateState:BLMatchStateStop];
+            [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser state:BLMatchStateStop distance:nil matchedUser:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+                NSLog(@"Stop matching success...");
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                NSLog(@"Stop matching failed...");
+            }];
+            break;
+        }
+        case BLMatchEventRecjected:
+        case BLMatchEventNone:
+        default:
+            break;
+    }
+}
+
+- (void)matchStateMatchedWithEvent:(BLMatchEvent)event {
+    switch (event) {
+        case BLMatchEventMatching:
+        {
+            //start animation
+            [UIView animateWithDuration:0.5f animations:^{
+                self.matchedImageView.alpha = 0.0f;
+                self.matchingLeft.alpha = 1.0f;
+                self.matchingRight.alpha = 1.0f;
+            } completion:^(BOOL finished) {
+                [self startMatchingAnimation];
+                //update location
+                [self startStandardUpdates];
+            }];
+            
+            //send http request to update match state
+            [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser state:BLMatchStateMatching distance:self.distance matchedUser:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+                NSLog(@"start matching");
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                NSLog(@"start match failed.");
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Matching failed, please try again later", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
+                [av show];
+                [self stopMatching];
+            }];
+            
+            //change current state
+            [self.currentUser updateState:BLMatchStateMatching];
+            break;
+        }
+        case BLMatchEventStop:
+        {
+            [UIView animateWithDuration:0.5f animations:^{
+                self.matchedImageView.alpha = 0.0f;
+                self.pickViewDistance.alpha = 1.0f;
+            } completion:^(BOOL finished) {
+                ;
+            }];
+            break;
+        }
+        case BLMatchEventRecjected:
+        {
+            [self stopMatchingAnimationWithCompletion:^(BOOL finished) {
+                [self startMatchingAnimation];
+            }];
+            [self.currentUser updateState:BLMatchStateMatching];
+            break;
+        }
+        case BLMatchEventMatched:
+        case BLMatchEventNone:
+        default:
+            break;
+    }
+}
+
+- (void)startStandardUpdates {
+    if (!_locationManager) {
+        _locationManager = [[CLLocationManager alloc] init];
+    }
+    
+    _locationManager.delegate = self;
+    _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+    _locationManager.distanceFilter = 500;
+    
+    CLAuthorizationStatus authorizationStatus= [CLLocationManager authorizationStatus];
+    if (authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
+        authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
+        
+        [_locationManager startUpdatingLocation];
+    } else {
+        [self.locationManager requestWhenInUseAuthorization];
+    }
+   
+}
+
+- (void)stopStandarUpdates {
+    [_locationManager stopUpdatingLocation];
+}
+
+- (void)stopMatching {
+    [self stopStandarUpdates];
+    [self stopMatchingAnimationWithCompletion:^(BOOL finished) {
+        [UIView animateWithDuration:0.5f animations:^{
+            self.pickViewDistance.alpha = 1.0f;
+            self.matchingLeft.alpha = 0.0f;
+            self.matchingRight.alpha = 0.0f;
+        }];
+    }];
+}
+
+#pragma mark Animations
 - (void)startMatchingAnimation {
     self.startLeftCenter = self.matchingLeft.center;
     self.startRightCenter = self.matchingRight.center;
@@ -238,60 +486,24 @@
     } completion:completion];
 }
 
-- (void)timerfired {
-    if (self.hasUpdateFirstLoaction) {
-        [[BLHTTPClient sharedBLHTTPClient] matching:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
-            User *matchedUser = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
-            if (matchedUser) {
-                // TODO: go to matched view;
-            } else {
-                NSLog(@"There no person matched...");
-            }
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Matching failed, please try again later", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
-            [av show];
-            [self stopMatching];
-        }];
-    }
+- (void)startHeartbeatAnimation {
+    [UIView animateWithDuration:1.0 delay:0
+                        options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat | UIViewAnimationOptionAllowUserInteraction
+     animations:^{
+         self.matchedImageView.transform = CGAffineTransformMakeScale(0.5f, 0.5f);
+     } completion:^(BOOL finished) {
+         if (!finished) {
+             [UIView animateWithDuration:0.2f animations:^{
+                 self.matchedImageView.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+             }];
+         }
+     }];
 }
 
-#pragma mark -
-#pragma mark Private Methods
-- (void)startStandardUpdates {
-    if (!_locationManager) {
-        _locationManager = [[CLLocationManager alloc] init];
-    }
-    
-    _locationManager.delegate = self;
-    _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
-    _locationManager.distanceFilter = 500;
-    
-    CLAuthorizationStatus authorizationStatus= [CLLocationManager authorizationStatus];
-    if (authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
-        authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
-        
-        [_locationManager startUpdatingLocation];
-    } else {
-        [self.locationManager requestWhenInUseAuthorization];
-    }
-   
+- (void)stopHeartbeatAnimation {
+    [self.matchedImageView.layer removeAllAnimations];
 }
 
-- (void)stopStandarUpdates {
-    [_locationManager stopUpdatingLocation];
-}
-
-- (void)stopMatching {
-    [self stopStandarUpdates];
-    [self.timer invalidate];
-    [self stopMatchingAnimationWithCompletion:^(BOOL finished) {
-        [UIView animateWithDuration:0.5f animations:^{
-            self.pickViewDistance.alpha = 1.0f;
-            self.matchingLeft.alpha = 0.0f;
-            self.matchingRight.alpha = 0.0f;
-        }];
-    }];
-}
 
 #pragma mark -
 #pragma mark Getter
@@ -302,6 +514,14 @@
         [_btnMenu addTarget:self action:@selector(showMenu:) forControlEvents:UIControlEventTouchDown];
     }
     return _btnMenu;
+}
+
+- (UIImageView *)matchedImageView {
+    if (!_matchedImageView) {
+        _matchedImageView = [[UIImageView alloc] init];
+        _matchedImageView.image = [UIImage imageNamed:@"matched_icon.png"];
+    }
+    return _matchedImageView;
 }
 
 - (UIImageView *)matchingLeft {
@@ -322,7 +542,7 @@
 
 - (User *)currentUser {
     if (!_currentUser) {
-        BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
+        BLAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
         _currentUser = delegate.currentUser;
     }
     return _currentUser;

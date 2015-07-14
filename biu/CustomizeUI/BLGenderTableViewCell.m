@@ -86,22 +86,22 @@
     [_imageViewDivision mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_imageViewDivision.superview.mas_centerX);
         make.centerY.equalTo(_imageViewDivision.superview.mas_centerY);
-        make.width.equalTo(@12.5f);
-        make.height.equalTo(@72.5f);
+        make.width.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:12.5f]]);
+        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:72.5f]]);
     }];
     
     [_maleView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(_maleView.superview.mas_centerY);
-        make.right.equalTo(_imageViewDivision.mas_left).with.offset(-40.0f);
-        make.width.equalTo(@94.4f);
-        make.height.equalTo(@141.5f);
+        make.right.equalTo(_imageViewDivision.mas_left).with.offset([BLGenernalDefinition resolutionForDevices:-40.0f]);
+        make.width.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:94.4f]]);
+        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:141.5f]]);
     }];
     
     [_femaleView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(_femaleView.superview.mas_centerY);
-        make.left.equalTo(_imageViewDivision.mas_right).with.offset(40.0f);
-        make.width.equalTo(@94.4f);
-        make.height.equalTo(@141.5f);
+        make.left.equalTo(_imageViewDivision.mas_right).with.offset([BLGenernalDefinition resolutionForDevices:40.0f]);
+        make.width.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:94.4f]]);
+        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:141.5f]]);
     }];
     
     [_imageViewMale mas_makeConstraints:^(MASConstraintMaker *make) {

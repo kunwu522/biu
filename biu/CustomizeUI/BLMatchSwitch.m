@@ -30,7 +30,7 @@
 
 - (void)setup {
     if (CGRectIsEmpty(self.frame)) {
-        self.frame = CGRectMake(0, 0, 250.0f, 78.0f);
+        self.frame = CGRectMake(0, 0, [BLGenernalDefinition resolutionForDevices:250.0f], [BLGenernalDefinition resolutionForDevices:78.0f]);
     }
     self.layer.cornerRadius = self.frame.size.height / 2.0f;
     self.clipsToBounds = YES;
@@ -44,7 +44,7 @@
     
     NSString *activeText = NSLocalizedString(@"Matching...", nil);
     CGSize activeLabelSize = [BLFontDefinition normalFontSizeForString:activeText fontSize:18.0f];
-    _activeLabel = [[UILabel alloc] initWithFrame:CGRectMake((_activeBackground.frame.size.width - activeLabelSize.width) * 0.5 - 25,
+    _activeLabel = [[UILabel alloc] initWithFrame:CGRectMake((_activeBackground.frame.size.width - activeLabelSize.width) * 0.5 - [BLGenernalDefinition resolutionForDevices:25.0f],
                                                              (_activeBackground.frame.size.height - activeLabelSize.height) * 0.5,
                                                              activeLabelSize.width, activeLabelSize.height)];
     _activeLabel.textAlignment = NSTextAlignmentCenter;
@@ -64,7 +64,7 @@
     
     NSString *inactiveText = NSLocalizedString(@"Slide to love", nil);
     CGSize inactiveLabelSize = [BLFontDefinition normalFontSizeForString:inactiveText fontSize:18.0f];
-    _inactiveLabel = [[UILabel alloc] initWithFrame:CGRectMake((_inactiveBackground.frame.size.width - inactiveLabelSize.width) * 0.5 + 25,
+    _inactiveLabel = [[UILabel alloc] initWithFrame:CGRectMake((_inactiveBackground.frame.size.width - inactiveLabelSize.width) * 0.5 + [BLGenernalDefinition resolutionForDevices:25.0f],
                                                        (_inactiveBackground.frame.size.height - inactiveLabelSize.height) * 0.5,
                                                        inactiveLabelSize.width, inactiveLabelSize.height)];
     _inactiveLabel.textAlignment = NSTextAlignmentCenter;

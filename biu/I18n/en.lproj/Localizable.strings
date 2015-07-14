@@ -81,12 +81,23 @@
 "Young" = "Young";
 "Common" = "Common";
 "BFM" = "BFM";
-"OfficeLady" = "Office Lady";
+"Business" = "Business";
 "Sexy" = "Sexy";
 "DS Woman" = "DS Woman";
 "Godness" = "Godness";
 "Your zodia and age" = "Your zodia and age";
 "Age" = "Age";
+
+// Menu View
+"Me" = "Me";
+"Password" = "Password";
+"Partner" = "Partner";
+"Settings" = "Settings";
+
+// Match View
+"Matching..." = "Matching...";
+"Slide to love" = "Slide to love";
+
 
 // Font
 "FontLight" = "HelveticaNeue-Light";
@@ -94,3 +105,11 @@
 "FontNormal" = "HelveticaNeue";
 "FontNormalItalic" = "HelveticaNeue-Italic";
 "FontBold" = "HelveticaNeue-Bold";
+
+// Match
+"notified matched user" = "Already notified him/her... \n5 mins later he/she will miss you if no anwser, please wait...";
+"matched user rejected" = "Sorry, he/she miss you. There always has next one, please ignore.";
+"were accepted title" = "Ta觉得你很好，对你发出了消息请求，见见Ta吗？";
+"were accepted subtitle" = "5分钟没有应答会自动关闭";
+"were rejected title" = "对不起！永远会有下一个！请忽略Ta";
+"were rejected subtitle" = "5分钟后会自动关闭";

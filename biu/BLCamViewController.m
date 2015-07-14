@@ -10,6 +10,7 @@
 #import "BLAVCamPreviewView.h"
 #import "BLCropImageMaskView.h"
 #import "BLCropImageViewController.h"
+#import "BLImageUtil.h"
 #import "Masonry.h"
 
 
@@ -88,38 +89,33 @@
     }];
     
     [self.btnClose mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.btnClose.superview).with.offset(31.2f);
-        make.left.equalTo(self.btnClose.superview).with.offset(20.8f);
-        make.width.equalTo(@35.3f);
-        make.height.equalTo(@35.3f);
+        make.top.equalTo(self.btnClose.superview).with.offset([BLGenernalDefinition resolutionForDevices:31.2f]);
+        make.left.equalTo(self.btnClose.superview).with.offset([BLGenernalDefinition resolutionForDevices:20.8f]);
+        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:35.3f]]);
     }];
     
     [self.btnCameraFlip mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.btnCameraFlip.superview).with.offset(31.2f);
-        make.right.equalTo(self.btnCameraFlip.superview).with.offset(-20.8f);
-        make.width.equalTo(@40.3f);
-        make.height.equalTo(@40.3f);
+        make.top.equalTo(self.btnCameraFlip.superview).with.offset([BLGenernalDefinition resolutionForDevices:31.2f]);
+        make.right.equalTo(self.btnCameraFlip.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.8f]);
+        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:40.3f]]);
     }];
     
     [self.btnTakingPhoto mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.btnTakingPhoto.superview).with.offset(-45.0f);
+        make.bottom.equalTo(self.btnTakingPhoto.superview).with.offset([BLGenernalDefinition resolutionForDevices:-45.0f]);
         make.centerX.equalTo(self.btnTakingPhoto.superview.mas_centerX);
-        make.width.equalTo(@70.0f);
-        make.height.equalTo(@70.0f);
+        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:70.0f]]);
     }];
     
     [self.btnChoosePhoto mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.btnChoosePhoto.superview).with.offset(55.0f);
         make.centerY.equalTo(self.btnTakingPhoto.mas_centerY);
-        make.width.equalTo(@40.0f);
-        make.height.equalTo(@40.0f);
+        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:40.0f]]);
     }];
     
     [self.btnCameraLightSwitch mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.btnCameraLightSwitch.superview).with.offset(-55.0f);
         make.centerY.equalTo(self.btnTakingPhoto.mas_centerY);
-        make.width.equalTo(@40.0f);
-        make.height.equalTo(@40.0f);
+        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:40.0f]]);
     }];
 }
 
@@ -197,11 +193,12 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *pickImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+    UIImage *result = [BLImageUtil rotatePhotoToUp:pickImage];
     [self dismissViewControllerAnimated:YES completion:nil];
     
-    if (pickImage) {
+    if (result) {
         BLCropImageViewController *cropImageViewController = [[BLCropImageViewController alloc] init];
-        cropImageViewController.image = pickImage;
+        cropImageViewController.image = result;
         cropImageViewController.delegate = self;
         [self presentViewController:cropImageViewController animated:YES completion:nil];
     }

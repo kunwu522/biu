@@ -48,6 +48,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 4
 #define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 1
 
+// HexColors
+#define COCOAPODS_POD_AVAILABLE_HexColors
+#define COCOAPODS_VERSION_MAJOR_HexColors 2
+#define COCOAPODS_VERSION_MINOR_HexColors 2
+#define COCOAPODS_VERSION_PATCH_HexColors 1
+
 // Masonry
 #define COCOAPODS_POD_AVAILABLE_Masonry
 #define COCOAPODS_VERSION_MAJOR_Masonry 0
@@ -65,4 +71,16 @@
 #define COCOAPODS_VERSION_MAJOR_SDWebImage_Core 3
 #define COCOAPODS_VERSION_MINOR_SDWebImage_Core 7
 #define COCOAPODS_VERSION_PATCH_SDWebImage_Core 2
+
+// SimulatorRemoteNotifications
+#define COCOAPODS_POD_AVAILABLE_SimulatorRemoteNotifications
+#define COCOAPODS_VERSION_MAJOR_SimulatorRemoteNotifications 0
+#define COCOAPODS_VERSION_MINOR_SimulatorRemoteNotifications 0
+#define COCOAPODS_VERSION_PATCH_SimulatorRemoteNotifications 3
+
+// TSMessages
+#define COCOAPODS_POD_AVAILABLE_TSMessages
+#define COCOAPODS_VERSION_MAJOR_TSMessages 0
+#define COCOAPODS_VERSION_MINOR_TSMessages 9
+#define COCOAPODS_VERSION_PATCH_TSMessages 12
 

@@ -8,11 +8,14 @@
 
 #import "BLSettingViewController.h"
 #import "BLWelcomeViewController.h"
+#import "UIViewController+BLMenuNavController.h"
 #import "Masonry.h"
 
 @interface BLSettingViewController ()
 
 @property (strong, nonatomic) UIButton *btnLogout;
+@property (strong, nonatomic) UIButton *btnMenu;
+@property (strong, nonatomic) UIButton *btnBackToRoot;
 
 @end
 
@@ -42,7 +45,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - handle action
+#pragma mark - Action
 - (void)logout:(id)sender {
     //TODO: clear data in NSUserDefaults
     [[BLHTTPClient sharedBLHTTPClient] logout:nil success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -51,26 +54,44 @@
         NSLog(@"User log out failed. Error: %@", error.description);
     }];
     
-    BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
+    BLAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     [delegate.passwordItem resetKeychainItem];
-    
-    [delegate.currentUser removeFromUserDefault];
     delegate.currentUser = nil;
+    [NSUserDefaults resetStandardUserDefaults];
     
     BLWelcomeViewController *welViewController = [[BLWelcomeViewController alloc] initWithNibName:nil bundle:nil];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:welViewController];
     navController.navigationBarHidden = YES;
+    [self dismissViewControllerAnimated:NO completion:nil];
     [self presentViewController:navController animated:YES completion:nil];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)showMenu:(id)sender {
+    [self presentMenuViewController:sender];
 }
-*/
+
+- (void)backToRoot:(id)sender {
+    [self backToRootViewController:sender];
+}
+
+#pragma mark -
+#pragma mark Getter
+- (UIButton *)btnMenu {
+    if (!_btnMenu) {
+        _btnMenu = [[UIButton alloc] init];
+        [_btnMenu setBackgroundImage:[UIImage imageNamed:@"menu_icon.png"] forState:UIControlStateNormal];
+        [_btnMenu addTarget:self action:@selector(showMenu:) forControlEvents:UIControlEventTouchDown];
+    }
+    return _btnMenu;
+}
+
+- (UIButton *)btnBackToRoot {
+    if (!_btnBackToRoot) {
+        _btnBackToRoot = [[UIButton alloc] init];
+        [_btnBackToRoot setBackgroundImage:[UIImage imageNamed:@"back_icon2.png"] forState:UIControlStateNormal];
+        [_btnBackToRoot addTarget:self action:@selector(backToRoot:) forControlEvents:UIControlEventTouchDown];
+    }
+    return _btnBackToRoot;
+}
 
 @end

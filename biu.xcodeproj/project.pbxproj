@@ -16,7 +16,6 @@
 		A30D96A51B24414900A1CF88 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = A30D96A41B24414900A1CF88 /* Profile.m */; };
 		A30D96A81B24433500A1CF88 /* Partner.m in Sources */ = {isa = PBXBuildFile; fileRef = A30D96A71B24433500A1CF88 /* Partner.m */; };
 		A336158B1B3580F6002C892D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A336158A1B3580F6002C892D /* CoreLocation.framework */; };
-		A3BD9E4B1B0CC37D00815100 /* BLSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3BD9E4A1B0CC37D00815100 /* BLSignupViewController.m */; };
 		A3CCFCFA1B1B602600C9BAE8 /* close_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFCF41B1B602600C9BAE8 /* close_icon2.png */; };
 		A3CCFCFB1B1B602600C9BAE8 /* forward_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFCF51B1B602600C9BAE8 /* forward_icon2.png */; };
 		A3CCFCFC1B1B602600C9BAE8 /* partner_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFCF61B1B602600C9BAE8 /* partner_icon.png */; };
@@ -26,6 +25,11 @@
 		A3CCFD011B1B647300C9BAE8 /* avator_default.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFD001B1B647300C9BAE8 /* avator_default.png */; };
 		A3CCFD071B1CBB2D00C9BAE8 /* BLZodiacTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A3CCFD061B1CBB2D00C9BAE8 /* BLZodiacTableViewCell.m */; };
 		A3F7EC691B0AD6520084DA70 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A3F7EC6B1B0AD6520084DA70 /* Localizable.strings */; };
+		EA017F101B454D8F00FCFB18 /* matched_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA017F0F1B454D8F00FCFB18 /* matched_icon.png */; };
+		EA017F141B46711400FCFB18 /* BLImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = EA017F131B46711400FCFB18 /* BLImageUtil.m */; };
+		EA017F171B46724D00FCFB18 /* BLMatchedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA017F161B46724D00FCFB18 /* BLMatchedViewController.m */; };
+		EA017F1A1B46788B00FCFB18 /* matched_message_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA017F181B46788B00FCFB18 /* matched_message_icon.png */; };
+		EA017F1B1B46788B00FCFB18 /* matched_close_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA017F191B46788B00FCFB18 /* matched_close_icon.png */; };
 		EA113E8B1B0C511200EA6925 /* BLColorDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = EA113E8A1B0C511200EA6925 /* BLColorDefinition.m */; };
 		EA1E504F1AFCB99F004F7F6A /* BLTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1E504E1AFCB99F004F7F6A /* BLTextField.m */; };
 		EA1E505B1B01FE55004F7F6A /* wel_background.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1E505A1B01FE55004F7F6A /* wel_background.png */; };
@@ -41,10 +45,11 @@
 		EA305ECF1B1575E900DD904D /* back_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = EA305ECE1B1575E900DD904D /* back_icon2.png */; };
 		EA305ED11B1576DF00DD904D /* menu_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA305ED01B1576DF00DD904D /* menu_icon.png */; };
 		EA305ED91B16F32100DD904D /* BLPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA305ED81B16F32100DD904D /* BLPickerView.m */; };
+		EA4289851B54AF3100EF4887 /* BLGenernalDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4289841B54AF3100EF4887 /* BLGenernalDefinition.m */; };
 		EA4E80C61B381FE70087BBEB /* matching_right_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA4E80C41B381FE70087BBEB /* matching_right_icon.png */; };
 		EA4E80C71B381FE70087BBEB /* matching_left_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA4E80C51B381FE70087BBEB /* matching_left_icon.png */; };
 		EA6AAC301AF8739200ED3A55 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC2F1AF8739200ED3A55 /* main.m */; };
-		EA6AAC331AF8739200ED3A55 /* BLAppDeleate.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC321AF8739200ED3A55 /* BLAppDeleate.m */; };
+		EA6AAC331AF8739200ED3A55 /* BLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC321AF8739200ED3A55 /* BLAppDelegate.m */; };
 		EA6AAC361AF8739200ED3A55 /* BLWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AAC351AF8739200ED3A55 /* BLWelcomeViewController.m */; };
 		EA6AAC391AF8739200ED3A55 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA6AAC371AF8739200ED3A55 /* Main.storyboard */; };
 		EA6AAC3B1AF8739200ED3A55 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA6AAC3A1AF8739200ED3A55 /* Images.xcassets */; };
@@ -54,8 +59,8 @@
 		EA7805321B0C7F0E00696FEF /* forward_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA7805311B0C7F0E00696FEF /* forward_icon.png */; };
 		EA7805341B0C7F1500696FEF /* back_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA7805331B0C7F1500696FEF /* back_icon.png */; };
 		EA9A30371B31491500B2DD94 /* me_icon_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9A30361B31491500B2DD94 /* me_icon_highlight.png */; };
-		EA9A305D1B31633900B2DD94 /* UIViewController+BLBlurMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9A305C1B31633900B2DD94 /* UIViewController+BLBlurMenu.m */; };
-		EA9A30601B31637600B2DD94 /* BLBlurMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9A305F1B31637600B2DD94 /* BLBlurMenu.m */; };
+		EA9A305D1B31633900B2DD94 /* UIViewController+BLMenuNavController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9A305C1B31633900B2DD94 /* UIViewController+BLMenuNavController.m */; };
+		EA9A30601B31637600B2DD94 /* BLMenuNavController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9A305F1B31637600B2DD94 /* BLMenuNavController.m */; };
 		EA9B08D61B299B9F0059DBA7 /* app_setting_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08D31B299B9F0059DBA7 /* app_setting_icon.png */; };
 		EA9B08D71B299B9F0059DBA7 /* app_spotlight_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08D41B299B9F0059DBA7 /* app_spotlight_icon.png */; };
 		EA9B08D81B299B9F0059DBA7 /* app_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9B08D51B299B9F0059DBA7 /* app_icon.png */; };
@@ -109,6 +114,9 @@
 		EAB60E471B26EB8E00BE2874 /* login_with_weibo_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EAB60E451B26EB8E00BE2874 /* login_with_weibo_icon.png */; };
 		EAB60E491B26FDD100BE2874 /* login_signup_background.png in Resources */ = {isa = PBXBuildFile; fileRef = EAB60E481B26FDD100BE2874 /* login_signup_background.png */; };
 		EAB60E4C1B2709A700BE2874 /* BLSignupView.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB60E4B1B2709A700BE2874 /* BLSignupView.m */; };
+		EABDEFC31B4A42B8001E6D70 /* BLWaitingResponseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EABDEFC21B4A42B8001E6D70 /* BLWaitingResponseViewController.m */; };
+		EABDEFC61B4A68C3001E6D70 /* warning_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EABDEFC41B4A68C3001E6D70 /* warning_icon.png */; };
+		EABDEFC71B4A68C3001E6D70 /* info_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EABDEFC51B4A68C3001E6D70 /* info_icon.png */; };
 		EAE285EF1B31755C00340C1B /* setting_icon_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE285EB1B31755C00340C1B /* setting_icon_highlight.png */; };
 		EAE285F01B31755C00340C1B /* photo_icon_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE285EC1B31755C00340C1B /* photo_icon_highlight.png */; };
 		EAE285F11B31755C00340C1B /* password_icon_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE285ED1B31755C00340C1B /* password_icon_highlight.png */; };
@@ -122,7 +130,6 @@
 		EAE286041B3283D000340C1B /* camera_flip_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE285FF1B3283D000340C1B /* camera_flip_icon.png */; };
 		EAE286081B33CD4100340C1B /* camera_light_switch_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE286071B33CD4100340C1B /* camera_light_switch_icon2.png */; };
 		EAE8E20C1B09CBF800C9038D /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE8E20B1B09CBF800C9038D /* logo.png */; };
-		EAE8E2111B09F34300C9038D /* BLLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE8E2101B09F34300C9038D /* BLLoginViewController.m */; };
 		EAEA27D11B256776006967A1 /* BLZodiacAndAgeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAEA27D01B256776006967A1 /* BLZodiacAndAgeTableViewCell.m */; };
 		EAEC0AF81B1EEAC3000A7C5B /* zodiac_selected_icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE01B1EEAC2000A7C5B /* zodiac_selected_icon1.png */; };
 		EAEC0AF91B1EEAC3000A7C5B /* zodiac_selected_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = EAEC0AE11B1EEAC2000A7C5B /* zodiac_selected_icon2.png */; };
@@ -213,8 +220,6 @@
 		A30D96A61B24433500A1CF88 /* Partner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Partner.h; path = Model/Partner.h; sourceTree = "<group>"; };
 		A30D96A71B24433500A1CF88 /* Partner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Partner.m; path = Model/Partner.m; sourceTree = "<group>"; };
 		A336158A1B3580F6002C892D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		A3BD9E491B0CC37D00815100 /* BLSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLSignupViewController.h; sourceTree = "<group>"; };
-		A3BD9E4A1B0CC37D00815100 /* BLSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLSignupViewController.m; sourceTree = "<group>"; };
 		A3CCFCF41B1B602600C9BAE8 /* close_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = close_icon2.png; path = images/close_icon2.png; sourceTree = "<group>"; };
 		A3CCFCF51B1B602600C9BAE8 /* forward_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = forward_icon2.png; path = images/forward_icon2.png; sourceTree = "<group>"; };
 		A3CCFCF61B1B602600C9BAE8 /* partner_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = partner_icon.png; path = images/partner_icon.png; sourceTree = "<group>"; };
@@ -228,6 +233,13 @@
 		A3F7EC681B0AD5BF0084DA70 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		A3F7EC6A1B0AD6520084DA70 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A3F7EC6C1B0AD65A0084DA70 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		EA017F0F1B454D8F00FCFB18 /* matched_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = matched_icon.png; path = images/matched_icon.png; sourceTree = "<group>"; };
+		EA017F121B46711400FCFB18 /* BLImageUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLImageUtil.h; path = ImageUtil/BLImageUtil.h; sourceTree = "<group>"; };
+		EA017F131B46711400FCFB18 /* BLImageUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLImageUtil.m; path = ImageUtil/BLImageUtil.m; sourceTree = "<group>"; };
+		EA017F151B46724D00FCFB18 /* BLMatchedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLMatchedViewController.h; sourceTree = "<group>"; };
+		EA017F161B46724D00FCFB18 /* BLMatchedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLMatchedViewController.m; sourceTree = "<group>"; };
+		EA017F181B46788B00FCFB18 /* matched_message_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = matched_message_icon.png; path = images/matched_message_icon.png; sourceTree = "<group>"; };
+		EA017F191B46788B00FCFB18 /* matched_close_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = matched_close_icon.png; path = images/matched_close_icon.png; sourceTree = "<group>"; };
 		EA113E891B0C511200EA6925 /* BLColorDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLColorDefinition.h; path = biu/ColorUtil/BLColorDefinition.h; sourceTree = "<group>"; };
 		EA113E8A1B0C511200EA6925 /* BLColorDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLColorDefinition.m; path = biu/ColorUtil/BLColorDefinition.m; sourceTree = "<group>"; };
 		EA1E504D1AFCB99F004F7F6A /* BLTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLTextField.h; path = CustomizeUI/BLTextField.h; sourceTree = "<group>"; };
@@ -249,13 +261,15 @@
 		EA305ED01B1576DF00DD904D /* menu_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu_icon.png; path = images/menu_icon.png; sourceTree = "<group>"; };
 		EA305ED71B16F32100DD904D /* BLPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLPickerView.h; path = CustomizeUI/BLPickerView.h; sourceTree = "<group>"; };
 		EA305ED81B16F32100DD904D /* BLPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLPickerView.m; path = CustomizeUI/BLPickerView.m; sourceTree = "<group>"; };
+		EA4289831B54AF3100EF4887 /* BLGenernalDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLGenernalDefinition.h; sourceTree = "<group>"; };
+		EA4289841B54AF3100EF4887 /* BLGenernalDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLGenernalDefinition.m; sourceTree = "<group>"; };
 		EA4E80C41B381FE70087BBEB /* matching_right_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = matching_right_icon.png; path = images/matching_right_icon.png; sourceTree = "<group>"; };
 		EA4E80C51B381FE70087BBEB /* matching_left_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = matching_left_icon.png; path = images/matching_left_icon.png; sourceTree = "<group>"; };
 		EA6AAC2A1AF8739200ED3A55 /* biu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = biu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA6AAC2E1AF8739200ED3A55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA6AAC2F1AF8739200ED3A55 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		EA6AAC311AF8739200ED3A55 /* BLAppDeleate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLAppDeleate.h; sourceTree = "<group>"; };
-		EA6AAC321AF8739200ED3A55 /* BLAppDeleate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLAppDeleate.m; sourceTree = "<group>"; };
+		EA6AAC311AF8739200ED3A55 /* BLAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLAppDelegate.h; sourceTree = "<group>"; };
+		EA6AAC321AF8739200ED3A55 /* BLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLAppDelegate.m; sourceTree = "<group>"; };
 		EA6AAC341AF8739200ED3A55 /* BLWelcomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLWelcomeViewController.h; sourceTree = "<group>"; };
 		EA6AAC351AF8739200ED3A55 /* BLWelcomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLWelcomeViewController.m; sourceTree = "<group>"; };
 		EA6AAC381AF8739200ED3A55 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -270,10 +284,10 @@
 		EA7805311B0C7F0E00696FEF /* forward_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = forward_icon.png; path = images/forward_icon.png; sourceTree = "<group>"; };
 		EA7805331B0C7F1500696FEF /* back_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = back_icon.png; path = images/back_icon.png; sourceTree = "<group>"; };
 		EA9A30361B31491500B2DD94 /* me_icon_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = me_icon_highlight.png; path = images/me_icon_highlight.png; sourceTree = "<group>"; };
-		EA9A305B1B31633900B2DD94 /* UIViewController+BLBlurMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+BLBlurMenu.h"; path = "Category/UIViewController+BLBlurMenu.h"; sourceTree = "<group>"; };
-		EA9A305C1B31633900B2DD94 /* UIViewController+BLBlurMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+BLBlurMenu.m"; path = "Category/UIViewController+BLBlurMenu.m"; sourceTree = "<group>"; };
-		EA9A305E1B31637600B2DD94 /* BLBlurMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLBlurMenu.h; path = CustomizeUI/BLBlurMenu.h; sourceTree = "<group>"; };
-		EA9A305F1B31637600B2DD94 /* BLBlurMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLBlurMenu.m; path = CustomizeUI/BLBlurMenu.m; sourceTree = "<group>"; };
+		EA9A305B1B31633900B2DD94 /* UIViewController+BLMenuNavController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+BLMenuNavController.h"; path = "Category/UIViewController+BLMenuNavController.h"; sourceTree = "<group>"; };
+		EA9A305C1B31633900B2DD94 /* UIViewController+BLMenuNavController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+BLMenuNavController.m"; path = "Category/UIViewController+BLMenuNavController.m"; sourceTree = "<group>"; };
+		EA9A305E1B31637600B2DD94 /* BLMenuNavController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLMenuNavController.h; path = CustomizeUI/BLMenuNavController.h; sourceTree = "<group>"; };
+		EA9A305F1B31637600B2DD94 /* BLMenuNavController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLMenuNavController.m; path = CustomizeUI/BLMenuNavController.m; sourceTree = "<group>"; };
 		EA9B08D31B299B9F0059DBA7 /* app_setting_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_setting_icon.png; path = images/app_setting_icon.png; sourceTree = "<group>"; };
 		EA9B08D41B299B9F0059DBA7 /* app_spotlight_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_spotlight_icon.png; path = images/app_spotlight_icon.png; sourceTree = "<group>"; };
 		EA9B08D51B299B9F0059DBA7 /* app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_icon.png; path = images/app_icon.png; sourceTree = "<group>"; };
@@ -346,6 +360,10 @@
 		EAB60E481B26FDD100BE2874 /* login_signup_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = login_signup_background.png; path = images/login_signup_background.png; sourceTree = "<group>"; };
 		EAB60E4A1B2709A700BE2874 /* BLSignupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLSignupView.h; path = CustomizeUI/BLSignupView.h; sourceTree = "<group>"; };
 		EAB60E4B1B2709A700BE2874 /* BLSignupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLSignupView.m; path = CustomizeUI/BLSignupView.m; sourceTree = "<group>"; };
+		EABDEFC11B4A42B8001E6D70 /* BLWaitingResponseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLWaitingResponseViewController.h; sourceTree = "<group>"; };
+		EABDEFC21B4A42B8001E6D70 /* BLWaitingResponseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLWaitingResponseViewController.m; sourceTree = "<group>"; };
+		EABDEFC41B4A68C3001E6D70 /* warning_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = warning_icon.png; path = images/warning_icon.png; sourceTree = "<group>"; };
+		EABDEFC51B4A68C3001E6D70 /* info_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = info_icon.png; path = images/info_icon.png; sourceTree = "<group>"; };
 		EAE285EB1B31755C00340C1B /* setting_icon_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = setting_icon_highlight.png; path = images/setting_icon_highlight.png; sourceTree = "<group>"; };
 		EAE285EC1B31755C00340C1B /* photo_icon_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = photo_icon_highlight.png; path = images/photo_icon_highlight.png; sourceTree = "<group>"; };
 		EAE285ED1B31755C00340C1B /* password_icon_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = password_icon_highlight.png; path = images/password_icon_highlight.png; sourceTree = "<group>"; };
@@ -361,8 +379,6 @@
 		EAE285FF1B3283D000340C1B /* camera_flip_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera_flip_icon.png; path = images/camera_flip_icon.png; sourceTree = "<group>"; };
 		EAE286071B33CD4100340C1B /* camera_light_switch_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera_light_switch_icon2.png; path = images/camera_light_switch_icon2.png; sourceTree = "<group>"; };
 		EAE8E20B1B09CBF800C9038D /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = images/logo.png; sourceTree = "<group>"; };
-		EAE8E20F1B09F34300C9038D /* BLLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLLoginViewController.h; sourceTree = "<group>"; };
-		EAE8E2101B09F34300C9038D /* BLLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLLoginViewController.m; sourceTree = "<group>"; };
 		EAEA27CF1B256776006967A1 /* BLZodiacAndAgeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLZodiacAndAgeTableViewCell.h; path = CustomizeUI/BLZodiacAndAgeTableViewCell.h; sourceTree = "<group>"; };
 		EAEA27D01B256776006967A1 /* BLZodiacAndAgeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLZodiacAndAgeTableViewCell.m; path = CustomizeUI/BLZodiacAndAgeTableViewCell.m; sourceTree = "<group>"; };
 		EAEC0AE01B1EEAC2000A7C5B /* zodiac_selected_icon1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zodiac_selected_icon1.png; path = images/zodiac/zodiac_selected_icon1.png; sourceTree = "<group>"; };
@@ -447,6 +463,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EA017F111B4670E500FCFB18 /* ImageUtil */ = {
+			isa = PBXGroup;
+			children = (
+				EA017F121B46711400FCFB18 /* BLImageUtil.h */,
+				EA017F131B46711400FCFB18 /* BLImageUtil.m */,
+			);
+			name = ImageUtil;
+			sourceTree = "<group>";
+		};
 		EA113E881B0C50A300EA6925 /* StyleUtil */ = {
 			isa = PBXGroup;
 			children = (
@@ -454,6 +479,8 @@
 				EA113E8A1B0C511200EA6925 /* BLColorDefinition.m */,
 				A3039E8E1B1605B6006FB5E4 /* BLFontDefinition.h */,
 				A3039E8F1B1605B6006FB5E4 /* BLFontDefinition.m */,
+				EA4289831B54AF3100EF4887 /* BLGenernalDefinition.h */,
+				EA4289841B54AF3100EF4887 /* BLGenernalDefinition.m */,
 			);
 			name = StyleUtil;
 			path = ..;
@@ -474,8 +501,8 @@
 				A3039E951B19E9B1006FB5E4 /* BLMatchSwitch.m */,
 				EA9F49371B1C021F0037D188 /* BLBlurView.h */,
 				EA9F49381B1C021F0037D188 /* BLBlurView.m */,
-				EA9A305E1B31637600B2DD94 /* BLBlurMenu.h */,
-				EA9A305F1B31637600B2DD94 /* BLBlurMenu.m */,
+				EA9A305E1B31637600B2DD94 /* BLMenuNavController.h */,
+				EA9A305F1B31637600B2DD94 /* BLMenuNavController.m */,
 				EAB60E391B26B29D00BE2874 /* BLLoginView.h */,
 				EAB60E3A1B26B29D00BE2874 /* BLLoginView.m */,
 				EAB60E4A1B2709A700BE2874 /* BLSignupView.h */,
@@ -527,6 +554,7 @@
 		EA6AAC2C1AF8739200ED3A55 /* biu */ = {
 			isa = PBXGroup;
 			children = (
+				EA017F111B4670E500FCFB18 /* ImageUtil */,
 				EA9B08D91B29AF910059DBA7 /* Font */,
 				EAB60E401B26C3CD00BE2874 /* UIUtil */,
 				EAA7FD701B12CFDF00C2B5C6 /* Model */,
@@ -536,18 +564,18 @@
 				EAFBEE7E1AFB2FD5006013CD /* KeyChainUtil */,
 				EA6AAC5B1AF88DB600ED3A55 /* Images */,
 				EA6AAC551AF8890E00ED3A55 /* Category */,
-				EA6AAC311AF8739200ED3A55 /* BLAppDeleate.h */,
-				EA6AAC321AF8739200ED3A55 /* BLAppDeleate.m */,
+				EA6AAC311AF8739200ED3A55 /* BLAppDelegate.h */,
+				EA6AAC321AF8739200ED3A55 /* BLAppDelegate.m */,
 				EA6AAC341AF8739200ED3A55 /* BLWelcomeViewController.h */,
 				EA6AAC351AF8739200ED3A55 /* BLWelcomeViewController.m */,
-				EAE8E20F1B09F34300C9038D /* BLLoginViewController.h */,
-				EAE8E2101B09F34300C9038D /* BLLoginViewController.m */,
-				A3BD9E491B0CC37D00815100 /* BLSignupViewController.h */,
-				A3BD9E4A1B0CC37D00815100 /* BLSignupViewController.m */,
 				A3039E991B1AEB4F006FB5E4 /* BLMenuViewController.h */,
 				A3039E9A1B1AEB4F006FB5E4 /* BLMenuViewController.m */,
 				EA305ECB1B1570B300DD904D /* BLMatchViewController.h */,
 				EA305ECC1B1570B300DD904D /* BLMatchViewController.m */,
+				EA017F151B46724D00FCFB18 /* BLMatchedViewController.h */,
+				EA017F161B46724D00FCFB18 /* BLMatchedViewController.m */,
+				EABDEFC11B4A42B8001E6D70 /* BLWaitingResponseViewController.h */,
+				EABDEFC21B4A42B8001E6D70 /* BLWaitingResponseViewController.m */,
 				EA305EB51B13351600DD904D /* BLProfileViewController.h */,
 				EA305EB61B13351600DD904D /* BLProfileViewController.m */,
 				EA9F49861B1DC3C40037D188 /* BLPasswordViewController.h */,
@@ -602,8 +630,8 @@
 			children = (
 				EA9F49781B1D5BD90037D188 /* UIImage+ImageEffects.h */,
 				EA9F49791B1D5BD90037D188 /* UIImage+ImageEffects.m */,
-				EA9A305B1B31633900B2DD94 /* UIViewController+BLBlurMenu.h */,
-				EA9A305C1B31633900B2DD94 /* UIViewController+BLBlurMenu.m */,
+				EA9A305B1B31633900B2DD94 /* UIViewController+BLMenuNavController.h */,
+				EA9A305C1B31633900B2DD94 /* UIViewController+BLMenuNavController.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -611,6 +639,11 @@
 		EA6AAC5B1AF88DB600ED3A55 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				EABDEFC41B4A68C3001E6D70 /* warning_icon.png */,
+				EABDEFC51B4A68C3001E6D70 /* info_icon.png */,
+				EA017F181B46788B00FCFB18 /* matched_message_icon.png */,
+				EA017F191B46788B00FCFB18 /* matched_close_icon.png */,
+				EA017F0F1B454D8F00FCFB18 /* matched_icon.png */,
 				EA4E80C41B381FE70087BBEB /* matching_right_icon.png */,
 				EA4E80C51B381FE70087BBEB /* matching_left_icon.png */,
 				EAE286071B33CD4100340C1B /* camera_light_switch_icon2.png */,
@@ -992,11 +1025,14 @@
 				EAEC0AFC1B1EEAC3000A7C5B /* zodiac_selected_icon5.png in Resources */,
 				EA9B09071B2C0E740059DBA7 /* avatar_upload_icon.png in Resources */,
 				EAE285EF1B31755C00340C1B /* setting_icon_highlight.png in Resources */,
+				EABDEFC61B4A68C3001E6D70 /* warning_icon.png in Resources */,
 				EA9B09021B2A97930059DBA7 /* style_woman_selected_icon7.png in Resources */,
 				A3CCFD011B1B647300C9BAE8 /* avator_default.png in Resources */,
 				EAEC0B4E1B20953B000A7C5B /* style_man_unselected_icon5.png in Resources */,
 				EAEC0B2A1B1EEBA9000A7C5B /* sexuality_selected_icon5.png in Resources */,
+				EA017F1A1B46788B00FCFB18 /* matched_message_icon.png in Resources */,
 				EAEC0B041B1EEAC3000A7C5B /* zodiac_unselected_icon1.png in Resources */,
+				EABDEFC71B4A68C3001E6D70 /* info_icon.png in Resources */,
 				EAEC0B081B1EEAC3000A7C5B /* zodiac_unselected_icon5.png in Resources */,
 				EA9A30371B31491500B2DD94 /* me_icon_highlight.png in Resources */,
 				EAEC0B0B1B1EEAC3000A7C5B /* zodiac_unselected_icon8.png in Resources */,
@@ -1016,6 +1052,7 @@
 				EA305EC41B147F0C00DD904D /* female_unselected_icon.png in Resources */,
 				A3CCFCFA1B1B602600C9BAE8 /* close_icon2.png in Resources */,
 				EA6AAC391AF8739200ED3A55 /* Main.storyboard in Resources */,
+				EA017F101B454D8F00FCFB18 /* matched_icon.png in Resources */,
 				EA9B09031B2A97930059DBA7 /* style_woman_selected_icon8.png in Resources */,
 				EAEC0B201B1EEAE8000A7C5B /* sexuality_selected_icon4.png in Resources */,
 				EA9B08F11B2A97860059DBA7 /* style_man_selected_icon8.png in Resources */,
@@ -1025,6 +1062,7 @@
 				EAE285F01B31755C00340C1B /* photo_icon_highlight.png in Resources */,
 				EA9B08D61B299B9F0059DBA7 /* app_setting_icon.png in Resources */,
 				EAEC0B0E1B1EEAC3000A7C5B /* zodiac_unselected_icon11.png in Resources */,
+				EA017F1B1B46788B00FCFB18 /* matched_close_icon.png in Resources */,
 				EAEC0B071B1EEAC3000A7C5B /* zodiac_unselected_icon4.png in Resources */,
 				EAE286021B3283D000340C1B /* taking_photo_icon.png in Resources */,
 				EA9B08DD1B29B90B0059DBA7 /* Launch.png in Resources */,
@@ -1149,13 +1187,12 @@
 				EA9F49821B1DB2F10037D188 /* BLPartnerViewController.m in Sources */,
 				EA9B090D1B2C147E0059DBA7 /* BLAVCamPreviewView.m in Sources */,
 				EA9F497A1B1D5BD90037D188 /* UIImage+ImageEffects.m in Sources */,
+				EA017F171B46724D00FCFB18 /* BLMatchedViewController.m in Sources */,
 				EA9F497F1B1D8BA30037D188 /* BLStyleTableViewCell.m in Sources */,
 				A30D96A51B24414900A1CF88 /* Profile.m in Sources */,
 				EA9F498B1B1DC3DF0037D188 /* BLSettingViewController.m in Sources */,
-				EAE8E2111B09F34300C9038D /* BLLoginViewController.m in Sources */,
 				EA1E504F1AFCB99F004F7F6A /* BLTextField.m in Sources */,
 				EA9F49881B1DC3C40037D188 /* BLPasswordViewController.m in Sources */,
-				A3BD9E4B1B0CC37D00815100 /* BLSignupViewController.m in Sources */,
 				A3CCFD071B1CBB2D00C9BAE8 /* BLZodiacTableViewCell.m in Sources */,
 				EAEA27D11B256776006967A1 /* BLZodiacAndAgeTableViewCell.m in Sources */,
 				EA6AAC361AF8739200ED3A55 /* BLWelcomeViewController.m in Sources */,
@@ -1165,9 +1202,11 @@
 				EAB60E4C1B2709A700BE2874 /* BLSignupView.m in Sources */,
 				A3039E961B19E9B1006FB5E4 /* BLMatchSwitch.m in Sources */,
 				EAFBEE841AFB3038006013CD /* KeychainItemWrapper.m in Sources */,
+				EABDEFC31B4A42B8001E6D70 /* BLWaitingResponseViewController.m in Sources */,
 				EAB60E3B1B26B29D00BE2874 /* BLLoginView.m in Sources */,
 				EAA7FD6F1B0DD64F00C2B5C6 /* BLHTTPClient.m in Sources */,
 				EAA7FD731B12CFF700C2B5C6 /* User.m in Sources */,
+				EA4289851B54AF3100EF4887 /* BLGenernalDefinition.m in Sources */,
 				EA9F49981B1EB1EC0037D188 /* BLRingView.m in Sources */,
 				EA9F49771B1D5B0B0037D188 /* BLBirthTableViewCell.m in Sources */,
 				EA305EB71B13351600DD904D /* BLProfileViewController.m in Sources */,
@@ -1175,13 +1214,14 @@
 				A3039E901B1605B6006FB5E4 /* BLFontDefinition.m in Sources */,
 				EA305ECD1B1570B300DD904D /* BLMatchViewController.m in Sources */,
 				EA9F49851B1DB5AA0037D188 /* BLBaseTableViewCell.m in Sources */,
-				EA6AAC331AF8739200ED3A55 /* BLAppDeleate.m in Sources */,
-				EA9A305D1B31633900B2DD94 /* UIViewController+BLBlurMenu.m in Sources */,
+				EA6AAC331AF8739200ED3A55 /* BLAppDelegate.m in Sources */,
+				EA9A305D1B31633900B2DD94 /* UIViewController+BLMenuNavController.m in Sources */,
 				EAB60E431B26C45200BE2874 /* BLUIDrawer.m in Sources */,
 				EAE285FA1B327F7B00340C1B /* BLCropImageMaskView.m in Sources */,
+				EA017F141B46711400FCFB18 /* BLImageUtil.m in Sources */,
 				EA113E8B1B0C511200EA6925 /* BLColorDefinition.m in Sources */,
 				EA6AAC301AF8739200ED3A55 /* main.m in Sources */,
-				EA9A30601B31637600B2DD94 /* BLBlurMenu.m in Sources */,
+				EA9A30601B31637600B2DD94 /* BLMenuNavController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1324,16 +1364,18 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "biu/Biu-Prefix.pch";
 				INFOPLIST_FILE = biu/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1347,16 +1389,18 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "biu/Biu-Prefix.pch";
 				INFOPLIST_FILE = biu/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

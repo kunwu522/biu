@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BLAppDeleate.h"
+#import "BLAppDelegate.h"
 
 int main(int argc, char * argv[]) {
     @autoreleasepool {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([BLAppDeleate class]));
+        return UIApplicationMain(argc, argv, nil, NSStringFromClass([BLAppDelegate class]));
     }
 }

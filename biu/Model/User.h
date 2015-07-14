@@ -12,6 +12,15 @@
 
 @interface User : NSObject
 
+typedef NS_ENUM(NSInteger, BLMatchState) {
+    BLMatchStateStop = 0,
+    BLMatchStateMatching = 1,
+    BLMatchStateMatched = 2,
+    BLMatchStateAccepted = 3,
+    BLMatchStateRejected = 4,
+    BLMatchStateCommunication = 5
+};
+
 @property (strong, nonatomic) NSNumber *userId;
 @property (strong, nonatomic) NSString *username;
 @property (strong, nonatomic) NSString *email;
@@ -21,8 +30,8 @@
 @property (strong, nonatomic) Partner *partner;
 @property (strong, nonatomic) NSNumber *latitude;
 @property (strong, nonatomic) NSNumber *longitude;
-//@property (strong, nonatomic) NSString *avatarCycleUrl;
-//@property (strong, nonatomic) NSString *avatarRectangleUrl;
+@property (assign, nonatomic) BLMatchState state;
+@property (strong, nonatomic) NSString *token;
 
 /*
  * return invalid reason otherwise return nil
@@ -43,5 +52,6 @@
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 - (void)removeFromUserDefault;
 - (void)save;
+- (void)updateState:(BLMatchState)state;
 
 @end

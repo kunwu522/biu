@@ -21,7 +21,12 @@
 
 - (instancetype)initWithBaseURL:(NSURL *)url;
 
-- (void)deviceToken:(NSString *)token
+- (void)registToken:(NSString *)token
+               user:(User *)user
+            success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+            failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
+- (void)updateToken:(NSString *)token
                user:(User *)user
             success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
             failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
@@ -63,9 +68,12 @@
                success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
                failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
-- (void)matching:(User *)user
-         success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
-         failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+- (void)match:(User *)user
+        state:(BLMatchState)state
+     distance:(NSNumber *)distance
+  matchedUser:(User *)matchedUser
+      success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+      failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
 @end
 

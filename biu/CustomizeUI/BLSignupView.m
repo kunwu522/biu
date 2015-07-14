@@ -12,7 +12,9 @@
 
 #import "Masonry.h"
 
-@interface BLSignupView () <UIGestureRecognizerDelegate>
+@interface BLSignupView () <UIGestureRecognizerDelegate> {
+    double scale;
+}
 
 @property (strong, nonatomic) UIImageView *backgroundView;
 @property (strong, nonatomic) UIImageView *logoImageView;
@@ -57,6 +59,12 @@
 }
 
 - (void)setup {
+    if (IS_IPHONE_5) {
+        scale = 0.8f;
+    } else {
+        scale = 1.0f;
+    }
+    
     self.backgroundColor = [UIColor clearColor];
     
     _backgroundView = [[UIImageView alloc] initWithFrame:self.bounds];
@@ -164,81 +172,77 @@
     [self addGestureRecognizer:_tapGestureRecognizer];
     
     [_logoImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_logoImageView.superview).with.offset(75.0f);
+        make.top.equalTo(_logoImageView.superview).with.offset(75.0f * scale);
         make.centerX.equalTo(_logoImageView.superview.mas_centerX);
-        make.width.equalTo(@95.0f);
-        make.height.equalTo(@95.0f);
+        make.width.height.equalTo([NSNumber numberWithDouble:(95.0f * scale)]);
     }];
     
     [_tfPhoneNumber mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_logoImageView.mas_bottom).with.offset(87.0f);
-        make.left.equalTo(_tfPhoneNumber.superview).with.offset(50.0f);
-        make.right.equalTo(_tfPhoneNumber.superview).with.offset(-50.0f);
+        make.top.equalTo(_logoImageView.mas_bottom).with.offset(87.0f * scale);
+        make.left.equalTo(_tfPhoneNumber.superview).with.offset(50.0f * scale);
+        make.right.equalTo(_tfPhoneNumber.superview).with.offset(-50.0f * scale);
     }];
     
     [_tfPasscode mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_tfPhoneNumber.mas_bottom).with.offset(20.0f);
-        make.left.equalTo(_tfPasscode.superview).with.offset(50.0f);
-        make.right.equalTo(_tfPasscode.superview).with.offset(-50.0f);
+        make.top.equalTo(_tfPhoneNumber.mas_bottom).with.offset(20.0f * scale);
+        make.left.equalTo(_tfPasscode.superview).with.offset(50.0f * scale);
+        make.right.equalTo(_tfPasscode.superview).with.offset(-50.0f * scale);
     }];
     
     [_tfUsername mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_tfPasscode.mas_bottom).with.offset(20.0f);
-        make.left.equalTo(_tfUsername.superview).with.offset(50.0f);
-        make.right.equalTo(_tfUsername.superview).with.offset(-50.0f);
+        make.top.equalTo(_tfPasscode.mas_bottom).with.offset(20.0f * scale);
+        make.left.equalTo(_tfUsername.superview).with.offset(50.0f * scale);
+        make.right.equalTo(_tfUsername.superview).with.offset(-50.0f * scale);
     }];
     
     [_tfPassword mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_tfUsername.mas_bottom).with.offset(20.0f);
-        make.left.equalTo(_tfPassword.superview).with.offset(50.0f);
-        make.right.equalTo(_tfPassword.superview).with.offset(-50.0f);
+        make.top.equalTo(_tfUsername.mas_bottom).with.offset(20.0f * scale);
+        make.left.equalTo(_tfPassword.superview).with.offset(50.0f * scale);
+        make.right.equalTo(_tfPassword.superview).with.offset(-50.0f * scale);
     }];
     
     [_btnSignup mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_tfPassword.mas_bottom).with.offset(66.0f);
-        make.left.equalTo(_btnSignup.superview).with.offset(127.0f);
-        make.right.equalTo(_btnSignup.superview).with.offset(-127.0f);
-        make.height.equalTo(@30.0f);
+        make.top.equalTo(_tfPassword.mas_bottom).with.offset(66.0f * scale);
+        make.left.equalTo(_btnSignup.superview).with.offset(127.0f * scale);
+        make.right.equalTo(_btnSignup.superview).with.offset(-127.0f * scale);
+        make.height.equalTo([NSNumber numberWithDouble:(30.0f * scale)]);
     }];
     
     [_lbOr mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_btnSignup.mas_bottom).with.offset(32.0f);
+        make.top.equalTo(_btnSignup.mas_bottom).with.offset(32.0f * scale);
         make.centerX.equalTo(_lbOr.superview.mas_centerX);
     }];
     
     [_lineView1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(_lbOr.mas_centerX).with.offset(-30.0f);
+        make.centerX.equalTo(_lbOr.mas_centerX).with.offset(-30.0f * scale);
         make.centerY.equalTo(_lbOr.mas_centerY);
-        make.width.equalTo(@20.0f);
+        make.width.equalTo([NSNumber numberWithDouble:(20.0f * scale)]);
         make.height.equalTo(@2.0f);
     }];
     
     [_lineView2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(_lbOr.mas_centerX).with.offset(30.0f);
+        make.centerX.equalTo(_lbOr.mas_centerX).with.offset(30.0f * scale);
         make.centerY.equalTo(_lbOr.mas_centerY);
-        make.width.equalTo(@20.0f);
+        make.width.equalTo([NSNumber numberWithDouble:(20.0f * scale)]);
         make.height.equalTo(@2.0f);
     }];
     
     [_btnClose mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_btnClose.superview).with.offset(32.0f);
-        make.left.equalTo(_btnClose.superview).with.offset(20.0f);
-        make.width.equalTo(@20.0f);
-        make.height.equalTo(@20.0f);
+        make.top.equalTo(_btnClose.superview).with.offset(32.0f * scale);
+        make.left.equalTo(_btnClose.superview).with.offset(20.0f * scale);
+        make.width.height.equalTo([NSNumber numberWithDouble:(20.0f * scale)]);
     }];
     
     [_btnSignupWithWeChat mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_lbOr.mas_bottom).with.offset(20.0f);
-        make.centerX.equalTo(_btnSignupWithWeChat.superview.mas_centerX).with.offset(-50.0f);
-        make.width.equalTo(@40.0f);
-        make.height.equalTo(@40.0f);
+        make.top.equalTo(_lbOr.mas_bottom).with.offset(20.0f * scale);
+        make.centerX.equalTo(_btnSignupWithWeChat.superview.mas_centerX).with.offset(-50.0f * scale);
+        make.width.height.equalTo([NSNumber numberWithDouble:(40.0f * scale)]);
     }];
     
     [_btnSignupWithWeibo mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_lbOr.mas_bottom).with.offset(20.0f);
-        make.centerX.equalTo(_btnSignupWithWeibo.superview.mas_centerX).with.offset(50.0f);
-        make.width.equalTo(@40.0f);
-        make.height.equalTo(@40.0f);
+        make.top.equalTo(_lbOr.mas_bottom).with.offset(20.0f * scale);
+        make.centerX.equalTo(_btnSignupWithWeibo.superview.mas_centerX).with.offset(50.0f * scale);
+        make.width.height.equalTo([NSNumber numberWithDouble:(40.0f * scale)]);
     }];
     
     [_btnGetCode mas_makeConstraints:^(MASConstraintMaker *make) {
