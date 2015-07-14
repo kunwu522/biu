@@ -56,24 +56,22 @@
     }];
     
     [self.btnMatchedUserInfo mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.btnMatchedUserInfo.superview).with.offset(31.2);
-        make.right.equalTo(self.btnMatchedUserInfo.superview).with.offset(-20.8);
-        make.width.equalTo(@45.3);
+        make.top.equalTo(self.btnMatchedUserInfo.superview).with.offset([BLGenernalDefinition resolutionForDevices:31.2f]);
+        make.right.equalTo(self.btnMatchedUserInfo.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.8f]);
+        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:45.3f]]);
         make.height.equalTo(@45.3);
     }];
     
     [self.btnClose mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.btnClose.superview).with.offset(60.0f);
-        make.bottom.equalTo(self.btnClose.superview).with.offset(-62.0f);
-        make.width.equalTo(@88.0f);
-        make.height.equalTo(@88.0f);
+        make.left.equalTo(self.btnClose.superview).with.offset([BLGenernalDefinition resolutionForDevices:60.0f]);
+        make.bottom.equalTo(self.btnClose.superview).with.offset([BLGenernalDefinition resolutionForDevices:-62.0f]);
+        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:88.0f]]);
     }];
     
     [self.btnMessage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.btnMessage.superview).with.offset(-60.0f);
-        make.bottom.equalTo(self.btnMessage.superview).with.offset(-62.0f);
-        make.width.equalTo(@88.0f);
-        make.height.equalTo(@88.0f);
+        make.right.equalTo(self.btnMessage.superview).with.offset([BLGenernalDefinition resolutionForDevices:-60.0f]);
+        make.bottom.equalTo(self.btnMessage.superview).with.offset([BLGenernalDefinition resolutionForDevices:-62.0f]);
+        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:88.0f]]);
     }];
 }
 
