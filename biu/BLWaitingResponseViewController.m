@@ -70,29 +70,26 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
     }];
     
     [self.avatarImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.avatarImageView.superview).with.offset(100.0f);
+        make.top.equalTo(self.avatarImageView.superview).with.offset([BLGenernalDefinition resolutionForDevices:100.0f]);
         make.centerX.equalTo(self.avatarImageView.superview.mas_centerX);
-        make.width.equalTo([NSNumber numberWithInteger:BL_AVATAR_WIDTH]);
-        make.height.equalTo([NSNumber numberWithInteger:BL_AVATAR_WIDTH]);
+        make.width.height.equalTo([NSNumber numberWithInteger:[BLGenernalDefinition resolutionForDevices:BL_AVATAR_WIDTH]]);
     }];
     
     [self.lbTimeCounter mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.avatarImageView.mas_bottom).with.offset(30.0f);
+        make.top.equalTo(self.avatarImageView.mas_bottom).with.offset([BLGenernalDefinition resolutionForDevices:30.0f]);
         make.centerX.equalTo(self.lbTimeCounter.superview.mas_centerX);
     }];
     
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.lbTimeCounter.mas_bottom).with.offset(40.0f);
-        make.left.equalTo(self.tableView.superview);
-        make.right.equalTo(self.tableView.superview);
-        make.height.equalTo(@160);
+        make.top.equalTo(self.lbTimeCounter.mas_bottom).with.offset([BLGenernalDefinition resolutionForDevices:40.0f]);
+        make.left.right.equalTo(self.tableView.superview);
+        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:180.0f]]);
     }];
     
     [self.btnClose mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.btnClose.superview).with.offset(-80.0f);
+        make.bottom.equalTo(self.btnClose.superview).with.offset([BLGenernalDefinition resolutionForDevices:-80.0f]);
         make.centerX.equalTo(self.btnClose.superview.mas_centerX);
-        make.width.equalTo(@60.0f);
-        make.height.equalTo(@60.0f);
+        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:60.0f]]);
     }];
 }
 
@@ -121,7 +118,14 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
 #pragma mark Actions
 - (void)close:(id)sender {
     [self.timer invalidate];
-    [self.navigationController popViewControllerAnimated:YES];
+    [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventReject distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"Timer up, back to matching view");
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"Update match state failed, error: %@", error.localizedDescription);
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:error.localizedDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [av show];
+    }];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 #pragma mark Timer callback
@@ -133,7 +137,7 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
         self.lbTimeCounter.text = [NSString stringWithFormat:@"%02d : %02d", minutes, seconds];
     } else {
         [self.timer invalidate];
-        [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser state:BLMatchStateMatching distance:nil matchedUser:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventTimout distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"Timer up, back to matching view");
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"Update match state failed, error: %@", error.localizedDescription);
@@ -181,16 +185,15 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
     
     cell.backgroundColor = [UIColor clearColor];
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(imageView.superview).with.offset(15.0f);
-        make.left.equalTo(imageView.superview).with.offset(20.0f);
-        make.width.equalTo(@50.0f);
-        make.height.equalTo(@50.0f);
+        make.top.equalTo(imageView.superview).with.offset([BLGenernalDefinition resolutionForDevices:15.0f]);
+        make.left.equalTo(imageView.superview).with.offset([BLGenernalDefinition resolutionForDevices:20.0f]);
+        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:50.0f]]);
     }];
     
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(label.superview).with.offset(10.0f);
-        make.left.equalTo(imageView.mas_right).with.offset(20.0f);
-        make.right.equalTo(label.superview).with.offset(-20.0f);
+        make.top.equalTo(label.superview).with.offset([BLGenernalDefinition resolutionForDevices:10.0f]);
+        make.left.equalTo(imageView.mas_right).with.offset([BLGenernalDefinition resolutionForDevices:20.0f]);
+        make.right.equalTo(label.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.0f]);
     }];
     
     return cell;
@@ -234,7 +237,7 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
         _tableView.backgroundColor = [UIColor clearColor];
         _tableView.dataSource = self;
         _tableView.delegate = self;
-        _tableView.rowHeight = 80.0f;
+        _tableView.rowHeight = [BLGenernalDefinition resolutionForDevices:80.0f];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:NSStringFromClass([UITableViewCell class])];
     }
@@ -259,6 +262,13 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
         _background.image = [UIImage imageNamed:@"login_signup_background.png"];
     }
     return _background;
+}
+
+- (User *)currentUser {
+    if (!_currentUser) {
+        _currentUser = [[User alloc] initWithFromUserDefault];
+    }
+    return _currentUser;
 }
 
 @end

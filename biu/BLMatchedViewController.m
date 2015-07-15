@@ -59,7 +59,6 @@
         make.top.equalTo(self.btnMatchedUserInfo.superview).with.offset([BLGenernalDefinition resolutionForDevices:31.2f]);
         make.right.equalTo(self.btnMatchedUserInfo.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.8f]);
         make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:45.3f]]);
-        make.height.equalTo(@45.3);
     }];
     
     [self.btnClose mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -107,7 +106,7 @@
 #pragma mark -
 #pragma mark Actions
 - (void)startCommunication:(id)sender {
-    [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser state:BLMatchStateAccepted distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventAccept distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Accepted matched user...");
         if (self.isMatchedUserAccepted) {
             // TODO: goto message view controller
@@ -129,7 +128,7 @@
 }
 
 - (void)close:(id)sender {
-    [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser state:BLMatchStateRejected distance:nil matchedUser:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventReject distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Rejected matched user.");
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"Rejected matched user failed. error: %@", error);

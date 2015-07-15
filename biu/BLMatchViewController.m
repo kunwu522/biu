@@ -17,12 +17,12 @@
 
 @interface BLMatchViewController () <BLPickerViewDataSource, BLPickerViewDelegate, CLLocationManagerDelegate, BLMatchedViewControllerDelegate>
 
-typedef NS_ENUM(NSInteger, BLMatchEvent) {
-    BLMatchEventNone = 0,
-    BLMatchEventMatching = 1,
-    BLMatchEventMatched = 2,
-    BLMatchEventRecjected = 3,
-    BLMatchEventStop = 4
+typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
+    BLMatchViewEventNone = 0,
+    BLMatchViewEventMatching = 1,
+    BLMatchViewEventMatched = 2,
+    BLMatchViewEventRecjected = 3,
+    BLMatchViewEventStop = 4
 };
 
 @property (strong, nonatomic) UIView *background;
@@ -153,7 +153,7 @@ typedef NS_ENUM(NSInteger, BLMatchEvent) {
         return;
     }
     self.matchedUser = matchedUser;
-    [self stateMachine:BLMatchEventMatched];
+    [self stateMachine:BLMatchViewEventMatched];
 }
 
 
@@ -218,17 +218,17 @@ typedef NS_ENUM(NSInteger, BLMatchEvent) {
 
 #pragma mark BLMatchedViewController Delegate
 - (void)didRejectedMatchedUser {
-    [self stateMachine:BLMatchEventMatching];
+    [self stateMachine:BLMatchViewEventMatching];
 }
 
 #pragma mark - Handle Switch
 - (void)matchToLove:(BLMatchSwitch *)sender {
     if (sender.on) {
         NSLog(@"Starting to Match...");
-        [self stateMachine:BLMatchEventMatching];
+        [self stateMachine:BLMatchViewEventMatching];
     } else {
         NSLog(@"Finish Matching...");
-        [self stateMachine:BLMatchEventStop];
+        [self stateMachine:BLMatchViewEventStop];
     }
 }
 
@@ -263,7 +263,7 @@ typedef NS_ENUM(NSInteger, BLMatchEvent) {
 
 #pragma mark -
 #pragma mark Private Methods
-- (void)stateMachine:(BLMatchEvent)event {
+- (void)stateMachine:(BLMatchViewEvent)event {
     switch (self.currentUser.state) {
         case BLMatchStateStop:
             [self matchStateStopWithEvent:event];
@@ -279,9 +279,9 @@ typedef NS_ENUM(NSInteger, BLMatchEvent) {
     }
 }
 
-- (void)matchStateStopWithEvent:(BLMatchEvent)event {
+- (void)matchStateStopWithEvent:(BLMatchViewEvent)event {
     switch (event) {
-        case BLMatchEventMatching:
+        case BLMatchViewEventMatching:
         {
             //start animation
             [UIView animateWithDuration:0.5f animations:^{
@@ -295,7 +295,7 @@ typedef NS_ENUM(NSInteger, BLMatchEvent) {
             }];
             
             //send http request to update match state
-            [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser state:BLMatchStateMatching distance:self.distance matchedUser:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventStartMatching distance:self.distance matchedUser:nil success:^(NSURLSessionDataTask *task, id responseObject) {
                 NSLog(@"start matching");
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
                 NSLog(@"start match failed.");
@@ -309,20 +309,20 @@ typedef NS_ENUM(NSInteger, BLMatchEvent) {
             [self.currentUser updateState:BLMatchStateMatching];
             break;
         }
-        case BLMatchEventStop:
-        case BLMatchEventMatched:
-        case BLMatchEventNone:
+        case BLMatchViewEventStop:
+        case BLMatchViewEventMatched:
+        case BLMatchViewEventNone:
         default:
             break;
     }
 }
 
-- (void)matchStateMatchingWithEvent:(BLMatchEvent)event {
+- (void)matchStateMatchingWithEvent:(BLMatchViewEvent)event {
     switch (event) {
-        case BLMatchEventMatching:
+        case BLMatchViewEventMatching:
             // Do nothing
             break;
-        case BLMatchEventMatched:
+        case BLMatchViewEventMatched:
         {
             // stop animation
             [self stopMatchingAnimationWithCompletion:^(BOOL finished) {
@@ -344,28 +344,28 @@ typedef NS_ENUM(NSInteger, BLMatchEvent) {
             [self.currentUser updateState:BLMatchStateMatched];
             break;
         }
-        case BLMatchEventStop:
+        case BLMatchViewEventStop:
         {
             // stop matching
             [self stopMatching];
             [self.currentUser updateState:BLMatchStateStop];
-            [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser state:BLMatchStateStop distance:nil matchedUser:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventStop distance:nil matchedUser:nil success:^(NSURLSessionDataTask *task, id responseObject) {
                 NSLog(@"Stop matching success...");
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
                 NSLog(@"Stop matching failed...");
             }];
             break;
         }
-        case BLMatchEventRecjected:
-        case BLMatchEventNone:
+        case BLMatchViewEventRecjected:
+        case BLMatchViewEventNone:
         default:
             break;
     }
 }
 
-- (void)matchStateMatchedWithEvent:(BLMatchEvent)event {
+- (void)matchStateMatchedWithEvent:(BLMatchViewEvent)event {
     switch (event) {
-        case BLMatchEventMatching:
+        case BLMatchViewEventMatching:
         {
             //start animation
             [UIView animateWithDuration:0.5f animations:^{
@@ -379,7 +379,7 @@ typedef NS_ENUM(NSInteger, BLMatchEvent) {
             }];
             
             //send http request to update match state
-            [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser state:BLMatchStateMatching distance:self.distance matchedUser:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventStartMatching distance:self.distance matchedUser:nil success:^(NSURLSessionDataTask *task, id responseObject) {
                 NSLog(@"start matching");
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
                 NSLog(@"start match failed.");
@@ -392,7 +392,7 @@ typedef NS_ENUM(NSInteger, BLMatchEvent) {
             [self.currentUser updateState:BLMatchStateMatching];
             break;
         }
-        case BLMatchEventStop:
+        case BLMatchViewEventStop:
         {
             [UIView animateWithDuration:0.5f animations:^{
                 self.matchedImageView.alpha = 0.0f;
@@ -402,7 +402,7 @@ typedef NS_ENUM(NSInteger, BLMatchEvent) {
             }];
             break;
         }
-        case BLMatchEventRecjected:
+        case BLMatchViewEventRecjected:
         {
             [self stopMatchingAnimationWithCompletion:^(BOOL finished) {
                 [self startMatchingAnimation];
@@ -410,8 +410,8 @@ typedef NS_ENUM(NSInteger, BLMatchEvent) {
             [self.currentUser updateState:BLMatchStateMatching];
             break;
         }
-        case BLMatchEventMatched:
-        case BLMatchEventNone:
+        case BLMatchViewEventMatched:
+        case BLMatchViewEventNone:
         default:
             break;
     }

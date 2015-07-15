@@ -69,7 +69,7 @@
                failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
 - (void)match:(User *)user
-        state:(BLMatchState)state
+        event:(BLMatchEvent)event
      distance:(NSNumber *)distance
   matchedUser:(User *)matchedUser
       success:(void (^)(NSURLSessionDataTask *task, id responseObject))success

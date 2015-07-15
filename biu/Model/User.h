@@ -21,6 +21,15 @@ typedef NS_ENUM(NSInteger, BLMatchState) {
     BLMatchStateCommunication = 5
 };
 
+typedef NS_ENUM(NSInteger, BLMatchEvent) {
+    BLMatchEventStop = 0,
+    BLMatchEventStartMatching = 1,
+    BLMatchEventAccept = 2,
+    BLMatchEventReject = 3,
+    BLMatchEventTimout = 4,
+    BLMatchEventClose = 5
+};
+
 @property (strong, nonatomic) NSNumber *userId;
 @property (strong, nonatomic) NSString *username;
 @property (strong, nonatomic) NSString *email;

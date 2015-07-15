@@ -238,14 +238,14 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
 }
 
 - (void)match:(User *)user
-        state:(BLMatchState)state
+        event:(BLMatchEvent)event
      distance:(NSNumber *)distance
   matchedUser:(User *)matchedUser
       success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
       failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
     
     NSMutableDictionary *matchDictionary = [NSMutableDictionary dictionary];
-    [matchDictionary setObject:[NSNumber numberWithInteger:state] forKey:@"state"];
+    [matchDictionary setObject:[NSNumber numberWithInteger:event] forKey:@"event"];
     if (distance) {
         [matchDictionary setObject:distance forKey:@"distance"];
     }
