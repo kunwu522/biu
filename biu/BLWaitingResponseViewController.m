@@ -7,6 +7,7 @@
 //
 
 #import "BLWaitingResponseViewController.h"
+#import "BLMessagesViewController.h"
 #import "Masonry.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -18,7 +19,7 @@
 
 @end
 
-@interface BLWaitingResponseViewController () <UITableViewDataSource, UITableViewDelegate> {
+@interface BLWaitingResponseViewController () <UITableViewDataSource, UITableViewDelegate, BLMessagesViewControllerDelegate> {
     int secondsLeft;
     int minutes;
     int seconds;
@@ -100,6 +101,7 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
 
 #pragma mark - Public methods
 - (void)matchedUserRejected {
+    [self.timer invalidate];
     BLTableViewCellParams *param = [BLTableViewCellParams new];
     param.text = NSLocalizedString(@"matched user rejected", nil);
     param.icon = [UIImage imageNamed:@"warning_icon.png"];
@@ -112,6 +114,12 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
 
 - (void)matchedUserAccepted {
     NSLog(@"Matched user accepted.");
+    [self.timer invalidate];
+    BLMessagesViewController *messageViewController = [[BLMessagesViewController alloc] init];
+    messageViewController.delegate = self;
+    messageViewController.sender = self.currentUser;
+    messageViewController.receiver = self.matchedUser;
+    [self presentViewController:messageViewController animated:YES completion:nil];
 }
 
 #pragma mark -
@@ -197,6 +205,11 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
     }];
     
     return cell;
+}
+
+#pragma mark MessageView Delegate
+- (void)didDismissBLMessagesViewController:(BLMessagesViewController *)vc {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark -

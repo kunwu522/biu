@@ -27,6 +27,7 @@
 
 @implementation BLAppDelegate
 
+@synthesize xmppStream;
 @synthesize passwordItem, welNavController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -80,7 +81,100 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-#pragma mark -
+#pragma mark - Public methods
+- (BOOL)connect {
+    [self setupStream];
+    
+    if (![xmppStream isDisconnected]) {
+        return YES;
+    }
+    
+    if (self.currentUser.phone == nil || self.currentUser.password == nil) {
+        return NO;
+    }
+    
+    [xmppStream setMyJID:[XMPPJID jidWithString:[NSString stringWithFormat:@"%@@localhost", self.currentUser.phone]]];
+//    [xmppStream setHostName:@"localhost"];
+    
+    NSError *error = nil;
+    if (![xmppStream connectWithTimeout:XMPPStreamTimeoutNone error:&error]) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:[NSString stringWithFormat:@"Can't connect to server %@", [error localizedDescription]]
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (void)disconnect {
+    [self goOffline];
+    [xmppStream disconnect];
+}
+
+#pragma mark - Private methods
+- (void)setupStream {
+    xmppStream = [[XMPPStream alloc] init];
+    [xmppStream addDelegate:self delegateQueue:dispatch_get_main_queue()];
+}
+
+- (void)goOnline {
+    XMPPPresence *presence = [XMPPPresence presence];
+    [[self xmppStream] sendElement:presence];
+}
+
+- (void)goOffline {
+    XMPPPresence *presence = [XMPPPresence presenceWithType:@"unavailable"];
+    [[self xmppStream] sendElement:presence];
+}
+
+#pragma mark - Delegates
+#pragma mark XMPP Delegate
+- (void)xmppStreamDidConnect:(XMPPStream *)sender {
+    NSLog(@"Connection to the server successful.");
+    isOpen = YES;
+    NSError *error = nil;
+    [self.xmppStream authenticateWithPassword:self.currentUser.password error:&error];
+}
+
+- (void)xmppStreamDidAuthenticate:(XMPPStream *)sender {
+    NSLog(@"authentication successful.");
+    [self goOnline];
+}
+
+- (void)xmppStream:(XMPPStream *)sender didReceiveMessage:(XMPPMessage *)message {
+    NSString *body = [[message elementForName:@"body"] stringValue];
+    NSString *displayName = [[message attributeForName:@"from"] stringValue];
+    
+    NSMutableDictionary *m = [[NSMutableDictionary alloc] init];
+    [m setObject:body forKey:@"msg"];
+    [m setObject:displayName forKey:@"sender"];
+    
+    if (self.messageDelegate) {
+        [self.messageDelegate newMessageReceived:m];
+    }
+    
+    if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:displayName
+//                                                            message:body
+//                                                           delegate:nil
+//                                                  cancelButtonTitle:@"Ok"
+//                                                  otherButtonTitles:nil];
+//        [alertView show];
+        NSLog(@"Receive new message: %@, from %@.", body, displayName);
+    } else {
+        // We are not active, so use a local notification instead
+        UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+        localNotification.alertAction = @"Ok";
+        localNotification.alertBody = [NSString stringWithFormat:@"From: %@\n\n%@",displayName,body];
+        
+        [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
+    }
+}
+
 #pragma mark Push Notification Delegate
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     self.deviceToken = [[[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]] stringByReplacingOccurrencesOfString:@" " withString:@""];

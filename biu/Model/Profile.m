@@ -37,6 +37,9 @@ static NSString *SEXUALITY = @"sexuality";
 }
 
 - (id)initWithDictionary:(NSDictionary *)dictionary {
+    if (!dictionary || (id)dictionary == [NSNull null]) {
+        return nil;
+    }
     self = [Profile new];
     if (self) {
         self.profileId = [dictionary objectForKey:@"profile_id"];

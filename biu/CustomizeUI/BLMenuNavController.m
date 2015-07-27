@@ -117,6 +117,26 @@
     }];
 }
 
+- (void)closeViewToRootViewController {
+    if (self.currentViewController == self.rootViewController) {
+        return;
+    }
+    
+    [self.currentViewController willMoveToParentViewController:nil];
+    [self addChildViewController:self.rootViewController];
+    self.rootViewController.view.frame = self.view.bounds;
+    self.rootViewController.view.alpha = 0.0f;
+    
+    [self transitionFromViewController:self.currentViewController toViewController:self.rootViewController duration:0.3f options:UIViewAnimationOptionTransitionNone animations: ^{
+        self.currentViewController.view.frame = CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height);
+        self.rootViewController.view.alpha = 1.0f;
+    }completion:^(BOOL finished) {
+        [self.currentViewController removeFromParentViewController];
+        [self.rootViewController didMoveToParentViewController:self];
+        self.currentViewController = self.rootViewController;
+    }];
+}
+
 - (BOOL)displayRootViewController {
     return self.currentViewController == self.rootViewController ? YES : NO;
 }
@@ -134,12 +154,12 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    BLAppDelegate *blAppDelegate = [[UIApplication sharedApplication] delegate];
+    BLAppDelegate *blAppDelegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
     blAppDelegate.masterNavController = self;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-    BLAppDelegate *blAppDelegate = [[UIApplication sharedApplication] delegate];
+    BLAppDelegate *blAppDelegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
     blAppDelegate.masterNavController = nil;
 }
 

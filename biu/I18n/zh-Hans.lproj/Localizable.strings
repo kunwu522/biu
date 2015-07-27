@@ -126,4 +126,32 @@
 "were rejected title" = "对不起！永远会有下一个！请忽略Ta";
 "were rejected subtitle" = "5分钟后会自动关闭";
 
+// Message
+"You've just started your lovestory" = "开始你的爱情之旅";
+"Cancel" = "取消";
+"Chat is instance! No record if you close the page!!" = "此为一次性同化，关闭后讲没有任何记录，确认吗？";
+
+// Setting
+"Share to WeChai" = "分享到朋友圈";
+"Share to Weibo" = "分享微博";
+"Suggestion" = "给我们建议";
+"About us" = "关于我们";
+"Contract" = "协议";
+"Logout" = "退出登录";
+
+// Suggestion
+"Suggestion" = "建议";
+"Done" = "完成";
+"Would you mind leave your emails" = "是否介意留下您的Email";
+"You'er the best adviser" = "你才是我们最好的军师，不要客气，请给我们出谋划策。";
+
+// About us
+"About Us" = "关于我们";
+"Version" = "版本号";
+"Question" = "任何疑问";
+"Join Us" = "加入我们";
+"Business about us" = "商务合作";
+
+// Contract
+"Contract" = "用户协议";
 

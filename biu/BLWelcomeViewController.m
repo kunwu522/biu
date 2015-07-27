@@ -7,6 +7,8 @@
 //
 
 #import "BLWelcomeViewController.h"
+#import "BLLoginViewController.h"
+#import "BLSignupViewController.h"
 #import "BLAppDelegate.h"
 #import "BLLoginView.h"
 #import "BLSignupView.h"
@@ -20,7 +22,7 @@
 #import "BLTextField.h"
 
 
-@interface BLWelcomeViewController () <BLSignupViewDelegate, BLLoginViewDelegate>
+@interface BLWelcomeViewController () <BLSignupViewControllerDelegate, BLLoginViewControllerDelegate>
 
 @property (strong, nonatomic) UIImageView * logo;
 @property (strong, nonatomic) UILabel * biuTitle;
@@ -114,7 +116,7 @@ static double ICON_INITIAL_SIZE = 147.5;
         [[BLHTTPClient sharedBLHTTPClient] login:currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
             User *user = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
             [user save];
-            BLAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+            BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
             if (!user.token) {
                 [[BLHTTPClient sharedBLHTTPClient] registToken:delegate.deviceToken user:user success:^(NSURLSessionDataTask *task, id responseObject) {
                     NSLog(@"Regist device token successed.");
@@ -227,30 +229,28 @@ static double ICON_INITIAL_SIZE = 147.5;
 }
 
 - (void)showLoginView:(id)sender {
-    BLLoginView *loginView = [[BLLoginView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height)];
-    loginView.delegate = self;
-    [self.view addSubview:loginView];
-    
-    [UIView animateWithDuration:0.3f animations:^{
-        CGPoint center = loginView.center;
-        center.y = self.view.center.y;
-        loginView.center = center;
-    }];
+    BLLoginViewController *loginViewController = [[BLLoginViewController alloc] init];
+    loginViewController.delegate = self;
+    [self presentViewController:loginViewController animated:YES completion:nil];
 }
 
 - (void)showSignupView:(id)sender {
-    BLSignupView *signupView = [[BLSignupView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height)];
-    signupView.delegate = self;
-    [self.view addSubview:signupView];
-    [UIView animateWithDuration:0.3f animations:^{
-        CGPoint center = signupView.center;
-        center.y = self.view.center.y;
-        signupView.center = center;
-    }];
+//    BLSignupView *signupView = [[BLSignupView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height)];
+//    signupView.delegate = self;
+//    [self.view addSubview:signupView];
+//    [UIView animateWithDuration:0.3f animations:^{
+//        CGPoint center = signupView.center;
+//        center.y = self.view.center.y;
+//        signupView.center = center;
+//    }];
+    BLSignupViewController *signupViewController = [[BLSignupViewController alloc] init];
+    signupViewController.delegate = self;
+    [self presentViewController:signupViewController animated:YES completion:nil];
 }
 
-#pragma mark - BLLoginView delegate and BLSignupView delegate
-- (void)didLoginWithCurrentUser:(User *)user {
+#pragma mark - BLLoginViewController delegate and BLSignupView delegate
+- (void)viewController:(UIViewController *)controller didLoginWithCurrentUser:(User *)user {
+    
     [self saveCurrentUser:user];
     BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
     BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
@@ -259,17 +259,17 @@ static double ICON_INITIAL_SIZE = 147.5;
     // Create BL Menu view controller
     BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
                                                                 menuViewController:menuViewController];
-    [self presentViewController:menuNavController animated:YES completion:nil];
+    [controller presentViewController:menuNavController animated:YES completion:nil];
 }
 
-- (void)didSignupWithNewUser:(User *)user {
+- (void)viewController:(UIViewController *)controller didSignupWithNewUser:(User *)user {
     [self saveCurrentUser:user];
-    [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
+    [controller presentViewController:self.fillingInfoNavController animated:YES completion:nil];
 }
 
 #pragma mark - private method
 - (void)saveCurrentUser:(User *)user {
-    BLAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
     delegate.currentUser = user;
     [delegate.currentUser save];
     

@@ -13,6 +13,8 @@
 + (CGFloat)resolutionForDevices:(CGFloat)size {
     if (IS_IPHONE_5) {
         return size * 0.85f;
+    } else if (IS_IPHONE_6_PLUS) {
+        return size * 1.10f;
     } else {
         return size;
     }

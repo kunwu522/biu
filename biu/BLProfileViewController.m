@@ -118,7 +118,7 @@ static const float AVATOR_WIDTH = 163.0f;
     [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@",
                                                                    [BLHTTPClient blBaseURL],self.currentUser.userId]]
                             placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
-                                     options:SDWebImageRefreshCached | SDWebImageHandleCookies];
+                                     options: SDWebImageHandleCookies];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -362,11 +362,6 @@ static const float AVATOR_WIDTH = 163.0f;
                                                              [BLHTTPClient blBaseURL],
                                                              self.currentUser.userId]];
     
-    [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@",
-                                                                   [BLHTTPClient blBaseURL],self.currentUser.userId]]
-                            placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
-                                     options:SDWebImageRefreshCached];
-    
     [self.tableView reloadData];
     [self dismissViewControllerAnimated:NO completion:nil];
     
@@ -449,7 +444,7 @@ static const float AVATOR_WIDTH = 163.0f;
 - (void)setProfileViewType:(BLProfileViewType)profileViewType {
     _profileViewType = profileViewType;
     if (profileViewType == BLProfileViewTypeUpdate) {
-        BLAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+        BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
         _currentUser = delegate.currentUser;
         _gender = _currentUser.profile.gender;
         _birthday = _currentUser.profile.birthday;

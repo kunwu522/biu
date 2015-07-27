@@ -17,6 +17,7 @@
 - (id)initWithRootViewController:(UIViewController *)rootViewController
               menuViewController:(UIViewController *)menuViewController;
 - (void)backToRootViewController;
+- (void)closeViewToRootViewController;
 - (void)presentMenuViewController;
 - (void)hideMenuViewController;
 - (void)setContentViewController:(UIViewController *)contentViewController animated:(BOOL)animated;

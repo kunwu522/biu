@@ -46,4 +46,14 @@ static NSString *FONT_BOLD = @"FontBold";
     return size;
 }
 
++ (CGSize)sizeForString:(NSString *)string font:(UIFont *)font {
+    CGSize result;
+#ifdef __IPHONE_7_0
+    result = [string sizeWithAttributes:@{NSFontAttributeName: font}];
+#else
+    result = [string sizeWithFont:font];
+#endif
+    return result;
+}
+
 @end

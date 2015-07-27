@@ -8,12 +8,13 @@
 
 #import "BLMatchedViewController.h"
 #import "BLWaitingResponseViewController.h"
+#import "BLMessagesViewController.h"
 #import "BLBlurView.h"
 #import "Masonry.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <TSMessages/TSMessage.h>
 
-@interface BLMatchedViewController ()
+@interface BLMatchedViewController () <BLMessagesViewControllerDelegate>
 
 @property (strong, nonatomic) BLBlurView *blurUserInfoView;
 @property (strong, nonatomic) UIImageView *matchedUserImageView;
@@ -77,7 +78,6 @@
 #pragma mark -
 #pragma mark Public methods
 - (void)matchedUserAccepted {
-    // TODO: Show notification
     self.isMatchedUserAccepted = YES;
     [TSMessage showNotificationInViewController:self
                                           title:NSLocalizedString(@"were accepted title", nil)
@@ -87,7 +87,6 @@
 }
 
 - (void)matchedUserRejected {
-    // TODO: Show notification
     [TSMessage showNotificationInViewController:self
                                           title:NSLocalizedString(@"were rejected title", nil)
                                        subtitle:NSLocalizedString(@"were rejected subtitle", nil)
@@ -109,8 +108,12 @@
     [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventAccept distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Accepted matched user...");
         if (self.isMatchedUserAccepted) {
-            // TODO: goto message view controller
             NSLog(@"Go to message view controller");
+            BLMessagesViewController *messageViewController = [[BLMessagesViewController alloc] init];
+            messageViewController.delegate = self;
+            messageViewController.sender = self.currentUser;
+            messageViewController.receiver = self.matchedUser;
+            [self presentViewController:messageViewController animated:YES completion:nil];
         } else {
             BLWaitingResponseViewController *waitingViewController = [[BLWaitingResponseViewController alloc]initWithNibName:nil bundle:nil];
             waitingViewController.matchedUser = self.matchedUser;
@@ -137,6 +140,12 @@
         [self.delegate didRejectedMatchedUser];
     }
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark
+#pragma mark Delegates
+- (void)didDismissBLMessagesViewController:(BLMessagesViewController *)vc {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark -

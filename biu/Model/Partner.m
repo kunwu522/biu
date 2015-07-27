@@ -37,6 +37,9 @@ static NSString *PREFER_STYLES = @"prefer_styles";
 }
 
 - (id)initWithDictionary:(NSDictionary *)dictionary {
+    if (!dictionary || (id)dictionary == [NSNull null]) {
+        return nil;
+    }
     self = [Partner new];
     if (self) {
         self.partnerId = [dictionary objectForKey:@"partner_id"];

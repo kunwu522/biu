@@ -16,5 +16,6 @@
 
 - (void)presentMenuViewController:(id)sender;
 - (void)backToRootViewController:(id)sender;
+- (void)closeViewToRootViewController:(id)sender;
 
 @end

@@ -44,7 +44,7 @@
 #pragma mark Public method
 - (void)showClearButton {
     UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [clearButton setImage:[UIImage imageNamed:@"close_icon.png"] forState:UIControlStateNormal];
+    [clearButton setImage:[UIImage imageNamed:@"textfield_delete_icon.png"] forState:UIControlStateNormal];
     [clearButton addTarget:self action:@selector(clearTextField:) forControlEvents:UIControlEventTouchUpInside];
     
     self.rightViewMode = UITextFieldViewModeWhileEditing; //can be changed to UITextFieldViewModeNever,    UITextFieldViewModeWhileEditing,   UITextFieldViewModeUnlessEditing
@@ -81,7 +81,7 @@
 }
 
 - (CGRect)rightViewRectForBounds:(CGRect)bounds {
-    CGFloat width = bounds.size.height - 5;
+    CGFloat width = bounds.size.height - 8;
     return CGRectMake(bounds.size.width - bounds.size.height, (bounds.size.height - width) * 0.5, width, width);
 }
 

@@ -16,6 +16,7 @@
 + (UIFont *)italicFont:(CGFloat)fontSize;
 + (UIFont *)boldFont:(CGFloat)fontSize;
 
++ (CGSize)sizeForString:(NSString *)string font:(UIFont *)font;
 + (CGSize)normalFontSizeForString:(NSString *)string fontSize:(CGFloat)fontSize;
 
 @end

@@ -113,3 +113,7 @@
 "were accepted subtitle" = "5分钟没有应答会自动关闭";
 "were rejected title" = "对不起！永远会有下一个！请忽略Ta";
 "were rejected subtitle" = "5分钟后会自动关闭";
+
+// Message
+"You've just started your lovestory" = "You've just started your lovestory";
+"Chat is instance! No record if you close the page!!" = "Chat is instance! No record if you close the page!!";

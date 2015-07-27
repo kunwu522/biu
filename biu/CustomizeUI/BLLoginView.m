@@ -18,7 +18,6 @@
 @property (strong, nonatomic) UIImageView *logoImageView;
 @property (strong, nonatomic) BLTextField *tfPhoneNumber;
 @property (strong, nonatomic) BLTextField *tfPassword;
-@property (strong, nonatomic) UIView *orView;
 @property (strong, nonatomic) UIView *lineView1;
 @property (strong, nonatomic) UIView *lineView2;
 @property (strong, nonatomic) UILabel *lbOr;

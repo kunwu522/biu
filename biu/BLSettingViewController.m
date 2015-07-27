@@ -8,14 +8,23 @@
 
 #import "BLSettingViewController.h"
 #import "BLWelcomeViewController.h"
+#import "BLSuggestionViewController.h"
+#import "BLAboutUsViewController.h"
+#import "BLContractViewController.h"
 #import "UIViewController+BLMenuNavController.h"
 #import "Masonry.h"
 
-@interface BLSettingViewController ()
+@interface BLSettingViewController () <UITableViewDataSource, UITableViewDelegate>
 
-@property (strong, nonatomic) UIButton *btnLogout;
+@property (strong, nonatomic) UIImageView *background;
+@property (strong, nonatomic) UILabel *lbTitle;
+@property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) UIButton *btnMenu;
 @property (strong, nonatomic) UIButton *btnBackToRoot;
+@property (strong, nonatomic) UIButton *btnClose;
+@property (strong, nonatomic) UIButton *btnLogout;
+
+@property (strong, nonatomic) NSArray *dataSource;
 
 @end
 
@@ -24,37 +33,151 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _btnLogout = [[UIButton alloc] init];
-    [_btnLogout addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchDown];
-    [_btnLogout setBackgroundColor:[UIColor redColor]];
-    _btnLogout.titleLabel.font = [BLFontDefinition boldFont:20.0f];
-    [_btnLogout setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_btnLogout setTitle:@"LOG OUT" forState:UIControlStateNormal];
-    [self.view addSubview:_btnLogout];
+    [self.view addSubview:self.background];
+    [self.view addSubview:self.lbTitle];
+    [self.view addSubview:self.tableView];
+//    [self.view addSubview:self.btnMenu];
+//    [self.view addSubview:self.btnBackToRoot];
+    [self.view addSubview:self.btnClose];
+    [self.view addSubview:self.btnLogout];
+
+    self.dataSource = @[@{@"label" : NSLocalizedString(@"Share to WeChai", nil), @"haveDetailView" : @NO},
+                        @{@"label" : NSLocalizedString(@"Share to Weibo", nil), @"haveDetailView" : @NO},
+                        @{@"label" : NSLocalizedString(@"Suggestion", nil), @"haveDetailView" : @YES},
+                        @{@"label" : NSLocalizedString(@"About us", nil), @"haveDetailView" : @YES},
+                        @{@"label" : NSLocalizedString(@"Contract", nil), @"haveDetailView" : @YES}];
     
-    [_btnLogout mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(_btnLogout.superview);
-        make.centerY.equalTo(_btnLogout.superview).with.offset(100.0f);
-        make.width.equalTo(@200);
-        make.height.equalTo(@50);
+    [self loadLayouts];
+}
+
+- (void)loadLayouts {
+    [self.background mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.background.superview);
+    }];
+    
+//    [self.btnMenu mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.btnMenu.superview).with.offset([BLGenernalDefinition resolutionForDevices:31.2f]);
+//        make.right.equalTo(self.btnMenu.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.8f]);
+//        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:45.3]]);
+//    }];
+//    
+//    [self.btnBackToRoot mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.btnBackToRoot.superview).with.offset([BLGenernalDefinition resolutionForDevices:31.2f]);
+//        make.left.equalTo(self.btnBackToRoot.superview).with.offset([BLGenernalDefinition resolutionForDevices:20.8f]);
+//        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:45.3]]);
+//    }];
+    
+    [self.btnClose mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.btnClose.superview).with.offset([BLGenernalDefinition resolutionForDevices:32.0f]);
+        make.left.equalTo(self.btnClose.superview).with.offset([BLGenernalDefinition resolutionForDevices:20.0f]);
+        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:20.0f]]);
+    }];
+    
+    [self.lbTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.lbTitle.superview);
+        make.top.equalTo(self.lbTitle.superview).with.offset([BLGenernalDefinition resolutionForDevices:80.0f]);
+    }];
+    
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.lbTitle.mas_bottom).with.offset([BLGenernalDefinition resolutionForDevices:50.0f]);
+        make.left.right.equalTo(self.tableView.superview);
+        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:400.0f]]);
+    }];
+    
+    [self.btnLogout mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.btnLogout.superview).with.offset([BLGenernalDefinition resolutionForDevices:40.0f]);
+        make.bottom.equalTo(self.btnLogout.superview).with.offset([BLGenernalDefinition resolutionForDevices:-50.0f]);
     }];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark - Delegates
+#pragma mark TableView Datasource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.dataSource.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([UITableViewCell class]) forIndexPath:indexPath];
+    cell.backgroundColor = [UIColor clearColor];
+    
+    NSDictionary *parameters = [self.dataSource objectAtIndex:indexPath.row];
+    UILabel *label = [[UILabel alloc] init];
+    label.text = [parameters objectForKey:@"label"];
+    label.textColor = [UIColor whiteColor];
+    label.font = [BLFontDefinition normalFont:15.0f];
+    [cell addSubview:label];
+    
+    [label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(label.superview);
+        make.left.equalTo(label.superview).with.offset([BLGenernalDefinition resolutionForDevices:40.0f]);
+    }];
+    
+    BOOL haveDetailView = [[parameters objectForKey:@"haveDetailView"] boolValue];
+    if (haveDetailView) {
+        UIImageView *arrow = [[UIImageView alloc] init];
+        arrow.image = [UIImage imageNamed:@"right_arrow.png"];
+        [cell addSubview:arrow];
+        [arrow mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(arrow.superview);
+            make.right.equalTo(arrow.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.0f]);
+            make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:20.0f]]);
+        }];
+    }
+    
+    // Draw top border only on first cell
+    if (indexPath.row == 0) {
+        UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 0.5)];
+        topLineView.backgroundColor = [UIColor grayColor];
+        [cell.contentView addSubview:topLineView];
+    }
+    
+    UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, cell.bounds.size.height, self.view.bounds.size.width, 0.5)];
+    bottomLineView.backgroundColor = [UIColor grayColor];
+    [cell.contentView addSubview:bottomLineView];
+    
+    return cell;
+}
+
+#pragma mark TableView delegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch (indexPath.row) {
+        case 0:
+            break;
+        case 1:
+            break;
+        case 2:
+        {
+            BLSuggestionViewController *suggestionViewController = [[BLSuggestionViewController alloc] init];
+            [self.navigationController pushViewController:suggestionViewController animated:YES];
+            break;
+        }
+        case 3:
+        {
+            BLAboutUsViewController *aboutUsViewController = [[BLAboutUsViewController alloc] init];
+            [self.navigationController pushViewController:aboutUsViewController animated:YES];
+            break;
+        }
+        case 4:
+        {
+            BLContractViewController *contractViewController = [[BLContractViewController alloc] init];
+            [self.navigationController pushViewController:contractViewController animated:YES];
+            break;
+        }
+        default:
+            break;
+    }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - Action
 - (void)logout:(id)sender {
-    //TODO: clear data in NSUserDefaults
     [[BLHTTPClient sharedBLHTTPClient] logout:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"User log out successful.");
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"User log out failed. Error: %@", error.description);
     }];
     
-    BLAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
     [delegate.passwordItem resetKeychainItem];
     delegate.currentUser = nil;
     [NSUserDefaults resetStandardUserDefaults];
@@ -74,8 +197,44 @@
     [self backToRootViewController:sender];
 }
 
+- (void)close:(id)sender {
+    [self closeViewToRootViewController:sender];
+}
+
 #pragma mark -
 #pragma mark Getter
+- (UIImageView *)background {
+    if (!_background) {
+        _background = [[UIImageView alloc] init];
+        _background.image = [UIImage imageNamed:@"login_signup_background.png"];
+    }
+    return _background;
+}
+
+- (UILabel *)lbTitle {
+    if (!_lbTitle) {
+        _lbTitle = [[UILabel alloc] init];
+        _lbTitle.font = [BLFontDefinition normalFont:18.0f];
+        _lbTitle.text = NSLocalizedString(@"Setting", nil);
+        _lbTitle.textAlignment = NSTextAlignmentCenter;
+        _lbTitle.textColor = [UIColor whiteColor];
+    }
+    return _lbTitle;
+}
+
+- (UITableView *)tableView {
+    if (!_tableView) {
+        _tableView = [[UITableView alloc] init];
+        _tableView.backgroundColor = [UIColor clearColor];
+        _tableView.dataSource = self;
+        _tableView.delegate = self;
+        _tableView.rowHeight = [BLGenernalDefinition resolutionForDevices:60.0f];
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:NSStringFromClass([UITableViewCell class])];
+    }
+    return _tableView;
+}
+
 - (UIButton *)btnMenu {
     if (!_btnMenu) {
         _btnMenu = [[UIButton alloc] init];
@@ -92,6 +251,26 @@
         [_btnBackToRoot addTarget:self action:@selector(backToRoot:) forControlEvents:UIControlEventTouchDown];
     }
     return _btnBackToRoot;
+}
+
+- (UIButton *)btnLogout {
+    if (!_btnLogout) {
+        _btnLogout = [[UIButton alloc] init];
+        [_btnLogout setTitle:NSLocalizedString(@"Logout", nil) forState:UIControlStateNormal];
+        [_btnLogout setTitleColor:[BLColorDefinition fontGreenColor] forState:UIControlStateNormal];
+        _btnLogout.titleLabel.font = [BLFontDefinition normalFont:15.0f];
+        [_btnLogout addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _btnLogout;
+}
+
+- (UIButton *)btnClose {
+    if (!_btnClose) {
+        _btnClose = [[UIButton alloc] init];
+        [_btnClose addTarget:self action:@selector(close:) forControlEvents:UIControlEventTouchDown];
+        [_btnClose setBackgroundImage:[UIImage imageNamed:@"close_icon.png"] forState:UIControlStateNormal];
+    }
+    return _btnClose;
 }
 
 @end

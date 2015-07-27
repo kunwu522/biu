@@ -21,6 +21,9 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - HexColors (2.2.1)
+  - JSQMessagesViewController (7.1.0):
+    - JSQSystemSoundPlayer (~> 2.0.1)
+  - JSQSystemSoundPlayer (2.0.1)
   - Masonry (0.5.3)
   - SDWebImage (3.7.2):
     - SDWebImage/Core (= 3.7.2)
@@ -31,6 +34,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
+  - JSQMessagesViewController
   - Masonry (~> 0.5.3)
   - SDWebImage
   - SimulatorRemoteNotifications (~> 0.0.3)
@@ -39,6 +43,8 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworking: 41d45d2c14219af0fa5addf3cfd433a002c13c9f
   HexColors: abfd172e329dab59888614ccba6f216cec59289d
+  JSQMessagesViewController: ca11f86fa68ca70835f05e169df9244147c1dc40
+  JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   Masonry: 9f515466afe48632562342a40a1c224071a1a022
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   SimulatorRemoteNotifications: 1610643e0582b2af67bc254b071ace4077e8ef86

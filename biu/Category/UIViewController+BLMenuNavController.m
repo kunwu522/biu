@@ -33,5 +33,9 @@
     [self.menuNavController backToRootViewController];
 }
 
+- (void)closeViewToRootViewController:(id)sender {
+    [self.menuNavController closeViewToRootViewController];
+}
+
 
 @end

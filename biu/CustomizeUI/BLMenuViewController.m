@@ -102,7 +102,9 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
         case BLSubViewControllerSetting:
         {
             BLSettingViewController *settingViewController = [[BLSettingViewController alloc] init];
-            [self.menuNavController setContentViewController:settingViewController animated:YES];
+            UINavigationController *settingNavViewController = [[UINavigationController alloc] initWithRootViewController:settingViewController];
+            settingNavViewController.navigationBarHidden = YES;
+            [self.menuNavController setContentViewController:settingNavViewController animated:YES];
             break;
         }
         default:

@@ -98,15 +98,14 @@ static const float CELL_WIDTH = 90.0;
     if (self.gender == BLGenderMale) {
         cell.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"style_man_selected_icon%ld.png", (long)indexPath.item]];
         cell.unselectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"style_man_unselected_icon%ld.png", (long)indexPath.item]];
-//        cell.imageView.image = cell.unselectedImage;
-        [self setImageForCell:cell cellForItemAtIndexPath:indexPath];
+        cell.imageView.image = cell.unselectedImage;
     } else {
         cell.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"style_woman_selected_icon%ld.png", (long)indexPath.item]];
         cell.unselectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"style_woman_unselected_icon%ld.png", (long)indexPath.item]];
         cell.imageView.image = cell.unselectedImage;
-        [self setImageForCell:cell cellForItemAtIndexPath:indexPath];
     }
     cell.style.text = [Partner getStyleNameFromZodiac:[self styleTypeFromIndexItem:indexPath.item]];
+    [self selectedItemForCollectionView:collectionView cell:cell indexPath:indexPath];
     return cell;
 }
 
@@ -168,14 +167,26 @@ static const float CELL_WIDTH = 90.0;
     if (self.allowMultiSelected) {
         if ([self.preferStyles containsObject:[NSNumber numberWithInteger:[self styleTypeFromIndexItem:indexPath.item]]]) {
             cell.imageView.image = cell.selectedImage;
-        } else {
-            cell.imageView.image = cell.unselectedImage;
         }
     } else {
         if ([self indexItemFromStyle:self.style] == indexPath.item) {
             cell.imageView.image = cell.selectedImage;
         } else {
             cell.imageView.image = cell.unselectedImage;
+        }
+    }
+}
+
+- (void)selectedItemForCollectionView:(UICollectionView *)collectionView cell:(BLStyleCollectionViewCell *)cell indexPath:(NSIndexPath *)indexPath {
+    if (self.allowMultiSelected) {
+        if ([self.preferStyles containsObject:[NSNumber numberWithInteger:[self styleTypeFromIndexItem:indexPath.item]]]) {
+            [collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+            [cell setSelected:YES];
+        }
+    } else {
+        if ([self indexItemFromStyle:self.style] == indexPath.item) {
+            [collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+            [cell setSelected:YES];
         }
     }
 }

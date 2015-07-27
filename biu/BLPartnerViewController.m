@@ -439,7 +439,6 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
         // Create BL Menu view controller
         BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
                                                                   menuViewController:menuViewController];
-        [self dismissViewControllerAnimated:NO completion:nil];
         [self presentViewController:menuNavController animated:YES completion:nil];
         [_timer invalidate];
     }

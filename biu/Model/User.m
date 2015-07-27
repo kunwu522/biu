@@ -72,7 +72,7 @@ static NSString *AVATAR_RECTANGLE_URL = @"avatar_rectangle_url";
 - (id)initWithFromUserDefault {
     self = [User new];
     if (self) {
-        BLAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+        BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
         self.phone = [delegate.passwordItem objectForKey:(__bridge id)kSecAttrAccount];
         NSObject *pwd = [delegate.passwordItem objectForKey:(__bridge id)(kSecValueData)];
         if ([pwd isKindOfClass:[NSData class]]) {
@@ -107,6 +107,7 @@ static NSString *AVATAR_RECTANGLE_URL = @"avatar_rectangle_url";
     if (self) {
         self.userId = [dictionary objectForKey:@"user_id"];
         self.username = [dictionary objectForKey:@"username"];
+        self.phone = [dictionary objectForKey:@"phone"];
         if ([dictionary objectForKey:@"device_token"] != [NSNull null]) {
             self.token = [dictionary objectForKey:@"device_token"];
         }
@@ -128,7 +129,7 @@ static NSString *AVATAR_RECTANGLE_URL = @"avatar_rectangle_url";
         return;
     }
     
-    BLAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     if (![self.phone isEqualToString:[delegate.passwordItem objectForKey:(__bridge id)kSecAttrAccount]]) {
         [delegate.passwordItem setObject:self.phone forKey:(__bridge id)kSecAttrAccount];

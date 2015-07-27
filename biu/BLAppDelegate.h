@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "KeychainItemWrapper.h"
 #import "User.h"
+#import "XMPPFramework.h"
 
 #define IS_IPHONE_5 (fabs((double)[[UIScreen mainScreen]bounds].size.height - (double)568) < DBL_EPSILON)
 #define IS_IPHONE_6 (fabs((double)[[UIScreen mainScreen]bounds].size.height - (double)667) < DBL_EPSILON)
@@ -16,7 +17,16 @@
 
 @class KeychainItemWrapper;
 
-@interface BLAppDelegate : UIResponder <UIApplicationDelegate>
+@protocol BLMessageDelegate <NSObject>
+@required
+- (void)newMessageReceived:(NSDictionary *)message;
+
+@end
+
+@interface BLAppDelegate : UIResponder <UIApplicationDelegate, XMPPStreamDelegate> {
+    XMPPStream *xmppStream;
+    BOOL isOpen;
+}
 
 @property (strong, nonatomic) UIWindow *window;
 
@@ -24,9 +34,15 @@
 @property (strong, nonatomic) NSString *deviceToken;
 
 @property (strong, nonatomic) UINavigationController *welNavController;
+@property (strong, nonatomic) UIViewController *masterNavController;
 @property (strong, nonatomic) KeychainItemWrapper *passwordItem;
 
-@property (strong, nonatomic) UIViewController *masterNavController;
+@property (strong, nonatomic, readonly) XMPPStream *xmppStream;
+@property (weak, nonatomic) id<BLMessageDelegate> messageDelegate;
+
+- (BOOL)connect;
+- (void)disconnect;
 
 @end
+
 

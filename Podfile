@@ -6,6 +6,7 @@ target 'biu' do
     pod 'Masonry', '~> 0.5.3'
     pod 'SDWebImage'
     pod "TSMessages"
+    pod 'JSQMessagesViewController'
     
     pod 'SimulatorRemoteNotifications', '~> 0.0.3'
 end
@@ -15,6 +16,7 @@ target 'biuTests' do
     pod 'Masonry', '~> 0.5.3'
     pod 'SDWebImage'
     pod "TSMessages"
+    pod 'JSQMessagesViewController'
     
     pod 'SimulatorRemoteNotifications', '~> 0.0.3'
 end

@@ -12,6 +12,7 @@
 #import "BLMatchSwitch.h"
 #import "BLMenuNavController.h"
 #import "BLMatchedViewController.h"
+#import "BLMessagesViewController.h"
 #import "UIViewController+BLMenuNavController.h"
 #import "Masonry.h"
 
@@ -139,6 +140,23 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
         make.centerY.equalTo(self.matchedImageView.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.0f]);
         make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:160.0f]]);
     }];
+    
+    // DEBUG
+    UIButton *btnTestMessage = [[UIButton alloc] initWithFrame:CGRectMake(30, 30, 100, 200)];
+    [btnTestMessage setTitle:@"Test Message View" forState:UIControlStateNormal];
+    [btnTestMessage addTarget:self action:@selector(testMessageView:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btnTestMessage];
+}
+
+- (void)testMessageView:(id)sender {
+    BLMessagesViewController *messageViewController = [[BLMessagesViewController alloc] init];
+    User *matchedUser = [User new];
+    matchedUser.userId = @11;
+    matchedUser.username = @"maggie";
+    matchedUser.phone = @"12345678901";
+    messageViewController.sender = self.currentUser;
+    messageViewController.receiver = matchedUser;
+    [self.navigationController presentViewController:messageViewController animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -542,7 +560,7 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 
 - (User *)currentUser {
     if (!_currentUser) {
-        BLAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+        BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
         _currentUser = delegate.currentUser;
     }
     return _currentUser;

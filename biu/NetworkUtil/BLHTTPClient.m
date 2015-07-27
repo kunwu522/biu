@@ -282,4 +282,36 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
     [self PUT:[NSString stringWithFormat:@"devices/%@", user.userId] parameters:parameters success:success failure:failure];
 }
 
+- (void)forgotPassword:(User *)user
+               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    if (!user) {
+        return;
+    }
+    
+    NSDictionary *parameters = @{@"user" : @{@"password" : user.password,
+                                @"password_confirmation" : user.password}};
+    [self PUT:[NSString stringWithFormat:@"password/%@", user.phone] parameters:parameters success:success failure:failure];
+}
+
+- (void)createSuggestion:(NSString *)advice
+                   email:(NSString *)email
+                  userId:(NSNumber *)userId
+                 success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+                 failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    if (!advice || !userId) {
+        return;
+    }
+    
+    NSMutableDictionary *suggestionDictionary = [NSMutableDictionary dictionary];
+    [suggestionDictionary setObject:userId forKey:@"user_id"];
+    [suggestionDictionary setObject:advice forKey:@"advice"];
+    if (email && ![email isEqualToString:@""]) {
+        [suggestionDictionary setObject:email forKey:@"email"];
+    }
+    
+    NSDictionary *parameters = @{@"suggestion" : suggestionDictionary};
+    [self POST:@"suggestions" parameters:parameters success:success failure:failure];
+}
+
 @end

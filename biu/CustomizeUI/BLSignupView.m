@@ -87,17 +87,20 @@
     _tfPasscode.placeholder = NSLocalizedString(@"Code", nil);
     _tfPasscode.keyboardType = UIKeyboardTypeNumberPad;
     _tfPasscode.clearButtonMode = UITextFieldViewModeWhileEditing;
+    [_tfPasscode showClearButton];
     [self addSubview:_tfPasscode];
     
     _tfUsername = [[BLTextField alloc] init];
     _tfUsername.placeholder = NSLocalizedString(@"Username", nil);
     _tfUsername.clearButtonMode = UITextFieldViewModeWhileEditing;
+    [_tfUsername showClearButton];
     [self addSubview:_tfUsername];
     
     _tfPassword = [[BLTextField alloc] init];
     _tfPassword.placeholder = NSLocalizedString(@"Password", nil);
     _tfPasscode.clearButtonMode = UITextFieldViewModeWhileEditing;
     _tfPassword.secureTextEntry = YES;
+    [_tfPasscode showClearButton];
     [self addSubview:_tfPassword];
     
     _lbContract = [[UILabel alloc] init];
@@ -122,7 +125,7 @@
     [_btnGetCode addTarget:self action:@selector(getCode:) forControlEvents:UIControlEventTouchDown];
     [_btnGetCode setTitleColor:[BLColorDefinition fontGreenColor] forState:UIControlStateNormal];
     [_btnGetCode setTitleColor:[BLColorDefinition fontGrayColor] forState:UIControlStateDisabled];
-    _btnGetCode.titleLabel.font = [BLFontDefinition lightFont:15.0f];
+    _btnGetCode.titleLabel.font = [BLFontDefinition lightFont:13.0f];
     [_btnGetCode setTitle:NSLocalizedString(@"GETTING CODE", nil) forState:UIControlStateNormal];
     [_btnGetCode setTitle:NSLocalizedString(@"RESEND AFTER:", nil) forState:UIControlStateDisabled];
     [self addSubview:_btnGetCode];
@@ -356,17 +359,17 @@
     _code = [NSString stringWithFormat:@"%d", code];
     
     //For debug
-    NSLog(@"code: %@", _code);
-//    [[BLHTTPClient sharedBLHTTPClient] passcode:_code phoneNumber:_tfPhoneNumber.text success:^(NSURLSessionDataTask *task, id responseObject) {
-//        _secondLeftToResend = 60;
-//        _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", _secondLeftToResend];
-//        _btnGetCode.enabled = NO;
-//        [self showSecondToResend];
-//        _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerfired) userInfo:nil repeats:YES];
-//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//        NSLog(@"Sending passcode failed, error: %@", error.description);
-//        [self showErrorMessage:error.localizedDescription];
-//    }];
+//    NSLog(@"code: %@", _code);
+    [[BLHTTPClient sharedBLHTTPClient] passcode:_code phoneNumber:_tfPhoneNumber.text success:^(NSURLSessionDataTask *task, id responseObject) {
+        _secondLeftToResend = 60;
+        _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", _secondLeftToResend];
+        _btnGetCode.enabled = NO;
+        [self showSecondToResend];
+        _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerfired) userInfo:nil repeats:YES];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"Sending passcode failed, error: %@", error.description);
+        [self showErrorMessage:error.localizedDescription];
+    }];
 }
 
 - (void)showContract:(id)sender {

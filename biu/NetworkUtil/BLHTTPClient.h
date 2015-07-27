@@ -34,36 +34,49 @@
 - (void)passcode:(NSString *)code phoneNumber:(NSString *)phoneNumber
          success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
          failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
 - (void)signup:(User *)user
        success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
        failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
 - (void)login:(User *)user
       success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
       failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
 - (void)logout:(User *)user
        success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
        failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
+- (void)forgotPassword:(User *)user
+               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
 - (void)uploadAvatar:(User *)user
               avatar:(UIImage *)avatar
               isRect:(BOOL)isRect
              success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
 - (void)createProfile:(Profile *)profile
                  user:(User *)user
               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
 - (void)createPartner:(Partner *)partner
                  user:(User *)user
               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
 - (void)updateProfile:(Profile *)profile
                  user:(User *)user
               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
 - (void)updatePartner:(Partner *)partner
                  user:(User *)user
               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
 - (void)updateLocation:(User *)user
                success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
                failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
@@ -74,6 +87,12 @@
   matchedUser:(User *)matchedUser
       success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
       failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
+- (void)createSuggestion:(NSString *)advice
+                   email:(NSString *)email
+                  userId:(NSNumber *)userId
+                 success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+                 failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
 @end
 
