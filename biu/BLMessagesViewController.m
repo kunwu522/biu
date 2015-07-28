@@ -83,6 +83,7 @@
                                                 delegate:self
                                        cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                        otherButtonTitles:@"Ok", nil];
+    av.delegate = self;
     [av show];
 }
 
@@ -319,10 +320,11 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (buttonIndex) {
         case 0:
+            break;
+        case 1:
             [[self blAppDelegate] disconnect];
             [self.delegate didDismissBLMessagesViewController:self];
             break;
-            
         default:
             break;
     }

@@ -16,7 +16,7 @@
 #import "UIViewController+BLMenuNavController.h"
 #import "Masonry.h"
 
-@interface BLMatchViewController () <BLPickerViewDataSource, BLPickerViewDelegate, CLLocationManagerDelegate, BLMatchedViewControllerDelegate>
+@interface BLMatchViewController () <BLPickerViewDataSource, BLPickerViewDelegate, CLLocationManagerDelegate, BLMatchedViewControllerDelegate, BLMessagesViewControllerDelegate>
 
 typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     BLMatchViewEventNone = 0,
@@ -140,23 +140,6 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
         make.centerY.equalTo(self.matchedImageView.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.0f]);
         make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:160.0f]]);
     }];
-    
-    // DEBUG
-    UIButton *btnTestMessage = [[UIButton alloc] initWithFrame:CGRectMake(30, 30, 100, 200)];
-    [btnTestMessage setTitle:@"Test Message View" forState:UIControlStateNormal];
-    [btnTestMessage addTarget:self action:@selector(testMessageView:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btnTestMessage];
-}
-
-- (void)testMessageView:(id)sender {
-    BLMessagesViewController *messageViewController = [[BLMessagesViewController alloc] init];
-    User *matchedUser = [User new];
-    matchedUser.userId = @11;
-    matchedUser.username = @"maggie";
-    matchedUser.phone = @"12345678901";
-    messageViewController.sender = self.currentUser;
-    messageViewController.receiver = matchedUser;
-    [self.navigationController presentViewController:messageViewController animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {
