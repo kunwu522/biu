@@ -23,6 +23,16 @@
 
 @end
 
+@protocol BLMatchNotificationDelegate <NSObject>
+
+@optional
+- (void)receiveMatchedNotification:(User *)matchedUser;
+- (void)receiveAcceptedNotification:(User *)matchedUser;
+- (void)receiveRejectedNotification;
+- (void)receiveCloseNotification;
+
+@end
+
 @interface BLAppDelegate : UIResponder <UIApplicationDelegate, XMPPStreamDelegate> {
     XMPPStream *xmppStream;
     BOOL isOpen;
@@ -39,6 +49,7 @@
 
 @property (strong, nonatomic, readonly) XMPPStream *xmppStream;
 @property (weak, nonatomic) id<BLMessageDelegate> messageDelegate;
+@property (weak, nonatomic) id<BLMatchNotificationDelegate> notificationDelegate;
 
 - (BOOL)connect;
 - (void)disconnect;

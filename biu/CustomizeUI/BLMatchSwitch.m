@@ -26,7 +26,7 @@
 
 @implementation BLMatchSwitch
 
-@synthesize on;
+@synthesize on = _on;
 
 - (void)setup {
     if (CGRectIsEmpty(self.frame)) {
@@ -81,7 +81,7 @@
     [self addSubview:_nob];
     
     _maxDelta = self.frame.size.width - _nob.frame.size.width;
-    self.on = NO;
+    _on = NO;
 }
 
 - (id)initWithFrame:(CGRect)frame {
@@ -161,7 +161,7 @@
         CGPoint inactiveBgCenter = CGPointMake(self.frame.size.width * 1.5f - _nob.frame.size.width, _inactiveBackground.center.y);
         _inactiveBackground.center = inactiveBgCenter;
     }
-    self.on = YES;
+    _on = YES;
 }
 
 - (void)showOff:(BOOL)animated {
@@ -182,7 +182,22 @@
         CGPoint inactiveBgCenter = CGPointMake(self.frame.size.width * 0.5f, _inactiveBackground.center.y);
         _inactiveBackground.center = inactiveBgCenter;
     }
-    self.on = NO;
+    _on = NO;
+}
+
+#pragma mark -
+#pragma mark Setter
+- (void)setOn:(BOOL)on {
+    if (_on == on) {
+        return;
+    }
+    
+    if (_on) {
+        [self showOff:YES];
+    } else {
+        [self showOn:YES];
+    }
+    _on = on;
 }
 
 @end

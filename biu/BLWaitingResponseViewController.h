@@ -8,8 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol BLWaitingResponseViewCongtrollerDelegate <NSObject>
+
+- (void)didCloseConversation;
+- (void)didRejectMatchedUser;
+
+@end
+
 @interface BLWaitingResponseViewController : UIViewController
 
+@property (weak, nonatomic) id<BLWaitingResponseViewCongtrollerDelegate> delegate;
 @property (strong, nonatomic) User *matchedUser;
 
 - (void)matchedUserRejected;

@@ -14,7 +14,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <TSMessages/TSMessage.h>
 
-@interface BLMatchedViewController () <BLMessagesViewControllerDelegate>
+@interface BLMatchedViewController () <BLMessagesViewControllerDelegate, BLWaitingResponseViewCongtrollerDelegate, BLMatchNotificationDelegate>
 
 @property (strong, nonatomic) BLBlurView *blurUserInfoView;
 @property (strong, nonatomic) UIImageView *matchedUserImageView;
@@ -22,7 +22,6 @@
 @property (strong, nonatomic) UIButton *btnClose;
 @property (strong, nonatomic) UIButton *btnMatchedUserInfo;
 @property (strong, nonatomic) User *currentUser;
-@property (assign, nonatomic) BOOL isMatchedUserAccepted;
 
 @end
 
@@ -48,6 +47,18 @@
     [self.matchedUserImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@rect/avatar/%@", [BLHTTPClient blBaseURL], self.matchedUser.userId]]
                                  placeholderImage:nil
                                           options:SDWebImageHandleCookies | SDWebImageProgressiveDownload | SDWebImageCacheMemoryOnly];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    BLAppDelegate *blAppDelegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
+    blAppDelegate.notificationDelegate = self;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    BLAppDelegate *blAppDelegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
+    blAppDelegate.notificationDelegate = nil;
 }
 
 #pragma mark Layouts
@@ -113,10 +124,11 @@
             messageViewController.delegate = self;
             messageViewController.sender = self.currentUser;
             messageViewController.receiver = self.matchedUser;
-            [self presentViewController:messageViewController animated:YES completion:nil];
+            [self.navigationController pushViewController:messageViewController animated:YES];
         } else {
             BLWaitingResponseViewController *waitingViewController = [[BLWaitingResponseViewController alloc]initWithNibName:nil bundle:nil];
             waitingViewController.matchedUser = self.matchedUser;
+            waitingViewController.delegate = self;
             [self.navigationController pushViewController: waitingViewController animated:YES];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -142,10 +154,50 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-#pragma mark
-#pragma mark Delegates
+#pragma mark - Delegates
+#pragma mark BLMessageViewController delegate
 - (void)didDismissBLMessagesViewController:(BLMessagesViewController *)vc {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventClose distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"Stop conversation user successed.");
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"Stop conversation faield.");
+    }];
+    [self.delegate didCloseConversation];
+}
+
+- (void)didCloseConversation {
+    [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventClose distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"Stop conversation user successed.");
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"Stop conversation faield.");
+    }];
+    [self.delegate didCloseConversation];
+}
+
+- (void)didRejectMatchedUser {
+    if ([self.delegate respondsToSelector:@selector(didRejectedMatchedUser)]) {
+        [self.delegate didRejectedMatchedUser];
+    }
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+#pragma mark BLMatchNotification delegates
+- (void)receiveAcceptedNotification:(User *)matchedUser {
+    self.isMatchedUserAccepted = YES;
+    [TSMessage showNotificationInViewController:self
+                                          title:NSLocalizedString(@"were accepted title", nil)
+                                       subtitle:NSLocalizedString(@"were accepted subtitle", nil)
+                                           type:TSMessageNotificationTypeMessage
+                                       duration:TSMessageNotificationDurationEndless canBeDismissedByUser:YES];
+}
+
+- (void)receiveRejectedNotification {
+    [TSMessage showNotificationInViewController:self
+                                          title:NSLocalizedString(@"were rejected title", nil)
+                                       subtitle:NSLocalizedString(@"were rejected subtitle", nil)
+                                           type:TSMessageNotificationTypeMessage
+                                       duration:TSMessageNotificationDurationEndless canBeDismissedByUser:YES];
+    self.btnMessage.enabled = NO;
 }
 
 #pragma mark -

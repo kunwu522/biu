@@ -237,18 +237,23 @@
     _code = [NSString stringWithFormat:@"%d", code];
     
     //For debug
-    //    NSLog(@"code: %@", _code);
-    [[BLHTTPClient sharedBLHTTPClient] passcode:_code phoneNumber:_tfPhoneNumber.text success:^(NSURLSessionDataTask *task, id responseObject) {
-        _secondLeftToResend = 60;
-        _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", _secondLeftToResend];
-        _btnGetCode.enabled = NO;
-        [self showSecondToResend];
-        _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerfired) userInfo:nil repeats:YES];
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"Sending passcode failed, error: %@", error.description);
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:error.localizedDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        [av show];
-    }];
+    NSLog(@"code: %@", _code);
+    _secondLeftToResend = 60;
+    _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", (long)_secondLeftToResend];
+    _btnGetCode.enabled = NO;
+    [self showSecondToResend];
+    
+//    [[BLHTTPClient sharedBLHTTPClient] passcode:_code phoneNumber:_tfPhoneNumber.text success:^(NSURLSessionDataTask *task, id responseObject) {
+//        _secondLeftToResend = 60;
+//        _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", (long)_secondLeftToResend];
+//        _btnGetCode.enabled = NO;
+//        [self showSecondToResend];
+//        _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerfired) userInfo:nil repeats:YES];
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        NSLog(@"Sending passcode failed, error: %@", error.description);
+//        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:error.localizedDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+//        [av show];
+//    }];
 }
 
 - (void)showContract:(id)sender {
@@ -329,8 +334,8 @@
     if (!_tfPhoneNumber) {
         _tfPhoneNumber = [[BLTextField alloc] init];
         _tfPhoneNumber.placeholder = NSLocalizedString(@"Phone", nil);
-        _tfPhoneNumber.keyboardType = UIKeyboardTypePhonePad;
-        [_tfPhoneNumber showClearButton];
+//        _tfPhoneNumber.keyboardType = UIKeyboardTypePhonePad;
+//        [_tfPhoneNumber showClearButton];
     }
     return _tfPhoneNumber;
 }

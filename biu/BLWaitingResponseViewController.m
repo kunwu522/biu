@@ -19,7 +19,7 @@
 
 @end
 
-@interface BLWaitingResponseViewController () <UITableViewDataSource, UITableViewDelegate, BLMessagesViewControllerDelegate> {
+@interface BLWaitingResponseViewController () <UITableViewDataSource, UITableViewDelegate, BLMessagesViewControllerDelegate, BLMatchNotificationDelegate> {
     int secondsLeft;
     int minutes;
     int seconds;
@@ -63,6 +63,18 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
                             placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
                                      options:SDWebImageRefreshCached | SDWebImageHandleCookies];
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(updateCounter) userInfo:nil repeats:YES];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    BLAppDelegate *blAppDelegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
+    blAppDelegate.notificationDelegate = self;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    BLAppDelegate *blAppDelegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
+    blAppDelegate.notificationDelegate = nil;
 }
 
 - (void)layoutSubViews {
@@ -119,7 +131,7 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
     messageViewController.delegate = self;
     messageViewController.sender = self.currentUser;
     messageViewController.receiver = self.matchedUser;
-    [self presentViewController:messageViewController animated:YES completion:nil];
+    [self.navigationController pushViewController:messageViewController animated:YES];
 }
 
 #pragma mark -
@@ -155,7 +167,7 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
     }
 }
 
-#pragma mark -
+#pragma mark - Delegates
 #pragma mark TableView data source and delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -209,8 +221,37 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
 
 #pragma mark MessageView Delegate
 - (void)didDismissBLMessagesViewController:(BLMessagesViewController *)vc {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventClose distance:nil matchedUser:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"Stop conversation user successed.");
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"Stop conversation faield.");
+    }];
+    [self.delegate didCloseConversation];
 }
+
+#pragma mark MatchNotification delegates
+- (void)receiveAcceptedNotification:(User *)matchedUser {
+    NSLog(@"Matched user accepted.");
+    [self.timer invalidate];
+    BLMessagesViewController *messageViewController = [[BLMessagesViewController alloc] init];
+    messageViewController.delegate = self;
+    messageViewController.sender = self.currentUser;
+    messageViewController.receiver = self.matchedUser;
+    [self.navigationController pushViewController:messageViewController animated:YES];
+}
+
+- (void)receiveRejectedNotification {
+    [self.timer invalidate];
+    BLTableViewCellParams *param = [BLTableViewCellParams new];
+    param.text = NSLocalizedString(@"matched user rejected", nil);
+    param.icon = [UIImage imageNamed:@"warning_icon.png"];
+    param.color = [BLColorDefinition fontGreenColor];
+    [self.dataSource insertObject:param atIndex:0];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.timer invalidate];
+}
+
 
 #pragma mark -
 #pragma mark Getter

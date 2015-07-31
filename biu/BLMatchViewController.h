@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol BLMAtchStateDelegate <NSObject>
+
+- (void)changeStateWithEvent:(BLMatchEvent)event;
+
+@end
+
 @interface BLMatchViewController : UIViewController
 
 - (void)matched:(User *)matchedUser;

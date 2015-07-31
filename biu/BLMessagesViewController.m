@@ -9,7 +9,7 @@
 #import "BLMessagesViewController.h"
 #import "Masonry.h"
 
-@interface BLMessagesViewController () <BLMessageDelegate, UIAlertViewDelegate>
+@interface BLMessagesViewController () <BLMessageDelegate, UIAlertViewDelegate, BLMatchNotificationDelegate>
 
 @property (strong, nonatomic) UIButton *btnBack;
 @property (strong, nonatomic) UIButton *btnMap;
@@ -59,6 +59,12 @@
         }
     }
     self.collectionView.collectionViewLayout.springinessEnabled = YES;
+    [self blAppDelegate].notificationDelegate = self;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self blAppDelegate].notificationDelegate = nil;
 }
 
 - (void)layoutSubViews {
@@ -83,7 +89,7 @@
                                                 delegate:self
                                        cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                        otherButtonTitles:@"Ok", nil];
-    av.delegate = self;
+    av.tag = 0;
     [av show];
 }
 
@@ -105,7 +111,11 @@
         [body setStringValue:text];
         NSXMLElement *message = [NSXMLElement elementWithName:@"message"];
         [message addAttributeWithName:@"type" stringValue:@"chat"];
+#if TARGET_IPHONE_SIMULATOR
         [message addAttributeWithName:@"to" stringValue:[NSString stringWithFormat:@"%@@localhost", self.receiver.phone]];
+#else
+        [message addAttributeWithName:@"to" stringValue:[NSString stringWithFormat:@"%@@biulove.com", self.receiver.phone]];
+#endif
         [message addChild:body];
         
         [[self blAppDelegate].xmppStream sendElement:message];
@@ -318,27 +328,30 @@
 
 #pragma mark UIAlertView Delegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    switch (buttonIndex) {
+    switch (alertView.tag) {
         case 0:
+            if (buttonIndex == 1) {
+                [[self blAppDelegate] disconnect];
+                [self.delegate didDismissBLMessagesViewController:self];
+            }
             break;
         case 1:
-            [[self blAppDelegate] disconnect];
-            [self.delegate didDismissBLMessagesViewController:self];
+            if (buttonIndex == 0) {
+                [[self blAppDelegate] disconnect];
+                [self.delegate didDismissBLMessagesViewController:self];
+            }
             break;
         default:
             break;
     }
 }
-//#pragma mark UITextField Delegate
-//- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
-//    if ([text isEqualToString:@"\n"]) {
-//        NSLog(@"Return pressed");
-//        return NO;
-//    } else {
-//        NSLog(@"Other pressed");
-//    }
-//    return YES;
-//}
+
+#pragma mark MatchNotification delegate
+- (void)receiveCloseNotification {
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"对方已经退出对话" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    av.tag = 1;
+    [av show];
+}
 
 #pragma mark -
 #pragma mark Getter

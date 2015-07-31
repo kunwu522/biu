@@ -126,7 +126,7 @@ static NSInteger const BL_RESET_SUCCESS_ALERTVIEW = 1;
     //For debug
     NSLog(@"code: %@", _code);
     _secondLeftToResend = 60;
-    _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", _secondLeftToResend];
+    _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", (long)_secondLeftToResend];
     _btnGetCode.enabled = NO;
     [self showSecondToResend];
     _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerfired) userInfo:nil repeats:YES];

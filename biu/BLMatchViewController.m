@@ -16,7 +16,7 @@
 #import "UIViewController+BLMenuNavController.h"
 #import "Masonry.h"
 
-@interface BLMatchViewController () <BLPickerViewDataSource, BLPickerViewDelegate, CLLocationManagerDelegate, BLMatchedViewControllerDelegate, BLMessagesViewControllerDelegate>
+@interface BLMatchViewController () <BLPickerViewDataSource, BLPickerViewDelegate, CLLocationManagerDelegate, BLMatchedViewControllerDelegate, BLMatchNotificationDelegate>
 
 typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     BLMatchViewEventNone = 0,
@@ -142,9 +142,24 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     }];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewDidAppear:(BOOL)animated {
+    if (self.currentUser.state == BLMatchStateMatching) {
+        self.matchSwith.on = YES;
+        [self startMatchingAnimation];
+    }
+    [self blAppDelegate].notificationDelegate = self;
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    if (self.currentUser.state == BLMatchStateMatching) {
+        [self stopMatchingAnimationWithCompletion:^(BOOL finished) {
+            self.matchSwith.on = NO;
+        }];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self blAppDelegate].notificationDelegate = nil;
 }
 
 #pragma mark -
@@ -157,8 +172,11 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     [self stateMachine:BLMatchViewEventMatched];
 }
 
+- (void)closeMatching {
+    [self stateMachine:BLMatchViewEventStop];
+}
 
-#pragma mark - 
+#pragma mark - Delegates
 #pragma mark Picker View Delegate and Data Source
 - (NSInteger)numberOfRowsInPickerView:(BLPickerView *)pickerView {
     return _arrayDistanceData.count;
@@ -220,6 +238,44 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 #pragma mark BLMatchedViewController Delegate
 - (void)didRejectedMatchedUser {
     [self stateMachine:BLMatchViewEventMatching];
+}
+
+- (void)didCloseConversation {
+    [self stateMachine:BLMatchViewEventStop];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+#pragma mark BLNotification Delegate
+- (void)receiveMatchedNotification:(User *)matchedUser {
+    if (!matchedUser) {
+        return;
+    }
+    self.matchedUser = matchedUser;
+    [self stateMachine:BLMatchViewEventMatched];
+}
+
+- (void)receiveAcceptedNotification:(User *)matchedUser {
+    if (!matchedUser) {
+        return;
+    }
+    
+    if (self.matchedUser.userId != matchedUser.userId) {
+        return;
+    }
+    
+    BLMatchedViewController *matchedViewController = [[BLMatchedViewController alloc] init];
+    matchedViewController.matchedUser = self.matchedUser;
+    matchedViewController.delegate = self;
+    [self.navigationController pushViewController:matchedViewController animated:YES];
+    matchedViewController.isMatchedUserAccepted = YES;
+}
+
+- (void)receiveRejectedNotification {
+    [self stateMachine:BLMatchViewEventRecjected];
+}
+
+- (void)receiveCloseNotification {
+    [self stateMachine:BLMatchViewEventStop];
 }
 
 #pragma mark - Handle Switch
@@ -395,11 +451,12 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
         }
         case BLMatchViewEventStop:
         {
+            [self.currentUser updateState:BLMatchStateStop];
             [UIView animateWithDuration:0.5f animations:^{
                 self.matchedImageView.alpha = 0.0f;
                 self.pickViewDistance.alpha = 1.0f;
             } completion:^(BOOL finished) {
-                ;
+                self.matchSwith.on = NO;
             }];
             break;
         }
@@ -456,7 +513,9 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 #pragma mark Animations
 - (void)startMatchingAnimation {
     self.startLeftCenter = self.matchingLeft.center;
+    NSLog(@"Start left center %f--%f", self.startLeftCenter.x, self.startLeftCenter.y);
     self.startRightCenter = self.matchingRight.center;
+    NSLog(@"Start right center %f--%f", self.startRightCenter.x, self.startRightCenter.y);
     [UIView animateWithDuration:2.0f animations:^{
         CGPoint leftCenter = self.matchingLeft.center;
         CGPoint rightCenter = self.matchingRight.center;
@@ -547,6 +606,10 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
         _currentUser = delegate.currentUser;
     }
     return _currentUser;
+}
+
+- (BLAppDelegate *)blAppDelegate {
+    return (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
 }
 
 @end

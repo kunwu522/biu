@@ -11,12 +11,14 @@
 @protocol BLMatchedViewControllerDelegate <NSObject>
 
 - (void)didRejectedMatchedUser;
+- (void)didCloseConversation;
 
 @end
 
 @interface BLMatchedViewController : UIViewController
 
 @property (strong, nonatomic) User *matchedUser;
+@property (assign, nonatomic) BOOL isMatchedUserAccepted;
 @property (weak, nonatomic) id<BLMatchedViewControllerDelegate> delegate;
 
 - (void)matchedUserRejected;

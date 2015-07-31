@@ -93,8 +93,12 @@
         return NO;
     }
     
+#if TARGET_IPHONE_SIMULATOR
     [xmppStream setMyJID:[XMPPJID jidWithString:[NSString stringWithFormat:@"%@@localhost", self.currentUser.phone]]];
-//    [xmppStream setHostName:@"localhost"];
+#else
+    [xmppStream setMyJID:[XMPPJID jidWithString:[NSString stringWithFormat:@"%@@biulove.com", self.currentUser.phone]]];
+    [xmppStream setHostName:@"123.56.129.119"];
+#endif
     
     NSError *error = nil;
     if (![xmppStream connectWithTimeout:XMPPStreamTimeoutNone error:&error]) {
@@ -158,12 +162,6 @@
     }
     
     if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
-//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:displayName
-//                                                            message:body
-//                                                           delegate:nil
-//                                                  cancelButtonTitle:@"Ok"
-//                                                  otherButtonTitles:nil];
-//        [alertView show];
         NSLog(@"Receive new message: %@, from %@.", body, displayName);
     } else {
         // We are not active, so use a local notification instead
@@ -283,6 +281,8 @@
         [self receivedAcceptedNotification:application matchedUser:nil];
     } else if ([category isEqualToString:@"MATCH_REJECTED"]) {
         [self receivedRejectedNotification:application];
+    } else if ([category isEqualToString:@"CONVERSATION_CLOSE"]) {
+        [self receivedCloseNotification:application];
     }
 }
 
@@ -302,15 +302,21 @@
     switch (application.applicationState) {
         case UIApplicationStateActive:
         {
-            UIViewController *currentRootController = [self currentDisplayViewController];
-            if ([currentRootController isKindOfClass:[BLMenuNavController class]]) {
-                BLMenuNavController *menuNavController = (BLMenuNavController *)currentRootController;
-                [menuNavController backToRootViewController];
-                BLMatchViewController *matchViewController = (BLMatchViewController *)((UINavigationController *)menuNavController.rootViewController).topViewController;
-                [matchViewController matched:matchedUser];
+            if (self.notificationDelegate
+                && [self.notificationDelegate respondsToSelector:@selector(receiveMatchedNotification:)]) {
+                [self.notificationDelegate receiveMatchedNotification:matchedUser];
             } else {
-                NSLog(@"instance type error.");
+                NSLog(@"error: notification delegate is %@", NSStringFromClass([self.notificationDelegate class]));
             }
+//            UIViewController *currentRootController = [self currentDisplayViewController];
+//            if ([currentRootController isKindOfClass:[BLMenuNavController class]]) {
+//                BLMenuNavController *menuNavController = (BLMenuNavController *)currentRootController;
+//                [menuNavController backToRootViewController];
+//                BLMatchViewController *matchViewController = (BLMatchViewController *)((UINavigationController *)menuNavController.rootViewController).topViewController;
+//                [matchViewController matched:matchedUser];
+//            } else {
+//                NSLog(@"instance type error.");
+//            }
             break;
         }
         case UIApplicationStateInactive:
@@ -328,21 +334,27 @@
     switch (application.applicationState) {
         case UIApplicationStateActive:
         {
-            UIViewController *currentRootController = [self currentDisplayViewController];
-            if ([currentRootController isKindOfClass:[BLMenuNavController class]]) {
-                BLMenuNavController *menuNavController = (BLMenuNavController *)currentRootController;
-                [menuNavController backToRootViewController];
-                UIViewController *viewController = (BLMatchViewController *)((UINavigationController *)menuNavController.rootViewController).visibleViewController;
-                if ([viewController isKindOfClass:[BLMatchedViewController class]]) {
-                    [((BLMatchedViewController *)viewController) matchedUserAccepted];
-                } else if ([viewController isKindOfClass:[BLWaitingResponseViewController class]]) {
-                    [((BLWaitingResponseViewController *)viewController)matchedUserAccepted];
-                } else {
-                    NSLog(@"instance type error.");
-                }
+            if (self.notificationDelegate
+                && [self.notificationDelegate respondsToSelector:@selector(receiveAcceptedNotification:)]) {
+                [self.notificationDelegate receiveAcceptedNotification:matchedUser];
             } else {
-                NSLog(@"instance type error.");
+                NSLog(@"error: notification delegate is %@", NSStringFromClass([self.notificationDelegate class]));
             }
+//            UIViewController *currentRootController = [self currentDisplayViewController];
+//            if ([currentRootController isKindOfClass:[BLMenuNavController class]]) {
+//                BLMenuNavController *menuNavController = (BLMenuNavController *)currentRootController;
+//                [menuNavController backToRootViewController];
+//                UIViewController *viewController = (BLMatchViewController *)((UINavigationController *)menuNavController.rootViewController).visibleViewController;
+//                if ([viewController isKindOfClass:[BLMatchedViewController class]]) {
+//                    [((BLMatchedViewController *)viewController) matchedUserAccepted];
+//                } else if ([viewController isKindOfClass:[BLWaitingResponseViewController class]]) {
+//                    [((BLWaitingResponseViewController *)viewController)matchedUserAccepted];
+//                } else {
+//                    NSLog(@"instance type error.");
+//                }
+//            } else {
+//                NSLog(@"instance type error.");
+//            }
             break;
         }
         default:
@@ -354,20 +366,43 @@
     switch (application.applicationState) {
         case UIApplicationStateActive:
         {
-            UIViewController *currentRootController = [self currentDisplayViewController];
-            if ([currentRootController isKindOfClass:[BLMenuNavController class]]) {
-                BLMenuNavController *menuNavController = (BLMenuNavController *)currentRootController;
-                [menuNavController backToRootViewController];
-                UIViewController *viewController = (BLMatchViewController *)((UINavigationController *)menuNavController.rootViewController).visibleViewController;
-                if ([viewController isKindOfClass:[BLMatchedViewController class]]) {
-                    [((BLMatchedViewController *)viewController) matchedUserRejected];
-                } else if ([viewController isKindOfClass:[BLWaitingResponseViewController class]]) {
-                    [((BLWaitingResponseViewController *)viewController)matchedUserRejected];
-                } else {
-                    NSLog(@"instance type error.");
-                }
+            if (self.notificationDelegate
+                && [self.notificationDelegate respondsToSelector:@selector(receiveRejectedNotification)]) {
+                [self.notificationDelegate receiveRejectedNotification];
             } else {
-                NSLog(@"instance type error.");
+                NSLog(@"error: notification delegate is %@", NSStringFromClass([self.notificationDelegate class]));
+            }
+//            UIViewController *currentRootController = [self currentDisplayViewController];
+//            if ([currentRootController isKindOfClass:[BLMenuNavController class]]) {
+//                BLMenuNavController *menuNavController = (BLMenuNavController *)currentRootController;
+//                [menuNavController backToRootViewController];
+//                UIViewController *viewController = (BLMatchViewController *)((UINavigationController *)menuNavController.rootViewController).visibleViewController;
+//                if ([viewController isKindOfClass:[BLMatchedViewController class]]) {
+//                    [((BLMatchedViewController *)viewController) matchedUserRejected];
+//                } else if ([viewController isKindOfClass:[BLWaitingResponseViewController class]]) {
+//                    [((BLWaitingResponseViewController *)viewController)matchedUserRejected];
+//                } else {
+//                    NSLog(@"instance type error.");
+//                }
+//            } else {
+//                NSLog(@"instance type error.");
+//            }
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (void)receivedCloseNotification:(UIApplication *)application {
+    switch (application.applicationState) {
+        case UIApplicationStateActive:
+        {
+            if (self.notificationDelegate
+                && [self.notificationDelegate respondsToSelector:@selector(receiveCloseNotification)]) {
+                [self.notificationDelegate receiveCloseNotification];
+            } else {
+                NSLog(@"error: notification delegate is %@", NSStringFromClass([self.notificationDelegate class]));
             }
             break;
         }
