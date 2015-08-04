@@ -133,7 +133,7 @@
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         JSQMessage *newMessage = [JSQMessage messageWithSenderId:[NSString stringWithFormat:@"%@", self.receiver.userId]
-                                                     displayName:self.sender.username
+                                                     displayName:self.receiver.username
                                                             text:[message objectForKey:@"msg"]];
         
         [JSQSystemSoundPlayer jsq_playMessageReceivedSound];

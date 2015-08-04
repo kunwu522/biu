@@ -159,7 +159,7 @@
 
     [_HUD show:YES];
     [[BLHTTPClient sharedBLHTTPClient] login:user success:^(NSURLSessionDataTask *task, id responseObject) {
-        [_HUD show:NO];
+        [_HUD hide:YES];
         User *loginUser = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
         loginUser.phone = _tfPhoneNumber.text;
         loginUser.password = _tfPassword.text;
@@ -167,7 +167,7 @@
             [self.delegate viewController:self didLoginWithCurrentUser:loginUser];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [_HUD show:NO];
+        [_HUD hide:YES];
         if ([task.response isKindOfClass:[NSHTTPURLResponse class]]) {
             NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
             NSLog(@"Status code: %ld", (long)response.statusCode);

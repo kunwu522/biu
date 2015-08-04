@@ -23,9 +23,7 @@
 #import "BLTextField.h"
 
 
-@interface BLWelcomeViewController () <BLSignupViewControllerDelegate, BLLoginViewControllerDelegate, MBProgressHUDDelegate> {
-    MBProgressHUD *_HUD;
-}
+@interface BLWelcomeViewController () <BLSignupViewControllerDelegate, BLLoginViewControllerDelegate, MBProgressHUDDelegate>
 
 @property (strong, nonatomic) UIImageView * logo;
 @property (strong, nonatomic) UILabel * biuTitle;
@@ -85,8 +83,6 @@ static double ICON_INITIAL_SIZE = 147.5;
     _biuSubtitle.adjustsFontSizeToFitWidth = YES;
     [self.view addSubview:_biuSubtitle];
     
-    [self addHUD];
-    
     // Create constraints
     [_logo mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view.mas_centerX);
@@ -118,9 +114,7 @@ static double ICON_INITIAL_SIZE = 147.5;
     if (!currentUser) {
         [self showLoginUI];
     } else {
-//        [_HUD show:YES];
         [[BLHTTPClient sharedBLHTTPClient] login:currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
-//            [_HUD show:NO];
             User *user = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
             [user save];
             BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -153,7 +147,6 @@ static double ICON_INITIAL_SIZE = 147.5;
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"Validate user failed: %@, code: %li", error.description, (long)error.code);
-            [_HUD show:NO];
             [self showLoginUI];
         }];
     }
@@ -276,13 +269,6 @@ static double ICON_INITIAL_SIZE = 147.5;
 }
 
 #pragma mark - private method
-- (void)addHUD{
-    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:_HUD];
-    _HUD.delegate = self;
-    _HUD.labelText = @"Loading";
-    
-}
 
 - (void)saveCurrentUser:(User *)user {
     BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
