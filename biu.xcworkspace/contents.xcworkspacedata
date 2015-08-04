@@ -5,6 +5,9 @@
       location = "group:biu.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:Default-568h@2x.png">
+   </FileRef>
+   <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>

@@ -7,6 +7,7 @@ target 'biu' do
     pod 'SDWebImage'
     pod "TSMessages"
     pod 'JSQMessagesViewController'
+    pod 'MBProgressHUD', '~> 0.9.1'
     
     pod 'SimulatorRemoteNotifications', '~> 0.0.3'
 end
@@ -17,6 +18,7 @@ target 'biuTests' do
     pod 'SDWebImage'
     pod "TSMessages"
     pod 'JSQMessagesViewController'
+    pod 'MBProgressHUD', '~> 0.9.1'
     
     pod 'SimulatorRemoteNotifications', '~> 0.0.3'
 end

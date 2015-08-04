@@ -21,6 +21,7 @@
 @property (strong, nonatomic) UIButton *btnMessage;
 @property (strong, nonatomic) UIButton *btnClose;
 @property (strong, nonatomic) UIButton *btnMatchedUserInfo;
+@property (strong, nonatomic) UIView *matchedUserInfo;
 @property (strong, nonatomic) User *currentUser;
 
 @end
@@ -53,6 +54,8 @@
     [super viewDidAppear:animated];
     BLAppDelegate *blAppDelegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
     blAppDelegate.notificationDelegate = self;
+    
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

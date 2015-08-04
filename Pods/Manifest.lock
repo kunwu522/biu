@@ -25,6 +25,7 @@ PODS:
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
   - Masonry (0.5.3)
+  - MBProgressHUD (0.9.1)
   - SDWebImage (3.7.2):
     - SDWebImage/Core (= 3.7.2)
   - SDWebImage/Core (3.7.2)
@@ -36,6 +37,7 @@ DEPENDENCIES:
   - AFNetworking (~> 2.0)
   - JSQMessagesViewController
   - Masonry (~> 0.5.3)
+  - MBProgressHUD (~> 0.9.1)
   - SDWebImage
   - SimulatorRemoteNotifications (~> 0.0.3)
   - TSMessages
@@ -46,6 +48,7 @@ SPEC CHECKSUMS:
   JSQMessagesViewController: ca11f86fa68ca70835f05e169df9244147c1dc40
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   Masonry: 9f515466afe48632562342a40a1c224071a1a022
+  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   SimulatorRemoteNotifications: 1610643e0582b2af67bc254b071ace4077e8ef86
   TSMessages: 2a52642128d7ab15b46930c810b9c9403a2b58f3

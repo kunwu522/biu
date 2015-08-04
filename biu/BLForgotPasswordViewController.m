@@ -124,24 +124,24 @@ static NSInteger const BL_RESET_SUCCESS_ALERTVIEW = 1;
     self.code = [NSString stringWithFormat:@"%d", code];
     
     //For debug
-    NSLog(@"code: %@", _code);
-    _secondLeftToResend = 60;
-    _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", (long)_secondLeftToResend];
-    _btnGetCode.enabled = NO;
-    [self showSecondToResend];
-    _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerfired) userInfo:nil repeats:YES];
+//    NSLog(@"code: %@", _code);
+//    _secondLeftToResend = 60;
+//    _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", (long)_secondLeftToResend];
+//    _btnGetCode.enabled = NO;
+//    [self showSecondToResend];
+//    _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerfired) userInfo:nil repeats:YES];
     
-//    [[BLHTTPClient sharedBLHTTPClient] passcode:_code phoneNumber:_tfPhone.text success:^(NSURLSessionDataTask *task, id responseObject) {
-//        _secondLeftToResend = 60;
-//        _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", _secondLeftToResend];
-//        _btnGetCode.enabled = NO;
-//        [self showSecondToResend];
-//        _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerfired) userInfo:nil repeats:YES];
-//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//        NSLog(@"Sending passcode failed, error: %@", error.description);
-//        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:error.localizedDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-//        [av show];
-//    }];
+    [[BLHTTPClient sharedBLHTTPClient] passcode:_code phoneNumber:_tfPhone.text success:^(NSURLSessionDataTask *task, id responseObject) {
+        _secondLeftToResend = 60;
+        _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", _secondLeftToResend];
+        _btnGetCode.enabled = NO;
+        [self showSecondToResend];
+        _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerfired) userInfo:nil repeats:YES];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"Sending passcode failed, error: %@", error.description);
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:error.localizedDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [av show];
+    }];
 }
 
 - (void)done:(id)sender {

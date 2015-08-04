@@ -10,8 +10,11 @@
 #import "BLForgotPasswordViewController.h"
 #import "BLTextField.h"
 #import "Masonry.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
-@interface BLLoginViewController () <UIGestureRecognizerDelegate>
+@interface BLLoginViewController () <UIGestureRecognizerDelegate, MBProgressHUDDelegate> {
+    MBProgressHUD *_HUD;
+}
 
 @property (strong, nonatomic) UIImageView *backgroundView;
 @property (strong, nonatomic) UIImageView *logoImageView;
@@ -47,6 +50,8 @@
     [self.view addSubview:self.btnLoginWithWeibo];
     [self.view addSubview:self.btnForgotPassword];
     [self.view addGestureRecognizer:self.tapGestureRecognizer];
+    
+    [self addHUD];
     
     [self loadLayout];
 }
@@ -151,19 +156,18 @@
     User *user = [User new];
     user.phone = self.tfPhoneNumber.text;
     user.password = self.tfPassword.text;
-    
-    UIActivityIndicatorView *ai = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    ai.hidesWhenStopped = YES;
-    [ai startAnimating];
+
+    [_HUD show:YES];
     [[BLHTTPClient sharedBLHTTPClient] login:user success:^(NSURLSessionDataTask *task, id responseObject) {
+        [_HUD show:NO];
         User *loginUser = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
         loginUser.phone = _tfPhoneNumber.text;
         loginUser.password = _tfPassword.text;
         if (self.delegate) {
             [self.delegate viewController:self didLoginWithCurrentUser:loginUser];
         }
-        [ai stopAnimating];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [_HUD show:NO];
         if ([task.response isKindOfClass:[NSHTTPURLResponse class]]) {
             NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
             NSLog(@"Status code: %ld", (long)response.statusCode);
@@ -172,7 +176,6 @@
         if (!message) {
             message = @"Log in failed. Please try again later";
         }
-        [ai stopAnimating];
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [av show];
     }];
@@ -187,6 +190,15 @@
 - (void)tapHandler:(UITapGestureRecognizer *)gesture {
     [self.tfPhoneNumber resignFirstResponder];
     [self.tfPassword resignFirstResponder];
+}
+
+#pragma mark - Private method
+- (void)addHUD {
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:_HUD];
+    _HUD.delegate = self;
+    _HUD.labelText = @"Loading";
+    
 }
 
 #pragma mark -

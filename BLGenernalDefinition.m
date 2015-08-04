@@ -15,6 +15,8 @@
         return size * 0.85f;
     } else if (IS_IPHONE_6_PLUS) {
         return size * 1.10f;
+    } else if (IS_IPHONE_4S) {
+        return size * 0.72f;
     } else {
         return size;
     }
