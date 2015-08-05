@@ -7,10 +7,11 @@
 //
 
 #import "BLSignupViewController.h"
+#import "BLContractViewController.h"
 #import "BLTextField.h"
 #import "Masonry.h"
 
-@interface BLSignupViewController () <UIGestureRecognizerDelegate>
+@interface BLSignupViewController () <UIGestureRecognizerDelegate, BLContractViewControllerDelegate>
 
 @property (strong, nonatomic) UIImageView *backgroundView;
 @property (strong, nonatomic) UIImageView *logoImageView;
@@ -257,7 +258,9 @@
 }
 
 - (void)showContract:(id)sender {
-    
+    BLContractViewController *contractViewController = [[BLContractViewController alloc] init];
+    contractViewController.delegate = self;
+    [self presentViewController:contractViewController animated:YES completion:nil];
 }
 
 #pragma mark - handle tab gesture
@@ -277,6 +280,12 @@
         [_timer invalidate];
         [self hideSecondToRsend];
     }
+}
+
+#pragma mark - Delegates
+#pragma mark BLContractViewController delegate
+- (void)didDismissBLContractViewController:(BLContractViewController *)vc {
+    [vc dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Private methods

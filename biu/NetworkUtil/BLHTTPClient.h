@@ -47,6 +47,12 @@
        success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
        failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
+- (void)resetPassword:(User *)user
+          oldPassword:(NSString *)oldPassword
+          newPassword:(NSString *)newPassword
+              success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
 - (void)forgotPassword:(User *)user
                success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
                failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;

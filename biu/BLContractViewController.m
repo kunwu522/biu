@@ -58,7 +58,9 @@
 
 #pragma mark - Actions
 - (void)back:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(didDismissBLContractViewController:)]) {
+        [self.delegate didDismissBLContractViewController:self];
+    }
 }
 
 #pragma mark -

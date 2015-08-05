@@ -8,6 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@class BLContractViewController;
+
+@protocol BLContractViewControllerDelegate <NSObject>
+
+@required
+- (void)didDismissBLContractViewController:(BLContractViewController *)vc;
+
+@end
+
 @interface BLContractViewController : UIViewController
+
+@property (weak, nonatomic) id<BLContractViewControllerDelegate> delegate;
 
 @end

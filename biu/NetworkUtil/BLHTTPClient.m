@@ -294,6 +294,21 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
     [self PUT:[NSString stringWithFormat:@"password/%@", user.phone] parameters:parameters success:success failure:failure];
 }
 
+- (void)resetPassword:(User *)user
+          oldPassword:(NSString *)oldPassword
+          newPassword:(NSString *)newPassword
+              success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    if (!user || !newPassword || !oldPassword) {
+        return;
+    }
+    
+    NSDictionary *parameters = @{@"user" : @{@"old_password" : oldPassword,
+                                             @"password" : newPassword,
+                                             @"password_confirmation" : newPassword}};
+    [self PUT:[NSString stringWithFormat:@"resetpassword/%@", user.userId] parameters:parameters success:success failure:failure];
+}
+
 - (void)createSuggestion:(NSString *)advice
                    email:(NSString *)email
                   userId:(NSNumber *)userId

@@ -11,16 +11,15 @@
 #import "BLSuggestionViewController.h"
 #import "BLAboutUsViewController.h"
 #import "BLContractViewController.h"
+#import "BLPasswordViewController.h"
 #import "UIViewController+BLMenuNavController.h"
 #import "Masonry.h"
 
-@interface BLSettingViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface BLSettingViewController () <UITableViewDataSource, UITableViewDelegate, BLContractViewControllerDelegate>
 
 @property (strong, nonatomic) UIImageView *background;
 @property (strong, nonatomic) UILabel *lbTitle;
 @property (strong, nonatomic) UITableView *tableView;
-@property (strong, nonatomic) UIButton *btnMenu;
-@property (strong, nonatomic) UIButton *btnBackToRoot;
 @property (strong, nonatomic) UIButton *btnClose;
 @property (strong, nonatomic) UIButton *btnLogout;
 
@@ -36,8 +35,6 @@
     [self.view addSubview:self.background];
     [self.view addSubview:self.lbTitle];
     [self.view addSubview:self.tableView];
-//    [self.view addSubview:self.btnMenu];
-//    [self.view addSubview:self.btnBackToRoot];
     [self.view addSubview:self.btnClose];
     [self.view addSubview:self.btnLogout];
 
@@ -54,18 +51,6 @@
     [self.background mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.background.superview);
     }];
-    
-//    [self.btnMenu mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.btnMenu.superview).with.offset([BLGenernalDefinition resolutionForDevices:31.2f]);
-//        make.right.equalTo(self.btnMenu.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.8f]);
-//        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:45.3]]);
-//    }];
-//    
-//    [self.btnBackToRoot mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.btnBackToRoot.superview).with.offset([BLGenernalDefinition resolutionForDevices:31.2f]);
-//        make.left.equalTo(self.btnBackToRoot.superview).with.offset([BLGenernalDefinition resolutionForDevices:20.8f]);
-//        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:45.3]]);
-//    }];
     
     [self.btnClose mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.btnClose.superview).with.offset([BLGenernalDefinition resolutionForDevices:32.0f]);
@@ -160,6 +145,7 @@
         case 4:
         {
             BLContractViewController *contractViewController = [[BLContractViewController alloc] init];
+            contractViewController.delegate = self;
             [self.navigationController pushViewController:contractViewController animated:YES];
             break;
         }
@@ -167,6 +153,11 @@
             break;
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark BLContractViewController delegate
+- (void)didDismissBLContractViewController:(BLContractViewController *)vc {
+    [vc.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Action
@@ -233,24 +224,6 @@
         [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:NSStringFromClass([UITableViewCell class])];
     }
     return _tableView;
-}
-
-- (UIButton *)btnMenu {
-    if (!_btnMenu) {
-        _btnMenu = [[UIButton alloc] init];
-        [_btnMenu setBackgroundImage:[UIImage imageNamed:@"menu_icon.png"] forState:UIControlStateNormal];
-        [_btnMenu addTarget:self action:@selector(showMenu:) forControlEvents:UIControlEventTouchDown];
-    }
-    return _btnMenu;
-}
-
-- (UIButton *)btnBackToRoot {
-    if (!_btnBackToRoot) {
-        _btnBackToRoot = [[UIButton alloc] init];
-        [_btnBackToRoot setBackgroundImage:[UIImage imageNamed:@"back_icon2.png"] forState:UIControlStateNormal];
-        [_btnBackToRoot addTarget:self action:@selector(backToRoot:) forControlEvents:UIControlEventTouchDown];
-    }
-    return _btnBackToRoot;
 }
 
 - (UIButton *)btnLogout {

@@ -9,6 +9,10 @@
 // Error Message
 "create profile failed, please try again later." = "创建个人信息失败，请稍后再试";
 
+// Common
+"Ok" = "确定";
+"Uploading" = "上传中";
+
 // For View
 "BIU" = "彼优";
 "I ' M   C L O S E" = "我 在 附 近";
@@ -154,4 +158,14 @@
 
 // Contract
 "Contract" = "用户协议";
+
+// Reset Password
+"Reset Password" = "设置新密码";
+"Old Password" = "旧密码";
+"New Password" = "新密码";
+"Confirmation" = "重新输入";
+"please enter same password" = "密码不一致";
+"Reset password successed!" = "修改密码成功!";
+"Reset password failed, please try again later!" = "修改密码失败，请稍后再试";
+
 
