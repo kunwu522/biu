@@ -35,12 +35,14 @@ typedef NS_ENUM(NSInteger, BLMatchEvent) {
 @property (strong, nonatomic) NSString *email;
 @property (strong, nonatomic) NSString *phone;
 @property (strong, nonatomic) NSString *password;
-@property (strong, nonatomic) Profile *profile;
-@property (strong, nonatomic) Partner *partner;
+@property (strong, nonatomic) Profile  *profile;
+@property (strong, nonatomic) Partner  *partner;
 @property (strong, nonatomic) NSNumber *latitude;
 @property (strong, nonatomic) NSNumber *longitude;
 @property (assign, nonatomic) BLMatchState state;
 @property (strong, nonatomic) NSString *token;
+@property (strong, nonatomic) NSString *avatar_url;//微信、微博头像
+@property (strong, nonatomic) NSString *open_id;//微信、微博用户唯一标识
 
 /*
  * return invalid reason otherwise return nil

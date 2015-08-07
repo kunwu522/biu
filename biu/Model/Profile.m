@@ -27,6 +27,7 @@ static NSString *SEXUALITY = @"sexuality";
         if (!self.profileId) {
             return nil;
         }
+        
         self.gender = (BLGender)[[defaults objectForKey:GENDER] integerValue];
         self.birthday = [defaults objectForKey:BIRTHDAY];
         self.zodiac = (BLZodiac)[[defaults objectForKey:ZODIAC] integerValue];

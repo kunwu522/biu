@@ -14,10 +14,12 @@ static NSString *USER_ID = @"user_id";
 static NSString *USERNAME = @"username";
 static NSString *STATE = @"state";
 static NSString *DEVICE_TOKEN = @"device_token";
+static NSString *AVATAR_URL = @"avatar_url";
 static NSString *AVATAR_CYCLE_URL = @"avatar_cycle_url";
 static NSString *AVATAR_RECTANGLE_URL = @"avatar_rectangle_url";
+static NSString *OPEN_ID = @"bl_open_id";
 
-@synthesize userId, username, password, email;
+@synthesize userId, username, password, email, avatar_url, open_id;
 
 + (NSString *)validateUsername:(NSString *)username
 {
@@ -72,6 +74,8 @@ static NSString *AVATAR_RECTANGLE_URL = @"avatar_rectangle_url";
 - (id)initWithFromUserDefault {
     self = [User new];
     if (self) {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        
         BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
         self.phone = [delegate.passwordItem objectForKey:(__bridge id)kSecAttrAccount];
         NSObject *pwd = [delegate.passwordItem objectForKey:(__bridge id)(kSecValueData)];
@@ -80,15 +84,21 @@ static NSString *AVATAR_RECTANGLE_URL = @"avatar_rectangle_url";
         } else if ([pwd isKindOfClass:[NSString class]]) {
             self.password = (NSString *)pwd;
         }
-        if ([self.phone isEqualToString:@""] || [self.password isEqualToString:@""]) {
+        if (([self.phone isEqualToString:@""] || [self.password isEqualToString:@""])
+            && (![defaults objectForKey:OPEN_ID])) {
             return nil;
         }
         
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         self.userId = [defaults objectForKey:USER_ID];
         self.username = [defaults objectForKey:USERNAME];
         self.state = [[defaults objectForKey:STATE] integerValue];
         self.token = [defaults objectForKey:DEVICE_TOKEN];
+        
+        self.avatar_url = [defaults objectForKey:AVATAR_URL];
+        if (self.open_id) {
+            self.open_id = [defaults objectForKey:OPEN_ID];
+
+        }
         if (!self.userId || !self.username) {
             return nil;
         }
@@ -104,14 +114,21 @@ static NSString *AVATAR_RECTANGLE_URL = @"avatar_rectangle_url";
     }
     
     self = [self init];
+    
     if (self) {
         self.userId = [dictionary objectForKey:@"user_id"];
         self.username = [dictionary objectForKey:@"username"];
-        self.phone = [dictionary objectForKey:@"phone"];
+        self.avatar_url = [dictionary objectForKey:@"avatar_url"];
+        if (![[dictionary objectForKey:@"open_id"] isKindOfClass:[NSNull class]] && ([dictionary objectForKey:@"open_id"] != nil)) {
+            self.open_id = [dictionary objectForKey:@"open_id"];
+        }
+        
+//        self.phone = [dictionary objectForKey:@"phone"];
         if ([dictionary objectForKey:@"device_token"] != [NSNull null]) {
             self.token = [dictionary objectForKey:@"device_token"];
         }
-        if (!self.userId || !self.username) {
+//         && (!self.open_id)
+        if ((!self.userId || !self.username) && (!self.open_id)) {
             return nil;
         }
         self.profile = [[Profile alloc] initWithDictionary:[dictionary objectForKey:@"profile"]];
@@ -125,17 +142,28 @@ static NSString *AVATAR_RECTANGLE_URL = @"avatar_rectangle_url";
 }
 
 - (void)save {
-    if ([self.phone isEqualToString:@""] || [self.password isEqualToString:@""]) {
-        return;
+    
+//    if (([self.phone isEqualToString:@""] || [self.password isEqualToString:@""]) && (self.open_id.length == 0)) {
+//    [self.open_id isEqual:[NSNull null]]
+//    if (((self.phone.length == 0) || (self.password.length == 0)) && (self.open_id.length == 0)) {
+
+//    if (([self.phone isEqualToString:@""] || [self.password isEqualToString:@""]) && [self.open_id isKindOfClass:[NSNull class]]) {
+    
+    
+    if ((!self.phone || !self.password)
+        && [self.open_id isKindOfClass:[NSNull class]]) {
+            return;
     }
     
-    BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    if (![self.phone isEqualToString:[delegate.passwordItem objectForKey:(__bridge id)kSecAttrAccount]]) {
-        [delegate.passwordItem setObject:self.phone forKey:(__bridge id)kSecAttrAccount];
-    }
-    if (![self.password isEqualToString:[delegate.passwordItem objectForKey:(__bridge id)kSecValueData]]) {
-        [delegate.passwordItem setObject:self.password forKey:(__bridge id)kSecValueData];
+    if (self.phone && self.password ) {
+        BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        if (![self.phone isEqualToString:[delegate.passwordItem objectForKey:(__bridge id)kSecAttrAccount]]) {
+            [delegate.passwordItem setObject:self.phone forKey:(__bridge id)kSecAttrAccount];
+        }
+        if (![self.password isEqualToString:[delegate.passwordItem objectForKey:(__bridge id)kSecValueData]]) {
+            [delegate.passwordItem setObject:self.password forKey:(__bridge id)kSecValueData];
+        }
     }
     
     if (self.userId == nil) {
@@ -145,13 +173,28 @@ static NSString *AVATAR_RECTANGLE_URL = @"avatar_rectangle_url";
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:self.userId forKey:USER_ID];
     [defaults setObject:self.username forKey:USERNAME];
+    
+    if ((self.avatar_url == nil) || ([self.avatar_url isKindOfClass:[NSNull class]])) {
+        [defaults setObject:nil forKey:AVATAR_URL];
+    }else {
+        [defaults setObject:self.avatar_url forKey:AVATAR_URL];
+    }
+    
+//    if (![self.open_id isKindOfClass:[NSNull class]] && (self.open_id != nil)) {
+//        [defaults setObject:self.open_id forKey:OPEN_ID];
+//    }
+
+    if (self.open_id == nil) {
+        [defaults setObject:nil forKey:OPEN_ID];
+    }else if (![self.open_id isKindOfClass:[NSNull class]]) {
+        [defaults setObject:self.open_id forKey:OPEN_ID];
+    }
+    
     [defaults setObject:[NSNumber numberWithInteger:self.state] forKey:STATE];
     
     if (self.token) {
         [defaults setObject:self.token forKey:DEVICE_TOKEN];
     }
-//    [defaults setObject:self.avatarCycleUrl forKey:AVATAR_CYCLE_URL];
-//    [defaults setObject:self.avatarRectangleUrl forKey:AVATAR_RECTANGLE_URL];
     
     if (self.profile == nil) {
         [defaults synchronize];
@@ -176,3 +219,7 @@ static NSString *AVATAR_RECTANGLE_URL = @"avatar_rectangle_url";
 }
 
 @end
+
+
+
+

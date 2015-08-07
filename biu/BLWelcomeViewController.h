@@ -12,5 +12,9 @@
 
 //@property (retain, nonatomic) UINavigationController *masterNavController;
 
+@property (strong, nonatomic)NSDictionary *profile;
+@property (strong, nonatomic)NSDictionary *partner;
+
+
 @end
 

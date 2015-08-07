@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+
 @protocol BLLoginViewControllerDelegate <NSObject>
 
 @required
@@ -17,6 +18,20 @@
 
 @interface BLLoginViewController : UIViewController
 
+@property (strong, nonatomic)NSString *codeString;
 @property (weak, nonatomic) id<BLLoginViewControllerDelegate> delegate;
 
+//@property (strong, nonatomic)NSString *openid;//第三方登录唯一标识
+//@property (strong, nonatomic)NSString *username;//用户名
+//@property (strong, nonatomic)NSString *avatar_url;//头像地址
+//@property (assign, nonatomic)NSString *userId;//应用用户ID
+
 @end
+
+
+
+
+
+
+
+

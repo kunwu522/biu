@@ -19,7 +19,7 @@
 #import "BLProfileViewController.h"
 #import "Masonry.h"
 #import <MBProgressHUD/MBProgressHUD.h>
-
+#import "BLPartnerViewController.h"
 #import "BLTextField.h"
 
 
@@ -48,9 +48,6 @@ static double ICON_INITIAL_SIZE = 147.5;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
-    NSLog(@"View frame: %f-%f", self.view.frame.size.width, self.view.frame.size.height);
-    
     _isLoginLayout = NO;
     
     self.view.backgroundColor = [UIColor clearColor];
@@ -99,58 +96,174 @@ static double ICON_INITIAL_SIZE = 147.5;
         make.centerX.equalTo(_logo.mas_centerX);
         make.top.equalTo(_biuTitle.mas_bottom).with.offset([BLGenernalDefinition resolutionForDevices:40.0f]);
     }];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getWeixinData:) name:@"weixinIfo" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getWeiboData:) name:@"weiboIfo" object:nil];
+    
+    
 }
+
+//存储微信数据
+- (void)getWeixinData:(NSNotification *)noti{
+    User *user = [User new];
+    user.username = noti.object[@"username"];
+    user.open_id = noti.object[@"openid"];
+    user.avatar_url = noti.object[@"avatar_url"];
+    
+    [[BLHTTPClient sharedBLHTTPClient] thirdParty:user success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+        User *thirdLoginInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
+        [thirdLoginInfo save];
+        
+        if(responseObject[@"user"][@"profile"] && responseObject[@"user"][@"partner"]){
+            //进入menu
+            
+            NSLog(@"OK======");
+            BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
+            BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
+            UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
+            masterNavViewController.navigationBarHidden = YES;
+            // Create BL Menu view controller
+            BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
+                        menuViewController:menuViewController];
+            [self dismissViewControllerAnimated:NO completion:nil];
+            [self presentViewController:menuNavController animated:YES completion:nil];
+        } else {
+            //进入填写个人信息
+            NSLog(@"=====NULL======");
+        
+            [self dismissViewControllerAnimated:NO completion:nil];
+            [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+        NSLog(@"failure======");
+    }];
+
+}
+//存储微博数据
+- (void)getWeiboData:(NSNotification*)noti{
+    User *user = [User new];
+    user.open_id = noti.object[@"openid"];
+    user.avatar_url = noti.object[@"avatar_url"];
+    user.username = [noti.object[@"username"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:user.open_id forKey:@"open_id"];
+    [[BLHTTPClient sharedBLHTTPClient] thirdParty:user success:^(NSURLSessionDataTask *task, id responseObject) {
+        User *thirdLoginInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
+        [thirdLoginInfo save];
+        
+        if(responseObject[@"user"][@"profile"] && responseObject[@"user"][@"partner"])  {
+            //    进入login
+            
+            NSLog(@"OK======");
+            BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
+            BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
+            UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
+            masterNavViewController.navigationBarHidden = YES;
+            // Create BL Menu view controller
+            BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
+                        menuViewController:menuViewController];
+            [self dismissViewControllerAnimated:NO completion:nil];
+            [self presentViewController:menuNavController animated:YES completion:nil];
+            
+        } else {
+            //    进入signup
+            NSLog(@"=====NULL======");
+            
+            [self dismissViewControllerAnimated:NO completion:nil];
+            [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
+        }
+
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"failure, error: %@.", error.localizedDescription);
+    }];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    sleep(1);
+
+#pragma mark --通过cookie判断登录状态
+- (void)viewWillAppear:(BOOL)animated {
+    // NSLog(@"deviceToken=-=-=-%@", blDelegate.deviceToken);
+    // 获取cookie，判断登录状态
+    NSHTTPCookie *userIdCookie = [self findCookieByName:@"user_id" isExpiredBy:(NSDate *)[NSDate date]];
+    NSHTTPCookie *rememberTokenCookie = [self findCookieByName:@"remember_token" isExpiredBy:[NSDate date]];
     
-//    BLAppDeleate *delegate = [[UIApplication sharedApplication] delegate];
-    User *currentUser = [[User alloc] initWithFromUserDefault];
-    if (!currentUser) {
-        [self showLoginUI];
-    } else {
-        [[BLHTTPClient sharedBLHTTPClient] login:currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
-            User *user = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
-            [user save];
-            BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
-            if (!user.token) {
-                [[BLHTTPClient sharedBLHTTPClient] registToken:delegate.deviceToken user:user success:^(NSURLSessionDataTask *task, id responseObject) {
-                    NSLog(@"Regist device token successed.");
-                } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                    NSLog(@"Regist device token failed.");
-                }];
-            } else if (![user.token isEqualToString:delegate.deviceToken]) {
-                [[BLHTTPClient sharedBLHTTPClient] updateToken:delegate.deviceToken user:user success:^(NSURLSessionDataTask *task, id responseObject) {
-                    NSLog(@"Update device token successed.");
-                } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                    NSLog(@"Update device token failed.");
-                }];
-            }
-            
-            if (user.profile && user.partner) {
-                BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
-                BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
-                UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
-                masterNavViewController.navigationBarHidden = YES;
-                // Create BL Menu view controller
-                BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
-                                                                 menuViewController:menuViewController];
-                [self dismissViewControllerAnimated:NO completion:nil];
-                [self presentViewController:menuNavController animated:YES completion:nil];
-            } else {
-                [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
-            }
+    if (userIdCookie && rememberTokenCookie) {
+        NSDictionary *dic = [[NSDictionary alloc] init];
+        dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+        User *user = [User new];
+        user.userId = dic[@"user_id"];
+        user.username = dic[@"username"];
+        [user save];
+        
+        if (dic[@"user_id"]) {
+
+            [[BLHTTPClient sharedBLHTTPClient] getUserIfo:user success:^(NSURLSessionDataTask *task, id responseObject) {
+                
+                User *userInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
+                [userInfo save];
+                if (!(responseObject[@"user"][@"profile"] && !responseObject[@"user"][@"partner"]) && (!([responseObject[@"user"][@"profile"] isKindOfClass:[NSNull class]]) && !([responseObject[@"user"][@"partner"] isKindOfClass:[NSNull class]]))) {//如果profile或partner不为空，从服务器获取数据应判断<null>
+                    // 进入menu
+                    BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
+                    BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
+                    UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
+                    masterNavViewController.navigationBarHidden = YES;
+                    // Create BL Menu view controller
+                    BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
+                                menuViewController:menuViewController];
+                    [self dismissViewControllerAnimated:NO completion:nil];
+                    [self presentViewController:menuNavController animated:YES completion:nil];
+                }else{
+                    // 进入profile
+                    [self dismissViewControllerAnimated:NO completion:nil];
+                    [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
+                }
+                
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                NSLog(@"Failed, error: %@", error.localizedDescription);
+            }];
+        }
+    }
+    [self showLoginUI];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    BLAppDelegate *blDelegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSDictionary *dic = [[NSDictionary alloc] init];
+    dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+    User *user = [User new];
+    user.userId = dic[@"user_id"];
+    
+    if (blDelegate.deviceToken && user.userId) {
+        [[BLHTTPClient sharedBLHTTPClient] registToken:blDelegate.deviceToken user:user success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"Regist device token successed.");
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            NSLog(@"Validate user failed: %@, code: %li", error.description, (long)error.code);
-            [self showLoginUI];
+            NSLog(@"Regist device token failed. error: %@", error.localizedDescription);
         }];
     }
 
+}
+
+#pragma mark --取出cookie
+- (NSHTTPCookie *) findCookieByName:(NSString *)name isExpiredBy:(NSDate *)time {
+    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    if (!cookies || cookies.count == 0) {
+        return nil;
+    }
+    for (NSHTTPCookie *cookie in cookies) {
+        if ([cookie.name isEqualToString:name] && [cookie.expiresDate compare:time] == NSOrderedDescending) {
+            return cookie;
+        }
+    }
+    return nil;
 }
 
 - (void)showLoginUI {
@@ -236,14 +349,6 @@ static double ICON_INITIAL_SIZE = 147.5;
 }
 
 - (void)showSignupView:(id)sender {
-//    BLSignupView *signupView = [[BLSignupView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height)];
-//    signupView.delegate = self;
-//    [self.view addSubview:signupView];
-//    [UIView animateWithDuration:0.3f animations:^{
-//        CGPoint center = signupView.center;
-//        center.y = self.view.center.y;
-//        signupView.center = center;
-//    }];
     BLSignupViewController *signupViewController = [[BLSignupViewController alloc] init];
     signupViewController.delegate = self;
     [self presentViewController:signupViewController animated:YES completion:nil];
@@ -251,38 +356,21 @@ static double ICON_INITIAL_SIZE = 147.5;
 
 #pragma mark - BLLoginViewController delegate and BLSignupView delegate
 - (void)viewController:(UIViewController *)controller didLoginWithCurrentUser:(User *)user {
-    
-    [self saveCurrentUser:user];
     BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
     BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
     UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
     masterNavViewController.navigationBarHidden = YES;
     // Create BL Menu view controller
     BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
-                                                                menuViewController:menuViewController];
+                menuViewController:menuViewController];
     [controller presentViewController:menuNavController animated:YES completion:nil];
 }
 
 - (void)viewController:(UIViewController *)controller didSignupWithNewUser:(User *)user {
-    [self saveCurrentUser:user];
     [controller presentViewController:self.fillingInfoNavController animated:YES completion:nil];
 }
 
 #pragma mark - private method
-
-- (void)saveCurrentUser:(User *)user {
-    BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
-    delegate.currentUser = user;
-    [delegate.currentUser save];
-    
-    [[BLHTTPClient sharedBLHTTPClient] registToken:delegate.deviceToken user:delegate.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"regist device successed.");
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"Regist device failed, error: %@", error.localizedDescription);
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"System error", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        [av show];
-    }];
-}
 
 #pragma mark -
 #pragma mark Getter
@@ -293,8 +381,14 @@ static double ICON_INITIAL_SIZE = 147.5;
         profileViewController.profileViewType = BLProfileViewTypeCreate;
         _fillingInfoNavController = [[UINavigationController alloc] initWithRootViewController:profileViewController];
         _fillingInfoNavController.navigationBarHidden = YES;
+        
     }
     return _fillingInfoNavController;
 }
 
 @end
+
+
+
+
+

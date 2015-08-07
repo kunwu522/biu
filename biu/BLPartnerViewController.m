@@ -362,6 +362,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
     
     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(timerfired) userInfo:nil repeats:YES];
     if (self.profile) {
+            
         _createProfileState = BLRequestStateStarted;
         [[BLHTTPClient sharedBLHTTPClient] createProfile:self.profile user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"create profile successed...");

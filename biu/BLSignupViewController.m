@@ -39,6 +39,7 @@
 
 @implementation BLSignupViewController
 
+#pragma mark - Life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -64,6 +65,7 @@
     [self layoutSubviews];
 }
 
+#pragma mark Layouts
 - (void)layoutSubviews {
     [self.backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.backgroundView.superview);
@@ -203,27 +205,37 @@
     user.username = _tfUsername.text;
     user.password = _tfPassword.text;
     
-    UIActivityIndicatorView *ai = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    ai.hidesWhenStopped = YES;
-    [ai startAnimating];
     [[BLHTTPClient sharedBLHTTPClient] signup:user success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"Sign up success!!! user id: %@", [responseObject objectForKey:@"user_id"]);
-        user.userId = [responseObject objectForKey:@"user_id"];
-        [ai stopAnimating];
+        NSLog(@"Sign up success!!! user id: %@", [responseObject objectForKey:@"user"][@"user_id"]);
+        user.userId = [responseObject objectForKey:@"user"][@"user_id"];
+        [[NSUserDefaults standardUserDefaults] setObject:user.userId forKey:@"user_id"];
+        
+        User *userIfo = [User new];
+        userIfo.avatar_url = nil;
+        userIfo.open_id = nil;
+        [userIfo save];
+            
+        BLAppDelegate *blDelegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
+        if (blDelegate.deviceToken && user.userId) {
+            [[BLHTTPClient sharedBLHTTPClient] registToken:blDelegate.deviceToken user:user success:^(NSURLSessionDataTask *task, id responseObject) {
+                NSLog(@"Regist device token successed.");
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                NSLog(@"Regist device token failed.");
+            }];
+        }
+        
         if (self.delegate) {
             _code = @"";
             [self.delegate viewController:self didSignupWithNewUser:user];
         }
+        
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [ai stopAnimating];
-        NSLog(@"Sign up failed, error: %@", error.description);
-        NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
-        if (!errMsg) {
-            errMsg = @"Sorry, failed to set up your account. Please try again.";
-        }
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        [av show];
+        NSLog(@"Signup failed%@",error.localizedDescription);
+        
+        UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:@"注册失败" message:@"请重新注册" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alertV show];
     }];
+    
 }
 
 - (void)getCode:(id)sender {
@@ -261,6 +273,21 @@
     BLContractViewController *contractViewController = [[BLContractViewController alloc] init];
     contractViewController.delegate = self;
     [self presentViewController:contractViewController animated:YES completion:nil];
+}
+
+- (void)weiboLogin:(id)sender {
+    WBAuthorizeRequest *request = [WBAuthorizeRequest request];
+    request.redirectURI = kWeiBoRedirectURL;
+    request.scope = @"all";
+    request.userInfo = @{@"myKey":@"myValue"};
+    [WeiboSDK sendRequest:request];
+}
+
+- (void)wechatLogin:(id)sender {
+    SendAuthReq *req = [[SendAuthReq alloc] init];
+    req.scope = @"snsapi_userinfo";//snsapi_base只能获取到openid，意义不大，所以使用snsapi_userinfo
+    req.state = kAppDescription;//随便数字
+    [WXApi sendReq:req];
 }
 
 #pragma mark - handle tab gesture
@@ -463,23 +490,31 @@
     return _lineView2;
 }
 
+//微信登录
 - (UIButton *)btnSignupWithWeChat {
     if (!_btnSignupWithWeChat) {
         _btnSignupWithWeChat = [[UIButton alloc] init];
         _btnSignupWithWeChat.backgroundColor = [UIColor clearColor];
         [_btnSignupWithWeChat setImage:[UIImage imageNamed:@"login_with_wechat_icon.png"] forState:UIControlStateNormal];
+        
+        [_btnSignupWithWeChat addTarget:self action:@selector(wechatLogin:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _btnSignupWithWeChat;
 }
 
+//微博登录
 - (UIButton *)btnSignupWithWeibo {
     if (!_btnSignupWithWeibo) {
         _btnSignupWithWeibo = [[UIButton alloc] init];
         _btnSignupWithWeibo.backgroundColor = [UIColor clearColor];
         [_btnSignupWithWeibo setImage:[UIImage imageNamed:@"login_with_weibo_icon.png"] forState:UIControlStateNormal];
+        
+        [_btnSignupWithWeibo addTarget:self action:@selector(weiboLogin:) forControlEvents:UIControlEventTouchUpInside];
+
     }
     return _btnSignupWithWeibo;
 }
+
 
 - (UILabel *)lbSecondLeft {
     if (!_lbSecondLeft) {

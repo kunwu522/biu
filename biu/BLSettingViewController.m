@@ -169,9 +169,13 @@
     }];
     
     BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [delegate.passwordItem resetKeychainItem];
+    [delegate.passwordItem resetKeychainItem];//清keychain
     delegate.currentUser = nil;
-    [NSUserDefaults resetStandardUserDefaults];
+    [NSUserDefaults resetStandardUserDefaults];//清userDefaults
+    
+    //Clear Cookies
+    [self removeCookieByName:@"user_id"];
+    [self removeCookieByName:@"remember_token"];
     
     BLWelcomeViewController *welViewController = [[BLWelcomeViewController alloc] initWithNibName:nil bundle:nil];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:welViewController];
@@ -190,6 +194,19 @@
 
 - (void)close:(id)sender {
     [self closeViewToRootViewController:sender];
+}
+
+#pragma mark - Private methods
+- (void) removeCookieByName:(NSString *)name {
+    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    if (!cookies || cookies.count == 0) {
+        return;
+    }
+    for (NSHTTPCookie *cookie in cookies) {
+        if ([cookie.name isEqualToString:name]) {
+            [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
+        }
+    }
 }
 
 #pragma mark -

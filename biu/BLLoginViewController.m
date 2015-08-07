@@ -10,6 +10,11 @@
 #import "BLForgotPasswordViewController.h"
 #import "BLTextField.h"
 #import "Masonry.h"
+#import "WeiboSDK.h"
+#import "BLHTTPClient.h"
+#import "BLProfileViewController.h"
+#import "BLPartnerViewController.h"//r
+#import "BLWelcomeViewController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
 @interface BLLoginViewController () <UIGestureRecognizerDelegate, MBProgressHUDDelegate> {
@@ -30,10 +35,12 @@
 @property (strong, nonatomic) UIButton *btnForgotPassword;
 @property (strong, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
 
+
 @end
 
 @implementation BLLoginViewController
 
+#pragma mark - Life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -54,8 +61,32 @@
     [self addHUD];
     
     [self loadLayout];
+    
 }
 
+- (void)viewDidDisappear:(BOOL)animated{
+    
+    BLAppDelegate *blDelegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
+    //    BLAppDelegate *blDelegate = [[BLAppDelegate alloc] init];
+    NSLog(@"deviceTokenLogin==%@", blDelegate.deviceToken);
+    
+    NSDictionary *dic = [[NSDictionary alloc] init];
+    dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+    User *user = [User new];
+    user.userId = dic[@"user_id"];
+    user.token = dic[@"device_token"];
+    if (user.token && dic[@"device_token"]) {
+        [[BLHTTPClient sharedBLHTTPClient] registToken:dic[@"device_token"] user:user success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"Regist device token successed.");
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"Regist device token failed.");
+        }];
+        
+    }
+    
+}
+
+#pragma mark Layout
 - (void)loadLayout {
     [self.backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.backgroundView.superview);
@@ -300,23 +331,45 @@
     }
     return _lineView2;
 }
-
+#pragma mark  微信登录
 - (UIButton *)btnLoginWithWeChat {
     if (!_btnLoginWithWeChat) {
         _btnLoginWithWeChat = [[UIButton alloc] init];
         _btnLoginWithWeChat.backgroundColor = [UIColor clearColor];
         [_btnLoginWithWeChat setImage:[UIImage imageNamed:@"login_with_wechat_icon.png"] forState:UIControlStateNormal];
+        
+        [_btnLoginWithWeChat addTarget:self action:@selector(wechatLogin:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _btnLoginWithWeChat;
 }
 
+- (void)wechatLogin:(id)sender {
+    SendAuthReq *req = [[SendAuthReq alloc] init];
+    req.scope = @"snsapi_userinfo";//snsapi_base只能获取到openid，意义不大，所以使用snsapi_userinfo
+    req.state = kAppDescription;//随便数字
+    [WXApi sendReq:req];
+}
+
+#pragma mark  微博登录
 - (UIButton *)btnLoginWithWeibo {
     if (!_btnLoginWithWeibo) {
         _btnLoginWithWeibo = [[UIButton alloc] init];
         _btnLoginWithWeibo.backgroundColor = [UIColor clearColor];
         [_btnLoginWithWeibo setImage:[UIImage imageNamed:@"login_with_weibo_icon.png"] forState:UIControlStateNormal];
+        
+        [_btnLoginWithWeibo addTarget:self action:@selector(weiboLogin:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _btnLoginWithWeibo;
+}
+
+- (void)weiboLogin:(id)sender{
+  
+    WBAuthorizeRequest *request = [WBAuthorizeRequest request];
+    request.redirectURI = kWeiBoRedirectURL;
+    request.scope = @"all";
+    request.userInfo = @{@"myKey":@"myValue"};
+    [WeiboSDK sendRequest:request];
+
 }
 
 - (UITapGestureRecognizer *)tapGestureRecognizer {
@@ -326,5 +379,17 @@
     }
     return _tapGestureRecognizer;
 }
-
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+

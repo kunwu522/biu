@@ -36,6 +36,8 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
 @property (strong, nonatomic) BLMenuButton *btnPassword;
 @property (strong, nonatomic) BLMenuButton *btnPartner;
 @property (strong, nonatomic) BLMenuButton *btnSetting;
+@property (strong, nonatomic) NSString *username;
+@property (strong, nonatomic) NSString *avatar_url;
 
 @end
 
@@ -47,6 +49,12 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor clearColor];
+    
+    //    偏好设置取数据
+    NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+    self.username = [dic objectForKey:@"username"];
+    self.avatar_url = [dic objectForKey:@"avatar_url"];
+    
     
     [self.view addSubview:self.background];
     [self.view addSubview:self.avatarImageView];
@@ -60,13 +68,22 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
     
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideMenu:)];
     [self.view addGestureRecognizer:tapGestureRecognizer];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    if (self.avatar_url && self.username) {
+        [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:self.avatar_url, [BLHTTPClient blBaseURL], self.currentUser.userId]]
+                                placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
+                                         options:SDWebImageRefreshCached | SDWebImageHandleCookies];
+        self.lbUsername.text = self.username;
+
+    }else{
     [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@", [BLHTTPClient blBaseURL], self.currentUser.userId]]
                             placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
                                      options:SDWebImageRefreshCached | SDWebImageHandleCookies];
     self.lbUsername.text = self.currentUser.username;
+    }
 }
 
 #pragma mark -
@@ -123,6 +140,7 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
 }
 
 - (UIImageView *)avatarImageView {
+    
     if (!_avatarImageView) {
         _avatarImageView = [[UIImageView alloc] init];
         _avatarImageView.layer.cornerRadius = [BLGenernalDefinition resolutionForDevices:(97.0f / 2)];
@@ -134,6 +152,7 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
 }
 
 - (UILabel *)lbUsername {
+    
     if (!_lbUsername) {
         _lbUsername = [[UILabel alloc] init];
         _lbUsername.font = [BLFontDefinition boldFont:15.0f];

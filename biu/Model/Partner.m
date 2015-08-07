@@ -16,8 +16,9 @@ static NSString *MIN_AGE = @"min_age";
 static NSString *MAX_AGE = @"max_age";
 static NSString *PREFER_ZODIACS = @"prefer_zodiacs";
 static NSString *PREFER_STYLES = @"prefer_styles";
+static NSString *OPEN_ID = @"open_id";
 
-@synthesize partnerId, sexualities, minAge, maxAge, preferZodiacs, preferStyles;
+@synthesize partnerId, sexualities, minAge, maxAge, preferZodiacs, preferStyles, open_id;
 
 - (id)initWithFromUserDefault {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -42,6 +43,7 @@ static NSString *PREFER_STYLES = @"prefer_styles";
     }
     self = [Partner new];
     if (self) {
+        self.open_id = [dictionary objectForKey:@"open_id"];
         self.partnerId = [dictionary objectForKey:@"partner_id"];
         self.sexualities = [dictionary objectForKey:@"sexuality_ids"];
         self.minAge = [dictionary objectForKey:@"min_age"];
@@ -60,6 +62,8 @@ static NSString *PREFER_STYLES = @"prefer_styles";
     [defaults setObject:self.maxAge forKey:MAX_AGE];
     [defaults setObject:self.preferZodiacs forKey:PREFER_ZODIACS];
     [defaults setObject:self.preferStyles forKey:PREFER_STYLES];
+    [defaults setObject:self.open_id forKey:OPEN_ID];
+    
     [defaults synchronize];
 }
 

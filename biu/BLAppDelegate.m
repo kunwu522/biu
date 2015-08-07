@@ -6,6 +6,21 @@
 //  Copyright (c) 2015 BiuLove. All rights reserved.
 //
 
+/*
+                        _ooOoo_
+                       o8888888o
+                       88" . "88
+                       (| -_- |)
+                       O\  =  /O
+                    ____/`---'\____
+                  .'  \\|     |//  `.
+ 
+ 
+ 
+ 
+ 
+ */
+
 #import "BLAppDelegate.h"
 #import "BLWelcomeViewController.h"
 #import "BLMatchViewController.h"
@@ -15,6 +30,16 @@
 #import "BLMenuViewController.h"
 #import "BLProfileViewController.h"
 #import <TSMessages/TSMessageView.h>
+#import "BLLoginViewController.h"
+#import <ShareSDK/ShareSDK.h>
+#import <TencentOpenAPI/TencentOAuth.h>
+#import "WeiboSDK.h"
+#import "WXApi.h"
+#import "BLHTTPClient.h"
+#import "BLMatchedViewController.h"
+#import "BLMenuViewController.h"
+#import "WBHttpRequest+WeiboUser.h"
+
 #if TARGET_IPHONE_SIMULATOR
 #import "UIApplication+SimulatorRemoteNotifications.h"
 #endif
@@ -25,10 +50,13 @@
 
 @end
 
-@implementation BLAppDelegate
-
+@implementation BLAppDelegate 
+@synthesize openid = _openid;
+@synthesize access_token = _access_token;
 @synthesize xmppStream;
 @synthesize passwordItem, welNavController;
+@synthesize username = _username;
+@synthesize avatar_url = _avatar_url;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
@@ -56,8 +84,152 @@
     [application listenForRemoteNotifications];
 #endif
     
+    
+    //    向微信注册
+    [WXApi registerApp:@"wx67c27b7cc14de1aa" withDescription:kAppDescription];
+    
+    //    向新浪微博注册
+    [WeiboSDK enableDebugMode:YES];
+    [WeiboSDK registerApp:@"747887283"];
+    
     return YES;
 }
+
+#pragma mark --微信
+//重写AppDelegate的handleOpenURL和openURL方法
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    if ([url.scheme isEqualToString:kWeiXinAppId]) {
+        return [WXApi handleOpenURL:url delegate:self];
+    } else if ([url.scheme isEqualToString:kWeiBoAppKey]) {
+        return [TencentOAuth HandleOpenURL:url] || [WeiboSDK handleOpenURL:url delegate:self];
+    } else {
+        return YES;
+    }
+}
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation{
+    if ([url.scheme isEqualToString:kWeiXinAppId]) {
+        return [WXApi handleOpenURL:url delegate:self];
+    } else if ([url.scheme isEqualToString:@"wb747887283"]) {
+//        return [WeiboSDK handleOpenURL:url delegate:self];
+        return [TencentOAuth HandleOpenURL:url] || [WeiboSDK handleOpenURL:url delegate:self];
+    }else{
+        return YES;
+    }
+}
+
+- (void)onReq:(BaseReq *)req {
+
+}
+
+//授权后回调 WXApiDelegate
+- (void)onResp:(BaseResp *)resp {
+
+    /*
+     ErrCode ERR_OK = 0(用户同意)
+     ERR_AUTH_DENIED = -4（用户拒绝授权）
+     ERR_USER_CANCEL = -2（用户取消）
+     code    用户换取access_token的code，仅在ErrCode为0时有效
+     state   第三方程序发送时用来标识其请求的唯一性的标志，由第三方程序调用sendReq时传入，由微信终端回传，state字符串长度不能超过1K
+     lang    微信客户端当前语言
+     country 微信用户当前国家信息
+     */
+    SendAuthResp *aresp = (SendAuthResp *)resp;
+    if (aresp.errCode == 0) {
+        NSString *code = aresp.code;
+
+        NSString *url = [NSString stringWithFormat:@"https://api.weixin.qq.com/sns/oauth2/access_token?appid=%@&secret=%@&code=%@&grant_type=authorization_code", kWeiXinAppId, kWeiXinAppSecret, code];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSURL *zoneUrl = [NSURL URLWithString:url];
+            NSString *zoneStr = [NSString stringWithContentsOfURL:zoneUrl encoding:NSUTF8StringEncoding error:nil];
+            NSData *data = [zoneStr dataUsingEncoding:NSUTF8StringEncoding];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (data) {
+                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                   
+                    self.access_token = [dic objectForKey:@"access_token"];
+                    self.openid = [dic objectForKey:@"openid"];
+                    
+                    if (_openid) {
+                        [self getUserInfo];
+                    }
+                }  
+            });  
+        });
+        
+    }
+}
+
+//获取微信数据
+- (void)getUserInfo {
+    NSString *url =[NSString stringWithFormat:@"https://api.weixin.qq.com/sns/userinfo?access_token=%@&openid=%@",_access_token,_openid];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSURL *zoneUrl = [NSURL URLWithString:url];
+        NSString *zoneStr = [NSString stringWithContentsOfURL:zoneUrl encoding:NSUTF8StringEncoding error:nil];
+        NSData *data = [zoneStr dataUsingEncoding:NSUTF8StringEncoding];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (data) {
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                
+                self.username = [dic objectForKey:@"nickname"];
+                self.avatar_url = [dic objectForKey:@"headimgurl"];
+                
+                if (self.openid) {
+
+                     NSDictionary *dic =[[NSDictionary alloc] initWithObjectsAndKeys:self.username, @"username", self.avatar_url, @"avatar_url", self.openid,@"openid" ,nil];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"weixinIfo" object:dic];
+
+                }
+            }
+        });
+    });
+}
+#pragma mark --新浪微博
+//https://api.weibo.com/oauth2/default.html，新浪默认授权回调页（随便写，只取后边的code值）
+//获取userID和accessToken，及个人信息
+- (void)didReceiveWeiboResponse:(WBBaseResponse *)response {
+//应用名字: self.username = [[response.userInfo objectForKey:@"app"] objectForKey:@"name"];
+//应用头像: self.avatar_url = [[response.userInfo objectForKey:@"app"] objectForKey:@"logo"];
+    
+    self.access_token = [response.userInfo objectForKey:@"access_token"];
+    self.openid = [response.userInfo objectForKey:@"uid"];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    //https://api.weibo.com/2/users/show.json?access_token="+accessToken+"&uid="+uid
+    NSString *str = [NSString stringWithFormat:@"https://api.weibo.com/2/users/show.json?access_token=%@&uid=%@",self.access_token,self.openid];
+    [manager GET:str parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+        self.username = responseObject[@"name"];
+        self.avatar_url = responseObject[@"avatar_large"];
+        NSDictionary *dic =[[NSDictionary alloc] initWithObjectsAndKeys:self.username, @"username", self.avatar_url, @"avatar_url", self.openid,@"openid" ,nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"weiboIfo" object:dic];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        // TODO: 加个日志
+    }];
+    
+//    avatar_hd，1024X1024像素
+//    avatar_large,180X180像素
+}
+- (void)didReceiveWeiboRequest:(WBBaseRequest *)request{
+    
+}
+- (void)tencentDidNotLogin:(BOOL)cancelled{
+    
+}
+- (void)tencentDidLogin{
+    
+}
+- (void)tencentDidNotNetWork{
+    
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -177,6 +349,23 @@
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     self.deviceToken = [[[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]] stringByReplacingOccurrencesOfString:@" " withString:@""];
     NSLog(@"Got device token as %@", self.deviceToken);
+    if (self.deviceToken) {
+        [[NSUserDefaults standardUserDefaults] setObject:self.deviceToken   forKey:@"device_token"];
+    }
+    
+    NSDictionary *dic = [[NSDictionary alloc] init];
+    dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+    User *user = [User new];
+    user.userId = dic[@"user_id"];
+    user.token = dic[@"device_token"];
+    
+    if ((user.userId) && (user.token)) {
+        [[BLHTTPClient sharedBLHTTPClient] registToken:user.token user:user success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"Regist device token successed.");
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"Regist device token failed.");
+        }];
+    }
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
@@ -378,5 +567,7 @@
     UINavigationController *navController = (UINavigationController *)self.window.rootViewController;
     return navController.visibleViewController;
 }
+
+
 
 @end

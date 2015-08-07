@@ -114,11 +114,20 @@ static const float AVATOR_WIDTH = 163.0f;
         self.zodiac = BLZodiacNone;
         self.style = BLStyleTypeNone;
     }
-    
-    [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@",
-                                                                   [BLHTTPClient blBaseURL],self.currentUser.userId]]
-                            placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
-                                     options: SDWebImageHandleCookies];
+        //    偏好设置取数据
+        NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+
+        NSString *avatar_url = [dic objectForKey:@"avatar_url"];
+
+        if (avatar_url) {
+            [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatar_url] placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"] options:SDWebImageHandleCookies];
+            
+        }else{
+            [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@",
+                                                                           [BLHTTPClient blBaseURL],self.currentUser.userId]]
+                                    placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
+                                             options: SDWebImageHandleCookies];
+        }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -412,6 +421,7 @@ static const float AVATOR_WIDTH = 163.0f;
     
     [[BLHTTPClient sharedBLHTTPClient] updateProfile:self.currentUser.profile user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Update profile successed...");
+        
         [self.currentUser.profile save];
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Save Successed!", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [av show];

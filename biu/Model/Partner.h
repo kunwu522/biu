@@ -17,6 +17,7 @@
 @property (strong, nonatomic) NSNumber *minAge;
 @property (strong, nonatomic) NSNumber *maxAge;
 @property (strong, nonatomic) NSArray *preferStyles;
+@property (strong, nonatomic) NSString *open_id;
 
 - (id)initWithFromUserDefault;
 - (id)initWithDictionary:(NSDictionary *)dictionary;

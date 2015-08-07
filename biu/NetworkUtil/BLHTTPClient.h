@@ -100,6 +100,18 @@
                  success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
                  failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
+//上传微信微博个人信息
+- (void)thirdParty:(User *)user
+           success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+           failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
+//获取userIfo
+- (void)getUserIfo:(User *)user
+              success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
+
+
 @end
 
 @protocol BLHTTPClientDelegate <NSObject>
@@ -107,3 +119,7 @@
 - (void)canNotReachNetworkWithHttpClient:(BLHTTPClient *)client;
 - (void)blHTTPClient:(BLHTTPClient *)client didFailWithError:(NSError *)error;
 @end
+
+
+
+

@@ -83,3 +83,9 @@ typedef NS_ENUM(NSUInteger, BLSexualityType) {
 + (NSString *)getZodiacNameFromZodiac:(BLZodiac)zodiac isShotVersion:(BOOL)isShot;
 
 @end
+
+
+
+
+
+
