@@ -205,7 +205,7 @@ static double ICON_INITIAL_SIZE = 147.5;
         [user save];
         
         if (dic[@"user_id"]) {
-
+            
             [[BLHTTPClient sharedBLHTTPClient] getUserIfo:user success:^(NSURLSessionDataTask *task, id responseObject) {
                 
                 User *userInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];

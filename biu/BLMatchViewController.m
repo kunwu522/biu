@@ -82,13 +82,15 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
                                                           @"3500",
                                                           @"4000",
                                                           @"4500",
-                                                          @"5000", nil];
+                                                          @"5000",
+                                                            nil];
     _pickViewDistance = [[BLPickerView alloc] initWithFrame:CGRectMake(0, [BLGenernalDefinition resolutionForDevices:200],
                                                                        self.view.frame.size.width, [BLGenernalDefinition resolutionForDevices:225.0f])];
     _pickViewDistance.delegate = self;
     _pickViewDistance.dataSource = self;
     _pickViewDistance.fisheyeFactor = 0.001;
     [_pickViewDistance selectRow:3 animated:NO];
+
     [self.view addSubview:_pickViewDistance];
     self.distance = [_arrayDistanceData objectAtIndex:3];
     

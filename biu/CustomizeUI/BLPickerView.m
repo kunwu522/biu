@@ -214,12 +214,12 @@
     return size;
 }
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    return 0;
-}
+//- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+//    return 0;
+//}
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    return 0;
+    return 1;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
@@ -362,12 +362,20 @@
 - (void)setSelected:(BOOL)selected {
     [super setSelected:selected];
     
+//    self.label.textColor = [BLColorDefinition greenColor];
+    
     CATransition *transition = [CATransition animation];
     [transition setType:kCATransitionFade];
     [transition setDuration:0.15];
     [self.label.layer addAnimation:transition forKey:nil];
     
     self.label.font = self.selected ? self.highLightedFont : self.font;
+    if (selected) {
+        
+        self.label.highlighted = YES;//刷新UIScrollView，设置高亮
+        self.label.highlightedTextColor = [BLColorDefinition greenColor];
+    }
+
 }
 
 @end
