@@ -118,6 +118,23 @@ static const float AVATOR_WIDTH = 163.0f;
         NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
 
         NSString *avatar_url = [dic objectForKey:@"avatar_url"];
+        User *user = [[User alloc] init];
+        user.userId = dic[@"user_id"];
+        user.avatar_url = dic[@"avatar_url"];
+//        user.username = dic[@"username"];
+    
+//    if (user.avatar_url && user.username) {
+//        [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:user.avatar_url, [BLHTTPClient blBaseURL], user.userId]]
+//                                placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
+//                                         options:SDWebImageRefreshCached | SDWebImageHandleCookies];
+//        self.lbUsername.text = user.username;
+//        
+//    }else{
+//        [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@", [BLHTTPClient blBaseURL], user.userId]]
+//                                placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
+//                                         options:SDWebImageRefreshCached | SDWebImageHandleCookies];
+//        self.lbUsername.text = user.username;
+//    }
 
         if (avatar_url) {
             [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatar_url] placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"] options:SDWebImageHandleCookies];

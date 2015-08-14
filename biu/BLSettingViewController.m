@@ -177,6 +177,10 @@
     [self removeCookieByName:@"user_id"];
     [self removeCookieByName:@"remember_token"];
     
+    if (self.delegate && [self.delegate respondsToSelector:@selector(didFinishLogout)]) {
+        [self.delegate didFinishLogout];
+    }
+        
     BLWelcomeViewController *welViewController = [[BLWelcomeViewController alloc] initWithNibName:nil bundle:nil];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:welViewController];
     navController.navigationBarHidden = YES;
@@ -249,10 +253,14 @@
         [_btnLogout setTitle:NSLocalizedString(@"Logout", nil) forState:UIControlStateNormal];
         [_btnLogout setTitleColor:[BLColorDefinition fontGreenColor] forState:UIControlStateNormal];
         _btnLogout.titleLabel.font = [BLFontDefinition normalFont:15.0f];
+        
         [_btnLogout addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchUpInside];
+        
+        
     }
     return _btnLogout;
 }
+
 
 - (UIButton *)btnClose {
     if (!_btnClose) {

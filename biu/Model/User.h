@@ -42,6 +42,7 @@ typedef NS_ENUM(NSInteger, BLMatchEvent) {
 @property (assign, nonatomic) BLMatchState state;
 @property (strong, nonatomic) NSString *token;
 @property (strong, nonatomic) NSString *avatar_url;//微信、微博头像
+@property (strong, nonatomic) NSString *avatar_large_url;//大图
 @property (strong, nonatomic) NSString *open_id;//微信、微博用户唯一标识
 
 /*

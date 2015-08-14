@@ -361,10 +361,16 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
     partner.preferStyles = _preferStyles;
     
     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(timerfired) userInfo:nil repeats:YES];
+    NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+    User *user = [[User alloc] init];
+    user.userId = dic[@"user_id"];
+    user.username = dic[@"username"];
+    [user save];
     if (self.profile) {
-            
+      
         _createProfileState = BLRequestStateStarted;
-        [[BLHTTPClient sharedBLHTTPClient] createProfile:self.profile user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+        [[BLHTTPClient sharedBLHTTPClient] createProfile:self.profile user:user success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"create profile successed...");
             self.profile.profileId = [responseObject objectForKey:@"profile_id"];
             [self.profile save];
@@ -379,7 +385,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
     }
     
     _createPartnerState = BLRequestStateStarted;
-    [[BLHTTPClient sharedBLHTTPClient] createPartner:partner user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[BLHTTPClient sharedBLHTTPClient] createPartner:partner user:user success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"create profile successed, partner id: %@.", [responseObject objectForKey:@"partner_id"]);
         partner.partnerId = [responseObject objectForKey:@"partner_id"];
         [partner save];
@@ -395,13 +401,17 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
 }
 
 - (void)updatePartner:(id)sender {
+    
+    
+    User *user = [User new];
+    user.userId = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation][@"user_id"];
     self.currentUser.partner.sexualities = _sexualities;
     self.currentUser.partner.minAge = _minAge;
     self.currentUser.partner.maxAge = _maxAge;
     self.currentUser.partner.preferZodiacs = _preferZodiacs;
     self.currentUser.partner.preferStyles = _preferStyles;
-    
-    [[BLHTTPClient sharedBLHTTPClient] updatePartner:self.currentUser.partner user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+    [[BLHTTPClient sharedBLHTTPClient] updatePartner:self.currentUser.partner user:user success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Update partner successed...");
         [self.currentUser.partner save];
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Save Successed!", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
@@ -415,6 +425,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [av show];
     }];
+
 }
 
 - (void)back:(id)sender {

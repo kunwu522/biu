@@ -16,6 +16,10 @@
 #import "BLPartnerViewController.h"//r
 #import "BLWelcomeViewController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
+#import "BLMatchViewController.h"
+#import "BLMenuViewController.h"
+#import "BLMenuNavController.h"
+
 
 @interface BLLoginViewController () <UIGestureRecognizerDelegate, MBProgressHUDDelegate> {
     MBProgressHUD *_HUD;
@@ -34,7 +38,7 @@
 @property (strong, nonatomic) UIButton *btnLoginWithWeibo;
 @property (strong, nonatomic) UIButton *btnForgotPassword;
 @property (strong, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
-
+@property (strong, nonatomic) UINavigationController *fillingInfoNavController;
 
 @end
 
@@ -81,9 +85,7 @@
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"Regist device token failed.");
         }];
-        
     }
-    
 }
 
 #pragma mark Layout
@@ -187,30 +189,57 @@
     User *user = [User new];
     user.phone = self.tfPhoneNumber.text;
     user.password = self.tfPassword.text;
-
+    [user save];
     [_HUD show:YES];
-    [[BLHTTPClient sharedBLHTTPClient] login:user success:^(NSURLSessionDataTask *task, id responseObject) {
-        [_HUD hide:YES];
-        User *loginUser = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
-        loginUser.phone = _tfPhoneNumber.text;
-        loginUser.password = _tfPassword.text;
-        if (self.delegate) {
-            [self.delegate viewController:self didLoginWithCurrentUser:loginUser];
-        }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [_HUD hide:YES];
-        if ([task.response isKindOfClass:[NSHTTPURLResponse class]]) {
-            NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
-            NSLog(@"Status code: %ld", (long)response.statusCode);
-        }
-        NSString *message = [BLHTTPClient responseMessage:task error:error];
-        if (!message) {
-            message = @"Log in failed. Please try again later";
-        }
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        [av show];
-    }];
+    if (user.phone && user.password) {
+       
+        [[BLHTTPClient sharedBLHTTPClient] login:user success:^(NSURLSessionDataTask *task, id responseObject) {
+            [_HUD hide:YES];
+            User *loginUser = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
+            [loginUser save];
+            if ((responseObject[@"user"][@"profile"] &&
+                 responseObject[@"user"][@"partner"]) &&
+                (!([responseObject[@"user"][@"profile"] isKindOfClass:[NSNull class]]) &&
+                 !([responseObject[@"user"][@"partner"] isKindOfClass:[NSNull class]]))) {
+                //进入menuView
+                if (self.delegate) {
+                    [self.delegate viewController:self didLoginWithCurrentUser:loginUser];
+                }
+            }else {
+                //进入profile
+                BLProfileViewController *profileVC = [[BLProfileViewController alloc] init];
+                [self dismissViewControllerAnimated:NO completion:nil];
+                [self presentViewController:profileVC animated:YES completion:nil];
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [_HUD hide:YES];
+            if ([task.response isKindOfClass:[NSHTTPURLResponse class]]) {
+                NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+                NSLog(@"Status code: %ld", (long)response.statusCode);
+            }
+            NSString *message = [BLHTTPClient responseMessage:task error:error];
+            if (!message) {
+                message = @"Log in failed. Please try again later";
+            }
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            [av show];
+        }];
+
+    }
 }
+
+- (UINavigationController *)fillingInfoNavController {
+    if (!_fillingInfoNavController) {
+        // Create filling information navigation controller
+        BLProfileViewController *profileViewController = [[BLProfileViewController alloc] initWithNibName:nil bundle:nil];
+        profileViewController.profileViewType = BLProfileViewTypeCreate;
+        _fillingInfoNavController = [[UINavigationController alloc] initWithRootViewController:profileViewController];
+        _fillingInfoNavController.navigationBarHidden = YES;
+        
+    }
+    return _fillingInfoNavController;
+}
+
 
 - (void)forgotPassword:(id)sender {
     BLForgotPasswordViewController *forgotPwViewController = [[BLForgotPasswordViewController alloc] init];
@@ -363,13 +392,12 @@
 }
 
 - (void)weiboLogin:(id)sender{
-  
+
     WBAuthorizeRequest *request = [WBAuthorizeRequest request];
     request.redirectURI = kWeiBoRedirectURL;
     request.scope = @"all";
     request.userInfo = @{@"myKey":@"myValue"};
     [WeiboSDK sendRequest:request];
-
 }
 
 - (UITapGestureRecognizer *)tapGestureRecognizer {
@@ -379,11 +407,8 @@
     }
     return _tapGestureRecognizer;
 }
+
 @end
-
-
-
-
 
 
 

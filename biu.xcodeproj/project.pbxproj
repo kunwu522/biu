@@ -25,6 +25,7 @@
 		A3CCFD011B1B647300C9BAE8 /* avator_default.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFD001B1B647300C9BAE8 /* avator_default.png */; };
 		A3CCFD071B1CBB2D00C9BAE8 /* BLZodiacTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A3CCFD061B1CBB2D00C9BAE8 /* BLZodiacTableViewCell.m */; };
 		A3F7EC691B0AD6520084DA70 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A3F7EC6B1B0AD6520084DA70 /* Localizable.strings */; };
+		E37225A81B7C8A0C00CB912A /* BLFaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = E37225A71B7C8A0C00CB912A /* BLFaceView.m */; };
 		E3C19E831B69F8A700E83092 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3C19E821B69F8A700E83092 /* CoreText.framework */; };
 		E3C19E851B69F8BB00E83092 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3C19E841B69F8BB00E83092 /* UIKit.framework */; };
 		E3C19E871B69F8D900E83092 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3C19E861B69F8D900E83092 /* Foundation.framework */; };
@@ -319,6 +320,8 @@
 		A3F7EC681B0AD5BF0084DA70 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		A3F7EC6A1B0AD6520084DA70 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A3F7EC6C1B0AD65A0084DA70 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E37225A61B7C8A0C00CB912A /* BLFaceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLFaceView.h; sourceTree = "<group>"; };
+		E37225A71B7C8A0C00CB912A /* BLFaceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLFaceView.m; sourceTree = "<group>"; };
 		E3C19E821B69F8A700E83092 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		E3C19E841B69F8BB00E83092 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E3C19E861B69F8D900E83092 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1002,6 +1005,8 @@
 				EAEA27D01B256776006967A1 /* BLZodiacAndAgeTableViewCell.m */,
 				EAE285F81B327F7B00340C1B /* BLCropImageMaskView.h */,
 				EAE285F91B327F7B00340C1B /* BLCropImageMaskView.m */,
+				E37225A61B7C8A0C00CB912A /* BLFaceView.h */,
+				E37225A71B7C8A0C00CB912A /* BLFaceView.m */,
 			);
 			name = CustomizeUI;
 			sourceTree = "<group>";
@@ -1937,6 +1942,7 @@
 				EA9C6D321B60E8F5009FF6C2 /* BLSignupViewController.m in Sources */,
 				EA9F49821B1DB2F10037D188 /* BLPartnerViewController.m in Sources */,
 				EA428ACF1B5669B700EF4887 /* DDAbstractDatabaseLogger.m in Sources */,
+				E37225A81B7C8A0C00CB912A /* BLFaceView.m in Sources */,
 				EA9B090D1B2C147E0059DBA7 /* BLAVCamPreviewView.m in Sources */,
 				EA9F497A1B1D5BD90037D188 /* UIImage+ImageEffects.m in Sources */,
 				EA9C6D431B664942009FF6C2 /* BLContractViewController.m in Sources */,

@@ -204,17 +204,14 @@
     user.phone = _tfPhoneNumber.text;
     user.username = _tfUsername.text;
     user.password = _tfPassword.text;
+    user.avatar_url = nil;
+    user.open_id = nil;
     
     [[BLHTTPClient sharedBLHTTPClient] signup:user success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Sign up success!!! user id: %@", [responseObject objectForKey:@"user"][@"user_id"]);
         user.userId = [responseObject objectForKey:@"user"][@"user_id"];
         [[NSUserDefaults standardUserDefaults] setObject:user.userId forKey:@"user_id"];
-        
-        User *userIfo = [User new];
-        userIfo.avatar_url = nil;
-        userIfo.open_id = nil;
-        [userIfo save];
-            
+        [user save];
         BLAppDelegate *blDelegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
         if (blDelegate.deviceToken && user.userId) {
             [[BLHTTPClient sharedBLHTTPClient] registToken:blDelegate.deviceToken user:user success:^(NSURLSessionDataTask *task, id responseObject) {

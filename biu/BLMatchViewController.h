@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BLSettingViewController.h"
 
 @protocol BLMAtchStateDelegate <NSObject>
 
@@ -14,7 +15,7 @@
 
 @end
 
-@interface BLMatchViewController : UIViewController
+@interface BLMatchViewController : UIViewController<BLMatchStopLocationDelegate>
 
 - (void)matched:(User *)matchedUser;
 

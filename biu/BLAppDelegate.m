@@ -16,8 +16,15 @@
                   .'  \\|     |//  `.
  
  
- 
- 
+ 佛曰:
+         写字楼里写字间，写字间里程序员；
+         程序人员写程序，又拿程序换酒钱。
+         酒醒只在网上坐，酒醉还来网下眠；
+         酒醉酒醒日复日，网上网下年复年。
+         但愿老死电脑间，不愿鞠躬老板前；
+         奔驰宝马贵者趣，公交自行程序员。
+         别人笑我忒疯癫，我笑自己命太贱；
+         不见满街漂亮妹，哪个归得程序员？
  
  */
 
@@ -57,6 +64,7 @@
 @synthesize passwordItem, welNavController;
 @synthesize username = _username;
 @synthesize avatar_url = _avatar_url;
+@synthesize avatar_large_url = _avatar_large_url;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
@@ -122,7 +130,7 @@
 }
 
 - (void)onReq:(BaseReq *)req {
-
+    
 }
 
 //授权后回调 WXApiDelegate
@@ -177,13 +185,18 @@
                 
                 self.username = [dic objectForKey:@"nickname"];
                 self.avatar_url = [dic objectForKey:@"headimgurl"];
-                
+                self.avatar_large_url = self.avatar_url;
+                [[NSUserDefaults standardUserDefaults] setObject:self.username forKey:@"username"];
+                [[NSUserDefaults standardUserDefaults] setObject:self.avatar_url forKey:@"avatar_url"];
+                //像素1242             
                 if (self.openid) {
-
-                     NSDictionary *dic =[[NSDictionary alloc] initWithObjectsAndKeys:self.username, @"username", self.avatar_url, @"avatar_url", self.openid,@"openid" ,nil];
+                    
+                     NSDictionary *dic =[[NSDictionary alloc] initWithObjectsAndKeys:self.username, @"username",
+                                         self.avatar_url, @"avatar_url",
+                                         self.avatar_url, @"avatar_large_url",
+                                         self.openid,@"openid" ,nil];
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"weixinIfo" object:dic];
-
                 }
             }
         });
@@ -204,14 +217,17 @@
     NSString *str = [NSString stringWithFormat:@"https://api.weibo.com/2/users/show.json?access_token=%@&uid=%@",self.access_token,self.openid];
     [manager GET:str parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",responseObject);
-        
+
         self.username = responseObject[@"name"];
         self.avatar_url = responseObject[@"avatar_large"];
-        NSDictionary *dic =[[NSDictionary alloc] initWithObjectsAndKeys:self.username, @"username", self.avatar_url, @"avatar_url", self.openid,@"openid" ,nil];
+        self.avatar_large_url = responseObject[@"avatar_hd"];
+        
+        NSDictionary *dic =[[NSDictionary alloc] initWithObjectsAndKeys:self.username, @"username", self.avatar_url, @"avatar_url", self.avatar_large_url, @"avatar_large_url", self.openid,@"openid" ,nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"weiboIfo" object:dic];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // TODO: 加个日志
+        NSLog(@"failure, error: %@.", error.localizedDescription);
     }];
     
 //    avatar_hd，1024X1024像素

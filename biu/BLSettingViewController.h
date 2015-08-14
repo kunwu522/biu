@@ -8,6 +8,27 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BLSettingViewController : UIViewController
+@protocol BLMatchStopLocationDelegate <NSObject>
+@required
+- (void)didFinishLogout;
 
 @end
+
+@interface BLSettingViewController : UIViewController
+
+@property (weak, nonatomic) id<BLMatchStopLocationDelegate> delegate;
+
+@end
+
+
+
+
+
+
+
+
+
+
+
+
+

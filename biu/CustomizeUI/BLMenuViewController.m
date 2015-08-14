@@ -15,7 +15,9 @@
 #import "BLMenuNavController.h"
 #import "BLMenuButton.h"
 #import "Masonry.h"
-
+#import "BLMatchViewController.h"
+#import "BLFaceView.h"
+#import <QuartzCore/QuartzCore.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @interface BLMenuViewController ()
@@ -25,7 +27,8 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
     BLSubViewControllerProfile = 1,
     BLSubViewControllerPassword = 2,
     BLSubViewControllerPartner = 3,
-    BLSubViewControllerSetting = 4
+    BLSubViewControllerSetting = 4,
+    BLSubViewControllerFace = 5
 };
 
 @property (strong, nonatomic) User *currentUser;
@@ -36,8 +39,10 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
 @property (strong, nonatomic) BLMenuButton *btnPassword;
 @property (strong, nonatomic) BLMenuButton *btnPartner;
 @property (strong, nonatomic) BLMenuButton *btnSetting;
+@property (strong, nonatomic) BLMenuButton *btnFace;
 @property (strong, nonatomic) NSString *username;
 @property (strong, nonatomic) NSString *avatar_url;
+@property (strong, nonatomic) NSString *avatar_large_url;
 
 @end
 
@@ -50,14 +55,9 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor clearColor];
     
-    //    偏好设置取数据
-    NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
-    self.username = [dic objectForKey:@"username"];
-    self.avatar_url = [dic objectForKey:@"avatar_url"];
-    
-    
     [self.view addSubview:self.background];
     [self.view addSubview:self.avatarImageView];
+//    [self.view addSubview:self.btnFace];
     [self.view addSubview:self.lbUsername];
     [self.view addSubview:self.btnMe];
     [self.view addSubview:self.btnPartner];
@@ -72,17 +72,27 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    if (self.avatar_url && self.username) {
-        [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:self.avatar_url, [BLHTTPClient blBaseURL], self.currentUser.userId]]
+    NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+    User *user = [[User alloc] init];
+    user.userId = dic[@"user_id"];
+    user.avatar_url = dic[@"avatar_url"];
+    user.avatar_large_url = dic[@"avatar_large_url"];
+    user.username = dic[@"username"];
+    self.avatar_url = user.avatar_url;
+    self.avatar_large_url = user.avatar_large_url;
+    
+    if (user.avatar_url && user.username) {
+        [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:user.avatar_url, [BLHTTPClient blBaseURL], user.userId]]
                                 placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
                                          options:SDWebImageRefreshCached | SDWebImageHandleCookies];
-        self.lbUsername.text = self.username;
+        
+        self.lbUsername.text = user.username;
 
     }else{
-    [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@", [BLHTTPClient blBaseURL], self.currentUser.userId]]
+    [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@", [BLHTTPClient blBaseURL], user.userId]]
                             placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
                                      options:SDWebImageRefreshCached | SDWebImageHandleCookies];
-    self.lbUsername.text = self.currentUser.username;
+    self.lbUsername.text = user.username;
     }
 }
 
@@ -119,6 +129,12 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
         case BLSubViewControllerSetting:
         {
             BLSettingViewController *settingViewController = [[BLSettingViewController alloc] init];
+            
+            UINavigationController *navC = (UINavigationController *)self.menuNavController.rootViewController;
+            
+            //BLMatchStopLocationDelegatede的delegate
+            settingViewController.delegate = (BLMatchViewController *)navC.topViewController;
+            
             UINavigationController *settingNavViewController = [[UINavigationController alloc] initWithRootViewController:settingViewController];
             settingNavViewController.navigationBarHidden = YES;
             [self.menuNavController setContentViewController:settingNavViewController animated:YES];
@@ -127,6 +143,38 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
         default:
             break;
     }
+}
+
+- (void)imageViewClicked{
+    
+    UIImageView *bigImageView = [[UIImageView alloc] init];
+    
+    [bigImageView sd_setImageWithURL:[NSURL URLWithString:self.avatar_large_url] placeholderImage:self.avatarImageView.image options:SDWebImageRefreshCached | SDWebImageHandleCookies completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+        NSLog(@"===========imagesuccess=============");
+        
+    }];
+
+    BLFaceView *faceBigview = [[BLFaceView alloc]initWithFrame:[[UIScreen mainScreen]bounds] withImage:bigImageView.image withPointRect:CGRectMake(_avatarImageView.frame.origin.x, _avatarImageView.frame.origin.y+64, _avatarImageView.frame.size.width, _avatarImageView.frame.size.height)];//从哪个点往出展示
+    
+        faceBigview.backgroundColor = [UIColor lightGrayColor];
+    [[[UIApplication sharedApplication].windows objectAtIndex:0] addSubview:faceBigview];
+    faceBigview.alpha = 0.0f;
+    [UIView animateWithDuration:0.5f
+                     animations:^{
+                         faceBigview.alpha = 1.0f;
+                         [faceBigview setFrame:[[UIScreen mainScreen]bounds]];
+                     }
+                     completion:^(BOOL finished){
+                         
+                     }];
+}
+
+
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 
 #pragma mark -
@@ -145,8 +193,12 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
         _avatarImageView = [[UIImageView alloc] init];
         _avatarImageView.layer.cornerRadius = [BLGenernalDefinition resolutionForDevices:(97.0f / 2)];
         _avatarImageView.layer.borderWidth = 3.0f;
+        _avatarImageView.userInteractionEnabled = YES;
         _avatarImageView.layer.borderColor = [[UIColor whiteColor] CGColor];
         _avatarImageView.clipsToBounds = YES;
+        UITapGestureRecognizer *clickFace = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageViewClicked)];
+        [_avatarImageView addGestureRecognizer:clickFace];
+        
     }
     return _avatarImageView;
 }

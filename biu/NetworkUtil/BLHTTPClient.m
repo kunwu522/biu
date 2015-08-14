@@ -342,7 +342,8 @@ static NSString* const BLBaseURLString = @"http://182.92.117.218:3001/cn/api/v1/
     }
     NSDictionary *parameters = @{@"user" : @{@"open_id" : user.open_id,
                                              @"username" : user.username,
-                                             @"avatar_url" : user.avatar_url}};
+                                             @"avatar_url" : user.avatar_url,
+                                             @"avatar_large_url" : user.avatar_large_url}};
     [self POST:@"tplogin" parameters:parameters success:success failure:failure];
 
 }

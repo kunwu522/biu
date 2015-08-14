@@ -18,8 +18,9 @@ static NSString *AVATAR_URL = @"avatar_url";
 static NSString *AVATAR_CYCLE_URL = @"avatar_cycle_url";
 static NSString *AVATAR_RECTANGLE_URL = @"avatar_rectangle_url";
 static NSString *OPEN_ID = @"bl_open_id";
+static NSString *AVATAR_LARGE_URL = @"avatar_large_url";
 
-@synthesize userId, username, password, email, avatar_url, open_id;
+@synthesize userId, username, password, email, avatar_url, avatar_large_url,open_id;
 
 + (NSString *)validateUsername:(NSString *)username
 {
@@ -27,7 +28,8 @@ static NSString *OPEN_ID = @"bl_open_id";
         return @"Username can not be empty.";
     }
     
-    NSString *regex = @"[A-Za-z0-9]{1,16}";
+//    NSString *regex = @"[A-Za-z0-9]{1,16}";
+    NSString *regex = @".{1,16}";
     NSPredicate *usernameTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
     if ([usernameTest evaluateWithObject:username]) {
         return nil;
@@ -95,10 +97,12 @@ static NSString *OPEN_ID = @"bl_open_id";
         self.token = [defaults objectForKey:DEVICE_TOKEN];
         
         self.avatar_url = [defaults objectForKey:AVATAR_URL];
+        self.avatar_large_url = [defaults objectForKey:AVATAR_LARGE_URL];
+        
         if (self.open_id) {
             self.open_id = [defaults objectForKey:OPEN_ID];
-
         }
+        
         if (!self.userId || !self.username) {
             return nil;
         }
@@ -119,6 +123,7 @@ static NSString *OPEN_ID = @"bl_open_id";
         self.userId = [dictionary objectForKey:@"user_id"];
         self.username = [dictionary objectForKey:@"username"];
         self.avatar_url = [dictionary objectForKey:@"avatar_url"];
+        self.avatar_large_url = [dictionary objectForKey:@"avatar_large_url"];
         if (![[dictionary objectForKey:@"open_id"] isKindOfClass:[NSNull class]] && ([dictionary objectForKey:@"open_id"] != nil)) {
             self.open_id = [dictionary objectForKey:@"open_id"];
         }
@@ -169,7 +174,7 @@ static NSString *OPEN_ID = @"bl_open_id";
     if (self.userId == nil) {
         NSLog(@"User id is nil...");
         return;
-    }
+    } 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:self.userId forKey:USER_ID];
     [defaults setObject:self.username forKey:USERNAME];
@@ -180,13 +185,15 @@ static NSString *OPEN_ID = @"bl_open_id";
         [defaults setObject:self.avatar_url forKey:AVATAR_URL];
     }
     
-//    if (![self.open_id isKindOfClass:[NSNull class]] && (self.open_id != nil)) {
-//        [defaults setObject:self.open_id forKey:OPEN_ID];
-//    }
-
-    if (self.open_id == nil) {
+    if ((self.avatar_large_url == nil) || ([self.avatar_large_url isKindOfClass:[NSNull class]])) {
+        [defaults setObject:nil forKey:AVATAR_LARGE_URL];
+    }else {
+        [defaults setObject:self.avatar_large_url forKey:AVATAR_LARGE_URL];
+    }
+    
+    if (self.open_id == nil || [self.open_id isKindOfClass:[NSNull class]]) {
         [defaults setObject:nil forKey:OPEN_ID];
-    }else if (![self.open_id isKindOfClass:[NSNull class]]) {
+    }else {
         [defaults setObject:self.open_id forKey:OPEN_ID];
     }
     

@@ -35,6 +35,7 @@
 @property (strong, nonatomic) UIImageView *imageView;
 @property (strong, nonatomic) UINavigationController *fillingInfoNavController;
 @property (nonatomic) BOOL isLoginLayout;
+@property (strong, nonatomic) NSString *isIntoWhere;
 
 @end
 
@@ -101,16 +102,19 @@ static double ICON_INITIAL_SIZE = 147.5;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getWeixinData:) name:@"weixinIfo" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getWeiboData:) name:@"weiboIfo" object:nil];
     
+    self.isIntoWhere = nil;
     
 }
 
 //存储微信数据
-- (void)getWeixinData:(NSNotification *)noti{
+- (void)getWeixinData:(NSNotification *)noti {
     User *user = [User new];
-    user.username = noti.object[@"username"];
+    user.username = [noti.object[@"username"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     user.open_id = noti.object[@"openid"];
     user.avatar_url = noti.object[@"avatar_url"];
+    user.avatar_large_url = noti.object[@"avatar_large_url"];
     
+    [[NSUserDefaults standardUserDefaults] setObject:user.open_id forKey:@"open_id"];
     [[BLHTTPClient sharedBLHTTPClient] thirdParty:user success:^(NSURLSessionDataTask *task, id responseObject) {
         
         User *thirdLoginInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
@@ -118,8 +122,8 @@ static double ICON_INITIAL_SIZE = 147.5;
         
         if(responseObject[@"user"][@"profile"] && responseObject[@"user"][@"partner"]){
             //进入menu
-            
-            NSLog(@"OK======");
+            self.isIntoWhere = @"menu";
+            //NSLog(@"OK======");
             BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
             BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
             UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
@@ -132,22 +136,24 @@ static double ICON_INITIAL_SIZE = 147.5;
         } else {
             //进入填写个人信息
             NSLog(@"=====NULL======");
-        
+            self.isIntoWhere = @"profile";
             [self dismissViewControllerAnimated:NO completion:nil];
             [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
         }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
-        NSLog(@"failure======");
+        NSLog(@"failure, error: %@.", error.localizedDescription);
     }];
 
 }
 //存储微博数据
-- (void)getWeiboData:(NSNotification*)noti{
+- (void)getWeiboData:(NSNotification*)noti {
+    
     User *user = [User new];
     user.open_id = noti.object[@"openid"];
     user.avatar_url = noti.object[@"avatar_url"];
+    user.avatar_large_url = noti.object[@"avatar_large_url"];
     user.username = [noti.object[@"username"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     [[NSUserDefaults standardUserDefaults] setObject:user.open_id forKey:@"open_id"];
@@ -156,8 +162,8 @@ static double ICON_INITIAL_SIZE = 147.5;
         [thirdLoginInfo save];
         
         if(responseObject[@"user"][@"profile"] && responseObject[@"user"][@"partner"])  {
-            //    进入login
-            
+            //    进入menu
+            self.isIntoWhere = @"menu";
             NSLog(@"OK======");
             BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
             BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
@@ -172,7 +178,7 @@ static double ICON_INITIAL_SIZE = 147.5;
         } else {
             //    进入signup
             NSLog(@"=====NULL======");
-            
+             self.isIntoWhere = @"profile";
             [self dismissViewControllerAnimated:NO completion:nil];
             [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
         }
@@ -180,6 +186,7 @@ static double ICON_INITIAL_SIZE = 147.5;
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"failure, error: %@.", error.localizedDescription);
     }];
+    
 }
 
 
@@ -192,6 +199,12 @@ static double ICON_INITIAL_SIZE = 147.5;
 #pragma mark --通过cookie判断登录状态
 - (void)viewWillAppear:(BOOL)animated {
     // NSLog(@"deviceToken=-=-=-%@", blDelegate.deviceToken);
+    
+    if ([self.isIntoWhere  isEqual: @"menu"]) {
+        return;
+    } else if ([self.isIntoWhere  isEqual: @"profile"]) {
+        return;
+    } else {
     // 获取cookie，判断登录状态
     NSHTTPCookie *userIdCookie = [self findCookieByName:@"user_id" isExpiredBy:(NSDate *)[NSDate date]];
     NSHTTPCookie *rememberTokenCookie = [self findCookieByName:@"remember_token" isExpiredBy:[NSDate date]];
@@ -199,18 +212,19 @@ static double ICON_INITIAL_SIZE = 147.5;
     if (userIdCookie && rememberTokenCookie) {
         NSDictionary *dic = [[NSDictionary alloc] init];
         dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
-        User *user = [User new];
-        user.userId = dic[@"user_id"];
-        user.username = dic[@"username"];
-        [user save];
         
         if (dic[@"user_id"]) {
-            
+            User *user = [User new];
+            user.userId = dic[@"user_id"];
+
             [[BLHTTPClient sharedBLHTTPClient] getUserIfo:user success:^(NSURLSessionDataTask *task, id responseObject) {
                 
                 User *userInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
                 [userInfo save];
-                if (!(responseObject[@"user"][@"profile"] && !responseObject[@"user"][@"partner"]) && (!([responseObject[@"user"][@"profile"] isKindOfClass:[NSNull class]]) && !([responseObject[@"user"][@"partner"] isKindOfClass:[NSNull class]]))) {//如果profile或partner不为空，从服务器获取数据应判断<null>
+                if ((responseObject[@"user"][@"profile"] &&
+                     responseObject[@"user"][@"partner"]) &&
+                    (!([responseObject[@"user"][@"profile"] isKindOfClass:[NSNull class]]) &&
+                     !([responseObject[@"user"][@"partner"] isKindOfClass:[NSNull class]]))) {//如果profile或partner不为空，从服务器获取数据应判断<null>
                     // 进入menu
                     BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
                     BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
@@ -233,6 +247,7 @@ static double ICON_INITIAL_SIZE = 147.5;
         }
     }
     [self showLoginUI];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

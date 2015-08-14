@@ -179,6 +179,14 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 }
 
 #pragma mark - Delegates
+
+#pragma mark BLMatchStopLocationDelegate
+- (void)didFinishLogout{
+    
+    [_locationManager stopUpdatingLocation];
+    NSLog(@"-------------success--------------");
+}
+
 #pragma mark Picker View Delegate and Data Source
 - (NSInteger)numberOfRowsInPickerView:(BLPickerView *)pickerView {
     return _arrayDistanceData.count;
@@ -203,16 +211,28 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
         NSLog(@"latitude %+.6f, longitude %+.6f\n",
               location.coordinate.latitude,
               location.coordinate.longitude);
-        self.currentUser.latitude = [NSNumber numberWithDouble:location.coordinate.latitude];
-        self.currentUser.longitude = [NSNumber numberWithDouble:location.coordinate.longitude];
-        [[BLHTTPClient sharedBLHTTPClient] updateLocation:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
-            NSLog(@"Update location successed.");
-            self.hasUpdateFirstLoaction = YES;
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Can't connnect to server, please try again later.", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            [av show];
-            [self stopMatching];
-        }];
+        User *locationUser = [User new];
+        locationUser.latitude = [NSNumber numberWithDouble:location.coordinate.latitude];
+        locationUser.longitude = [NSNumber numberWithDouble:location.coordinate.longitude];
+        
+        NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+        locationUser.userId = dic[@"user_id"];
+        
+        if (!(locationUser.userId == nil) && !(locationUser.longitude) && !(locationUser.latitude)) {
+            return;
+        } else {
+            [[BLHTTPClient sharedBLHTTPClient] updateLocation:locationUser success:^(NSURLSessionDataTask *task, id responseObject) {
+                NSLog(@"Update location successed.");
+                self.hasUpdateFirstLoaction = YES;
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                
+                NSLog(@"erroo == %@", error.localizedDescription);
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Can't connnect to server, please try again later.", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                [av show];
+                [self stopMatching];
+            }];
+
+        }
     }
 }
 
@@ -352,18 +372,22 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
                 //update location
                 [self startStandardUpdates];
             }];
+            NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+            User *user = [User new];
+            user.userId = dic[@"user_id"];
             
             //send http request to update match state
-            [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventStartMatching distance:self.distance matchedUser:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-                NSLog(@"start matching");
-            } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                NSLog(@"start match failed.");
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Matching failed, please try again later", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
-                [av show];
-                [self stopMatching];
-                self.matchSwith.on = NO;
-            }];
-            
+                [[BLHTTPClient sharedBLHTTPClient] match:user event:BLMatchEventStartMatching distance:self.distance matchedUser:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
+                    NSLog(@"start matching");
+                    
+                } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                    NSLog(@"start match failed.");
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Matching failed, please try again later", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
+                    [av show];
+                    [self stopMatching];
+                    self.matchSwith.on = NO;
+                }];
+
             //change current state
             [self.currentUser updateState:BLMatchStateMatching];
             break;

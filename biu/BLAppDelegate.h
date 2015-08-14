@@ -79,6 +79,7 @@
 @property (strong, nonatomic)NSString *openid;//第三方登录唯一标识
 @property (strong, nonatomic)NSString *username;//用户名
 @property (strong, nonatomic)NSString *avatar_url;//头像地址
+@property (strong, nonatomic)NSString *avatar_large_url;//大像素头像
 
 @property (strong,nonatomic)TencentOAuth *tencentOAuth;
 @property (strong, nonatomic)WeiboSDK *weiboOAth;
