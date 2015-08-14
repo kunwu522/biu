@@ -142,6 +142,20 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
         make.centerY.equalTo(self.matchedImageView.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.0f]);
         make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:160.0f]]);
     }];
+    
+        BLAppDelegate *blDelegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
+        NSDictionary *dic = [[NSDictionary alloc] init];
+        dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+        User *user = [User new];
+        user.userId = dic[@"user_id"];
+    
+        if (blDelegate.deviceToken && user.userId) {
+            [[BLHTTPClient sharedBLHTTPClient] registToken:blDelegate.deviceToken user:user success:^(NSURLSessionDataTask *task, id responseObject) {
+                NSLog(@"Regist device token successed.");
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                NSLog(@"Regist device token failed. error: %@", error.localizedDescription);
+            }];
+        }
 }
 
 - (void)viewDidAppear:(BOOL)animated {

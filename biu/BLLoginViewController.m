@@ -69,22 +69,22 @@
 
 - (void)viewDidDisappear:(BOOL)animated{
     
-    BLAppDelegate *blDelegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
-    //    BLAppDelegate *blDelegate = [[BLAppDelegate alloc] init];
-    NSLog(@"deviceTokenLogin==%@", blDelegate.deviceToken);
-    
-    NSDictionary *dic = [[NSDictionary alloc] init];
-    dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
-    User *user = [User new];
-    user.userId = dic[@"user_id"];
-    user.token = dic[@"device_token"];
-    if (user.token && dic[@"device_token"]) {
-        [[BLHTTPClient sharedBLHTTPClient] registToken:dic[@"device_token"] user:user success:^(NSURLSessionDataTask *task, id responseObject) {
-            NSLog(@"Regist device token successed.");
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            NSLog(@"Regist device token failed.");
-        }];
-    }
+//    BLAppDelegate *blDelegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
+//    //    BLAppDelegate *blDelegate = [[BLAppDelegate alloc] init];
+//    NSLog(@"deviceTokenLogin==%@", blDelegate.deviceToken);
+//    
+//    NSDictionary *dic = [[NSDictionary alloc] init];
+//    dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+//    User *user = [User new];
+//    user.userId = dic[@"user_id"];
+//    user.token = dic[@"device_token"];
+//    if (user.token && dic[@"device_token"]) {
+//        [[BLHTTPClient sharedBLHTTPClient] registToken:dic[@"device_token"] user:user success:^(NSURLSessionDataTask *task, id responseObject) {
+//            NSLog(@"Regist device token successed.");
+//        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//            NSLog(@"Regist device token failed.");
+//        }];
+//    }
 }
 
 #pragma mark Layout
@@ -388,7 +388,7 @@
 - (void)wechatLogin:(id)sender {
     
     if ([WXApi isWXAppInstalled] == NO) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"未安装微信客户端，" message:@"是否现在去下载" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"未安装微信客户端，                 是否现在去下载？" message:nil delegate:self cancelButtonTitle:@"以后再说" otherButtonTitles:@"现在下载", nil];
         [alertView show];
     } else {
     SendAuthReq *req = [[SendAuthReq alloc] init];
@@ -399,7 +399,7 @@
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
+    if (buttonIndex == 1) {
         
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[WXApi getWXAppInstallUrl]]];
     }

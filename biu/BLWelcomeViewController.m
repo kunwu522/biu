@@ -197,7 +197,7 @@ static double ICON_INITIAL_SIZE = 147.5;
 
 
 #pragma mark --通过cookie判断登录状态
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated {
     sleep(1);
     // NSLog(@"deviceToken=-=-=-%@", blDelegate.deviceToken);
     
@@ -206,53 +206,55 @@ static double ICON_INITIAL_SIZE = 147.5;
     } else if ([self.isIntoWhere  isEqual: @"profile"]) {
         return;
     } else {
+        
     // 获取cookie，判断登录状态
     NSHTTPCookie *userIdCookie = [self findCookieByName:@"user_id" isExpiredBy:(NSDate *)[NSDate date]];
     NSHTTPCookie *rememberTokenCookie = [self findCookieByName:@"remember_token" isExpiredBy:[NSDate date]];
     
-    if (userIdCookie && rememberTokenCookie) {
-        NSDictionary *dic = [[NSDictionary alloc] init];
-        dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+    NSDictionary *dic = [[NSDictionary alloc] init];
+    dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+    User *user = [User new];
+    user.userId = dic[@"user_id"];
         
-        if (dic[@"user_id"]) {
-            User *user = [User new];
-            user.userId = dic[@"user_id"];
-
-            [[BLHTTPClient sharedBLHTTPClient] getUserIfo:user success:^(NSURLSessionDataTask *task, id responseObject) {
-                
-                User *userInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
-                [userInfo save];
-                if ((responseObject[@"user"][@"profile"] &&
-                     responseObject[@"user"][@"partner"]) &&
-                    (!([responseObject[@"user"][@"profile"] isKindOfClass:[NSNull class]]) &&
-                     !([responseObject[@"user"][@"partner"] isKindOfClass:[NSNull class]]))) {//如果profile或partner不为空，从服务器获取数据应判断<null>
-                    // 进入menu
-                    BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
-                    BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
-                    UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
-                    masterNavViewController.navigationBarHidden = YES;
-                    // Create BL Menu view controller
-                    BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
-                                menuViewController:menuViewController];
-                    [self dismissViewControllerAnimated:NO completion:nil];
-                    [self presentViewController:menuNavController animated:YES completion:nil];
-                        
-                }else{
-                    // 进入profile
-                    [self dismissViewControllerAnimated:NO completion:nil];
-                    [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
-                }
-                
-            } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                NSLog(@"Failed, error: %@", error.localizedDescription);
-            }];
-        }
+    if ((userIdCookie) && (rememberTokenCookie) && (dic[@"user_id"])) {
+        
+        [[BLHTTPClient sharedBLHTTPClient] getUserIfo:user success:^(NSURLSessionDataTask *task, id responseObject) {
+            
+            User *userInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
+            [userInfo save];
+            if ((responseObject[@"user"][@"profile"] &&
+                 responseObject[@"user"][@"partner"]) &&
+                (!([responseObject[@"user"][@"profile"] isKindOfClass:[NSNull class]]) &&
+                 !([responseObject[@"user"][@"partner"] isKindOfClass:[NSNull class]]))) {//如果profile或partner不为空，从服务器获取数据应判断<null>
+                // 进入menu
+                BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
+                BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
+                UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
+                masterNavViewController.navigationBarHidden = YES;
+                // Create BL Menu view controller
+                BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
+                            menuViewController:menuViewController];
+                [self dismissViewControllerAnimated:NO completion:nil];
+                [self presentViewController:menuNavController animated:YES completion:nil];
+                    
+            }else{
+                // 进入profile
+                [self dismissViewControllerAnimated:NO completion:nil];
+                [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
+            }
+            
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"Failed, error: %@", error.localizedDescription);
+        }];
+        
+    } else {
+        [self showLoginUI];
     }
-    [self showLoginUI];
+    
     }
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
+//- (void)viewDidDisappear:(BOOL)animated {
 //    BLAppDelegate *blDelegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
 //    NSDictionary *dic = [[NSDictionary alloc] init];
 //    dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
@@ -267,7 +269,7 @@ static double ICON_INITIAL_SIZE = 147.5;
 //        }];
 //    }
 
-}
+//}
 
 #pragma mark --取出cookie
 - (NSHTTPCookie *) findCookieByName:(NSString *)name isExpiredBy:(NSDate *)time {

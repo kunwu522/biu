@@ -295,7 +295,8 @@
 
 - (void)wechatLogin:(id)sender {
     if ([WXApi isWXAppInstalled] == NO) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"尚未安装微信客户端" message:@"是否安装" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"未安装微信客户端，                 是否现在去下载？" message:nil delegate:self cancelButtonTitle:@"以后再说" otherButtonTitles:@"现在下载", nil];
+        [alertView setAlertViewStyle:UIAlertViewStyleDefault];
         [alertView show];
     }else {
         SendAuthReq *req = [[SendAuthReq alloc] init];
@@ -306,7 +307,7 @@
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
+    if (buttonIndex == 1) {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[WXApi getWXAppInstallUrl]]];
     }
 }
