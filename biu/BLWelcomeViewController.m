@@ -198,6 +198,7 @@ static double ICON_INITIAL_SIZE = 147.5;
 
 #pragma mark --通过cookie判断登录状态
 - (void)viewWillAppear:(BOOL)animated {
+    sleep(1);
     // NSLog(@"deviceToken=-=-=-%@", blDelegate.deviceToken);
     
     if ([self.isIntoWhere  isEqual: @"menu"]) {
@@ -235,6 +236,7 @@ static double ICON_INITIAL_SIZE = 147.5;
                                 menuViewController:menuViewController];
                     [self dismissViewControllerAnimated:NO completion:nil];
                     [self presentViewController:menuNavController animated:YES completion:nil];
+                        
                 }else{
                     // 进入profile
                     [self dismissViewControllerAnimated:NO completion:nil];
@@ -251,19 +253,19 @@ static double ICON_INITIAL_SIZE = 147.5;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-    BLAppDelegate *blDelegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSDictionary *dic = [[NSDictionary alloc] init];
-    dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
-    User *user = [User new];
-    user.userId = dic[@"user_id"];
-    
-    if (blDelegate.deviceToken && user.userId) {
-        [[BLHTTPClient sharedBLHTTPClient] registToken:blDelegate.deviceToken user:user success:^(NSURLSessionDataTask *task, id responseObject) {
-            NSLog(@"Regist device token successed.");
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            NSLog(@"Regist device token failed. error: %@", error.localizedDescription);
-        }];
-    }
+//    BLAppDelegate *blDelegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
+//    NSDictionary *dic = [[NSDictionary alloc] init];
+//    dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+//    User *user = [User new];
+//    user.userId = dic[@"user_id"];
+//    
+//    if (blDelegate.deviceToken && user.userId) {
+//        [[BLHTTPClient sharedBLHTTPClient] registToken:blDelegate.deviceToken user:user success:^(NSURLSessionDataTask *task, id responseObject) {
+//            NSLog(@"Regist device token successed.");
+//        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//            NSLog(@"Regist device token failed. error: %@", error.localizedDescription);
+//        }];
+//    }
 
 }
 

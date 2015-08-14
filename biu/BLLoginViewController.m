@@ -20,8 +20,7 @@
 #import "BLMenuViewController.h"
 #import "BLMenuNavController.h"
 
-
-@interface BLLoginViewController () <UIGestureRecognizerDelegate, MBProgressHUDDelegate> {
+@interface BLLoginViewController () <UIGestureRecognizerDelegate, MBProgressHUDDelegate, UIAlertViewDelegate> {
     MBProgressHUD *_HUD;
 }
 
@@ -241,6 +240,20 @@
 }
 
 
+
+//- (UINavigationController *)fillingInfoNavController {
+//    if (!_fillingInfoNavController) {
+//        // Create filling information navigation controller
+//        BLProfileViewController *profileViewController = [[BLProfileViewController alloc] initWithNibName:nil bundle:nil];
+//        profileViewController.profileViewType = BLProfileViewTypeCreate;
+//        _fillingInfoNavController = [[UINavigationController alloc] initWithRootViewController:profileViewController];
+//        _fillingInfoNavController.navigationBarHidden = YES;
+//        
+//    }
+//    return _fillingInfoNavController;
+//}
+
+
 - (void)forgotPassword:(id)sender {
     BLForgotPasswordViewController *forgotPwViewController = [[BLForgotPasswordViewController alloc] init];
     [self presentViewController:forgotPwViewController animated:YES completion:nil];
@@ -373,10 +386,24 @@
 }
 
 - (void)wechatLogin:(id)sender {
+    
+    if ([WXApi isWXAppInstalled] == NO) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"未安装微信客户端，" message:@"是否现在去下载" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
+        [alertView show];
+    } else {
     SendAuthReq *req = [[SendAuthReq alloc] init];
     req.scope = @"snsapi_userinfo";//snsapi_base只能获取到openid，意义不大，所以使用snsapi_userinfo
     req.state = kAppDescription;//随便数字
     [WXApi sendReq:req];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[WXApi getWXAppInstallUrl]]];
+    }
+
 }
 
 #pragma mark  微博登录
@@ -393,11 +420,23 @@
 
 - (void)weiboLogin:(id)sender{
 
-    WBAuthorizeRequest *request = [WBAuthorizeRequest request];
-    request.redirectURI = kWeiBoRedirectURL;
-    request.scope = @"all";
-    request.userInfo = @{@"myKey":@"myValue"};
+    WBSendMessageToWeiboRequest *request = [WBSendMessageToWeiboRequest requestWithMessage:[self messageToShare]];
+    request.userInfo = @{@"ShareMessageFrom" : @"SendMessageToWeiboViewController",
+                         @"Other_Info_1" : [NSNumber numberWithInt:123]};
     [WeiboSDK sendRequest:request];
+
+    WBAuthorizeRequest *req = [WBAuthorizeRequest request];
+    req.redirectURI = kWeiBoRedirectURL;
+    req.scope = @"all";
+    req.userInfo = @{@"myKey":@"myValue"};
+    [WeiboSDK sendRequest:req];
+}
+
+- (WBMessageObject *)messageToShare {
+    WBMessageObject *message = [WBMessageObject message];
+
+    message.text = @"测试使用";
+    return message;
 }
 
 - (UITapGestureRecognizer *)tapGestureRecognizer {
