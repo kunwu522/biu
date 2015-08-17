@@ -419,24 +419,14 @@
 }
 
 - (void)weiboLogin:(id)sender{
-
-    WBSendMessageToWeiboRequest *request = [WBSendMessageToWeiboRequest requestWithMessage:[self messageToShare]];
-    request.userInfo = @{@"ShareMessageFrom" : @"SendMessageToWeiboViewController",
-                         @"Other_Info_1" : [NSNumber numberWithInt:123]};
+    WBAuthorizeRequest *request = [WBAuthorizeRequest request];
+    request.redirectURI = kWeiBoRedirectURL;
+    request.scope = @"all";
+    request.userInfo = @{@"SSO_From": @"SendMessageToWeiboViewController",
+                         @"Other_Info_1": [NSNumber numberWithInt:123],
+                         @"Other_Info_2": @[@"obj1", @"obj2"],
+                         @"Other_Info_3": @{@"key1": @"obj1", @"key2": @"obj2"}};
     [WeiboSDK sendRequest:request];
-
-    WBAuthorizeRequest *req = [WBAuthorizeRequest request];
-    req.redirectURI = kWeiBoRedirectURL;
-    req.scope = @"all";
-    req.userInfo = @{@"myKey":@"myValue"};
-    [WeiboSDK sendRequest:req];
-}
-
-- (WBMessageObject *)messageToShare {
-    WBMessageObject *message = [WBMessageObject message];
-
-    message.text = @"测试使用";
-    return message;
 }
 
 - (UITapGestureRecognizer *)tapGestureRecognizer {

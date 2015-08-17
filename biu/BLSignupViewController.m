@@ -216,6 +216,11 @@
         if (blDelegate.deviceToken && user.userId) {
             [[BLHTTPClient sharedBLHTTPClient] registToken:blDelegate.deviceToken user:user success:^(NSURLSessionDataTask *task, id responseObject) {
                 NSLog(@"Regist device token successed.");
+                // 获取cookie，判断登录状态
+                NSHTTPCookie *userIdCookie = [self findCookieByName:@"user_id" isExpiredBy:(NSDate *)[NSDate date]];
+                NSHTTPCookie *rememberTokenCookie = [self findCookieByName:@"remember_token" isExpiredBy:[NSDate date]];
+                
+                NSLog(@"%@-=-=-=-=--=-=-%@",userIdCookie,rememberTokenCookie);
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
                 NSLog(@"Regist device token failed.");
             }];
@@ -233,6 +238,20 @@
         [alertV show];
     }];
     
+}
+
+#pragma mark --取出cookie
+- (NSHTTPCookie *) findCookieByName:(NSString *)name isExpiredBy:(NSDate *)time {
+    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    if (!cookies || cookies.count == 0) {
+        return nil;
+    }
+    for (NSHTTPCookie *cookie in cookies) {
+        if ([cookie.name isEqualToString:name] && [cookie.expiresDate compare:time] == NSOrderedDescending) {
+            return cookie;
+        }
+    }
+    return nil;
 }
 
 - (void)getCode:(id)sender {
@@ -273,25 +292,27 @@
 }
 
 - (void)weiboLogin:(id)sender {
-    WBSendMessageToWeiboRequest *request = [WBSendMessageToWeiboRequest requestWithMessage:[self messageToShare]];
-    request.userInfo = @{@"ShareMessageFrom" : @"SendMessageToWeiboViewController",
-                         @"Other_Info_1" : [NSNumber numberWithInt:123]};
-    [WeiboSDK sendRequest:request];
+//    WBSendMessageToWeiboRequest *req = [WBSendMessageToWeiboRequest requestWithMessage:[self messageToShare]];
+//    req.userInfo = @{@"ShareMessageFrom" : @"SendMessageToWeiboViewController",
+//                         @"Other_Info_1" : [NSNumber numberWithInt:123]};
+//    [WeiboSDK sendRequest:req];
     
-    WBAuthorizeRequest *req = [WBAuthorizeRequest request];
-    req.redirectURI = kWeiBoRedirectURL;
-    req.scope = @"all";
-    req.userInfo = @{@"SSO_From" : @"SendMessageToWeiboViewController",
-                     @"myKey" : @"myValue"};
-    [WeiboSDK sendRequest:req];
+    WBAuthorizeRequest *request = [WBAuthorizeRequest request];
+    request.redirectURI = kWeiBoRedirectURL;
+    request.scope = @"all";
+    request.userInfo = @{@"SSO_From": @"SendMessageToWeiboViewController",
+                         @"Other_Info_1": [NSNumber numberWithInt:123],
+                         @"Other_Info_2": @[@"obj1", @"obj2"],
+                         @"Other_Info_3": @{@"key1": @"obj1", @"key2": @"obj2"}};
+    [WeiboSDK sendRequest:request];
 
 }
-- (WBMessageObject *)messageToShare {
-    WBMessageObject *message = [WBMessageObject message];
-    
-    message.text = @"测试使用";
-    return message;
-}
+//- (WBMessageObject *)messageToShare {
+//    WBMessageObject *message = [WBMessageObject message];
+//    向微博发送信息
+//    message.text = @"测试使用";
+//    return message;
+//}
 
 - (void)wechatLogin:(id)sender {
     if ([WXApi isWXAppInstalled] == NO) {

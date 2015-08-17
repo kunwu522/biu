@@ -297,6 +297,7 @@
 }
 
 - (void)signup:(id)sender {
+    
     NSString *errMsg = @"";
     errMsg = [User validatePhoneNumber:_tfPhoneNumber.text];
     if (errMsg) {

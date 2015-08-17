@@ -171,8 +171,10 @@
     BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
     [delegate.passwordItem resetKeychainItem];//清keychain
     delegate.currentUser = nil;
-    [NSUserDefaults resetStandardUserDefaults];//清userDefaults
-    
+    [NSUserDefaults resetStandardUserDefaults];//清userDefaults,不好用
+
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"user_id"];
+
     //Clear Cookies
     [self removeCookieByName:@"user_id"];
     [self removeCookieByName:@"remember_token"];

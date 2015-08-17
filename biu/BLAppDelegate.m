@@ -98,7 +98,7 @@
     
     //    向新浪微博注册
     [WeiboSDK enableDebugMode:YES];
-    [WeiboSDK registerApp:@"747887283"];
+    [WeiboSDK registerApp:kWeiBoAppKey];
     
     return YES;
 }

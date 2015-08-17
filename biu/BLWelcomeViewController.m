@@ -22,9 +22,11 @@
 #import "BLPartnerViewController.h"
 #import "BLTextField.h"
 
-
+#define _HUDTIMING 20.0
 @interface BLWelcomeViewController () <BLSignupViewControllerDelegate, BLLoginViewControllerDelegate, MBProgressHUDDelegate>
-
+{
+    MBProgressHUD *_HUD;
+}
 @property (strong, nonatomic) UIImageView * logo;
 @property (strong, nonatomic) UILabel * biuTitle;
 @property (strong, nonatomic) UILabel * biuSubtitle;
@@ -104,6 +106,13 @@ static double ICON_INITIAL_SIZE = 147.5;
     
     self.isIntoWhere = nil;
     
+    [self addHUD];
+}
+- (void)addHUD{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:_HUD];
+    _HUD.delegate = self;
+    _HUD.labelText = @"Loading";
 }
 
 //存储微信数据
@@ -115,6 +124,11 @@ static double ICON_INITIAL_SIZE = 147.5;
     user.avatar_large_url = noti.object[@"avatar_large_url"];
     
     [[NSUserDefaults standardUserDefaults] setObject:user.open_id forKey:@"open_id"];
+    [_HUD show:YES];
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_HUDTIMING * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [_HUD hide:YES];
+    });//20秒后执行
     [[BLHTTPClient sharedBLHTTPClient] thirdParty:user success:^(NSURLSessionDataTask *task, id responseObject) {
         
         User *thirdLoginInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
@@ -131,18 +145,20 @@ static double ICON_INITIAL_SIZE = 147.5;
             // Create BL Menu view controller
             BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
                         menuViewController:menuViewController];
+            [_HUD hide:YES];
             [self dismissViewControllerAnimated:NO completion:nil];
             [self presentViewController:menuNavController animated:YES completion:nil];
         } else {
             //进入填写个人信息
             NSLog(@"=====NULL======");
             self.isIntoWhere = @"profile";
+            [_HUD hide:YES];
             [self dismissViewControllerAnimated:NO completion:nil];
             [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
         }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+        [_HUD hide:YES];
         NSLog(@"failure, error: %@.", error.localizedDescription);
     }];
 
@@ -157,6 +173,11 @@ static double ICON_INITIAL_SIZE = 147.5;
     user.username = [noti.object[@"username"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     [[NSUserDefaults standardUserDefaults] setObject:user.open_id forKey:@"open_id"];
+    [_HUD show:YES];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_HUDTIMING * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [_HUD hide:YES];
+    });
+
     [[BLHTTPClient sharedBLHTTPClient] thirdParty:user success:^(NSURLSessionDataTask *task, id responseObject) {
         User *thirdLoginInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
         [thirdLoginInfo save];
@@ -172,6 +193,7 @@ static double ICON_INITIAL_SIZE = 147.5;
             // Create BL Menu view controller
             BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
                         menuViewController:menuViewController];
+            [_HUD hide:YES];
             [self dismissViewControllerAnimated:NO completion:nil];
             [self presentViewController:menuNavController animated:YES completion:nil];
             
@@ -179,15 +201,19 @@ static double ICON_INITIAL_SIZE = 147.5;
             //    进入signup
             NSLog(@"=====NULL======");
              self.isIntoWhere = @"profile";
+            [_HUD hide:YES];
             [self dismissViewControllerAnimated:NO completion:nil];
             [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
         }
 
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [_HUD hide:YES];
+        
         NSLog(@"failure, error: %@.", error.localizedDescription);
     }];
     
-}
+    
+   }
 
 
 - (void)didReceiveMemoryWarning {
@@ -217,7 +243,10 @@ static double ICON_INITIAL_SIZE = 147.5;
     user.userId = dic[@"user_id"];
         
     if ((userIdCookie) && (rememberTokenCookie) && (dic[@"user_id"])) {
-        
+        [_HUD show:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_HUDTIMING * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [_HUD hide:YES];
+        });//20秒后执行
         [[BLHTTPClient sharedBLHTTPClient] getUserIfo:user success:^(NSURLSessionDataTask *task, id responseObject) {
             
             User *userInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
@@ -234,23 +263,25 @@ static double ICON_INITIAL_SIZE = 147.5;
                 // Create BL Menu view controller
                 BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
                             menuViewController:menuViewController];
+                [_HUD hide:YES];
                 [self dismissViewControllerAnimated:NO completion:nil];
                 [self presentViewController:menuNavController animated:YES completion:nil];
                     
             }else{
+                [_HUD hide:YES];
                 // 进入profile
                 [self dismissViewControllerAnimated:NO completion:nil];
                 [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
             }
             
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [_HUD hide:YES];
             NSLog(@"Failed, error: %@", error.localizedDescription);
         }];
         
     } else {
         [self showLoginUI];
     }
-    
     }
 }
 

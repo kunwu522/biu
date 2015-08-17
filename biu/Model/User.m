@@ -29,12 +29,12 @@ static NSString *AVATAR_LARGE_URL = @"avatar_large_url";
     }
     
 //    NSString *regex = @"[A-Za-z0-9]{1,16}";
-    NSString *regex = @".{1,16}";
+    NSString *regex = @"(\\w{1,16})";
     NSPredicate *usernameTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
     if ([usernameTest evaluateWithObject:username]) {
         return nil;
     } else {
-        return @"Username should have 6-16 characters, and only numbers and letters are allowed.";
+        return @"Username should have 1-16 characters";
     }
 }
 
@@ -43,12 +43,13 @@ static NSString *AVATAR_LARGE_URL = @"avatar_large_url";
     if (!password) {
         return @"Password can not be empty.";
     }
-    NSString *pwRegStr = @"((?=.*\\d)(?=.*[A-Z])(?=.*[a-z]).{6,16})";
+    NSString *pwRegStr = @"(\\w{6,16})";
+//    NSString *pwRegStr = @"((?=.*\\d)(?=.*[A-Z])(?=.*[a-z]).{6,16})";
     NSPredicate *pwTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", pwRegStr];
     if ([pwTest evaluateWithObject:password]) {
         return nil;
     } else {
-        return @"Password should have 6-16 characters, including at least 1 uppercase and 1 lowercase and 1 digit.";
+        return @"Password should have 6-16 characters";
     }
 }
 

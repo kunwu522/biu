@@ -150,15 +150,14 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
     UIImageView *bigImageView = [[UIImageView alloc] init];
     
     [bigImageView sd_setImageWithURL:[NSURL URLWithString:self.avatar_large_url] placeholderImage:self.avatarImageView.image options:SDWebImageRefreshCached | SDWebImageHandleCookies completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        
-        NSLog(@"===========imagesuccess=============");
+        //下载图片完成
         
     }];
 
     BLFaceView *faceBigview = [[BLFaceView alloc]initWithFrame:[[UIScreen mainScreen]bounds] withImage:bigImageView.image withPointRect:CGRectMake(_avatarImageView.frame.origin.x, _avatarImageView.frame.origin.y+64, _avatarImageView.frame.size.width, _avatarImageView.frame.size.height)];//从哪个点往出展示
     
-//    [faceBigview setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"login_signup_background.png"]]];
-    faceBigview.backgroundColor = [UIColor redColor];
+    [faceBigview setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"login_signup_background.png"]]];
+//    faceBigview.backgroundColor = [UIColor redColor];
     
     [[[UIApplication sharedApplication].windows objectAtIndex:0] addSubview:faceBigview];
     faceBigview.alpha = 0.0f;
