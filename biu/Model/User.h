@@ -16,9 +16,8 @@ typedef NS_ENUM(NSInteger, BLMatchState) {
     BLMatchStateStop = 0,
     BLMatchStateMatching = 1,
     BLMatchStateMatched = 2,
-    BLMatchStateAccepted = 3,
-    BLMatchStateRejected = 4,
-    BLMatchStateCommunication = 5
+    BLMatchStateWaiting = 3,
+    BLMatchStateCommunication = 4
 };
 
 typedef NS_ENUM(NSInteger, BLMatchEvent) {
@@ -28,6 +27,20 @@ typedef NS_ENUM(NSInteger, BLMatchEvent) {
     BLMatchEventReject = 3,
     BLMatchEventTimout = 4,
     BLMatchEventClose = 5
+};
+
+typedef NS_ENUM(NSUInteger, BLCoupleState) {
+    BLCoupleStateStart = 0,
+    BLCoupleStateCommunication,
+    BLCoupleStateFinish
+};
+
+typedef NS_ENUM(NSUInteger, BLCoupleResult) {
+    BLCoupleResultNone = 0,
+    BLCoupleResultDate,
+    BLCoupleResultReject,
+    BLCoupleResultBeenRejected,
+    BLCoupleResultTimeout
 };
 
 @property (strong, nonatomic) NSNumber *userId;

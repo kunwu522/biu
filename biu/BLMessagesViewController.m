@@ -14,6 +14,8 @@
 @property (strong, nonatomic) UIButton *btnBack;
 @property (strong, nonatomic) UIButton *btnMap;
 @property (strong, nonatomic) User *currentUser;
+@property (assign, nonatomic) NSInteger coupleState;
+@property (assign, nonatomic) NSInteger coupleResult;
 
 @end
 
@@ -39,14 +41,19 @@
     self.inputToolbar.contentView.leftBarButtonItem = nil;
     
     // Reset textView frame
-    
     [self blAppDelegate].messageDelegate = self;
     [self.view addSubview:self.btnBack];
     [self.view addSubview:self.btnMap];
-    
     self.messageData = [[BLMessageData alloc] init];
+    [self loadLayouts];
     
-    [self layoutSubViews];
+    self.coupleState = -1;
+    self.coupleResult = -1;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveCloseNotification) name:@"close conversation" object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -67,7 +74,13 @@
     [self blAppDelegate].notificationDelegate = nil;
 }
 
-- (void)layoutSubViews {
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"close conversation" object:nil];
+}
+
+#pragma mark Layouts
+- (void)loadLayouts {
     [self.btnMap mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.btnMap.superview).with.offset([BLGenernalDefinition resolutionForDevices:31.2f]);
         make.right.equalTo(self.btnMap.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.8f]);
@@ -351,6 +364,45 @@
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"对方已经退出对话" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
     av.tag = 1;
     [av show];
+}
+
+#pragma mark - Private methods
+- (void)fetchUserMatchedInfo {
+    [[BLHTTPClient sharedBLHTTPClient] getMatchInfo:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
+        [self.currentUser updateState:[[[responseObject objectForKey:@"user"] objectForKey:@"state"] integerValue]];
+        if ([[responseObject objectForKey:@"state"] integerValue]) {
+            self.coupleState = [[responseObject objectForKey:@"state"] integerValue];
+            self.coupleResult = [[responseObject objectForKey:@"result"] integerValue];
+        }
+        [self reloadViewController];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"Get match info failed, error: %@.", error.localizedDescription);
+    }];
+}
+
+- (void)reloadViewController {
+    if (self.coupleState == -1) {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"对方已经退出对话" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        av.tag = 1;
+        [av show];
+        return;
+    }
+    
+    switch (self.coupleState) {
+        case BLCoupleStateStart:
+        {
+            NSLog(@"invailed state.");
+            break;
+        }
+        case BLCoupleStateCommunication:
+        {
+            NSLog(@"State is communication, stay on this view");
+            break;
+        }
+        case BLCoupleStateFinish:
+        default:
+            break;
+    }
 }
 
 #pragma mark -

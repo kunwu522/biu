@@ -33,6 +33,8 @@
 @property (strong, nonatomic) NSTimer *timer;
 @property (strong, nonatomic) NSMutableArray *dataSource;
 @property (strong, nonatomic) User *currentUser;
+@property (assign, nonatomic) NSInteger coupleState;
+@property (assign, nonatomic) NSInteger coupleResult;
 
 @end
 
@@ -59,10 +61,10 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@", [BLHTTPClient blBaseURL], self.matchedUser.userId]]
-                            placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
-                                     options:SDWebImageRefreshCached | SDWebImageHandleCookies];
+    [self fetchUserMatchedInfo];
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(updateCounter) userInfo:nil repeats:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(matchedUserAccepted) name:@"matched user accepted" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(matchedUserRejected) name:@"matched user rejected" object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -77,6 +79,13 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
     blAppDelegate.notificationDelegate = nil;
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewWillDisappear:YES];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"matched user accepted" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"matched user rejected" object:nil];
+}
+
+#pragma mark Layouts
 - (void)layoutSubViews {
     [self.background mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.background.superview);
@@ -121,7 +130,6 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
     [self.dataSource insertObject:param atIndex:0];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    [self.timer invalidate];
 }
 
 - (void)matchedUserAccepted {
@@ -142,8 +150,8 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
         NSLog(@"Timer up, back to matching view");
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"Update match state failed, error: %@", error.localizedDescription);
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:error.localizedDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        [av show];
+//        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:error.localizedDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+//        [av show];
     }];
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
@@ -252,13 +260,74 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
     [self.timer invalidate];
 }
 
+#pragma mark - Private methods
+- (void)fetchUserMatchedInfo {
+    [[BLHTTPClient sharedBLHTTPClient] getMatchInfo:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
+        [self.currentUser updateState:[[[responseObject objectForKey:@"user"] objectForKey:@"state"] integerValue]];
+        self.coupleState = [[responseObject objectForKey:@"state"] integerValue];
+        self.coupleResult = [[responseObject objectForKey:@"result"] integerValue];
+        self.matchedUser = [[User alloc] initWithDictionary:[responseObject objectForKey:@"matched_user"]];
+        
+        [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@", [BLHTTPClient blBaseURL], self.matchedUser.userId]]
+                                placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
+                                         options:SDWebImageRefreshCached | SDWebImageHandleCookies];
+        [self reloadViewController];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"Get match info failed, error: %@.", error.localizedDescription);
+    }];
+}
+
+- (void)reloadViewController {
+    switch (self.coupleState) {
+        case BLCoupleStateStart:
+        {
+            if (self.matchedUser.state == BLMatchStateWaiting) {
+                NSLog(@"Matched user accepted.");
+                [self.timer invalidate];
+                BLMessagesViewController *messageViewController = [[BLMessagesViewController alloc] init];
+                messageViewController.delegate = self;
+                messageViewController.sender = self.currentUser;
+                messageViewController.receiver = self.matchedUser;
+                [self.navigationController pushViewController:messageViewController animated:YES];
+            }
+            break;
+        }
+        case BLCoupleStateCommunication:
+        {
+            BLMessagesViewController *messageViewController = [[BLMessagesViewController alloc] init];
+            messageViewController.delegate = self;
+            messageViewController.sender = self.currentUser;
+            messageViewController.receiver = self.matchedUser;
+            [self.navigationController pushViewController:messageViewController animated:YES];
+            break;
+        }
+        case BLCoupleStateFinish:
+        {
+            if (self.coupleResult == BLCoupleResultReject) {
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            } else if (self.coupleResult == BLCoupleResultBeenRejected) {
+                [self.timer invalidate];
+                BLTableViewCellParams *param = [BLTableViewCellParams new];
+                param.text = NSLocalizedString(@"matched user rejected", nil);
+                param.icon = [UIImage imageNamed:@"warning_icon.png"];
+                param.color = [BLColorDefinition fontGreenColor];
+                [self.dataSource insertObject:param atIndex:0];
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+                [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+            break;
+        }
+        default:
+            break;
+    }
+}
 
 #pragma mark -
 #pragma mark Getter
 - (UIImageView *)avatarImageView {
     if (!_avatarImageView) {
         _avatarImageView = [[UIImageView alloc] init];
-        _avatarImageView.layer.cornerRadius = BL_AVATAR_WIDTH * 0.5f;
+        _avatarImageView.layer.cornerRadius = [BLGenernalDefinition resolutionForDevices:BL_AVATAR_WIDTH] * 0.5f;
         _avatarImageView.layer.borderColor = [[UIColor whiteColor] CGColor];
         _avatarImageView.layer.borderWidth = 2.0f;
         _avatarImageView.clipsToBounds = YES;

@@ -13,8 +13,11 @@
 #import "Masonry.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <TSMessages/TSMessage.h>
+#import <MBProgressHUD/MBProgressHUD.h>
 
-@interface BLMatchedViewController () <BLMessagesViewControllerDelegate, BLWaitingResponseViewCongtrollerDelegate, BLMatchNotificationDelegate>
+@interface BLMatchedViewController () <BLMessagesViewControllerDelegate, BLWaitingResponseViewCongtrollerDelegate, BLMatchNotificationDelegate, MBProgressHUDDelegate> {
+    MBProgressHUD *_HUD;
+}
 
 @property (strong, nonatomic) BLBlurView *blurUserInfoView;
 @property (strong, nonatomic) UIImageView *matchedUserImageView;
@@ -23,6 +26,8 @@
 @property (strong, nonatomic) UIButton *btnMatchedUserInfo;
 @property (strong, nonatomic) UIView *matchedUserInfo;
 @property (strong, nonatomic) User *currentUser;
+@property (assign, nonatomic) NSInteger coupleState;
+@property (assign, nonatomic) NSInteger coupleResult;
 
 @end
 
@@ -40,28 +45,37 @@
     [self.view addSubview:self.btnMessage];
     [self.view addSubview:self.btnMatchedUserInfo];
     [self.view addSubview:self.blurUserInfoView];
-    
     [self layoutSubViews];
+    
+    [self addHUD];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [self.matchedUserImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@rect/avatar/%@", [BLHTTPClient blBaseURL], self.matchedUser.userId]]
-                                 placeholderImage:nil
-                                          options:SDWebImageHandleCookies | SDWebImageProgressiveDownload | SDWebImageCacheMemoryOnly];
+    [super viewWillAppear:animated];
+    [self fetchUserMatchedInfo];
+//    [self.matchedUserImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@rect/avatar/%@", [BLHTTPClient blBaseURL], self.matchedUser.userId]]
+//                                 placeholderImage:nil
+//                                          options:SDWebImageHandleCookies | SDWebImageProgressiveDownload | SDWebImageCacheMemoryOnly];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(matchedUserAccepted) name:@"matched user accepted" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(matchedUserRejected) name:@"matched user rejected" object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     BLAppDelegate *blAppDelegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
     blAppDelegate.notificationDelegate = self;
-    
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     BLAppDelegate *blAppDelegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
     blAppDelegate.notificationDelegate = nil;
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:YES];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"matched user accepted" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"matched user rejected" object:nil];
 }
 
 #pragma mark Layouts
@@ -119,7 +133,9 @@
 #pragma mark -
 #pragma mark Actions
 - (void)startCommunication:(id)sender {
+    [_HUD show:YES];
     [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventAccept distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
+        [_HUD hide:YES];
         NSLog(@"Accepted matched user...");
         if (self.isMatchedUserAccepted) {
             NSLog(@"Go to message view controller");
@@ -130,11 +146,12 @@
             [self.navigationController pushViewController:messageViewController animated:YES];
         } else {
             BLWaitingResponseViewController *waitingViewController = [[BLWaitingResponseViewController alloc]initWithNibName:nil bundle:nil];
-            waitingViewController.matchedUser = self.matchedUser;
+//            waitingViewController.matchedUser = self.matchedUser;
             waitingViewController.delegate = self;
             [self.navigationController pushViewController: waitingViewController animated:YES];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [_HUD hide:YES];
         NSLog(@"start communication failed, error: %@", error);
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:error.localizedDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [av show];
@@ -151,9 +168,9 @@
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"Rejected matched user failed. error: %@", error);
     }];
-    if ([self.delegate respondsToSelector:@selector(didRejectedMatchedUser)]) {
-        [self.delegate didRejectedMatchedUser];
-    }
+//    if ([self.delegate respondsToSelector:@selector(didRejectedMatchedUser)]) {
+//        [self.delegate didRejectedMatchedUser];
+//    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -201,6 +218,73 @@
                                            type:TSMessageNotificationTypeMessage
                                        duration:TSMessageNotificationDurationEndless canBeDismissedByUser:YES];
     self.btnMessage.enabled = NO;
+}
+
+#pragma mark - Private methods
+- (void)fetchUserMatchedInfo {
+    [[BLHTTPClient sharedBLHTTPClient] getMatchInfo:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
+        [self.currentUser updateState:[[[responseObject objectForKey:@"user"] objectForKey:@"state"] integerValue]];
+        self.coupleState = [[responseObject objectForKey:@"state"] integerValue];
+        self.coupleResult = [[responseObject objectForKey:@"result"] integerValue];
+        self.matchedUser = [[User alloc] initWithDictionary:[responseObject objectForKey:@"matched_user"]];
+        SDWebImageManager *manager = [SDWebImageManager sharedManager];
+        [manager downloadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@rect/avatar/%@", [BLHTTPClient blBaseURL], self.matchedUser.userId]]
+                              options:SDWebImageHandleCookies | SDWebImageProgressiveDownload | SDWebImageCacheMemoryOnly
+                             progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                                 // progression tracking code
+                                 [_HUD show:YES];
+                             }
+                            completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                                [_HUD hide:YES];
+                                if (image) {
+                                    // do something with image
+                                    self.matchedUserImageView.image = image;
+                                }
+                            }];
+        [self reloadViewController];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"Get match info failed, error: %@.", error.localizedDescription);
+    }];
+}
+
+- (void)reloadViewController {
+    switch (self.coupleState) {
+        case BLCoupleStateStart:
+            if (self.matchedUser.state == BLMatchStateWaiting) {
+                self.isMatchedUserAccepted = YES;
+                [TSMessage showNotificationInViewController:self
+                                                      title:NSLocalizedString(@"were accepted title", nil)
+                                                   subtitle:NSLocalizedString(@"were accepted subtitle", nil)
+                                                       type:TSMessageNotificationTypeMessage
+                                                   duration:TSMessageNotificationDurationEndless canBeDismissedByUser:YES];
+            }
+            break;
+        case BLCoupleStateCommunication:
+        {
+            BLMessagesViewController *messageViewController = [[BLMessagesViewController alloc] init];
+            messageViewController.delegate = self;
+            messageViewController.sender = self.currentUser;
+            messageViewController.receiver = self.matchedUser;
+            [self.navigationController pushViewController:messageViewController animated:YES];
+            break;
+        }
+        case BLCoupleStateFinish:
+        {
+            if (self.coupleResult == BLCoupleResultReject) {
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            } else if (self.coupleResult == BLCoupleResultBeenRejected) {
+                [TSMessage showNotificationInViewController:self
+                                                      title:NSLocalizedString(@"were rejected title", nil)
+                                                   subtitle:NSLocalizedString(@"were rejected subtitle", nil)
+                                                       type:TSMessageNotificationTypeMessage
+                                                   duration:TSMessageNotificationDurationEndless canBeDismissedByUser:YES];
+                self.btnMessage.enabled = NO;
+            }
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 #pragma mark -
@@ -255,6 +339,13 @@
         _currentUser = [[User alloc] initWithFromUserDefault];
     }
     return _currentUser;
+}
+
+- (void)addHUD {
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    _HUD.labelText = @"loading";
+    _HUD.delegate = self;
+    [self.view addSubview:_HUD];
 }
 
 @end

@@ -161,8 +161,8 @@ static double ICON_INITIAL_SIZE = 147.5;
         [_HUD hide:YES];
         NSLog(@"failure, error: %@.", error.localizedDescription);
     }];
-
 }
+
 //存储微博数据
 - (void)getWeiboData:(NSNotification*)noti {
     
@@ -205,15 +205,11 @@ static double ICON_INITIAL_SIZE = 147.5;
             [self dismissViewControllerAnimated:NO completion:nil];
             [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
         }
-
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [_HUD hide:YES];
-        
         NSLog(@"failure, error: %@.", error.localizedDescription);
     }];
-    
-    
-   }
+}
 
 
 - (void)didReceiveMemoryWarning {
@@ -224,7 +220,6 @@ static double ICON_INITIAL_SIZE = 147.5;
 
 #pragma mark --通过cookie判断登录状态
 - (void)viewDidAppear:(BOOL)animated {
-    sleep(1);
     // NSLog(@"deviceToken=-=-=-%@", blDelegate.deviceToken);
     
     if ([self.isIntoWhere  isEqual: @"menu"]) {
@@ -232,56 +227,56 @@ static double ICON_INITIAL_SIZE = 147.5;
     } else if ([self.isIntoWhere  isEqual: @"profile"]) {
         return;
     } else {
+        // 获取cookie，判断登录状态
+        NSHTTPCookie *userIdCookie = [self findCookieByName:@"user_id" isExpiredBy:(NSDate *)[NSDate date]];
+        NSHTTPCookie *rememberTokenCookie = [self findCookieByName:@"remember_token" isExpiredBy:[NSDate date]];
         
-    // 获取cookie，判断登录状态
-    NSHTTPCookie *userIdCookie = [self findCookieByName:@"user_id" isExpiredBy:(NSDate *)[NSDate date]];
-    NSHTTPCookie *rememberTokenCookie = [self findCookieByName:@"remember_token" isExpiredBy:[NSDate date]];
-    
-    NSDictionary *dic = [[NSDictionary alloc] init];
-    dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
-    User *user = [User new];
-    user.userId = dic[@"user_id"];
-        
-    if ((userIdCookie) && (rememberTokenCookie) && (dic[@"user_id"])) {
-        [_HUD show:YES];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_HUDTIMING * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [_HUD hide:YES];
-        });//20秒后执行
-        [[BLHTTPClient sharedBLHTTPClient] getUserIfo:user success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dic = [[NSDictionary alloc] init];
+        dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+        User *user = [User new];
+        user.userId = dic[@"user_id"];
             
-            User *userInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
-            [userInfo save];
-            if ((responseObject[@"user"][@"profile"] &&
-                 responseObject[@"user"][@"partner"]) &&
-                (!([responseObject[@"user"][@"profile"] isKindOfClass:[NSNull class]]) &&
-                 !([responseObject[@"user"][@"partner"] isKindOfClass:[NSNull class]]))) {//如果profile或partner不为空，从服务器获取数据应判断<null>
-                // 进入menu
-                BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
-                BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
-                UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
-                masterNavViewController.navigationBarHidden = YES;
-                // Create BL Menu view controller
-                BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
-                            menuViewController:menuViewController];
+        if ((userIdCookie) && (rememberTokenCookie) && (dic[@"user_id"])) {
+            [_HUD show:YES];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_HUDTIMING * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [_HUD hide:YES];
-                [self dismissViewControllerAnimated:NO completion:nil];
-                [self presentViewController:menuNavController animated:YES completion:nil];
-                    
-            }else{
+            });//20秒后执行
+            [[BLHTTPClient sharedBLHTTPClient] getUserIfo:user success:^(NSURLSessionDataTask *task, id responseObject) {
+                
+                User *userInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
+                [userInfo save];
+                if ((responseObject[@"user"][@"profile"] &&
+                     responseObject[@"user"][@"partner"]) &&
+                    (!([responseObject[@"user"][@"profile"] isKindOfClass:[NSNull class]]) &&
+                     !([responseObject[@"user"][@"partner"] isKindOfClass:[NSNull class]]))) {//如果profile或partner不为空，从服务器获取数据应判断<null>
+                    // 进入menu
+                    BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
+                    BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
+                    UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
+                    masterNavViewController.navigationBarHidden = YES;
+                    // Create BL Menu view controller
+                    BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
+                                menuViewController:menuViewController];
+                    [_HUD hide:YES];
+                    [self dismissViewControllerAnimated:NO completion:nil];
+                    [self presentViewController:menuNavController animated:YES completion:nil];
+                        
+                }else{
+                    [_HUD hide:YES];
+                    // 进入profile
+                    [self dismissViewControllerAnimated:NO completion:nil];
+                    [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
+                }
+                
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
                 [_HUD hide:YES];
-                // 进入profile
-                [self dismissViewControllerAnimated:NO completion:nil];
-                [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
-            }
+                NSLog(@"Failed, error: %@", error.localizedDescription);
+                [self showLoginUI];
+            }];
             
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            [_HUD hide:YES];
-            NSLog(@"Failed, error: %@", error.localizedDescription);
-        }];
-        
-    } else {
-        [self showLoginUI];
-    }
+        } else {
+            [self showLoginUI];
+        }
     }
 }
 

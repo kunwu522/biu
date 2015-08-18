@@ -6,17 +6,22 @@
 //  Copyright (c) 2015 BiuLove. All rights reserved.
 //
 
-#import <CoreLocation/CoreLocation.h>
 #import "BLMatchViewController.h"
 #import "BLPickerView.h"
 #import "BLMatchSwitch.h"
 #import "BLMenuNavController.h"
 #import "BLMatchedViewController.h"
+#import "BLWaitingResponseViewController.h"
 #import "BLMessagesViewController.h"
 #import "UIViewController+BLMenuNavController.h"
 #import "Masonry.h"
+#import <CoreLocation/CoreLocation.h>
+#import <MBProgressHUD/MBProgressHUD.h>
+#import <TransitionKit/TransitionKit.h>
 
-@interface BLMatchViewController () <BLPickerViewDataSource, BLPickerViewDelegate, CLLocationManagerDelegate, BLMatchedViewControllerDelegate, BLMatchNotificationDelegate>
+@interface BLMatchViewController () <CLLocationManagerDelegate, BLPickerViewDataSource, BLPickerViewDelegate, BLMatchedViewControllerDelegate, BLMatchNotificationDelegate, MBProgressHUDDelegate, BLMessagesViewControllerDelegate> {
+    MBProgressHUD *_HUD;
+}
 
 typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     BLMatchViewEventNone = 0,
@@ -45,7 +50,11 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 
 @property (strong, nonatomic) User *currentUser;
 @property (strong, nonatomic) User *matchedUser;
+@property (assign, nonatomic) NSInteger coupleState;
 @property (assign, nonatomic) BOOL hasUpdateFirstLoaction;
+@property (assign, nonatomic) BOOL isMatchingAnimationRunning;
+@property (assign, nonatomic) BOOL isHeartbeatAimationRunning;
+@property (strong, nonatomic) TKStateMachine *viewControlelrStateMachine;
 
 @end
 
@@ -58,12 +67,8 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.hasUpdateFirstLoaction = NO;
-    [self.currentUser updateState:BLMatchStateStop];
+    self.view.backgroundColor = [BLColorDefinition backgroundGrayColor];
     
-    _background = [[UIView alloc] initWithFrame:self.view.frame];
-    _background.backgroundColor = [BLColorDefinition backgroundGrayColor];
-    [self.view addSubview:_background];
     [self.view addSubview:self.btnMenu];
     
     _lbTitle = [[UILabel alloc] init];
@@ -98,14 +103,58 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     _matchSwith.backgroundColor = [UIColor clearColor];
     [_matchSwith addTarget:self action:@selector(matchToLove:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:_matchSwith];
-    
+    [self.view addSubview:self.lbTitle];
+    [self.view addSubview:self.pickViewDistance];
+    [self.view addSubview:self.matchSwith];
     [self.view addSubview:self.matchingLeft];
     [self.view addSubview:self.matchingRight];
     [self.view addSubview:self.matchedImageView];
+    [self loadLayouts];
+    [self addHUD];
+    
+    self.distance = [self.arrayDistanceData objectAtIndex:3];
+    self.hasUpdateFirstLoaction = NO;
     self.matchedImageView.alpha = 0.0f;
     self.matchingLeft.alpha = 0.0f;
     self.matchingRight.alpha = 0.0f;
     
+    self.isMatchingAnimationRunning = NO;
+    self.isHeartbeatAimationRunning = NO;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self fetchUserMatchedInfo];
+    // Regiest Notification
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchUserMatchedInfo) name:@"getMatchInfo" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [self blAppDelegate].notificationDelegate = self;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self blAppDelegate].notificationDelegate = nil;
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [self stopMatchingAnimationWithCompletion:^(BOOL finished) {
+        self.matchingLeft.alpha = 0;
+        self.matchingRight.alpha = 0;
+        self.pickViewDistance.alpha = 1.0f;
+    }];
+    self.matchSwith.on = NO;
+    [self stopHeartbeatAnimation];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"getMatchInfo" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+#pragma mark - Layouts
+- (void)loadLayouts {
     [_lbTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).with.offset([BLGenernalDefinition resolutionForDevices:135.7f]);
         make.centerX.equalTo(self.view.mas_centerX);
@@ -158,26 +207,6 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
         }
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    if (self.currentUser.state == BLMatchStateMatching) {
-        self.matchSwith.on = YES;
-        [self startMatchingAnimation];
-    }
-    [self blAppDelegate].notificationDelegate = self;
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    if (self.currentUser.state == BLMatchStateMatching) {
-        [self stopMatchingAnimationWithCompletion:^(BOOL finished) {
-            self.matchSwith.on = NO;
-        }];
-    }
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [self blAppDelegate].notificationDelegate = nil;
-}
-
 #pragma mark -
 #pragma mark Public Method
 - (void)matched:(User *)matchedUser {
@@ -186,16 +215,21 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     }
     self.matchedUser = matchedUser;
     [self stateMachine:BLMatchViewEventMatched];
+//    NSError *error = nil;
+//    BOOL success = [self.viewControlelrStateMachine fireEvent:@"user matched" userInfo:nil error:&error];
+//    if (!success) {
+//        NSLog(@"State machine error: %@. Event: close, current state: %@.", error.localizedDescription, self.viewControlelrStateMachine.currentState);
+//    }
 }
 
 - (void)closeMatching {
-    [self stateMachine:BLMatchViewEventStop];
+//    [self stateMachine:BLMatchViewEventStop];
 }
 
 #pragma mark - Delegates
 
 #pragma mark BLMatchStopLocationDelegate
-- (void)didFinishLogout{
+- (void)didFinishLogout {
     
     [_locationManager stopUpdatingLocation];
     NSLog(@"-------------success--------------");
@@ -203,16 +237,16 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 
 #pragma mark Picker View Delegate and Data Source
 - (NSInteger)numberOfRowsInPickerView:(BLPickerView *)pickerView {
-    return _arrayDistanceData.count;
+    return self.arrayDistanceData.count;
 }
 
 - (NSString *)pickerView:(BLPickerView *)pickerView titleForRow:(NSInteger)row {
-    return [_arrayDistanceData objectAtIndex:row];
+    return [self.arrayDistanceData objectAtIndex:row];
 }
 
 - (void)pickerView:(BLPickerView *)pickerView didSelectRow:(NSInteger)row {
-    NSLog(@"Select distance: %@", [_arrayDistanceData objectAtIndex:row]);
-    self.distance = [_arrayDistanceData objectAtIndex:row];
+    NSLog(@"Select distance: %@", [self.arrayDistanceData objectAtIndex:row]);
+    self.distance = [self.arrayDistanceData objectAtIndex:row];
 }
 
 #pragma mark CLLocationManagerDelegate
@@ -281,6 +315,16 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
+#pragma mark BLMessageViewController Delegate
+- (void)didDismissBLMessagesViewController:(BLMessagesViewController *)vc {
+    [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventClose distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"Stop conversation user successed.");
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"Stop conversation faield.");
+    }];
+    [vc.navigationController popToRootViewControllerAnimated:YES];
+}
+
 #pragma mark BLNotification Delegate
 - (void)receiveMatchedNotification:(User *)matchedUser {
     if (!matchedUser) {
@@ -318,10 +362,22 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 - (void)matchToLove:(BLMatchSwitch *)sender {
     if (sender.on) {
         NSLog(@"Starting to Match...");
-        [self stateMachine:BLMatchViewEventMatching];
+//        [self stateMachine:BLMatchViewEventMatching];
+        NSDictionary *userInfo = nil;
+        NSError *error = nil;
+        BOOL success = [self.viewControlelrStateMachine fireEvent:@"open" userInfo:userInfo error:&error];
+        if (!success) {
+            NSLog(@"State machine error: %@.", error.localizedDescription);
+        }
     } else {
         NSLog(@"Finish Matching...");
-        [self stateMachine:BLMatchViewEventStop];
+//        [self stateMachine:BLMatchViewEventStop];
+        NSDictionary *userInfo = nil;
+        NSError *error = nil;
+        BOOL success = [self.viewControlelrStateMachine fireEvent:@"close" userInfo:userInfo error:&error];
+        if (!success) {
+            NSLog(@"State machine error: %@.", error.localizedDescription);
+        }
     }
 }
 
@@ -332,7 +388,7 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 
 - (void)presentMatchedViewController {
     BLMatchedViewController *matchedViewController = [[BLMatchedViewController alloc] init];
-    matchedViewController.matchedUser = self.matchedUser;
+//    matchedViewController.matchedUser = self.matchedUser;
     matchedViewController.delegate = self;
     [self.navigationController pushViewController:matchedViewController animated:YES];
 }
@@ -354,8 +410,87 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     }
 }
 
+#pragma mark - Notifications
+- (void)applicationWillEnterForeground {
+    NSLog(@"I m back!!!");
+    if (self.currentUser.state == BLMatchStateMatching) {
+        [self startMatchingAnimation];
+    }
+}
+
+- (void)applicationWillResignActive {
+    NSLog(@"I m gone!!!");
+    if (self.currentUser.state == BLMatchStateMatching) {
+        [self stopMatchingAnimationWithCompletion:nil];
+    }
+}
+
 #pragma mark -
 #pragma mark Private Methods
+- (void)fetchUserMatchedInfo {
+    [_HUD show:YES];
+    [[BLHTTPClient sharedBLHTTPClient] getMatchInfo:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
+        [_HUD hide:YES];
+        [self.currentUser updateState:[[[responseObject objectForKey:@"user"] objectForKey:@"state"] integerValue]];
+        self.coupleState = [[responseObject objectForKey:@"state"] integerValue];
+        self.matchedUser = [[User alloc] initWithDictionary:[responseObject objectForKey:@"matched_user"]];
+        [self reloadViewController];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [_HUD hide:YES];
+        NSLog(@"Get match info failed, error: %@.", error.localizedDescription);
+    }];
+}
+
+- (void)reloadViewController {
+    switch (self.currentUser.state) {
+        case BLMatchStateStop:
+        {
+            NSError *error = nil;
+            BOOL success = [self.viewControlelrStateMachine fireEvent:@"close" userInfo:nil error:&error];
+            if (!success) {
+                NSLog(@"State machine error: %@. Event: close, current state: %@.", error.localizedDescription, self.viewControlelrStateMachine.currentState);
+            }
+            break;
+        }
+        case BLMatchStateMatching:
+        {
+            NSError *error = nil;
+            BOOL success = [self.viewControlelrStateMachine fireEvent:@"start matching" userInfo:nil error:&error];
+            if (!success) {
+                NSLog(@"State machine error: %@. Event: start matching, current state: %@.", error.localizedDescription, self.viewControlelrStateMachine.currentState);
+            }
+            break;
+        }
+        case BLMatchStateMatched:
+        {
+            NSError *error = nil;
+            BOOL success = [self.viewControlelrStateMachine fireEvent:@"user matched" userInfo:nil error:&error];
+            if (!success) {
+                NSLog(@"State machine error: %@. Event: matchedUser, current state: %@.", error.localizedDescription, self.viewControlelrStateMachine.currentState);
+            }
+            break;
+        }
+        case BLMatchStateWaiting:
+        {
+            BLWaitingResponseViewController *waitingViewController = [[BLWaitingResponseViewController alloc] init];
+            waitingViewController.matchedUser = self.matchedUser;
+            [self.navigationController pushViewController: waitingViewController animated:YES];
+            break;
+        }
+        case BLMatchStateCommunication:
+        {
+            BLMessagesViewController *messageViewController = [[BLMessagesViewController alloc] init];
+            messageViewController.delegate = self;
+            messageViewController.sender = self.currentUser;
+            messageViewController.receiver = self.matchedUser;
+            [self.navigationController pushViewController:messageViewController animated:YES];
+            break;
+        }
+        default:
+            break;
+    }
+}
+
 - (void)stateMachine:(BLMatchViewEvent)event {
     switch (self.currentUser.state) {
         case BLMatchStateStop:
@@ -550,12 +685,21 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     }];
 }
 
+- (void)addHUD {
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    _HUD.labelText = @"loading";
+    _HUD.delegate = self;
+    [self.view addSubview:_HUD];
+}
+
 #pragma mark Animations
 - (void)startMatchingAnimation {
+    if (self.isMatchingAnimationRunning) {
+        return;
+    }
     self.startLeftCenter = self.matchingLeft.center;
-    NSLog(@"Start left center %f--%f", self.startLeftCenter.x, self.startLeftCenter.y);
     self.startRightCenter = self.matchingRight.center;
-    NSLog(@"Start right center %f--%f", self.startRightCenter.x, self.startRightCenter.y);
+    self.isMatchingAnimationRunning = YES;
     [UIView animateWithDuration:2.0f animations:^{
         CGPoint leftCenter = self.matchingLeft.center;
         CGPoint rightCenter = self.matchingRight.center;
@@ -563,19 +707,22 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
         rightCenter.y -= 25;
         self.matchingLeft.center = leftCenter;
         self.matchingRight.center = rightCenter;
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:4.0f delay:0.0f options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat animations:^{
-            CGPoint leftCenter = self.matchingLeft.center;
-            CGPoint rightCenter = self.matchingRight.center;
-            leftCenter.y -= 50;
-            rightCenter.y += 50;
-            self.matchingLeft.center = leftCenter;
-            self.matchingRight.center = rightCenter;
-        } completion:nil];
     }];
+    
+    [UIView animateWithDuration:4.0f delay:2.0f options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat animations:^{
+        CGPoint leftCenter = self.matchingLeft.center;
+        CGPoint rightCenter = self.matchingRight.center;
+        leftCenter.y -= 50;
+        rightCenter.y += 50;
+        self.matchingLeft.center = leftCenter;
+        self.matchingRight.center = rightCenter;
+    } completion:nil];
 }
 
 - (void)stopMatchingAnimationWithCompletion: (void (^)(BOOL finished))completion {
+    if (!self.isMatchingAnimationRunning) {
+        return;
+    }
     self.matchingLeft.frame = [[self.matchingLeft.layer presentationLayer] frame];
     self.matchingRight.frame = [[self.matchingRight.layer presentationLayer] frame];
     [self.matchingLeft.layer removeAllAnimations];
@@ -584,9 +731,14 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
         self.matchingLeft.center = self.startLeftCenter;
         self.matchingRight.center = self.startRightCenter;
     } completion:completion];
+    self.isMatchingAnimationRunning = NO;
 }
 
 - (void)startHeartbeatAnimation {
+    if (self.isHeartbeatAimationRunning) {
+        return;
+    }
+    self.isHeartbeatAimationRunning = YES;
     [UIView animateWithDuration:1.0 delay:0
                         options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat | UIViewAnimationOptionAllowUserInteraction
      animations:^{
@@ -601,12 +753,55 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 }
 
 - (void)stopHeartbeatAnimation {
+    if (!self.isHeartbeatAimationRunning) {
+        return;
+    }
     [self.matchedImageView.layer removeAllAnimations];
+    self.isHeartbeatAimationRunning = NO;
 }
-
 
 #pragma mark -
 #pragma mark Getter
+- (UILabel *)lbTitle {
+    if (!_lbTitle) {
+        _lbTitle = [[UILabel alloc] init];
+        _lbTitle.font = [BLFontDefinition normalFont:20.0f];
+        _lbTitle.textAlignment = NSTextAlignmentCenter;
+        _lbTitle.textColor = [BLColorDefinition fontGrayColor];
+        _lbTitle.text = NSLocalizedString(@"Set the distance", nil);
+    }
+    return _lbTitle;
+}
+
+- (NSArray *)arrayDistanceData {
+    if (!_arrayDistanceData) {
+        _arrayDistanceData = [[NSArray alloc] initWithObjects:@"500", @"1000", @"1500", @"2000", @"2500",
+                              @"3000", @"3500", @"4000", @"4500", @"5000", nil];
+    }
+    return _arrayDistanceData;
+}
+
+- (BLPickerView *)pickViewDistance {
+    if (!_pickViewDistance) {
+        _pickViewDistance = [[BLPickerView alloc] initWithFrame:CGRectMake(0, [BLGenernalDefinition resolutionForDevices:200],
+                                                                           self.view.frame.size.width, [BLGenernalDefinition resolutionForDevices:225.0f])];
+        _pickViewDistance.delegate = self;
+        _pickViewDistance.dataSource = self;
+        _pickViewDistance.fisheyeFactor = 0.001;
+        [_pickViewDistance selectRow:3 animated:NO];
+    }
+    return _pickViewDistance;
+}
+
+- (BLMatchSwitch *)matchSwith {
+    if (!_matchSwith) {
+        _matchSwith = [[BLMatchSwitch alloc] init];
+        _matchSwith.backgroundColor = [UIColor clearColor];
+        [_matchSwith addTarget:self action:@selector(matchToLove:) forControlEvents:UIControlEventValueChanged];
+    }
+    return _matchSwith;
+}
+
 - (UIButton *)btnMenu {
     if (!_btnMenu) {
         _btnMenu = [[UIButton alloc] init];
@@ -642,14 +837,112 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 
 - (User *)currentUser {
     if (!_currentUser) {
-        BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
-        _currentUser = delegate.currentUser;
+        _currentUser = [[User alloc] initWithFromUserDefault];
     }
     return _currentUser;
 }
 
 - (BLAppDelegate *)blAppDelegate {
     return (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
+}
+
+- (TKStateMachine *)viewControlelrStateMachine {
+    if (!_viewControlelrStateMachine) {
+        _viewControlelrStateMachine = [TKStateMachine new];
+        TKState *idle = [TKState stateWithName:@"idle"];
+        TKState *matching = [TKState stateWithName:@"matching"];
+        TKState *matched = [TKState stateWithName:@"matched"];
+        [_viewControlelrStateMachine addStates:@[idle, matching, matched]];
+        _viewControlelrStateMachine.initialState = idle;
+        
+        TKEvent *openSwitch = [TKEvent eventWithName:@"open" transitioningFromStates:@[idle] toState:matching];
+        TKEvent *startMatching = [TKEvent eventWithName:@"start matching" transitioningFromStates:@[idle, matched] toState:matching];
+        TKEvent *matchedUser = [TKEvent eventWithName:@"user matched" transitioningFromStates:@[matching] toState:matched];
+        TKEvent *beenRejected = [TKEvent eventWithName:@"been rejected" transitioningFromStates:@[matched] toState:matching];
+        TKEvent *closeSwitch = [TKEvent eventWithName:@"close" transitioningFromStates:@[matching, matched] toState:idle];
+        [_viewControlelrStateMachine addEvents:@[openSwitch, startMatching, matchedUser, beenRejected, closeSwitch]];
+        
+        [idle setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
+            [UIView animateWithDuration:0.5f animations:^{
+                self.pickViewDistance.alpha = 1.0f;
+            }];
+        }];
+        
+        [idle setDidExitStateBlock:^(TKState *state, TKTransition *transition) {
+            [UIView animateWithDuration:0.5f animations:^{
+                self.pickViewDistance.alpha = 0;
+            }];
+        }];
+        
+        [matching setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
+            [UIView animateWithDuration:0.5 animations:^{
+                self.matchingLeft.alpha = 1.0f;
+                self.matchingRight.alpha = 1.0f;
+            } completion:^(BOOL finished) {
+                [self startMatchingAnimation];
+                //update location
+                [self startStandardUpdates];
+            }];
+            
+            //send http request to update match state
+            [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventStartMatching distance:self.distance matchedUser:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+                NSLog(@"start matching");
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                NSLog(@"start match failed.");
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Matching failed, please try again later", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
+                [av show];
+                [self stopMatching];
+            }];
+            
+            //change current state
+            [self.currentUser updateState:BLMatchStateMatching];
+        }];
+        
+        [matching setDidExitStateBlock:^(TKState *state, TKTransition *transition) {
+            [self stopMatchingAnimationWithCompletion:^(BOOL finished) {
+                NSLog(@"Matching2 left center: %f--%f", self.matchingLeft.center.x, self.matchingLeft.center.y);
+                NSLog(@"Matching2 right center: %f--%f", self.matchingRight.center.x, self.matchingRight.center.y);
+                self.matchingLeft.alpha = 0;
+                self.matchingRight.alpha = 0;
+                [self stopStandarUpdates];
+            }];
+        }];
+        
+        [matched setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
+            [UIView animateWithDuration:0.5f animations:^{
+                self.matchedImageView.alpha = 1.0f;
+            } completion:^(BOOL finished) {
+                [self startHeartbeatAnimation];
+            }];
+            
+            // add gesture to present matched view
+            UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(presentMatchedViewController)];
+            [self.matchedImageView addGestureRecognizer:tapGestureRecognizer];
+            self.matchedImageView.userInteractionEnabled = YES;
+            
+            // change current state
+            [self.currentUser updateState:BLMatchStateMatched];
+        }];
+        
+        [matched setDidExitStateBlock:^(TKState *state, TKTransition *transition) {
+            [UIView animateWithDuration:0.5f animations:^{
+                self.matchedImageView.alpha = 0;
+            }];
+        }];
+        
+        [startMatching setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
+            self.matchSwith.on = YES;
+        }];
+        
+        [closeSwitch setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
+            [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventStop distance:nil matchedUser:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+                NSLog(@"Stop matching success...");
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                NSLog(@"Stop matching failed...");
+            }];
+        }];
+    }
+    return _viewControlelrStateMachine;
 }
 
 @end

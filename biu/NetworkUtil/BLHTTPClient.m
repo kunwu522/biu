@@ -9,11 +9,12 @@
 #import "BLHTTPClient.h"
 
 #if TARGET_IPHONE_SIMULATOR
-static NSString* const BLBaseURLString = @"http://182.92.117.218:3001/cn/api/v1/";
+static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
+//static NSString* const BLBaseURLString = @"http://182.92.117.218:3001/cn/api/v1/";
 #else
-static NSString* const BLBaseURLString = @"http://182.92.117.218:3001/cn/api/v1/";
+//static NSString* const BLBaseURLString = @"http://182.92.117.218:3001/cn/api/v1/";
 
-//static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
+static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
 #endif
 
 @implementation BLHTTPClient
@@ -333,6 +334,7 @@ static NSString* const BLBaseURLString = @"http://182.92.117.218:3001/cn/api/v1/
     [self POST:@"suggestions" parameters:parameters success:success failure:failure];
 }
 
+
 //上传微信或微博个人信息
 - (void)thirdParty:(User *)user
            success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
@@ -359,8 +361,15 @@ static NSString* const BLBaseURLString = @"http://182.92.117.218:3001/cn/api/v1/
 }
 
 
-
-
+- (void)getMatchInfo:(User *)user
+             success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+             failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    if (!user) {
+        return;
+    }
+    
+    [self GET:[NSString stringWithFormat:@"match/%@.json", user.userId] parameters:nil success:success failure:failure];
+}
 @end
 
 

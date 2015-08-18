@@ -468,27 +468,36 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    NSLog(@"Receive notfication: %@. application state: %ld", userInfo, application.applicationState);
+    NSLog(@"Receive notfication: %@. application state: %ld", userInfo, (long)application.applicationState);
     NSDictionary *aps = [userInfo objectForKey:@"aps"];
     if (!aps) {
         NSLog(@"Received notification not valided.");
         return;
     }
     NSString *category = [aps objectForKey:@"category"];
-    if ([category isEqualToString:@"MATCHED"]) {
-        User *matchedUser = [[User alloc] initWithDictionary:[userInfo objectForKey:@"matched_user"]];
-        if (!matchedUser) {
-            NSLog(@"Received notification not valided, matched user is nil.");
-            return;
-        }
-        [self receivedMatchedNotification:application matchedUser:matchedUser];
+    if ([category isEqualToString:@"UPDATE_MATCH_INFO"]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"getMatchInfo" object:nil];
     } else if ([category isEqualToString:@"MATCH_ACCEPTED"]) {
-        [self receivedAcceptedNotification:application matchedUser:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"matched user accepted" object:nil];
     } else if ([category isEqualToString:@"MATCH_REJECTED"]) {
-        [self receivedRejectedNotification:application];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"matched user rejected" object:nil];
     } else if ([category isEqualToString:@"CONVERSATION_CLOSE"]) {
-        [self receivedCloseNotification:application];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"close conversation" object:nil];
     }
+//    if ([category isEqualToString:@"MATCHED"]) {
+//        User *matchedUser = [[User alloc] initWithDictionary:[userInfo objectForKey:@"matched_user"]];
+//        if (!matchedUser) {
+//            NSLog(@"Received notification not valided, matched user is nil.");
+//            return;
+//        }
+//        [self receivedMatchedNotification:application matchedUser:matchedUser];
+//    } else if ([category isEqualToString:@"MATCH_ACCEPTED"]) {
+//        [self receivedAcceptedNotification:application matchedUser:nil];
+//    } else if ([category isEqualToString:@"MATCH_REJECTED"]) {
+//        [self receivedRejectedNotification:application];
+//    } else if ([category isEqualToString:@"CONVERSATION_CLOSE"]) {
+//        [self receivedCloseNotification:application];
+//    }
 }
 
 #pragma mark -

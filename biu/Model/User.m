@@ -125,11 +125,14 @@ static NSString *AVATAR_LARGE_URL = @"avatar_large_url";
         self.username = [dictionary objectForKey:@"username"];
         self.avatar_url = [dictionary objectForKey:@"avatar_url"];
         self.avatar_large_url = [dictionary objectForKey:@"avatar_large_url"];
+        self.state = [[dictionary objectForKey:@"state"] integerValue];
         if (![[dictionary objectForKey:@"open_id"] isKindOfClass:[NSNull class]] && ([dictionary objectForKey:@"open_id"] != nil)) {
             self.open_id = [dictionary objectForKey:@"open_id"];
         }
         
-//        self.phone = [dictionary objectForKey:@"phone"];
+        if ([dictionary objectForKey:@"phone"] != [NSNull null]) {
+            self.phone = [dictionary objectForKey:@"phone"];
+        }
         if ([dictionary objectForKey:@"device_token"] != [NSNull null]) {
             self.token = [dictionary objectForKey:@"device_token"];
         }

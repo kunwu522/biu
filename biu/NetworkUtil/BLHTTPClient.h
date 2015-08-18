@@ -94,6 +94,10 @@
       success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
       failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
+- (void)getMatchInfo:(User *)user
+             success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+             failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
 - (void)createSuggestion:(NSString *)advice
                    email:(NSString *)email
                   userId:(NSNumber *)userId
