@@ -20,4 +20,6 @@ typedef NS_ENUM(NSUInteger, BLPartnerViewControllerType) {
 // it works when partnerViewType is create
 @property (strong, nonatomic) Profile *profile;
 
+@property (nonatomic, strong) UIImageView *expandZoomImageView;
+
 @end

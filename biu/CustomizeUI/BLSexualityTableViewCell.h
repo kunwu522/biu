@@ -13,7 +13,8 @@
 @property (assign, nonatomic) BLSexualityType sexuality;
 @property (assign, nonatomic) BLGender gender;
 
+@property (assign, nonatomic) NSMutableArray *sexualities;
+
 // working when isAllowMultiSelected == YES
-@property (strong, nonatomic) NSMutableArray *sexualities;
 
 @end

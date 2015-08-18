@@ -15,10 +15,11 @@
 #import "BLMenuNavController.h"
 #import "BLMenuViewController.h"
 #import "UIViewController+BLMenuNavController.h"
+#import "BLSexualityTableViewCell.h"
 
 #import "Masonry.h"
 
-@interface BLPartnerViewController () <UITableViewDataSource, UITableViewDelegate, BLTableViewCellDeletage>
+@interface BLPartnerViewController () <UITableViewDataSource, UITableViewDelegate, BLTableViewCellDeletage, UIAlertViewDelegate>
 
 typedef NS_ENUM(NSUInteger, BLRequestState) {
     BLRequestStateNone = 0,
@@ -28,7 +29,7 @@ typedef NS_ENUM(NSUInteger, BLRequestState) {
 };
 
 @property (strong, nonatomic) User *currentUser;
-@property (strong, nonatomic) NSArray *sexualities;
+@property (assign, nonatomic) NSNumber *sexuality;
 @property (strong, nonatomic) NSNumber *minAge;
 @property (strong, nonatomic) NSNumber *maxAge;
 @property (strong, nonatomic) NSArray *preferZodiacs;
@@ -45,7 +46,7 @@ typedef NS_ENUM(NSUInteger, BLRequestState) {
 @end
 
 @implementation BLPartnerViewController
-
+@synthesize sexuality = _sexuality;
 static const float AVATOR_WIDTH = 163.0f;
 
 typedef NS_ENUM(NSUInteger, BLPartnerSection) {
@@ -64,6 +65,8 @@ static NSString *BL_PARTNER_AGERANGE_CELL_REUSEID = @"BLAgeRangeCell";
 static NSString *BL_PARTNER_ZODIAC_CELL_REUSEID = @"BLZodiacCell";
 static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
 
+static CGFloat kImageOriginHight = 200;
+static CGFloat kTempHeight = 80.0f;
 #pragma mark - life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -91,19 +94,38 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
     }
     
     [self blLayoutSubViews];
+    
+    self.expandZoomImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"login_signup_background.png"]];
+    self.expandZoomImageView.frame = CGRectMake(0, -kImageOriginHight - kTempHeight, self.tableView.frame.size.width, kImageOriginHight + kTempHeight);
+    [self.tableView addSubview:self.expandZoomImageView];
+}
+
+//tableView下拉图片变长
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    
+    CGFloat yOffset  = scrollView.contentOffset.y;
+    CGFloat xOffset = (yOffset + kImageOriginHight)/2;
+    if (yOffset < -kImageOriginHight) {
+        CGRect f = self.expandZoomImageView.frame;
+        f.origin.y = yOffset - kTempHeight;
+        f.size.height =  -yOffset + kTempHeight;
+        f.origin.x = xOffset;
+        f.size.width = self.view.frame.size.width + fabsf(xOffset)*2;
+        self.expandZoomImageView.frame = f;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     if (self.partnerViewType == BLPartnerViewControllerUpdate && self.currentUser.partner) {
         _minAge = self.currentUser.partner.minAge;
         _maxAge = self.currentUser.partner.maxAge;
-        _sexualities = self.currentUser.partner.sexualities;
+        _sexuality = self.currentUser.partner.sexualities.firstObject;
         _preferStyles = self.currentUser.partner.preferStyles;
         _preferZodiacs = self.currentUser.partner.preferZodiacs;
     } else {
         _minAge = @20;
         _maxAge = @25;
-        _sexualities = [NSArray array];
+        _sexuality = (NSNumber *)@"1";//判断profile中男女，给定数据
         _preferZodiacs = [NSArray array];
         _preferStyles = [NSArray array];
     }
@@ -135,9 +157,9 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == BLPartnerSectionStyle && [self isBisexual]) {
-        return 2;
-    }
+//    if (section == BLPartnerSectionStyle && [self isBisexual]) {
+//        return 2;
+//    }
     return 1;
 }
 
@@ -159,7 +181,11 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
             }
             cell.delegate = self;
             cell.tag = BLPartnerSectionSexuality;
-            cell.sexualities = [[NSMutableArray alloc] initWithArray:_sexualities];
+            
+            
+            cell.sexuality = _sexuality.integerValue;
+
+            
             return cell;
         }
         case BLPartnerSectionAgeRange:
@@ -196,37 +222,24 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
                 cell = [[BLStyleTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PARTNER_STYLE_CELL_REUSEID];
             }
             
-            if ([self isBisexual]) {
-                NSMutableArray *maleMutableArray = [NSMutableArray array];
-                NSMutableArray *femaleMutableArray = [NSMutableArray array];
-                for (NSNumber *sexuality in self.sexualities) {
-                    if (sexuality.integerValue == BLSexualityTypeNone) {
-                        continue;
-                    } else if (sexuality.integerValue == BLSexualityTypeMan
-                               || sexuality.integerValue == BLSexualityType1
-                               || sexuality.integerValue == BLSexualityType0) {
-                        [maleMutableArray addObject:sexuality];
-                    } else {
-                        [femaleMutableArray addObject:sexuality];
-                    }
-                }
-                
-                if (indexPath.item == 0) {
-                    cell.sexuality = ((NSNumber *)maleMutableArray.firstObject).integerValue;
-                    cell.title.text = NSLocalizedString(@"Styles you prefer (male)", nil);
-                } else {
-                    cell.sexuality = ((NSNumber *)femaleMutableArray.firstObject).integerValue;
-                    cell.title.text = NSLocalizedString(@"Styles you prefer (female)", nil);
-                }
-            } else {
-                cell.sexuality = ((NSNumber *)self.sexualities.firstObject).integerValue;
-                
-                cell.title.text = NSLocalizedString(@"Styles you prefer", nil);
-            }
+            cell.sexuality = (BLSexualityType)_sexuality.integerValue;
+           
+//            if (_sexuality.integerValue == 1
+//                || _sexuality.integerValue == 5
+//                || _sexuality.integerValue == 6) {
+//                cell.title.text = NSLocalizedString(@"Styles you prefer (female)", nil);
+//                cell.isMaleOrFemale = @"female";
+//                cell.gender = BLGenderFemale;
+//            } else {
+//                cell.title.text = NSLocalizedString(@"Styles you prefer (male)", nil);
+//                cell.isMaleOrFemale = @"male";
+//                cell.gender = BLGenderMale;
+//            }
             cell.allowMultiSelected = YES;
             cell.delegate = self;
             cell.tag = BLPartnerSectionStyle;
             cell.preferStyles = [[NSMutableArray alloc] initWithArray:_preferStyles];
+            
             return cell;
             break;
         }
@@ -330,8 +343,8 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
 - (void)tableViewCell:(BLBaseTableViewCell *)cell didChangeValue:(id)value {
     switch (cell.tag) {
         case BLPartnerSectionSexuality:
-            _sexualities = (NSArray *)value;
-            [self removePreferStylesBaseOnSexuality];
+            
+            self.sexuality = value;
             [self.tableView reloadData];
             break;
         case BLPartnerSectionAgeRange:
@@ -346,6 +359,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
             break;
         case BLPartnerSectionHeader:
         case BLPartnerSectionButton:
+            
         default:
             break;
     }
@@ -354,7 +368,9 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
 #pragma mark - handle action
 - (void)createPartner:(id)sender {
     Partner *partner = [Partner new];
-    partner.sexualities = _sexualities;
+    
+    NSArray *arr = [NSArray arrayWithObject:_sexuality];
+    partner.sexualities = arr;
     partner.minAge = _minAge;
     partner.maxAge = _maxAge;
     partner.preferZodiacs = _preferZodiacs;
@@ -402,29 +418,41 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
 
 - (void)updatePartner:(id)sender {
     
-    
     User *user = [User new];
     user.userId = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation][@"user_id"];
-    self.currentUser.partner.sexualities = _sexualities;
+//    NSArray *arr = [NSArray arrayWithObject:_sexuality];
+    self.currentUser.partner.sexualities = [NSArray arrayWithObject:_sexuality];
     self.currentUser.partner.minAge = _minAge;
     self.currentUser.partner.maxAge = _maxAge;
     self.currentUser.partner.preferZodiacs = _preferZodiacs;
     self.currentUser.partner.preferStyles = _preferStyles;
+    
+    if (_preferZodiacs.count == 0) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"未添加你喜欢的星座" message:nil delegate:self cancelButtonTitle:@"返回" otherButtonTitles:nil, nil];
+        [alertView show];
+    } else if (_preferStyles.count == 0) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"未添加你喜欢的类型" message:nil delegate:self cancelButtonTitle:@"返回" otherButtonTitles:nil, nil];
+        [alertView show];
+    } else {
         
-    [[BLHTTPClient sharedBLHTTPClient] updatePartner:self.currentUser.partner user:user success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"Update partner successed...");
-        [self.currentUser.partner save];
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Save Successed!", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        [av show];
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"Update partner failed. Error: %@", error.localizedDescription);
-        NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
-        if (!errMsg) {
-            errMsg = NSLocalizedString(@"Update failed, please try later", nil);
-        }
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        [av show];
-    }];
+        [[BLHTTPClient sharedBLHTTPClient] updatePartner:self.currentUser.partner user:user success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"Update partner successed...");
+            
+            [self.currentUser.partner save];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Save Successed!", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            [av show];
+            self.currentUser = nil;
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"Update partner failed. Error: %@", error.localizedDescription);
+            NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
+            if (!errMsg) {
+                errMsg = NSLocalizedString(@"Update failed, please try later", nil);
+            }
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            [av show];
+            self.currentUser = nil;
+        }];
+    }
 
 }
 
@@ -452,7 +480,7 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
         BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
                                                                   menuViewController:menuViewController];
         [self presentViewController:menuNavController animated:YES completion:nil];
-        [_timer invalidate];
+        [_timer invalidate];//停止
     }
     if (_createProfileState == BLRequestStateFailed || _createPartnerState == BLRequestStateFailed) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Updating profile failed. Please try again", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -462,43 +490,43 @@ static NSString *BL_PARTNER_STYLE_CELL_REUSEID = @"BLStyleCell";
 }
 
 #pragma mark - private
-- (BOOL)isBisexual {
-    if (_sexualities.count < 2) {
-        return NO;
-    }
-    
-    BOOL hasMaleSexuality = NO;
-    if ([_sexualities containsObject:[NSNumber numberWithInteger:BLSexualityTypeMan]]
-        || [_sexualities containsObject:[NSNumber numberWithInteger:BLSexualityType1]]
-        || [_sexualities containsObject:[NSNumber numberWithInteger:BLSexualityType0]]) {
-        hasMaleSexuality = YES;
-    }
-    BOOL hasFemaleSexuality = NO;
-    if ([_sexualities containsObject:[NSNumber numberWithInteger:BLSexualityTypeWoman]]
-        || [_sexualities containsObject:[NSNumber numberWithInteger:BLSexualityTypeT]]
-        || [_sexualities containsObject:[NSNumber numberWithInteger:BLSexualityTypeP]]) {
-        hasFemaleSexuality = YES;
-    }
-    
-    if (hasFemaleSexuality && hasMaleSexuality) {
-        return YES;
-    }
+//- (BOOL)isBisexual {
+//    
+//    
+//    BOOL hasMaleSexuality = NO;
+//    if ([_sexuality containsObject:[NSNumber numberWithInteger:BLSexualityTypeMan]]
+//        || [_sexualities containsObject:[NSNumber numberWithInteger:BLSexualityType1]]
+//        || [_sexualities containsObject:[NSNumber numberWithInteger:BLSexualityType0]]) {
+//        hasMaleSexuality = YES;
+//    }
+//    BOOL hasFemaleSexuality = NO;
+//    if ([_sexualities containsObject:[NSNumber numberWithInteger:BLSexualityTypeWoman]]
+//        || [_sexualities containsObject:[NSNumber numberWithInteger:BLSexualityTypeT]]
+//        || [_sexualities containsObject:[NSNumber numberWithInteger:BLSexualityTypeP]]) {
+//        hasFemaleSexuality = YES;
+//    }
+//    
+//    if (hasFemaleSexuality && hasMaleSexuality) {
+//        return YES;
+//    }
+//
+//    return NO;
+//}
 
-    return NO;
-}
-
-- (void)removePreferStylesBaseOnSexuality {
-    if (![self isBisexual]) {
-        BLGender gender = [Partner genderBySexuality:((NSNumber *)self.sexualities.firstObject).integerValue];
-        NSMutableArray *preferStyles = [NSMutableArray array];
-        for (NSNumber *style in self.preferStyles) {
-            if ([Partner genderByStyle:style.integerValue] == gender) {
-                [preferStyles addObject:style];
-            }
-        }
-        self.preferStyles = (NSArray *)preferStyles;
-    }
-}
+//- (void)removePreferStylesBaseOnSexuality {
+//    
+//    if (!_sexualities) {
+//        BLGender gender = [Partner genderBySexuality:((NSNumber *)self.sexualities.firstObject).integerValue];
+//        
+//        NSMutableArray *preferStyles = [NSMutableArray array];
+//        for (NSNumber *style in self.preferStyles) {
+//            if ([Partner genderByStyle:style.integerValue] == gender) {
+//                [preferStyles addObject:style];
+//            }
+//        }
+//        self.preferStyles = (NSArray *)preferStyles;
+//    }
+//}
 
 #pragma mark - Getter and Setter
 - (UIButton *)btnBack {

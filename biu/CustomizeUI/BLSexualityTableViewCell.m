@@ -70,48 +70,27 @@ static const float BL_SEXUALITY_CELL_WIDTH = 100.0f;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    BLSexualityCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([BLSexualityCollectionViewCell class])
-                                                                                    forIndexPath:indexPath];
+    BLSexualityCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([BLSexualityCollectionViewCell class]) forIndexPath:indexPath];
+    
     cell.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"sexuality_selected_icon%li", (unsigned long)[self sexualityFromIndexItem:indexPath.item]]];
     cell.unselectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"sexuality_unselected_icon%li", (unsigned long)[self sexualityFromIndexItem:indexPath.item]]];
-    if (self.allowMutipleSelection) {
-        if ([self.sexualities containsObject:[NSNumber numberWithInteger:[self sexualityFromIndexItem:indexPath.item]]]) {
-            cell.imageView.image = cell.selectedImage;
-        } else {
-            cell.imageView.image = cell.unselectedImage;
-        }
-    } else {
+
         if ([self indexItemFromSexuality:_sexuality] == indexPath.item) {
             cell.imageView.image = cell.selectedImage;
         } else {
             cell.imageView.image = cell.unselectedImage;
         }
-    }
+
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     BLSexualityType sexuality = [self sexualityFromIndexItem:indexPath.item];
-    if (!self.sexualities) {
-        self.sexuality = sexuality;
-        if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
-            [self.delegate tableViewCell:self didChangeValue:[NSNumber numberWithInteger:self.sexuality]];
-        }
-    } else if (self.sexualities.count <= 3) {
-        [self.sexualities addObject:[NSNumber numberWithInteger:sexuality]];
-        if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
-            [self.delegate tableViewCell:self didChangeValue:self.sexualities];
-        }
-    }
-}
+    
 
-- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.sexualities) {
-        [self.sexualities removeObject:[NSNumber numberWithInteger:[self sexualityFromIndexItem:indexPath.item]]];
-        if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
-            [self.delegate tableViewCell:self didChangeValue:self.sexualities];
+    if ([self.delegate respondsToSelector:@selector(tableViewCell:didChangeValue:)]) {
+            [self.delegate tableViewCell:self didChangeValue:[NSNumber numberWithInteger:sexuality]];
         }
-    }
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
@@ -127,30 +106,12 @@ static const float BL_SEXUALITY_CELL_WIDTH = 100.0f;
 
 #pragma mark
 #pragma Getter and Setter
-- (void)setSexuality:(BLSexualityType)sexuality {
+- (void)setSexuality:(BLSexualityType )sexuality {
+    
     _sexuality = sexuality;
-    if (_sexuality == BLSexualityTypeNone) {
-        return;
-    }
-    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[self indexItemFromSexuality:sexuality] inSection:0];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[self indexItemFromSexuality:_sexuality] inSection:0];
     [_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
-}
-
-- (void)setSexualities:(NSMutableArray *)sexualities {
-    if (!sexualities) {
-        return;
-    }
-    self.collectionView.allowsMultipleSelection = YES;
-    self.allowMutipleSelection = YES;
-
-    _sexualities = sexualities;
-    for (NSNumber *sexuality in _sexualities) {
-        if (sexuality == BLSexualityTypeNone) {
-            continue;
-        }
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[self indexItemFromSexuality:(BLSexualityType)sexuality.integerValue] inSection:0];
-        [_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
-    }
 }
 
 - (void)setGender:(BLGender)gender {

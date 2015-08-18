@@ -34,6 +34,7 @@
 @property (strong, nonatomic) UILabel *lbSecondLeft;
 @property (assign, nonatomic) NSInteger secondLeftToResend;
 @property (strong, nonatomic) NSString *code;
+@property (strong, nonatomic) NSString *alertViewWhere;//判断点击的是微信还是微博下载界面
 
 @end
 
@@ -63,6 +64,7 @@
     [self.view addGestureRecognizer:self.tapGestureRecognizer];
     
     [self layoutSubviews];
+    self.alertViewWhere = nil;
 }
 
 #pragma mark Layouts
@@ -292,20 +294,20 @@
 }
 
 - (void)weiboLogin:(id)sender {
-//    WBSendMessageToWeiboRequest *req = [WBSendMessageToWeiboRequest requestWithMessage:[self messageToShare]];
-//    req.userInfo = @{@"ShareMessageFrom" : @"SendMessageToWeiboViewController",
-//                         @"Other_Info_1" : [NSNumber numberWithInt:123]};
-//    [WeiboSDK sendRequest:req];
-    
-    WBAuthorizeRequest *request = [WBAuthorizeRequest request];
-    request.redirectURI = kWeiBoRedirectURL;
-    request.scope = @"all";
-    request.userInfo = @{@"SSO_From": @"SendMessageToWeiboViewController",
-                         @"Other_Info_1": [NSNumber numberWithInt:123],
-                         @"Other_Info_2": @[@"obj1", @"obj2"],
-                         @"Other_Info_3": @{@"key1": @"obj1", @"key2": @"obj2"}};
-    [WeiboSDK sendRequest:request];
-
+    if ([WeiboSDK isWeiboAppInstalled] == NO) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"未安装微信客户端，                 是否现在去下载？" message:nil delegate:self cancelButtonTitle:@"以后再说" otherButtonTitles:@"现在下载", nil];
+        [alertView show];
+        self.alertViewWhere = @"WB";
+    } else {
+        WBAuthorizeRequest *request = [WBAuthorizeRequest request];
+        request.redirectURI = kWeiBoRedirectURL;
+        request.scope = @"all";
+        request.userInfo = @{@"SSO_From": @"SendMessageToWeiboViewController",
+                             @"Other_Info_1": [NSNumber numberWithInt:123],
+                             @"Other_Info_2": @[@"obj1", @"obj2"],
+                             @"Other_Info_3": @{@"key1": @"obj1", @"key2": @"obj2"}};
+        [WeiboSDK sendRequest:request];
+    }
 }
 //- (WBMessageObject *)messageToShare {
 //    WBMessageObject *message = [WBMessageObject message];
@@ -315,11 +317,12 @@
 //}
 
 - (void)wechatLogin:(id)sender {
+    
     if ([WXApi isWXAppInstalled] == NO) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"未安装微信客户端，                 是否现在去下载？" message:nil delegate:self cancelButtonTitle:@"以后再说" otherButtonTitles:@"现在下载", nil];
-        [alertView setAlertViewStyle:UIAlertViewStyleDefault];
         [alertView show];
-    }else {
+        self.alertViewWhere = @"WX";
+    } else {
         SendAuthReq *req = [[SendAuthReq alloc] init];
         req.scope = @"snsapi_userinfo";//snsapi_base只能获取到openid，意义不大，所以使用snsapi_userinfo
         req.state = kAppDescription;//随便数字
@@ -327,11 +330,6 @@
     }
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[WXApi getWXAppInstallUrl]]];
-    }
-}
 
 #pragma mark - handle tab gesture
 - (void)tapHandler:(UITapGestureRecognizer *)gesture {
@@ -568,6 +566,20 @@
         _lbSecondLeft.alpha = 0.0f;
     }
     return _lbSecondLeft;
+}
+
+
+#pragma mark --alertView
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        if ([self.alertViewWhere isEqualToString:@"WX"]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[WXApi getWXAppInstallUrl]]];
+            
+        } else if ([self.alertViewWhere isEqualToString:@"WB"]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[WeiboSDK getWeiboAppInstallUrl]]];
+        }
+    }
+    
 }
 
 - (UITapGestureRecognizer *)tapGestureRecognizer {

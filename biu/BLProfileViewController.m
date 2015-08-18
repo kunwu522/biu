@@ -58,6 +58,8 @@ static NSString *BL_PROFIEL_SEXUALITY_CELL_REUSEID = @"BLSexualityCell";
 
 static const float AVATOR_WIDTH = 163.0f;
 
+static CGFloat kImageOriginHight = 200;
+static CGFloat kTempHeight = 80.0f;
 #pragma mark - life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -71,6 +73,9 @@ static const float AVATOR_WIDTH = 163.0f;
     _tableView.dataSource = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.allowsSelection = NO;
+    
+//    self.tableView.contentInset = UIEdgeInsetsMake(kImageOriginHight, 0, 0, 0);
+    
     [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:BL_PLACEHOLDER_CELL_REUSEID];
     [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:BL_BUTTON_CELL_REUSEID];
     [_tableView registerClass:[BLGenderTableViewCell class] forCellReuseIdentifier:BL_PROFILE_GENDER_CELL_REUSEID];
@@ -78,6 +83,10 @@ static const float AVATOR_WIDTH = 163.0f;
     [_tableView registerClass:[BLZodiacAndAgeTableViewCell class] forCellReuseIdentifier:BL_PROFILE_ZODIAC_AND_AGE_CELL_REUSEID];
     [_tableView registerClass:[BLStyleTableViewCell class] forCellReuseIdentifier:BL_PROFIEL_STYLE_CELL_REUSEID];
     [_tableView registerClass:[BLSexualityTableViewCell class] forCellReuseIdentifier:BL_PROFIEL_SEXUALITY_CELL_REUSEID];
+    
+    self.expandZoomImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"login_signup_background.png"]];
+    self.expandZoomImageView.frame = CGRectMake(0, -kImageOriginHight - kTempHeight, self.tableView.frame.size.width, kImageOriginHight + kTempHeight);
+    [self.tableView addSubview:self.expandZoomImageView];
     
     if (self.profileViewType == BLProfileViewTypeUpdate) {
         [self.view addSubview:self.btnMenu];
@@ -97,6 +106,21 @@ static const float AVATOR_WIDTH = 163.0f;
     }
 }
 
+//tableView下拉图片变长
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+
+    CGFloat yOffset  = scrollView.contentOffset.y;
+    CGFloat xOffset = (yOffset + kImageOriginHight)/2;
+    if (yOffset < -kImageOriginHight) {
+        CGRect f = self.expandZoomImageView.frame;
+        f.origin.y = yOffset - kTempHeight;
+        f.size.height =  -yOffset + kTempHeight;
+        f.origin.x = xOffset;
+        f.size.width = self.view.frame.size.width + fabsf(xOffset)*2;
+        self.expandZoomImageView.frame = f;
+    }
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     if (self.profileViewType == BLProfileViewTypeUpdate && self.currentUser) {
         self.gender = self.currentUser.profile.gender;
@@ -111,9 +135,10 @@ static const float AVATOR_WIDTH = 163.0f;
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd"];
         self.birthday = [formatter dateFromString:defaultDate];
-        self.zodiac = BLZodiacNone;
-        self.style = BLStyleTypeNone;
+        self.zodiac = BLZodiacCapricorn;
+        self.style = BLStyleTypeManAll;
     }
+    
         //    偏好设置取数据
         NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
 

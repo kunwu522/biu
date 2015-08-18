@@ -16,8 +16,18 @@ typedef NS_ENUM(NSUInteger, BLProfileViewType) {
 };
 
 @property (assign, nonatomic) BLProfileViewType profileViewType; //default is BLProfileViewTypeCreate
-
+@property (nonatomic, strong) UIImageView *expandZoomImageView;
 
 @end
+
+
+
+
+
+
+
+
+
+
 
 

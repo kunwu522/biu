@@ -63,7 +63,7 @@ static NSString *OPEN_ID = @"open_id";
     [defaults setObject:self.preferZodiacs forKey:PREFER_ZODIACS];
     [defaults setObject:self.preferStyles forKey:PREFER_STYLES];
     [defaults setObject:self.open_id forKey:OPEN_ID];
-    
+
     [defaults synchronize];
 }
 

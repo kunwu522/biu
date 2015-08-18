@@ -172,7 +172,7 @@
     [delegate.passwordItem resetKeychainItem];//清keychain
     delegate.currentUser = nil;
     [NSUserDefaults resetStandardUserDefaults];//清userDefaults,不好用
-
+    
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"user_id"];
 
     //Clear Cookies

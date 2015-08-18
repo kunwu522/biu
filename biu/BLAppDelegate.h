@@ -29,8 +29,8 @@
 
 #define kWeiBoAppKey         @"747887283"
 #define kWeiBoAppSecret      @"804105ed166fd665b1904c69bea171e3"
-//#define kWeiBoRedirectURL    @"http://api.weibo.com/oauth2/default.html"
-#define kWeiBoRedirectURL    @"http://www.sina.com"
+#define kWeiBoRedirectURL    @"https://api.weibo.com/oauth2/default.html"
+
 #define kAccessToken   @"AccessToken"
 #define kOpenId        @"OpenId"
 #define kRefreshToken  @"RefreshToken"

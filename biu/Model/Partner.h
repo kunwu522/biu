@@ -12,7 +12,7 @@
 
 @property (strong, nonatomic) NSNumber *partnerId;
 //@property (strong, nonatomic) NSNumber *userId;
-@property (assign, nonatomic) NSArray *sexualities;
+@property (strong, nonatomic) NSArray *sexualities;
 @property (strong, nonatomic) NSArray *preferZodiacs;
 @property (strong, nonatomic) NSNumber *minAge;
 @property (strong, nonatomic) NSNumber *maxAge;

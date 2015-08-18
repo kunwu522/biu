@@ -18,18 +18,18 @@ typedef NS_ENUM(NSInteger, BLGender) {
 
 typedef NS_ENUM(NSUInteger, BLZodiac) {
     BLZodiacNone = 0,
-    BLZodiacAries = 1,
-    BLZodiacTaurus = 2,
-    BLZodiacGemini = 3,
-    BLZodiacCancer = 4,
-    BLZodiacLeo = 5,
-    BLZodiacVirgo = 6,
-    BLZodiacLibra = 7,
-    BLZodiacScorpio = 8,
-    BLZodiacSagittarius = 9,
-    BLZodiacCapricorn = 10,
-    BLZodiacAquarius = 11,
-    BLZodiacPisces = 12,
+    BLZodiacAries = 1,//白羊
+    BLZodiacTaurus = 2,//金牛
+    BLZodiacGemini = 3,//双子
+    BLZodiacCancer = 4,//巨蟹
+    BLZodiacLeo = 5,//狮子
+    BLZodiacVirgo = 6,//处女
+    BLZodiacLibra = 7,//天秤
+    BLZodiacScorpio = 8,//天蝎
+    BLZodiacSagittarius = 9,//射手
+    BLZodiacCapricorn = 10,//摩羯
+    BLZodiacAquarius = 11,//水瓶
+    BLZodiacPisces = 12,//双鱼
 };
 
 typedef NS_ENUM(NSUInteger, BLStyleType) {

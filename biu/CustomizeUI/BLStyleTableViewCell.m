@@ -42,6 +42,7 @@ static const float CELL_WIDTH = 90.0;
         
         self.gender = BLGenderMale;
         
+        
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
         CGFloat interitemSpacing = ([[UIScreen mainScreen] bounds].size.width - ([BLGenernalDefinition resolutionForDevices:CELL_WIDTH] * 3)) / 4;
         layout.sectionInset = UIEdgeInsetsMake([BLGenernalDefinition resolutionForDevices:30.0f], interitemSpacing,
