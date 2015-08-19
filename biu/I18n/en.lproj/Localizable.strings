@@ -117,3 +117,23 @@
 // Message
 "You've just started your lovestory" = "You've just started your lovestory";
 "Chat is instance! No record if you close the page!!" = "Chat is instance! No record if you close the page!!";
+
+// ThirdLogin
+"Don’t have WeChat                 Download now?" = "Don’t have WeChat                 Download now?";
+"Don’t have Weibo                 Download now?" = "Don’t have Weibo                 Download now?";
+"later" = "later";
+"download" = "download";
+
+// SignupVC
+"Sign up failed" = "Sign up failed";
+"Please try again" = "Please try again";
+"Save Successed!" = "Save Successed!";
+
+//ProfileVC
+"Create Profile failed            please try again" = "Create Profile failed            please try again";
+
+//PartnerVC
+"Please select zodiacs you prefer" = "Please select zodiacs you prefer";
+"Please select styles you prefer" = "Please select styles you prefer";
+"Zodiacs you prefer" = "Zodiacs you prefer";
+

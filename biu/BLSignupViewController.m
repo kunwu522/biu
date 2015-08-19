@@ -35,7 +35,6 @@
 @property (assign, nonatomic) NSInteger secondLeftToResend;
 @property (strong, nonatomic) NSString *code;
 @property (strong, nonatomic) NSString *alertViewWhere;//判断点击的是微信还是微博下载界面
-
 @end
 
 @implementation BLSignupViewController
@@ -154,7 +153,7 @@
     
     [_lbSecondLeft mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(_btnGetCode.mas_centerY);
-        make.right.equalTo(_lbSecondLeft.superview).with.offset([BLGenernalDefinition resolutionForDevices:-50.0f]);
+        make.right.equalTo(_lbSecondLeft.superview).with.offset([BLGenernalDefinition resolutionForDevices:-41.0f]);
     }];
     
     [_lbContract mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -177,7 +176,7 @@
     NSString *errMsg = @"";
     errMsg = [User validatePhoneNumber:_tfPhoneNumber.text];
     if (errMsg) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
         [av show];
         return;
     }
@@ -218,11 +217,11 @@
         if (blDelegate.deviceToken && user.userId) {
             [[BLHTTPClient sharedBLHTTPClient] registToken:blDelegate.deviceToken user:user success:^(NSURLSessionDataTask *task, id responseObject) {
                 NSLog(@"Regist device token successed.");
-                // 获取cookie，判断登录状态
-                NSHTTPCookie *userIdCookie = [self findCookieByName:@"user_id" isExpiredBy:(NSDate *)[NSDate date]];
-                NSHTTPCookie *rememberTokenCookie = [self findCookieByName:@"remember_token" isExpiredBy:[NSDate date]];
-                
-                NSLog(@"%@-=-=-=-=--=-=-%@",userIdCookie,rememberTokenCookie);
+//                // 获取cookie，判断登录状态
+//                NSHTTPCookie *userIdCookie = [self findCookieByName:@"user_id" isExpiredBy:(NSDate *)[NSDate date]];
+//                NSHTTPCookie *rememberTokenCookie = [self findCookieByName:@"remember_token" isExpiredBy:[NSDate date]];
+                [_timer invalidate];
+//                NSLog(@"%@-=-=-=-=--=-=-%@",userIdCookie,rememberTokenCookie);
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
                 NSLog(@"Regist device token failed.");
             }];
@@ -236,30 +235,30 @@
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"Signup failed%@",error.localizedDescription);
         
-        UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:@"注册失败" message:@"请重新注册" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sign up failed", nil) message:NSLocalizedString(@"Please try again", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil, nil];
         [alertV show];
     }];
     
 }
 
-#pragma mark --取出cookie
-- (NSHTTPCookie *) findCookieByName:(NSString *)name isExpiredBy:(NSDate *)time {
-    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-    if (!cookies || cookies.count == 0) {
-        return nil;
-    }
-    for (NSHTTPCookie *cookie in cookies) {
-        if ([cookie.name isEqualToString:name] && [cookie.expiresDate compare:time] == NSOrderedDescending) {
-            return cookie;
-        }
-    }
-    return nil;
-}
+//#pragma mark --取出cookie
+//- (NSHTTPCookie *) findCookieByName:(NSString *)name isExpiredBy:(NSDate *)time {
+//    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+//    if (!cookies || cookies.count == 0) {
+//        return nil;
+//    }
+//    for (NSHTTPCookie *cookie in cookies) {
+//        if ([cookie.name isEqualToString:name] && [cookie.expiresDate compare:time] == NSOrderedDescending) {
+//            return cookie;
+//        }
+//    }
+//    return nil;
+//}
 
 - (void)getCode:(id)sender {
     NSString *errMsg = [User validatePhoneNumber:_tfPhoneNumber.text];
     if (errMsg) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
         [av show];
         return;
     }
@@ -273,13 +272,15 @@
     _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", (long)_secondLeftToResend];
     _btnGetCode.enabled = NO;
     [self showSecondToResend];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerfired:) userInfo:nil repeats:YES];
+    
     
 //    [[BLHTTPClient sharedBLHTTPClient] passcode:_code phoneNumber:_tfPhoneNumber.text success:^(NSURLSessionDataTask *task, id responseObject) {
 //        _secondLeftToResend = 60;
 //        _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", (long)_secondLeftToResend];
 //        _btnGetCode.enabled = NO;
 //        [self showSecondToResend];
-//        _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerfired) userInfo:nil repeats:YES];
+//        _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerfired:) userInfo:nil repeats:YES];
 //    } failure:^(NSURLSessionDataTask *task, NSError *error) {
 //        NSLog(@"Sending passcode failed, error: %@", error.description);
 //        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:error.localizedDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
@@ -295,7 +296,7 @@
 
 - (void)weiboLogin:(id)sender {
     if ([WeiboSDK isWeiboAppInstalled] == NO) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"未安装微信客户端，                 是否现在去下载？" message:nil delegate:self cancelButtonTitle:@"以后再说" otherButtonTitles:@"现在下载", nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Don’t have WeChat                 Download now?", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"later", nil) otherButtonTitles:NSLocalizedString(@"download", nil), nil];
         [alertView show];
         self.alertViewWhere = @"WB";
     } else {
@@ -319,7 +320,7 @@
 - (void)wechatLogin:(id)sender {
     
     if ([WXApi isWXAppInstalled] == NO) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"未安装微信客户端，                 是否现在去下载？" message:nil delegate:self cancelButtonTitle:@"以后再说" otherButtonTitles:@"现在下载", nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Don’t have Weibo                 Download now?", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"later", nil) otherButtonTitles:NSLocalizedString(@"download", nil), nil];
         [alertView show];
         self.alertViewWhere = @"WX";
     } else {
@@ -340,10 +341,14 @@
 }
 
 #pragma mark - handle timer
-- (void)timerfired {
+- (void)timerfired:(NSTimer *)timer {
     if (_secondLeftToResend > 0) {
-        _secondLeftToResend -= 1;
-        _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", (long)_secondLeftToResend];
+        _secondLeftToResend --;
+        if (_secondLeftToResend < 10) {
+            _lbSecondLeft.text = [NSString stringWithFormat:@"0%ld", (long)_secondLeftToResend];
+        } else {
+            _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", (long)_secondLeftToResend];
+        }
     } else {
         [_timer invalidate];
         [self hideSecondToRsend];

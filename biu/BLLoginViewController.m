@@ -221,7 +221,7 @@
             if (!message) {
                 message = @"Log in failed. Please try again later";
             }
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(message, nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
             [av show];
         }];
 
@@ -389,7 +389,7 @@
 - (void)wechatLogin:(id)sender {
     
     if ([WXApi isWXAppInstalled] == NO) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"未安装微信客户端，                 是否现在去下载？" message:nil delegate:self cancelButtonTitle:@"以后再说" otherButtonTitles:@"现在下载", nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Don’t have WeChat                 Download now?", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"later", nil) otherButtonTitles:NSLocalizedString(@"download", nil), nil];
         [alertView show];
         self.alertViewWhere = @"WX";
     } else {
@@ -414,7 +414,7 @@
 
 - (void)weiboLogin:(id)sender {
     if ([WeiboSDK isWeiboAppInstalled] == NO) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"未安装微信客户端，                 是否现在去下载？" message:nil delegate:self cancelButtonTitle:@"以后再说" otherButtonTitles:@"现在下载", nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Don’t have Weibo                 Download now?", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"later", nil) otherButtonTitles:NSLocalizedString(@"download", nil), nil];
         [alertView show];
         self.alertViewWhere = @"WB";
     } else {

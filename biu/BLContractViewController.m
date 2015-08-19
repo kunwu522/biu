@@ -8,6 +8,7 @@
 
 #import "BLContractViewController.h"
 #import "Masonry.h"
+#import "BLProfileViewController.h"
 
 @interface BLContractViewController ()
 
@@ -61,6 +62,8 @@
     if (self.delegate && [self.delegate respondsToSelector:@selector(didDismissBLContractViewController:)]) {
         [self.delegate didDismissBLContractViewController:self];
     }
+    
+    
 }
 
 #pragma mark -

@@ -16,6 +16,7 @@
 #import "BLMenuViewController.h"
 #import "UIViewController+BLMenuNavController.h"
 #import "BLSexualityTableViewCell.h"
+#import "BLProfileViewController.h"
 
 #import "Masonry.h"
 
@@ -42,6 +43,8 @@ typedef NS_ENUM(NSUInteger, BLRequestState) {
 @property (assign, nonatomic) BLRequestState createProfileState;
 @property (assign, nonatomic) BLRequestState createPartnerState;
 @property (strong, nonatomic) NSTimer *timer;
+
+@property (strong, nonatomic) UINavigationController *fillingInfoNavController;
 
 @end
 
@@ -224,20 +227,11 @@ static CGFloat kTempHeight = 80.0f;
             
             cell.sexuality = (BLSexualityType)_sexuality.integerValue;
            
-//            if (_sexuality.integerValue == 1
-//                || _sexuality.integerValue == 5
-//                || _sexuality.integerValue == 6) {
-//                cell.title.text = NSLocalizedString(@"Styles you prefer (female)", nil);
-//                cell.isMaleOrFemale = @"female";
-//                cell.gender = BLGenderFemale;
-//            } else {
-//                cell.title.text = NSLocalizedString(@"Styles you prefer (male)", nil);
-//                cell.isMaleOrFemale = @"male";
-//                cell.gender = BLGenderMale;
-//            }
             cell.allowMultiSelected = YES;
             cell.delegate = self;
             cell.tag = BLPartnerSectionStyle;
+            cell.title.text = NSLocalizedString(@"Styles you prefer", nil);
+            
             cell.preferStyles = [[NSMutableArray alloc] initWithArray:_preferStyles];
             
             return cell;
@@ -368,7 +362,6 @@ static CGFloat kTempHeight = 80.0f;
 #pragma mark - handle action
 - (void)createPartner:(id)sender {
     Partner *partner = [Partner new];
-    
     NSArray *arr = [NSArray arrayWithObject:_sexuality];
     partner.sexualities = arr;
     partner.minAge = _minAge;
@@ -376,44 +369,38 @@ static CGFloat kTempHeight = 80.0f;
     partner.preferZodiacs = _preferZodiacs;
     partner.preferStyles = _preferStyles;
     
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(timerfired) userInfo:nil repeats:YES];
     NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
     User *user = [[User alloc] init];
     user.userId = dic[@"user_id"];
     user.username = dic[@"username"];
     [user save];
-    if (self.profile) {
-      
-        _createProfileState = BLRequestStateStarted;
-        
-        [[BLHTTPClient sharedBLHTTPClient] createProfile:self.profile user:user success:^(NSURLSessionDataTask *task, id responseObject) {
-            NSLog(@"create profile successed...");
-            self.profile.profileId = [responseObject objectForKey:@"profile_id"];
-            [self.profile save];
-            _createProfileState = BLRequestStateFinished;
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            NSLog(@"create profile profile failed. Error: %@", error.description);
-            _createProfileState = BLRequestStateFailed;
-        }];
-    } else {
-        NSLog(@"Error: profile is null.");
-        _createProfileState = BLRequestStateFailed;
-    }
     
-    _createPartnerState = BLRequestStateStarted;
-    [[BLHTTPClient sharedBLHTTPClient] createPartner:partner user:user success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"create profile successed, partner id: %@.", [responseObject objectForKey:@"partner_id"]);
-        partner.partnerId = [responseObject objectForKey:@"partner_id"];
-        [partner save];
-        _createPartnerState = BLRequestStateFinished;
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSString *message = [BLHTTPClient responseMessage:task error:error];
-        if (!message) {
-            message = NSLocalizedString(@"create profile failed, please try again later.", nil);
-        }
-        NSLog(@"create partner failed, error: %@", message);
-        _createPartnerState = BLRequestStateFailed;
-    }];
+    if (_preferZodiacs.count == 0) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Please select zodiacs you prefer", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
+        [alertView show];
+    } else if (_preferStyles.count == 0) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Please select styles you prefer", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
+        [alertView show];
+    } else {
+
+        [[BLHTTPClient sharedBLHTTPClient] createPartner:partner user:user success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"create profile successed, partner id: %@.", [responseObject objectForKey:@"partner_id"]);
+            partner.partnerId = [responseObject objectForKey:@"partner_id"];
+            [partner save];
+            
+            [self dismissViewControllerAnimated:YES completion:^{
+                
+            }];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSString *message = [BLHTTPClient responseMessage:task error:error];
+            if (!message) {
+                message = NSLocalizedString(@"create profile failed, please try again later.", nil);
+            }
+            NSLog(@"create partner failed, error: %@", message);
+            UIAlertView *alertV = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Create Profile failed            please try again", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:nil, nil];
+            [alertV show];
+        }];
+    }
 }
 
 - (void)updatePartner:(id)sender {
@@ -428,10 +415,10 @@ static CGFloat kTempHeight = 80.0f;
     self.currentUser.partner.preferStyles = _preferStyles;
     
     if (_preferZodiacs.count == 0) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"未添加你喜欢的星座" message:nil delegate:self cancelButtonTitle:@"返回" otherButtonTitles:nil, nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Please select zodiacs you prefer", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
         [alertView show];
     } else if (_preferStyles.count == 0) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"未添加你喜欢的类型" message:nil delegate:self cancelButtonTitle:@"返回" otherButtonTitles:nil, nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Please select styles you prefer", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
         [alertView show];
     } else {
         
@@ -457,6 +444,7 @@ static CGFloat kTempHeight = 80.0f;
 }
 
 - (void)back:(id)sender {
+
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -468,65 +456,9 @@ static CGFloat kTempHeight = 80.0f;
     [self backToRootViewController:sender];
 }
 
-- (void)timerfired {
-    if (_createPartnerState == BLRequestStateFinished && _createProfileState == BLRequestStateFinished) {
-
-        // Create master navigation controller
-        BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
-        BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
-        UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
-        masterNavViewController.navigationBarHidden = YES;
-        // Create BL Menu view controller
-        BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
-                                                                  menuViewController:menuViewController];
-        [self presentViewController:menuNavController animated:YES completion:nil];
-        [_timer invalidate];//停止
-    }
-    if (_createProfileState == BLRequestStateFailed || _createPartnerState == BLRequestStateFailed) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Updating profile failed. Please try again", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alertView show];
-        [_timer invalidate];
-    }
-}
 
 #pragma mark - private
-//- (BOOL)isBisexual {
-//    
-//    
-//    BOOL hasMaleSexuality = NO;
-//    if ([_sexuality containsObject:[NSNumber numberWithInteger:BLSexualityTypeMan]]
-//        || [_sexualities containsObject:[NSNumber numberWithInteger:BLSexualityType1]]
-//        || [_sexualities containsObject:[NSNumber numberWithInteger:BLSexualityType0]]) {
-//        hasMaleSexuality = YES;
-//    }
-//    BOOL hasFemaleSexuality = NO;
-//    if ([_sexualities containsObject:[NSNumber numberWithInteger:BLSexualityTypeWoman]]
-//        || [_sexualities containsObject:[NSNumber numberWithInteger:BLSexualityTypeT]]
-//        || [_sexualities containsObject:[NSNumber numberWithInteger:BLSexualityTypeP]]) {
-//        hasFemaleSexuality = YES;
-//    }
-//    
-//    if (hasFemaleSexuality && hasMaleSexuality) {
-//        return YES;
-//    }
-//
-//    return NO;
-//}
 
-//- (void)removePreferStylesBaseOnSexuality {
-//    
-//    if (!_sexualities) {
-//        BLGender gender = [Partner genderBySexuality:((NSNumber *)self.sexualities.firstObject).integerValue];
-//        
-//        NSMutableArray *preferStyles = [NSMutableArray array];
-//        for (NSNumber *style in self.preferStyles) {
-//            if ([Partner genderByStyle:style.integerValue] == gender) {
-//                [preferStyles addObject:style];
-//            }
-//        }
-//        self.preferStyles = (NSArray *)preferStyles;
-//    }
-//}
 
 #pragma mark - Getter and Setter
 - (UIButton *)btnBack {

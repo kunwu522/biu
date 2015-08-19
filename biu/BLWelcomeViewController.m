@@ -36,6 +36,7 @@
 @property (strong, nonatomic) UIView *background;
 @property (strong, nonatomic) UIImageView *imageView;
 @property (strong, nonatomic) UINavigationController *fillingInfoNavController;
+@property (strong, nonatomic) UINavigationController *partnerInfoNavController;
 @property (nonatomic) BOOL isLoginLayout;
 @property (strong, nonatomic) NSString *isIntoWhere;
 
@@ -182,7 +183,7 @@ static double ICON_INITIAL_SIZE = 147.5;
         User *thirdLoginInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
         [thirdLoginInfo save];
         
-        if(responseObject[@"user"][@"profile"] && responseObject[@"user"][@"partner"])  {
+        if(responseObject[@"user"][@"profile"] && responseObject[@"user"][@"partner"]) {
             //    进入menu
             self.isIntoWhere = @"menu";
             NSLog(@"OK======");
@@ -197,8 +198,13 @@ static double ICON_INITIAL_SIZE = 147.5;
             [self dismissViewControllerAnimated:NO completion:nil];
             [self presentViewController:menuNavController animated:YES completion:nil];
             
+        } else if (responseObject[@"user"][@"profile"] && !responseObject[@"uesr"][@"partner"]){
+            //   进入partner
+            [_HUD hide:YES];
+            [self dismissViewControllerAnimated:NO completion:nil];
+            [self presentViewController:self.fillingInfoNavController.navigationController animated:YES completion:nil];
         } else {
-            //    进入signup
+            //    进入profile
             NSLog(@"=====NULL======");
              self.isIntoWhere = @"profile";
             [_HUD hide:YES];
@@ -248,25 +254,26 @@ static double ICON_INITIAL_SIZE = 147.5;
                 if ((responseObject[@"user"][@"profile"] &&
                      responseObject[@"user"][@"partner"]) &&
                     (!([responseObject[@"user"][@"profile"] isKindOfClass:[NSNull class]]) &&
-                     !([responseObject[@"user"][@"partner"] isKindOfClass:[NSNull class]]))) {//如果profile或partner不为空，从服务器获取数据应判断<null>
-                    // 进入menu
-                    BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
-                    BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
-                    UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
-                    masterNavViewController.navigationBarHidden = YES;
-                    // Create BL Menu view controller
-                    BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
-                                menuViewController:menuViewController];
-                    [_HUD hide:YES];
-                    [self dismissViewControllerAnimated:NO completion:nil];
-                    [self presentViewController:menuNavController animated:YES completion:nil];
+                     !([responseObject[@"user"][@"partner"] isKindOfClass:[NSNull class]]))) {
+                        //如果profile或partner不为空，从服务器获取数据应判断<null>
+                        // 进入menu
+                        BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
+                        BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
+                        UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
+                        masterNavViewController.navigationBarHidden = YES;
+                        // Create BL Menu view controller
+                        BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
+                                    menuViewController:menuViewController];
+                        [_HUD hide:YES];
+                        [self dismissViewControllerAnimated:NO completion:nil];
+                        [self presentViewController:menuNavController animated:YES completion:nil];
                         
-                }else{
-                    [_HUD hide:YES];
-                    // 进入profile
-                    [self dismissViewControllerAnimated:NO completion:nil];
-                    [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
-                }
+                    }  else {
+                        [_HUD hide:YES];
+                        // 进入profile
+                        [self dismissViewControllerAnimated:NO completion:nil];
+                        [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
+                                }
                 
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
                 [_HUD hide:YES];
@@ -419,6 +426,22 @@ static double ICON_INITIAL_SIZE = 147.5;
 
 #pragma mark -
 #pragma mark Getter
+
+- (UINavigationController *)partnerInfoNavController {
+    if (!_partnerInfoNavController) {
+        // Create filling information navigation controller
+        BLProfileViewController *profileViewController = [[BLProfileViewController alloc] initWithNibName:nil bundle:nil];
+        profileViewController.profileViewType = BLProfileViewTypeCreate;
+        _fillingInfoNavController = [[UINavigationController alloc] initWithRootViewController:profileViewController];
+        
+        
+        
+        _partnerInfoNavController.navigationBarHidden = YES;
+        
+    }
+    return _fillingInfoNavController;
+}
+
 - (UINavigationController *)fillingInfoNavController {
     if (!_fillingInfoNavController) {
         // Create filling information navigation controller

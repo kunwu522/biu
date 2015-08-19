@@ -486,9 +486,40 @@ static CGFloat kTempHeight = 80.0f;
     profile.style = _style;
     profile.sexuality = _sexuality;
     
-    BLPartnerViewController *partnerController = [[BLPartnerViewController alloc] initWithNibName:nil bundle:nil];
-    partnerController.profile = profile;
-    [self.navigationController pushViewController:partnerController animated:YES];
+    NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+    if (dic[@"profile_id"]) {
+        [[BLHTTPClient sharedBLHTTPClient] updateProfile:self.currentUser.profile user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"Update profile successed...");
+            
+            [self.currentUser.profile save];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Save Successed!", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            [av show];
+            BLPartnerViewController *partnerController = [[BLPartnerViewController alloc] initWithNibName:nil bundle:nil];
+            //    partnerController.profile = profile;
+            [self.navigationController pushViewController:partnerController animated:YES];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"Updating profile failed. Error: %@", error.description);
+            NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
+            if (!errMsg) {
+                errMsg = NSLocalizedString(@"Updating profile failed. Please try again", nil);
+            }
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+            [alertView show];
+        }];
+    } else {
+        [[BLHTTPClient sharedBLHTTPClient] createProfile:profile user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"create profile successed...");
+            profile.profileId = [responseObject objectForKey:@"profile_id"];
+            [profile save];
+            BLPartnerViewController *partnerController = [[BLPartnerViewController alloc] initWithNibName:nil bundle:nil];
+            [self.navigationController pushViewController:partnerController animated:YES];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"create profile profile failed. Error: %@", error.description);
+            UIAlertView *alertV = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Create Profile failed            please try again", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:nil, nil];
+            [alertV show];
+        }];
+    }
+  
 }
 
 #pragma mark - 

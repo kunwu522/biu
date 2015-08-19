@@ -168,4 +168,25 @@
 "Reset password successed!" = "修改密码成功!";
 "Reset password failed, please try again later!" = "修改密码失败，请稍后再试";
 
+// ThirdLogin
+"Don’t have WeChat                 Download now?" = "未安装微信客户端，                 是否现在去下载？";
+"Don’t have Weibo                 Download now?" = "未安装微博客户端，                 是否现在去下载？";
+"later" = "以后再说";
+"download" = "现在下载";
+
+// SignupVC
+"Sign up failed" = "注册失败";
+"Please try again" = "请重新注册";
+"Save Successed!" = "保存成功!";
+
+//ProfileVC
+"Create Profile failed            please try again" = "创建失败                     请重新创建";
+
+//PartnerVC
+"Please select zodiacs you prefer" = "请选择你喜欢的星座";
+"Please select styles you prefer" = "请选择你喜欢的类型";
+"Zodiacs you prefer" = "你喜欢的星座";
+
+
+
 

@@ -322,7 +322,7 @@ static NSInteger const BL_RESET_SUCCESS_ALERTVIEW = 1;
 - (UIButton *)btnGetCode {
     if (!_btnGetCode) {
         _btnGetCode = [[UIButton alloc] init];
-        [_btnGetCode addTarget:self action:@selector(getCode:) forControlEvents:UIControlEventTouchDown];
+        [_btnGetCode addTarget:self action:@selector(getCode:) forControlEvents:UIControlEventTouchUpInside];
         [_btnGetCode setTitleColor:[BLColorDefinition fontGreenColor] forState:UIControlStateNormal];
         [_btnGetCode setTitleColor:[BLColorDefinition fontGrayColor] forState:UIControlStateDisabled];
         _btnGetCode.titleLabel.font = [BLFontDefinition lightFont:13.0f];
