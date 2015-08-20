@@ -59,6 +59,7 @@
         //_faceImageview.alpha = 0.0f;
         [_faceImageview setFrame:faceRect];
     }
+    _faceImageview.contentMode = UIViewContentModeScaleAspectFit;
     [self addSubview:_faceImageview];
     [UIView animateWithDuration:0.5f
                      animations:^{
@@ -89,7 +90,6 @@
                          [self removeFromSuperview];
                      }];
 }
-
 
 @end
 

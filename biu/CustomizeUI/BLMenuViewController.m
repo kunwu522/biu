@@ -104,15 +104,12 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
         self.lbUsername.text = user.username;
 
     }else{
-    [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@", [BLHTTPClient blBaseURL], user.userId]]
+        [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@", [BLHTTPClient blBaseURL], user.userId]]
                             placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
                                      options:SDWebImageRefreshCached | SDWebImageHandleCookies];
-    self.lbUsername.text = user.username;
+        self.lbUsername.text = user.username;
     }
-    
-    // 获取cookie，判断登录状态
-    NSHTTPCookie *userIdCookie = [self findCookieByName:@"user_id" isExpiredBy:(NSDate *)[NSDate date]];
-    NSHTTPCookie *rememberTokenCookie = [self findCookieByName:@"remember_token" isExpiredBy:[NSDate date]];
+
 }
 
 #pragma mark -
@@ -172,12 +169,12 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
         //下载图片完成
         
     }];
+//    bigImageView.contentMode =  UIViewContentModeScaleToFill;
 
     BLFaceView *faceBigview = [[BLFaceView alloc]initWithFrame:[[UIScreen mainScreen]bounds] withImage:bigImageView.image withPointRect:CGRectMake(_avatarImageView.frame.origin.x, _avatarImageView.frame.origin.y+64, _avatarImageView.frame.size.width, _avatarImageView.frame.size.height)];//从哪个点往出展示
-    
+
     [faceBigview setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"login_signup_background.png"]]];
 //    faceBigview.backgroundColor = [UIColor redColor];
-    
     [[[UIApplication sharedApplication].windows objectAtIndex:0] addSubview:faceBigview];
     faceBigview.alpha = 0.0f;
     [UIView animateWithDuration:0.5f

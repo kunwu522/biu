@@ -33,6 +33,8 @@
 @property (strong, nonatomic) UIImageView *imageViewAvatar;
 @property (strong, nonatomic) UIButton *btnMenu;
 @property (strong, nonatomic) UIButton *btnBackToRoot;
+
+@property (strong, nonatomic) NSString *avatar_url;
 @property (strong, nonatomic) NSString *whichAlertV;
 
 @end
@@ -140,24 +142,27 @@ static CGFloat kTempHeight = 80.0f;
         self.zodiac = BLZodiacCapricorn;
         self.style = BLStyleTypeManAll;
     }
+    //    偏好设置取数据
+    NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+
+    NSString *avatar_url = [dic objectForKey:@"avatar_url"];
+    User *user = [[User alloc] init];
+    user.userId = dic[@"user_id"];
+    user.avatar_url = dic[@"avatar_url"];
+    self.avatar_url = user.avatar_url;
+    if (avatar_url) {
+        [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatar_url] placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"] options:SDWebImageHandleCookies];
+        
+    } else {
     
-        //    偏好设置取数据
-        NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
-
-        NSString *avatar_url = [dic objectForKey:@"avatar_url"];
-        User *user = [[User alloc] init];
-        user.userId = dic[@"user_id"];
-        user.avatar_url = dic[@"avatar_url"];
-
-        if (avatar_url) {
-            [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatar_url] placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"] options:SDWebImageHandleCookies];
-            
-        }else{
-            [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@",
-                                                                           [BLHTTPClient blBaseURL],self.currentUser.userId]]
-                                    placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
-                                             options: SDWebImageHandleCookies];
-        }
+        [self.imageViewAvatar setImage:[UIImage imageNamed:@"avatar_upload_icon.png"]];
+    }
+//        else{
+//            [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@",
+//                                                                           [BLHTTPClient blBaseURL],self.currentUser.userId]]
+//                                    placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
+//                                             options: SDWebImageHandleCookies];
+//        }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -397,15 +402,19 @@ static CGFloat kTempHeight = 80.0f;
 
 - (void)didFinishTakeOrChooseImage:(UIImage *)image orignalImage:(UIImage *)orignalImage {
     //Restore Image to SDWebImage cache
-    [[SDImageCache sharedImageCache]storeImage:image forKey:[NSString stringWithFormat:@"%@cycle/avatar/%@",
+    [[SDImageCache sharedImageCache] storeImage:image forKey:[NSString stringWithFormat:@"%@cycle/avatar/%@",
                                                              [BLHTTPClient blBaseURL],
                                                              self.currentUser.userId]];
     
     [self.tableView reloadData];
     [self dismissViewControllerAnimated:NO completion:nil];
     
-    [[BLHTTPClient sharedBLHTTPClient] uploadAvatar:self.currentUser avatar:image isRect:NO success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[BLHTTPClient sharedBLHTTPClient] uploadAvatar:self.currentUser avatar:image isRect:NO success:^(NSURLSessionDataTask *task, id responseObject) {//小图
         NSLog(@"Upload avatar cycle successed.");
+        User *user = [User new];
+        user.avatar_url = responseObject[@"user"][@"avatar_url"];
+        [user save];
+    
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
         if (!errMsg) {
@@ -415,8 +424,11 @@ static CGFloat kTempHeight = 80.0f;
         [av show];
     }];
     
-    [[BLHTTPClient sharedBLHTTPClient] uploadAvatar:self.currentUser avatar:orignalImage isRect:YES success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[BLHTTPClient sharedBLHTTPClient] uploadAvatar:self.currentUser avatar:orignalImage isRect:YES success:^(NSURLSessionDataTask *task, id responseObject) {//大图
         NSLog(@"Upload avatar rectangle successed.");
+        User *user = [User new];
+        user.avatar_large_url = responseObject[@"user"][@"avatar_large_url"];
+        [user save];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
         if (!errMsg) {
@@ -475,9 +487,7 @@ static CGFloat kTempHeight = 80.0f;
     profile.style = _style;
     profile.sexuality = _sexuality;
     
-    _whichAlertV = nil; BLPartnerViewController *partnerController = [[BLPartnerViewController alloc] initWithNibName:nil bundle:nil];
-    //    partnerController.profile = profile;
-    [self.navigationController pushViewController:partnerController animated:YES];
+    _whichAlertV = nil;
     NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
     if (dic[@"profile_id"]) {
         [[BLHTTPClient sharedBLHTTPClient] updateProfile:self.currentUser.profile user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
