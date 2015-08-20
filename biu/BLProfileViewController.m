@@ -33,6 +33,7 @@
 @property (strong, nonatomic) UIImageView *imageViewAvatar;
 @property (strong, nonatomic) UIButton *btnMenu;
 @property (strong, nonatomic) UIButton *btnBackToRoot;
+@property (strong, nonatomic) NSString *whichAlertV;
 
 @end
 
@@ -66,6 +67,7 @@ static CGFloat kTempHeight = 80.0f;
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [BLColorDefinition backgroundGrayColor];
     
+    _whichAlertV = nil;
     _tableView = [[UITableView alloc] initWithFrame:self.view.frame];
     _tableView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_tableView];
@@ -146,20 +148,6 @@ static CGFloat kTempHeight = 80.0f;
         User *user = [[User alloc] init];
         user.userId = dic[@"user_id"];
         user.avatar_url = dic[@"avatar_url"];
-//        user.username = dic[@"username"];
-    
-//    if (user.avatar_url && user.username) {
-//        [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:user.avatar_url, [BLHTTPClient blBaseURL], user.userId]]
-//                                placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
-//                                         options:SDWebImageRefreshCached | SDWebImageHandleCookies];
-//        self.lbUsername.text = user.username;
-//        
-//    }else{
-//        [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@", [BLHTTPClient blBaseURL], user.userId]]
-//                                placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
-//                                         options:SDWebImageRefreshCached | SDWebImageHandleCookies];
-//        self.lbUsername.text = user.username;
-//    }
 
         if (avatar_url) {
             [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatar_url] placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"] options:SDWebImageHandleCookies];
@@ -461,6 +449,7 @@ static CGFloat kTempHeight = 80.0f;
     self.currentUser.profile.style = _style;
     self.currentUser.profile.sexuality = _sexuality;
     
+    _whichAlertV = nil;
     [[BLHTTPClient sharedBLHTTPClient] updateProfile:self.currentUser.profile user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Update profile successed...");
         
@@ -486,6 +475,9 @@ static CGFloat kTempHeight = 80.0f;
     profile.style = _style;
     profile.sexuality = _sexuality;
     
+    _whichAlertV = nil; BLPartnerViewController *partnerController = [[BLPartnerViewController alloc] initWithNibName:nil bundle:nil];
+    //    partnerController.profile = profile;
+    [self.navigationController pushViewController:partnerController animated:YES];
     NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
     if (dic[@"profile_id"]) {
         [[BLHTTPClient sharedBLHTTPClient] updateProfile:self.currentUser.profile user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -494,9 +486,9 @@ static CGFloat kTempHeight = 80.0f;
             [self.currentUser.profile save];
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Save Successed!", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
             [av show];
-            BLPartnerViewController *partnerController = [[BLPartnerViewController alloc] initWithNibName:nil bundle:nil];
-            //    partnerController.profile = profile;
-            [self.navigationController pushViewController:partnerController animated:YES];
+            
+            _whichAlertV = @"creatProfile";
+           
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"Updating profile failed. Error: %@", error.description);
             NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
@@ -521,7 +513,18 @@ static CGFloat kTempHeight = 80.0f;
     }
   
 }
-
+#pragma mark --alertView
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if ([_whichAlertV isEqualToString:@"creatProfile"]) {
+        if (buttonIndex == 0) {
+            BLPartnerViewController *partnerController = [[BLPartnerViewController alloc] initWithNibName:nil bundle:nil];
+            //    partnerController.profile = profile;
+            [self.navigationController pushViewController:partnerController animated:YES];
+        }
+    }
+    
+    
+}
 #pragma mark - 
 #pragma mark Setter
 - (void)setProfileViewType:(BLProfileViewType)profileViewType {
