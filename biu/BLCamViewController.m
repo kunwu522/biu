@@ -153,11 +153,12 @@
         if (imageDataSampleBuffer) {
             NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
             UIImage *image = [[UIImage alloc] initWithData:imageData];
-            if (self.isFrontCamInput) {
-                image = [[UIImage alloc] initWithCGImage:image.CGImage scale:1.0f orientation:UIImageOrientationLeftMirrored];
-            }
+            image = [BLImageUtil rotatePhotoToUp:image];
+            UIImage *imageToDisplay = [UIImage imageWithCGImage:[image CGImage]
+                                                          scale:1.0f
+                                                    orientation: UIImageOrientationUp];
             BLCropImageViewController *cropImageViewController = [[BLCropImageViewController alloc] init];
-            cropImageViewController.image = image;
+            cropImageViewController.image = imageToDisplay;
             cropImageViewController.delegate = self;
             [self presentViewController:cropImageViewController animated:YES completion:nil];
         }

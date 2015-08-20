@@ -396,14 +396,13 @@ static CGFloat kTempHeight = 80.0f;
             BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
                                                                                           menuViewController:menuViewController];
             [self presentViewController:menuNavController animated:YES completion:nil];
-            
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSString *message = [BLHTTPClient responseMessage:task error:error];
             if (!message) {
                 message = NSLocalizedString(@"create profile failed, please try again later.", nil);
             }
             NSLog(@"create partner failed, error: %@", message);
-            UIAlertView *alertV = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Create Profile failed            please try again", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:nil, nil];
+            UIAlertView *alertV = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Create Profile failed\nplease try again", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:nil, nil];
             [alertV show];
         }];
     }

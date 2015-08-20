@@ -412,14 +412,12 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 
 #pragma mark - Notifications
 - (void)applicationWillEnterForeground {
-    NSLog(@"I m back!!!");
     if (self.currentUser.state == BLMatchStateMatching) {
         [self startMatchingAnimation];
     }
 }
 
 - (void)applicationWillResignActive {
-    NSLog(@"I m gone!!!");
     if (self.currentUser.state == BLMatchStateMatching) {
         [self stopMatchingAnimationWithCompletion:nil];
     }
