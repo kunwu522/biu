@@ -249,10 +249,10 @@ static CGFloat kTempHeight = 80.0f;
             button.layer.cornerRadius = 5.0f;
             button.clipsToBounds = YES;
             if (self.partnerViewType == BLPartnerViewControllerCreate) {
-                [button setTitle:@"Find" forState:UIControlStateNormal];
+                [button setTitle:NSLocalizedString(@"Find", nil) forState:UIControlStateNormal];
                 [button addTarget:self action:@selector(createPartner:) forControlEvents:UIControlEventTouchDown];
             } else {
-                [button setTitle:@"Save" forState:UIControlStateNormal];
+                [button setTitle:NSLocalizedString(@"Save", nil) forState:UIControlStateNormal];
                 [button addTarget:self action:@selector(updatePartner:) forControlEvents:UIControlEventTouchDown];
             }
             [cell addSubview:button];

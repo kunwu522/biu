@@ -181,11 +181,15 @@
 
 //ProfileVC
 "Create Profile failed            please try again" = "创建失败                     请重新创建";
+"Save" = "保存";
+"Continue" = "下一步";
+
 
 //PartnerVC
 "Please select zodiacs you prefer" = "请选择你喜欢的星座";
 "Please select styles you prefer" = "请选择你喜欢的类型";
 "Zodiacs you prefer" = "你喜欢的星座";
+"Find" = "开心寻找";
 
 
 

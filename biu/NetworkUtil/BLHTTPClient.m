@@ -9,8 +9,8 @@
 #import "BLHTTPClient.h"
 
 #if TARGET_IPHONE_SIMULATOR
-//static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
-static NSString* const BLBaseURLString = @"http://182.92.117.218:3001/cn/api/v1/";
+static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
+//static NSString* const BLBaseURLString = @"http://182.92.117.218:3001/cn/api/v1/";
 #else
 static NSString* const BLBaseURLString = @"http://182.92.117.218:3001/cn/api/v1/";
 

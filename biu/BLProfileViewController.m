@@ -274,10 +274,10 @@ static CGFloat kTempHeight = 80.0f;
             button.layer.cornerRadius = 5.0f;
             button.clipsToBounds = YES;
             if (self.profileViewType == BLProfileViewTypeCreate) {
-                [button setTitle:@"Continue" forState:UIControlStateNormal];
+                [button setTitle:NSLocalizedString(@"Continue", nil) forState:UIControlStateNormal];
                 [button addTarget:self action:@selector(createProfile:) forControlEvents:UIControlEventTouchDown];
             } else {
-                [button setTitle:@"Save" forState:UIControlStateNormal];
+                [button setTitle:NSLocalizedString(@"Save", nil) forState:UIControlStateNormal];
                 [button addTarget:self action:@selector(udpateProfile:) forControlEvents:UIControlEventTouchDown];
             }
             [cell addSubview:button];
