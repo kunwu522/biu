@@ -71,6 +71,21 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
 
 }
 
+
+#pragma mark --取出cookie
+- (NSHTTPCookie *) findCookieByName:(NSString *)name isExpiredBy:(NSDate *)time {
+    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    if (!cookies || cookies.count == 0) {
+        return nil;
+    }
+    for (NSHTTPCookie *cookie in cookies) {
+        if ([cookie.name isEqualToString:name]  == NSOrderedDescending) {
+            return cookie;
+        }
+    }
+    return nil;
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
     User *user = [[User alloc] init];
@@ -94,6 +109,10 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
                                      options:SDWebImageRefreshCached | SDWebImageHandleCookies];
     self.lbUsername.text = user.username;
     }
+    
+    // 获取cookie，判断登录状态
+    NSHTTPCookie *userIdCookie = [self findCookieByName:@"user_id" isExpiredBy:(NSDate *)[NSDate date]];
+    NSHTTPCookie *rememberTokenCookie = [self findCookieByName:@"remember_token" isExpiredBy:[NSDate date]];
 }
 
 #pragma mark -

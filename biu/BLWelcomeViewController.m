@@ -215,6 +215,7 @@ static double ICON_INITIAL_SIZE = 147.5;
         [_HUD hide:YES];
         NSLog(@"failure, error: %@.", error.localizedDescription);
     }];
+
 }
 
 
@@ -312,6 +313,8 @@ static double ICON_INITIAL_SIZE = 147.5;
     }
     for (NSHTTPCookie *cookie in cookies) {
         if ([cookie.name isEqualToString:name] && [cookie.expiresDate compare:time] == NSOrderedDescending) {
+        
+            NSLog(@"welcomeVC%@",cookie);
             return cookie;
         }
     }

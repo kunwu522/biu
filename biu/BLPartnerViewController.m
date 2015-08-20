@@ -388,9 +388,15 @@ static CGFloat kTempHeight = 80.0f;
             partner.partnerId = [responseObject objectForKey:@"partner_id"];
             [partner save];
             
-            [self dismissViewControllerAnimated:YES completion:^{
-                
-            }];
+            BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
+            BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
+            UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
+            masterNavViewController.navigationBarHidden = YES;
+            // Create BL Menu view controller
+            BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
+                                                                                          menuViewController:menuViewController];
+            [self presentViewController:menuNavController animated:YES completion:nil];
+            
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSString *message = [BLHTTPClient responseMessage:task error:error];
             if (!message) {

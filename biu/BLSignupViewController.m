@@ -153,7 +153,7 @@
     
     [_lbSecondLeft mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(_btnGetCode.mas_centerY);
-        make.right.equalTo(_lbSecondLeft.superview).with.offset([BLGenernalDefinition resolutionForDevices:-41.0f]);
+        make.right.equalTo(_lbSecondLeft.superview).with.offset([BLGenernalDefinition resolutionForDevices:-50.0f]);
     }];
     
     [_lbContract mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -217,11 +217,7 @@
         if (blDelegate.deviceToken && user.userId) {
             [[BLHTTPClient sharedBLHTTPClient] registToken:blDelegate.deviceToken user:user success:^(NSURLSessionDataTask *task, id responseObject) {
                 NSLog(@"Regist device token successed.");
-//                // 获取cookie，判断登录状态
-//                NSHTTPCookie *userIdCookie = [self findCookieByName:@"user_id" isExpiredBy:(NSDate *)[NSDate date]];
-//                NSHTTPCookie *rememberTokenCookie = [self findCookieByName:@"remember_token" isExpiredBy:[NSDate date]];
-                [_timer invalidate];
-//                NSLog(@"%@-=-=-=-=--=-=-%@",userIdCookie,rememberTokenCookie);
+
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
                 NSLog(@"Regist device token failed.");
             }];
@@ -240,20 +236,6 @@
     }];
     
 }
-
-//#pragma mark --取出cookie
-//- (NSHTTPCookie *) findCookieByName:(NSString *)name isExpiredBy:(NSDate *)time {
-//    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-//    if (!cookies || cookies.count == 0) {
-//        return nil;
-//    }
-//    for (NSHTTPCookie *cookie in cookies) {
-//        if ([cookie.name isEqualToString:name] && [cookie.expiresDate compare:time] == NSOrderedDescending) {
-//            return cookie;
-//        }
-//    }
-//    return nil;
-//}
 
 - (void)getCode:(id)sender {
     NSString *errMsg = [User validatePhoneNumber:_tfPhoneNumber.text];
@@ -383,13 +365,13 @@
 
 - (void)showSecondToResendLayout {
     [_btnGetCode mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(_btnGetCode.superview).with.offset(-64.0f);
+        make.right.equalTo(_btnGetCode.superview).with.offset([BLGenernalDefinition resolutionForDevices:-69.0f]);
     }];
 }
 
 - (void)hideSecondToResendLayout {
     [_btnGetCode mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(_btnGetCode.superview).with.offset(-50.0f);
+        make.right.equalTo(_btnGetCode.superview).with.offset([BLGenernalDefinition resolutionForDevices:-50.0f]);
     }];
 }
 

@@ -169,12 +169,15 @@
     }];
     
     BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [delegate.passwordItem resetKeychainItem];//清keychain
+    [delegate.passwordItem resetKeychainItem];//清keychain，有问题
+    /*
+     Assertion failure in -[KeychainItemWrapper resetKeychainItem], /Users/Dezi/Desktop/九轮/biu_8_19/biu/KeyChainUtil/KeychainItemWrapper.m:199
+     */
     delegate.currentUser = nil;
     [NSUserDefaults resetStandardUserDefaults];//清userDefaults,不好用
     
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"user_id"];
-
+    
     //Clear Cookies
     [self removeCookieByName:@"user_id"];
     [self removeCookieByName:@"remember_token"];
