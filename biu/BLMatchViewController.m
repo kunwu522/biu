@@ -140,14 +140,6 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-    [self stopMatchingAnimationWithCompletion:^(BOOL finished) {
-        self.matchingLeft.alpha = 0;
-        self.matchingRight.alpha = 0;
-        self.pickViewDistance.alpha = 1.0f;
-    }];
-    self.matchSwith.on = NO;
-    [self stopHeartbeatAnimation];
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"getMatchInfo" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
@@ -297,6 +289,7 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
         case kCLAuthorizationStatusAuthorizedAlways:
         case kCLAuthorizationStatusAuthorizedWhenInUse:
             [manager startUpdatingLocation];
+            break;
         case kCLAuthorizationStatusNotDetermined:
         case kCLAuthorizationStatusDenied:
         case kCLAuthorizationStatusRestricted:
@@ -444,9 +437,11 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
         case BLMatchStateStop:
         {
             NSError *error = nil;
-            BOOL success = [self.viewControlelrStateMachine fireEvent:@"close" userInfo:nil error:&error];
-            if (!success) {
-                NSLog(@"State machine error: %@. Event: close, current state: %@.", error.localizedDescription, self.viewControlelrStateMachine.currentState);
+            if (![self.viewControlelrStateMachine.currentState.name isEqualToString:@"idle"]) {
+                BOOL success = [self.viewControlelrStateMachine fireEvent:@"close" userInfo:nil error:&error];
+                if (!success) {
+                    NSLog(@"State machine error: %@. Event: close, current state: %@.", error.localizedDescription, self.viewControlelrStateMachine.currentState);
+                }
             }
             break;
         }
@@ -898,8 +893,6 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
         
         [matching setDidExitStateBlock:^(TKState *state, TKTransition *transition) {
             [self stopMatchingAnimationWithCompletion:^(BOOL finished) {
-                NSLog(@"Matching2 left center: %f--%f", self.matchingLeft.center.x, self.matchingLeft.center.y);
-                NSLog(@"Matching2 right center: %f--%f", self.matchingRight.center.x, self.matchingRight.center.y);
                 self.matchingLeft.alpha = 0;
                 self.matchingRight.alpha = 0;
                 [self stopStandarUpdates];
