@@ -135,7 +135,7 @@ static CGFloat kTempHeight = 80.0f;
         [formatter setDateFormat:@"yyyy-MM-dd"];
         self.birthday = [formatter dateFromString:defaultDate];
         self.zodiac = BLZodiacCapricorn;
-        self.style = BLStyleTypeManAll;
+        self.style = BLStyleTypeManOther;
     }
     //    偏好设置取数据
     NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];

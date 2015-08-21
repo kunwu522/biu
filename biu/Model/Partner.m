@@ -76,7 +76,7 @@ static NSString *OPEN_ID = @"open_id";
                                      [NSNumber numberWithInteger:BLStyleTypeManFashion] : NSLocalizedString(@"Fashion", nil),
                                      [NSNumber numberWithInteger:BLStyleTypeManYoung] : NSLocalizedString(@"Young", nil),
                                      [NSNumber numberWithInteger:BLStyleTypeManCommon] : NSLocalizedString(@"Common", nil),
-                                     [NSNumber numberWithInteger:BLStyleTypeManAll] : NSLocalizedString(@"All", nil),
+                                     [NSNumber numberWithInteger:BLStyleTypeManOther] : NSLocalizedString(@"All", nil),
                                      [NSNumber numberWithInteger:BLStyleTypeWomanGodness] : NSLocalizedString(@"Godness", nil),
                                      [NSNumber numberWithInteger:BLStyleTypeWomanBFM] : NSLocalizedString(@"BFM", nil),
                                      [NSNumber numberWithInteger:BLStyleTypeWomanDS] : NSLocalizedString(@"DS Woman", nil),
@@ -85,7 +85,7 @@ static NSString *OPEN_ID = @"open_id";
                                      [NSNumber numberWithInteger:BLStyleTypeWomanSexy] : NSLocalizedString(@"Sexy", nil),
                                      [NSNumber numberWithInteger:BLStyleTypeWomanLovely] : NSLocalizedString(@"Lovely", nil),
                                      [NSNumber numberWithInteger:BLStyleTypeWomanSuccessFul] : NSLocalizedString(@"Business", nil),
-                                     [NSNumber numberWithInteger:BLStyleTypeWomanAll] : NSLocalizedString(@"All", nil)};
+                                     [NSNumber numberWithInteger:BLStyleTypeWomanOther] : NSLocalizedString(@"All", nil)};
     return [stringOfStyles objectForKey:[NSNumber numberWithInteger:style]];
 }
 
@@ -112,7 +112,7 @@ static NSString *OPEN_ID = @"open_id";
 + (BLGender)genderByStyle:(BLStyleType)style {
     BLGender gender = BLGenderNone;
     switch (style) {
-        case BLStyleTypeManAll:
+        case BLStyleTypeManOther:
         case BLStyleTypeManCommon:
         case BLStyleTypeManDS:
         case BLStyleTypeManFashion:
@@ -123,7 +123,7 @@ static NSString *OPEN_ID = @"open_id";
         case BLStyleTypeManYoung:
             gender = BLGenderMale;
             break;
-        case BLStyleTypeWomanAll:
+        case BLStyleTypeWomanOther:
         case BLStyleTypeWomanBFM:
         case BLStyleTypeWomanDS:
         case BLStyleTypeWomanGodness:

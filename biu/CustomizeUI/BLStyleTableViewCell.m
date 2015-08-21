@@ -69,7 +69,7 @@ static const float CELL_WIDTH = 90.0;
                             [NSNumber numberWithInteger:BLStyleTypeManFashion] : NSLocalizedString(@"Fashion", nil),
                             [NSNumber numberWithInteger:BLStyleTypeManYoung] : NSLocalizedString(@"Young", nil),
                             [NSNumber numberWithInteger:BLStyleTypeManCommon] : NSLocalizedString(@"Common", nil),
-                            [NSNumber numberWithInteger:BLStyleTypeManAll] : NSLocalizedString(@"All", nil),};
+                            [NSNumber numberWithInteger:BLStyleTypeManOther] : NSLocalizedString(@"All", nil),};
         
         _stringOfSytleWoman = @{[NSNumber numberWithInteger:BLStyleTypeWomanGodness] : NSLocalizedString(@"Godness", nil),
                                 [NSNumber numberWithInteger:BLStyleTypeWomanBFM] : NSLocalizedString(@"BFM", nil),
@@ -79,7 +79,7 @@ static const float CELL_WIDTH = 90.0;
                                 [NSNumber numberWithInteger:BLStyleTypeWomanSexy] : NSLocalizedString(@"Sexy", nil),
                                 [NSNumber numberWithInteger:BLStyleTypeWomanLovely] : NSLocalizedString(@"Lovely", nil),
                                 [NSNumber numberWithInteger:BLStyleTypeWomanSuccessFul] : NSLocalizedString(@"OfficeLady", nil),
-                                [NSNumber numberWithInteger:BLStyleTypeWomanAll] : NSLocalizedString(@"All", nil),};
+                                [NSNumber numberWithInteger:BLStyleTypeWomanOther] : NSLocalizedString(@"All", nil),};
         
     }
     return self;
