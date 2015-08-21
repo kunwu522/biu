@@ -42,7 +42,7 @@ typedef NS_ENUM(NSUInteger, BLStyleType) {
     BLStyleTypeManFashion = 6,
     BLStyleTypeManYoung = 7,
     BLStyleTypeManCommon = 8,
-    BLStyleTypeManAll = 9,
+    BLStyleTypeManOther = 9,
     BLStyleTypeWomanGodness = 10,
     BLStyleTypeWomanBFM = 11,
     BLStyleTypeWomanDS = 12,
@@ -51,7 +51,7 @@ typedef NS_ENUM(NSUInteger, BLStyleType) {
     BLStyleTypeWomanSexy = 15,
     BLStyleTypeWomanLovely = 16,
     BLStyleTypeWomanSuccessFul = 17,
-    BLStyleTypeWomanAll = 18
+    BLStyleTypeWomanOther = 18
 };
 
 typedef NS_ENUM(NSUInteger, BLSexualityType) {
