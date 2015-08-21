@@ -16,11 +16,13 @@
 #import "BLPartnerViewController.h"
 #import "UIViewController+BLMenuNavController.h"
 #import "Masonry.h"
-
+#import <MBProgressHUD/MBProgressHUD.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
-@interface BLProfileViewController () <UITableViewDataSource, UITableViewDelegate, BLTableViewCellDeletage, BLCamViewControllerDelegate>
-
+@interface BLProfileViewController () <UITableViewDataSource, UITableViewDelegate, BLTableViewCellDeletage, BLCamViewControllerDelegate, MBProgressHUDDelegate>
+{
+    MBProgressHUD *_HUD;
+}
 @property (strong, nonatomic) User *currentUser; //works if profileViewType is BLProfileViewTypeUpdate
 
 @property (assign, nonatomic) BLGender gender;
@@ -108,22 +110,15 @@ static CGFloat kTempHeight = 80.0f;
             make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:45.3f]]);
         }];
     }
+    [self addHUD];
+}
+- (void)addHUD{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:_HUD];
+    _HUD.delegate = self;
+    _HUD.labelText = @"Loading";
 }
 
-//tableView下拉图片变长
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-
-    CGFloat yOffset  = scrollView.contentOffset.y;
-    CGFloat xOffset = (yOffset + kImageOriginHight)/2;
-    if (yOffset < -kImageOriginHight) {
-        CGRect f = self.expandZoomImageView.frame;
-        f.origin.y = yOffset - kTempHeight;
-        f.size.height =  -yOffset + kTempHeight;
-        f.origin.x = xOffset;
-        f.size.width = self.view.frame.size.width + fabsf(xOffset)*2;
-        self.expandZoomImageView.frame = f;
-    }
-}
 
 - (void)viewWillAppear:(BOOL)animated {
     if (self.profileViewType == BLProfileViewTypeUpdate && self.currentUser) {
@@ -365,6 +360,22 @@ static CGFloat kTempHeight = 80.0f;
     return nil;
 }
 
+
+//tableView下拉图片变长
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    
+    CGFloat yOffset  = scrollView.contentOffset.y;
+    CGFloat xOffset = (yOffset + kImageOriginHight)/2;
+    if (yOffset < -kImageOriginHight) {
+        CGRect f = self.expandZoomImageView.frame;
+        f.origin.y = yOffset - kTempHeight;
+        f.size.height =  -yOffset + kTempHeight;
+        f.origin.x = xOffset;
+        f.size.width = self.view.frame.size.width + fabsf(xOffset)*2;
+        self.expandZoomImageView.frame = f;
+    }
+}
+
 #pragma mark Customized Delegate
 - (void)tableViewCell:(BLBaseTableViewCell *)cell didChangeValue:(id)value {
     switch (cell.tag) {
@@ -406,16 +417,29 @@ static CGFloat kTempHeight = 80.0f;
                                                              [BLHTTPClient blBaseURL],
                                                              self.currentUser.userId]];
     
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
     [self dismissViewControllerAnimated:NO completion:nil];
-    
+    [_HUD show:YES];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(20.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [_HUD hide:YES];
+    });//20秒后执行
     [[BLHTTPClient sharedBLHTTPClient] uploadAvatar:self.currentUser avatar:image isRect:NO success:^(NSURLSessionDataTask *task, id responseObject) {//小图
         NSLog(@"Upload avatar cycle successed.");
-        User *user = [User new];
-        user.avatar_url = responseObject[@"user"][@"avatar_url"];
-        [user save];
-    
+//        User *user = [User new];
+        self.currentUser.avatar_url = responseObject[@"avatar_url"];
+        self.currentUser.avatar_large_url = responseObject[@"avatar_url"];
+        [self.currentUser save];
+        [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:self.currentUser.avatar_url] placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"] options:SDWebImageHandleCookies | SDWebImageRefreshCached completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            [_HUD hide:YES];
+        }];
+//        [_tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+            [_HUD hide:YES];
+        });
+        
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [_HUD hide:YES];
         NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
         if (!errMsg) {
             errMsg = NSLocalizedString(@"Opps, upload avatar failed, please try later", nil);
@@ -424,19 +448,22 @@ static CGFloat kTempHeight = 80.0f;
         [av show];
     }];
     
-    [[BLHTTPClient sharedBLHTTPClient] uploadAvatar:self.currentUser avatar:orignalImage isRect:YES success:^(NSURLSessionDataTask *task, id responseObject) {//大图
-        NSLog(@"Upload avatar rectangle successed.");
-        User *user = [User new];
-        user.avatar_large_url = responseObject[@"user"][@"avatar_large_url"];
-        [user save];
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
-        if (!errMsg) {
-            errMsg = NSLocalizedString(@"Opps, upload avatar failed, please try later", nil);
-        }
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        [av show];
-    }];
+//    [[BLHTTPClient sharedBLHTTPClient] uploadAvatar:self.currentUser avatar:orignalImage isRect:YES success:^(NSURLSessionDataTask *task, id responseObject) {//大图
+//        
+//        NSLog(@"Upload avatar rectangle successed.");
+//        User *user = [User new];
+//        user.avatar_large_url = responseObject[@"avatar_large_url"];
+//        [user save];
+//        [_tableView reloadData];
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
+//        if (!errMsg) {
+//            errMsg = NSLocalizedString(@"Opps, upload avatar failed, please try later", nil);
+//        }
+//        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+//        [av show];
+//    }];
+
 }
 
 #pragma mark - Actions
@@ -488,6 +515,7 @@ static CGFloat kTempHeight = 80.0f;
     profile.sexuality = _sexuality;
     
     _whichAlertV = nil;
+    
     NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
     if (dic[@"profile_id"]) {
         [[BLHTTPClient sharedBLHTTPClient] updateProfile:self.currentUser.profile user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {

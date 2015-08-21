@@ -10,7 +10,7 @@
 #import "BLTextField.h"
 #import "Masonry.h"
 
-@interface BLForgotPasswordViewController () <UIGestureRecognizerDelegate, UIAlertViewDelegate>
+@interface BLForgotPasswordViewController () <UIGestureRecognizerDelegate, UIAlertViewDelegate, UITextFieldDelegate>
 
 @property (strong, nonatomic) UIImageView *background;
 @property (strong, nonatomic) UIImageView *logoImageView;
@@ -282,6 +282,7 @@ static NSInteger const BL_RESET_SUCCESS_ALERTVIEW = 1;
         _tfPhone = [[BLTextField alloc] init];
         _tfPhone.placeholder = NSLocalizedString(@"Phone", nil);
         _tfPhone.keyboardType = UIKeyboardTypePhonePad;
+        _tfPhone.delegate = self;
 //        _tfPhone.clearButtonMode = UITextFieldViewModeWhileEditing;
 //        [_tfPhone showClearButton];
     }
@@ -294,6 +295,7 @@ static NSInteger const BL_RESET_SUCCESS_ALERTVIEW = 1;
         _tfPasscode.placeholder = NSLocalizedString(@"Code", nil);
         _tfPasscode.keyboardType = UIKeyboardTypeNumberPad;
         _tfPasscode.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _tfPasscode.delegate = self;
         [_tfPasscode showClearButton];
     }
     return _tfPasscode;
@@ -305,6 +307,8 @@ static NSInteger const BL_RESET_SUCCESS_ALERTVIEW = 1;
         _tfPassword.placeholder = NSLocalizedString(@"New Password", nil);
         _tfPassword.secureTextEntry = YES;
         _tfPassword.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _tfPassword.delegate = self;
+        _tfPassword.returnKeyType = UIReturnKeyDone;
         [_tfPassword showClearButton];
     }
     return _tfPassword;
@@ -362,6 +366,36 @@ static NSInteger const BL_RESET_SUCCESS_ALERTVIEW = 1;
         _lbSecondLeft.alpha = 0.0f;
     }
     return _lbSecondLeft;
+}
+
+#pragma mark -- textFieldDelegate
+//return方法
+- (BOOL) textFieldShouldReturn:(UITextField *)textField {
+    if (textField == _tfPhone) {
+        [self.tfPasscode becomeFirstResponder];
+    } else if (textField == _tfPasscode) {
+        [self.tfPassword becomeFirstResponder];
+    } else {
+        [self done:_btnDone];
+    }
+    return YES;
+}
+//限制textField输入个数
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+    NSString *toBeString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    
+    if (textField == _tfPhone) {
+        if (toBeString.length > 11) {
+            return NO;
+        }
+        
+    } else if (textField == _tfPassword) {
+        if (toBeString.length > 16) {
+            return NO;
+        }
+    }
+    return YES;
 }
 
 @end

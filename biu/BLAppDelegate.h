@@ -35,8 +35,6 @@
 #define kOpenId        @"OpenId"
 #define kRefreshToken  @"RefreshToken"
 
-
-
 #endif
 
 @class KeychainItemWrapper;

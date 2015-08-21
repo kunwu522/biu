@@ -11,7 +11,7 @@
 #import "BLTextField.h"
 #import "Masonry.h"
 
-@interface BLSignupViewController () <UIGestureRecognizerDelegate, BLContractViewControllerDelegate>
+@interface BLSignupViewController () <UIGestureRecognizerDelegate, BLContractViewControllerDelegate, UITextFieldDelegate>
 
 @property (strong, nonatomic) UIImageView *backgroundView;
 @property (strong, nonatomic) UIImageView *logoImageView;
@@ -182,7 +182,7 @@
     }
     
     if (![_code isEqualToString:_tfPasscode.text]) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Invalid passcode" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Invalid passcode", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [av show];
         return;
     }
@@ -398,6 +398,7 @@
     if (!_tfPhoneNumber) {
         _tfPhoneNumber = [[BLTextField alloc] init];
         _tfPhoneNumber.placeholder = NSLocalizedString(@"Phone", nil);
+        _tfPhoneNumber.delegate = self;
 //        _tfPhoneNumber.keyboardType = UIKeyboardTypePhonePad;
 //        [_tfPhoneNumber showClearButton];
     }
@@ -410,6 +411,7 @@
         _tfPasscode.placeholder = NSLocalizedString(@"Code", nil);
         _tfPasscode.keyboardType = UIKeyboardTypeNumberPad;
         _tfPasscode.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _tfPasscode.delegate = self;
         [_tfPasscode showClearButton];
     }
     return _tfPasscode;
@@ -420,6 +422,7 @@
         _tfUsername = [[BLTextField alloc] init];
         _tfUsername.placeholder = NSLocalizedString(@"Username", nil);
         _tfUsername.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _tfUsername.delegate = self;
         [_tfUsername showClearButton];
     }
     return _tfUsername;
@@ -430,6 +433,8 @@
         _tfPassword = [[BLTextField alloc] init];
         _tfPassword.placeholder = NSLocalizedString(@"Password", nil);
         _tfPassword.secureTextEntry = YES;
+        _tfPassword.delegate = self;
+        _tfPassword.returnKeyType = UIReturnKeyDone;
         [_tfPassword showClearButton];
     }
     return _tfPassword;
@@ -575,6 +580,39 @@
         _tapGestureRecognizer.delegate = self;
     }
     return _tapGestureRecognizer;
+}
+
+#pragma mark --textFieldDelegate
+//return方法
+- (BOOL) textFieldShouldReturn:(UITextField *)textField {
+    if (textField == _tfPhoneNumber) {
+        [self.tfPasscode becomeFirstResponder];
+    } else if (textField == _tfPasscode) {
+        [self.tfUsername becomeFirstResponder];
+    } else if (textField == _tfUsername) {
+        [self.tfPassword becomeFirstResponder];
+    } else {
+        [self signup:_btnSignup];
+    }
+
+    return YES;
+}
+//限制textField输入个数
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+    NSString *toBeString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    
+    if (textField == _tfPhoneNumber) {
+        if (toBeString.length > 11) {
+            return NO;
+        }
+        
+    } else if ((textField == _tfPassword) || (textField == _tfUsername)) {
+        if (toBeString.length > 16) {
+            return NO;
+        }
+    }
+    return YES;
 }
 
 @end

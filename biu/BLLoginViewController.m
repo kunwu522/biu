@@ -20,7 +20,7 @@
 #import "BLMenuViewController.h"
 #import "BLMenuNavController.h"
 
-@interface BLLoginViewController () <UIGestureRecognizerDelegate, MBProgressHUDDelegate, UIAlertViewDelegate> {
+@interface BLLoginViewController () <UIGestureRecognizerDelegate, MBProgressHUDDelegate, UIAlertViewDelegate, UITextFieldDelegate> {
     MBProgressHUD *_HUD;
 }
 
@@ -299,6 +299,7 @@
         _tfPhoneNumber = [[BLTextField alloc] init];
         _tfPhoneNumber.placeholder = NSLocalizedString(@"Phone", nil);
         _tfPhoneNumber.keyboardType = UIKeyboardTypePhonePad;
+        _tfPhoneNumber.delegate = self;
         [_tfPhoneNumber showClearButton];
     }
     return _tfPhoneNumber;
@@ -309,6 +310,8 @@
         _tfPassword = [[BLTextField alloc] init];
         _tfPassword.placeholder = NSLocalizedString(@"Password", nil);
         _tfPassword.secureTextEntry = YES;
+        _tfPassword.delegate = self;
+        _tfPassword.returnKeyType = UIReturnKeyDone;
         [_tfPassword showClearButton];
     }
     return _tfPassword;
@@ -449,6 +452,34 @@
         _tapGestureRecognizer.delegate = self;
     }
     return _tapGestureRecognizer;
+}
+
+#pragma mark --textFieldDelegate
+//return方法
+- (BOOL) textFieldShouldReturn:(UITextField *)textField {
+    if (textField == _tfPhoneNumber) {
+        [self.tfPassword becomeFirstResponder];
+    } else {
+        [self login:_btnLogin];
+    }
+    return YES;
+}
+//限制textField输入个数
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+    NSString *toBeString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+
+    if (textField == _tfPhoneNumber) {
+        if (toBeString.length > 11) {
+            return NO;
+        }
+        
+    } else if (textField == _tfPassword) {
+        if (toBeString.length > 16) {
+            return NO;
+        }
+    }
+    return YES;
 }
 
 @end

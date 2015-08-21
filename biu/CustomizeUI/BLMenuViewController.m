@@ -97,13 +97,13 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
     self.avatar_large_url = user.avatar_large_url;
     
     if (user.avatar_url && user.username) {
-        [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:user.avatar_url, [BLHTTPClient blBaseURL], user.userId]]
+        [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:self.avatar_url]
                                 placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
                                          options:SDWebImageRefreshCached | SDWebImageHandleCookies];
         
         self.lbUsername.text = user.username;
 
-    }else{
+    } else {
         [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@", [BLHTTPClient blBaseURL], user.userId]]
                             placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
                                      options:SDWebImageRefreshCached | SDWebImageHandleCookies];
@@ -167,7 +167,6 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
     
     [bigImageView sd_setImageWithURL:[NSURL URLWithString:self.avatar_large_url] placeholderImage:self.avatarImageView.image options:SDWebImageRefreshCached | SDWebImageHandleCookies completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         //下载图片完成
-        
     }];
 //    bigImageView.contentMode =  UIViewContentModeScaleToFill;
 
@@ -183,8 +182,9 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
                          [faceBigview setFrame:[[UIScreen mainScreen]bounds]];
                      }
                      completion:^(BOOL finished){
-                         
+                     
                      }];
+    
 }
 
 

@@ -22,7 +22,6 @@
 #import "BLPartnerViewController.h"
 #import "BLTextField.h"
 
-#define _HUDTIMING 20.0
 @interface BLWelcomeViewController () <BLSignupViewControllerDelegate, BLLoginViewControllerDelegate, MBProgressHUDDelegate>
 {
     MBProgressHUD *_HUD;

@@ -175,7 +175,8 @@
      */
     delegate.currentUser = nil;
     [NSUserDefaults resetStandardUserDefaults];//清userDefaults,不好用
-    
+//    [[NSUserDefaults standardUserDefaults] synchronize];//清userDefaults
+
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"user_id"];
     
     //Clear Cookies

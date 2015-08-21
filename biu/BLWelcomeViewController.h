@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-
+#define _HUDTIMING 20.0
 @interface BLWelcomeViewController : UIViewController
 
 //@property (retain, nonatomic) UINavigationController *masterNavController;

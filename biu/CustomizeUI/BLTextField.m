@@ -38,6 +38,7 @@
 - (void)setup {
     self.font = [BLFontDefinition lightFont:15.0f];
     self.textColor = [UIColor whiteColor];
+    [[UITextField appearance] setTintColor:[BLColorDefinition greenColor]];
 }
 
 #pragma mark -
