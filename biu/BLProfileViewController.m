@@ -214,6 +214,7 @@ static CGFloat kTempHeight = 80.0f;
             if (!cell) {
                 cell = [[BLSexualityTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BL_PROFIEL_SEXUALITY_CELL_REUSEID];
             }
+            cell.title.text = NSLocalizedString(@"Role in your relationship", nil);
             cell.gender = _gender;
             cell.sexuality = _sexuality;
             cell.delegate = self;

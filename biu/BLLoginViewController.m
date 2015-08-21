@@ -207,9 +207,9 @@
                 }
             }else {
                 //进入profile
-                BLProfileViewController *profileVC = [[BLProfileViewController alloc] init];
+//                BLProfileViewController *profileVC = [[BLProfileViewController alloc] init];
                 [self dismissViewControllerAnimated:NO completion:nil];
-                [self presentViewController:profileVC animated:YES completion:nil];
+                [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [_HUD hide:YES];
@@ -227,33 +227,6 @@
 
     }
 }
-
-- (UINavigationController *)fillingInfoNavController {
-    if (!_fillingInfoNavController) {
-        // Create filling information navigation controller
-        BLProfileViewController *profileViewController = [[BLProfileViewController alloc] initWithNibName:nil bundle:nil];
-        profileViewController.profileViewType = BLProfileViewTypeCreate;
-        _fillingInfoNavController = [[UINavigationController alloc] initWithRootViewController:profileViewController];
-        _fillingInfoNavController.navigationBarHidden = YES;
-        
-    }
-    return _fillingInfoNavController;
-}
-
-
-
-//- (UINavigationController *)fillingInfoNavController {
-//    if (!_fillingInfoNavController) {
-//        // Create filling information navigation controller
-//        BLProfileViewController *profileViewController = [[BLProfileViewController alloc] initWithNibName:nil bundle:nil];
-//        profileViewController.profileViewType = BLProfileViewTypeCreate;
-//        _fillingInfoNavController = [[UINavigationController alloc] initWithRootViewController:profileViewController];
-//        _fillingInfoNavController.navigationBarHidden = YES;
-//        
-//    }
-//    return _fillingInfoNavController;
-//}
-
 
 - (void)forgotPassword:(id)sender {
     BLForgotPasswordViewController *forgotPwViewController = [[BLForgotPasswordViewController alloc] init];
@@ -377,6 +350,19 @@
     }
     return _lineView2;
 }
+
+- (UINavigationController *)fillingInfoNavController {
+    if (!_fillingInfoNavController) {
+        // Create filling information navigation controller
+        BLProfileViewController *profileViewController = [[BLProfileViewController alloc] initWithNibName:nil bundle:nil];
+        profileViewController.profileViewType = BLProfileViewTypeCreate;
+        _fillingInfoNavController = [[UINavigationController alloc] initWithRootViewController:profileViewController];
+        _fillingInfoNavController.navigationBarHidden = YES;
+        
+    }
+    return _fillingInfoNavController;
+}
+
 #pragma mark  微信登录
 - (UIButton *)btnLoginWithWeChat {
     if (!_btnLoginWithWeChat) {

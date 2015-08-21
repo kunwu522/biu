@@ -69,12 +69,13 @@
 "Virgo" = "处女座";
 "Aquarius" = "水瓶座";
 "Agr" = "水瓶座";
-"Choose your partner's sexuality" = "你恋爱中的角色";
+"Choose your partner's sexuality" = "选择你的性取向";
+"Role in your relationship" = "你恋爱中的角色";
 "Age range you like" = "你喜欢的年龄范围";
 "Zodics you prefer" =  "你喜欢的星座";
 "Styles you prefer" = "你喜欢的类型";
 "Choose your style" = "你的类型";
-"Set the distance" = "设定你与Ta的距离 km";
+"Set the distance" = "设定你与Ta的距离 m";
 "slide to love" = "开启邂逅模式";
 "Matching" = "配对中";
 "Type your message" = "输入信息";

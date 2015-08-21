@@ -273,7 +273,7 @@ static double ICON_INITIAL_SIZE = 147.5;
                         // 进入profile
                         [self dismissViewControllerAnimated:NO completion:nil];
                         [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
-                                }
+                    }
                 
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
                 [_HUD hide:YES];

@@ -174,10 +174,17 @@
      Assertion failure in -[KeychainItemWrapper resetKeychainItem], /Users/Dezi/Desktop/九轮/biu_8_19/biu/KeyChainUtil/KeychainItemWrapper.m:199
      */
     delegate.currentUser = nil;
-    [NSUserDefaults resetStandardUserDefaults];//清userDefaults,不好用
-//    [[NSUserDefaults standardUserDefaults] synchronize];//清userDefaults
 
-    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"user_id"];
+    //清userDefaults
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"dongClearHXCache"]) {
+        NSString *appDomainStr = [[NSBundle mainBundle] bundleIdentifier];
+        [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomainStr];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"dontClearHXCache"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"dontClearHXCache"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
     
     //Clear Cookies
     [self removeCookieByName:@"user_id"];
