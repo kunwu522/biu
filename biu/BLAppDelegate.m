@@ -74,18 +74,18 @@
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
         NSString *string = nil;
         switch (status) {
-            case AFNetworkReachabilityStatusUnknown:
-                string = @"未知";
-                break;
+//            case AFNetworkReachabilityStatusUnknown:
+//                string = @"未知";
+//                break;
             case AFNetworkReachabilityStatusNotReachable:
                 string = @"无网络连接。。。";
                 break;
-            case AFNetworkReachabilityStatusReachableViaWWAN:
-                string = @"需要使用流量，请注意！";
-                break;
-            case AFNetworkReachabilityStatusReachableViaWiFi:
-                string = @"WIFI，请放心使用";
-                break;
+//            case AFNetworkReachabilityStatusReachableViaWWAN:
+//                string = @"需要使用流量，请注意！";
+//                break;
+//            case AFNetworkReachabilityStatusReachableViaWiFi:
+//                string = @"WIFI，请放心使用";
+//                break;
             default:
                 break;
         }

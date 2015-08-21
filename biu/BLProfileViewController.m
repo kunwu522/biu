@@ -427,7 +427,6 @@ static CGFloat kTempHeight = 80.0f;
         NSLog(@"Upload avatar cycle successed.");
 //        User *user = [User new];
         self.currentUser.avatar_url = responseObject[@"avatar_url"];
-        self.currentUser.avatar_large_url = responseObject[@"avatar_url"];
         [self.currentUser save];
         [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:self.currentUser.avatar_url] placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"] options:SDWebImageHandleCookies | SDWebImageRefreshCached completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
             [_HUD hide:YES];
@@ -448,21 +447,20 @@ static CGFloat kTempHeight = 80.0f;
         [av show];
     }];
     
-//    [[BLHTTPClient sharedBLHTTPClient] uploadAvatar:self.currentUser avatar:orignalImage isRect:YES success:^(NSURLSessionDataTask *task, id responseObject) {//大图
-//        
-//        NSLog(@"Upload avatar rectangle successed.");
-//        User *user = [User new];
-//        user.avatar_large_url = responseObject[@"avatar_large_url"];
-//        [user save];
-//        [_tableView reloadData];
-//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//        NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
-//        if (!errMsg) {
-//            errMsg = NSLocalizedString(@"Opps, upload avatar failed, please try later", nil);
-//        }
-//        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-//        [av show];
-//    }];
+    [[BLHTTPClient sharedBLHTTPClient] uploadAvatar:self.currentUser avatar:orignalImage isRect:YES success:^(NSURLSessionDataTask *task, id responseObject) {//大图
+        
+        NSLog(@"Upload avatar rectangle successed.");
+        self.currentUser.avatar_large_url = responseObject[@"avatar_url"];
+        [self.currentUser save];
+     
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSString *errMsg = [BLHTTPClient responseMessage:task error:error];
+        if (!errMsg) {
+            errMsg = NSLocalizedString(@"Opps, upload avatar failed, please try later", nil);
+        }
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [av show];
+    }];
 
 }
 
