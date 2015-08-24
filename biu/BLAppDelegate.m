@@ -313,7 +313,13 @@
 #if TARGET_IPHONE_SIMULATOR
     [xmppStream setMyJID:[XMPPJID jidWithString:[NSString stringWithFormat:@"%@@localhost", self.currentUser.phone]]];
 #else
-    [xmppStream setMyJID:[XMPPJID jidWithString:[NSString stringWithFormat:@"%@@biulove.com", self.currentUser.phone]]];
+    if (self.currentUser.phone) {
+        [xmppStream setMyJID:[XMPPJID jidWithString:[NSString stringWithFormat:@"%@@biulove.com", self.currentUser.phone]]];
+    } else if (self.currentUser.open_id) {
+        [xmppStream setMyJID:[XMPPJID jidWithString:[NSString stringWithFormat:@"%@@biulove.com", self.currentUser.open_id]]];
+    } else {
+        NSLog(@"There is something error. no phone and openId");
+    }
     [xmppStream setHostName:@"123.56.129.119"];
 #endif
     

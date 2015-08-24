@@ -165,13 +165,10 @@
 - (void)close:(id)sender {
     [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventReject distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Rejected matched user.");
+        [self.navigationController popViewControllerAnimated:YES];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"Rejected matched user failed. error: %@", error);
     }];
-//    if ([self.delegate respondsToSelector:@selector(didRejectedMatchedUser)]) {
-//        [self.delegate didRejectedMatchedUser];
-//    }
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Delegates
@@ -179,19 +176,19 @@
 - (void)didDismissBLMessagesViewController:(BLMessagesViewController *)vc {
     [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventClose distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Stop conversation user successed.");
+        [self.delegate didCloseConversation];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"Stop conversation faield.");
     }];
-    [self.delegate didCloseConversation];
 }
 
 - (void)didCloseConversation {
     [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventClose distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Stop conversation user successed.");
+        [self.delegate didCloseConversation];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"Stop conversation faield.");
     }];
-    [self.delegate didCloseConversation];
 }
 
 - (void)didRejectMatchedUser {

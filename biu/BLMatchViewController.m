@@ -312,10 +312,10 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 - (void)didDismissBLMessagesViewController:(BLMessagesViewController *)vc {
     [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventClose distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Stop conversation user successed.");
+        [vc.navigationController popToRootViewControllerAnimated:YES];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"Stop conversation faield.");
     }];
-    [vc.navigationController popToRootViewControllerAnimated:YES];
 }
 
 #pragma mark BLNotification Delegate

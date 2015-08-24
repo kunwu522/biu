@@ -231,10 +231,10 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
 - (void)didDismissBLMessagesViewController:(BLMessagesViewController *)vc {
     [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventClose distance:nil matchedUser:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Stop conversation user successed.");
+        [self.delegate didCloseConversation];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"Stop conversation faield.");
     }];
-    [self.delegate didCloseConversation];
 }
 
 #pragma mark MatchNotification delegates

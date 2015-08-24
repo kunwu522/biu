@@ -127,7 +127,14 @@
 #if TARGET_IPHONE_SIMULATOR
         [message addAttributeWithName:@"to" stringValue:[NSString stringWithFormat:@"%@@localhost", self.receiver.phone]];
 #else
-        [message addAttributeWithName:@"to" stringValue:[NSString stringWithFormat:@"%@@biulove.com", self.receiver.phone]];
+        if (self.receiver.phone) {
+            [xmppStream setMyJID:[XMPPJID jidWithString:[NSString stringWithFormat:@"%@@biulove.com", self.receiver.phone]]];
+        } else if (self.receiver.open_id) {
+            [xmppStream setMyJID:[XMPPJID jidWithString:[NSString stringWithFormat:@"%@@biulove.com", self.receiver.open_id]]];
+        } else {
+            NSLog(@"There is something error. no phone and openId");
+            return;
+        }
 #endif
         [message addChild:body];
         

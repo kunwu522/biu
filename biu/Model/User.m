@@ -81,13 +81,17 @@ static NSString *AVATAR_LARGE_URL = @"avatar_large_url";
         
         BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
         self.phone = [delegate.passwordItem objectForKey:(__bridge id)kSecAttrAccount];
+        if ([self.phone isEqualToString:@""]) {
+            self.phone = nil;
+        }
         NSObject *pwd = [delegate.passwordItem objectForKey:(__bridge id)(kSecValueData)];
         if ([pwd isKindOfClass:[NSData class]]) {
             self.password = [[NSString alloc] initWithData:(NSData *)pwd encoding:NSUTF8StringEncoding];
         } else if ([pwd isKindOfClass:[NSString class]]) {
             self.password = (NSString *)pwd;
         }
-        if (([self.phone isEqualToString:@""] || [self.password isEqualToString:@""])
+        
+        if ((!self.phone || [self.password isEqualToString:@""])
             && (![defaults objectForKey:OPEN_ID])) {
             return nil;
         }
@@ -132,7 +136,10 @@ static NSString *AVATAR_LARGE_URL = @"avatar_large_url";
         
         if ([dictionary objectForKey:@"phone"] != [NSNull null]) {
             self.phone = [dictionary objectForKey:@"phone"];
+        } else {
+            self.phone = nil;
         }
+        
         if ([dictionary objectForKey:@"device_token"] != [NSNull null]) {
             self.token = [dictionary objectForKey:@"device_token"];
         }
