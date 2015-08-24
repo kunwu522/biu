@@ -128,9 +128,9 @@
         [message addAttributeWithName:@"to" stringValue:[NSString stringWithFormat:@"%@@localhost", self.receiver.phone]];
 #else
         if (self.receiver.phone) {
-            [xmppStream setMyJID:[XMPPJID jidWithString:[NSString stringWithFormat:@"%@@biulove.com", self.receiver.phone]]];
+            [message addAttributeWithName:@"to" stringValue:[NSString stringWithFormat:@"%@@biulove.com", self.receiver.phone]];
         } else if (self.receiver.open_id) {
-            [xmppStream setMyJID:[XMPPJID jidWithString:[NSString stringWithFormat:@"%@@biulove.com", self.receiver.open_id]]];
+            [message addAttributeWithName:@"to" stringValue:[NSString stringWithFormat:@"%@@biulove.com", self.receiver.open_id]];
         } else {
             NSLog(@"There is something error. no phone and openId");
             return;
