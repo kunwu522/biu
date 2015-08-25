@@ -17,8 +17,6 @@
 @property (strong, nonatomic)NSDictionary *profile;
 @property (strong, nonatomic)NSDictionary *partner;
 
-- (void)pushViewController:(id)controller animated:(BOOL)animated;
-- (void)popViewControllerAnimated:(BOOL)animated;
 
 @end
 

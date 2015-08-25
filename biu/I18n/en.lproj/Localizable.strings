@@ -21,7 +21,7 @@
 "Username" = "Username";
 "Phone" = "Phone";
 "Password" = "Password";
-"Forgot password?" = "Forgot password?";
+"Forgot Password?" = "Forgot Password?";
 "Or" = "Or";
 "OR LOG IN WITH" = "OR LOG IN WITH";
 "Email" = "Email";
@@ -132,9 +132,10 @@
 
 //ProfileVC
 "Create Profile failed            please try again" = "Create Profile failed            please try again";
+"Updating profile failed. Please try again" = "Updating profile failed. Please try again";
 
 //PartnerVC
 "Please select zodiacs you prefer" = "Please select zodiacs you prefer";
 "Please select styles you prefer" = "Please select styles you prefer";
-"Zodiacs you prefer" = "Zodiacs you prefer";
-
+"Zodiacs you prefer(up to three)" = "Zodiacs you prefer(up to three)";
+"Styles you prefer(up to three)" = "Styles you prefer(up to three)";

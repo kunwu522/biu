@@ -7,11 +7,14 @@
 //
 
 #import "BLMAMapViewController.h"
+#import "Masonry.h"
 
 @interface BLMAMapViewController ()<MAMapViewDelegate>
 {
     MAMapView *_mapView;
 }
+@property (strong, nonatomic) UIButton *btnBack;
+
 @end
 
 @implementation BLMAMapViewController
@@ -28,6 +31,10 @@
     [self.view addSubview:_mapView];
     
     [_mapView setUserTrackingMode: MAUserTrackingModeFollow animated:YES]; //地图跟着位置移动
+    
+    [self.view addSubview:self.btnBack];
+
+    [self loadLayouts];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -74,8 +81,30 @@ updatingLocation:(BOOL)updatingLocation
 
 
 
+#pragma mark Layouts
+- (void)loadLayouts {
+    [self.btnBack mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.btnBack.superview).with.offset([BLGenernalDefinition resolutionForDevices:31.2f]);
+        make.left.equalTo(self.btnBack.superview).with.offset([BLGenernalDefinition resolutionForDevices:20.8f]);
+        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:45.3]]);
+    }];
+}
+
+#pragma mark - Actions
+- (void)back:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 
+#pragma mark Getter
+- (UIButton *)btnBack {
+    if (!_btnBack) {
+        _btnBack = [[UIButton alloc] init];
+        [_btnBack setImage:[UIImage imageNamed:@"back_icon2.png"] forState:UIControlStateNormal];
+        [_btnBack addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _btnBack;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

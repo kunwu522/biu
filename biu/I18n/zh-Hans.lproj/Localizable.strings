@@ -26,7 +26,7 @@
 "Phone" = "手机号";
 "Password" = "密 码";
 "Or" = "或";
-"Forgot password?" = "忘记密码?";
+"Forgot Password?" = "忘记密码?";
 "OR LOG IN WITH" = "或登陆与";
 "Email" = "邮箱地址";
 "OR SIGN UP WITH" = "或注册与";
@@ -185,12 +185,13 @@
 "Create Profile failed            please try again" = "创建失败                     请重新创建";
 "Save" = "保存";
 "Continue" = "下一步";
-
+"Updating profile failed. Please try again" = "上传资料失败，请重试";
 
 //PartnerVC
 "Please select zodiacs you prefer" = "请选择你喜欢的星座";
 "Please select styles you prefer" = "请选择你喜欢的类型";
-"Zodiacs you prefer" = "你喜欢的星座";
+"Zodiacs you prefer(up to three)" = "你喜欢的星座(可选三个)";
+"Styles you prefer(up to three)" = "你喜欢的类型(可选三个)";
 "Find" = "开心寻找";
 
 

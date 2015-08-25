@@ -226,7 +226,7 @@ static CGFloat kTempHeight = 80.0f;
             }
             cell.delegate = self;
             cell.tag = BLPartnerSectionZodiac;
-            cell.title.text = NSLocalizedString(@"Zodiacs you prefer", nil);
+            cell.title.text = NSLocalizedString(@"Zodiacs you prefer(up to three)", nil);
             cell.allowMultiSelected = YES;
             cell.preferZodiacs = [[NSMutableArray alloc] initWithArray:_preferZodiacs];
             return cell;
@@ -244,7 +244,7 @@ static CGFloat kTempHeight = 80.0f;
             cell.allowMultiSelected = YES;
             cell.delegate = self;
             cell.tag = BLPartnerSectionStyle;
-            cell.title.text = NSLocalizedString(@"Styles you prefer", nil);
+            cell.title.text = NSLocalizedString(@"Styles you prefer(up to three)", nil);
             
             cell.preferStyles = [[NSMutableArray alloc] initWithArray:_preferStyles];
             

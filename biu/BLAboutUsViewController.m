@@ -89,7 +89,7 @@
     [self.questionEmail mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.lbQuestion.mas_bottom);
         make.centerX.equalTo(self.questionEmail.superview.mas_centerX);
-        make.width.equalTo([NSNumber numberWithDouble:qEmailSize.width + 10]);
+        make.width.equalTo([NSNumber numberWithDouble:qEmailSize.width + 15]);
         make.height.equalTo([NSNumber numberWithDouble:qEmailSize.height + 10]);
     }];
     
@@ -102,7 +102,7 @@
     [self.joinUsEmail mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.lbJoinUs.mas_bottom);
         make.centerX.equalTo(self.joinUsEmail.superview.mas_centerX);
-        make.width.equalTo([NSNumber numberWithDouble:jEmailSize.width + 10]);
+        make.width.equalTo([NSNumber numberWithDouble:jEmailSize.width + 15]);
         make.height.equalTo([NSNumber numberWithDouble:jEmailSize.height + 10]);
     }];
     
@@ -115,7 +115,7 @@
     [self.businessEmail mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.lbBusiness.mas_bottom);
         make.centerX.equalTo(self.businessEmail.superview.mas_centerX);
-        make.width.equalTo([NSNumber numberWithDouble:bEmailSize.width + 10]);
+        make.width.equalTo([NSNumber numberWithDouble:bEmailSize.width + 15]);
         make.height.equalTo([NSNumber numberWithDouble:bEmailSize.height + 10]);
     }];
 }
