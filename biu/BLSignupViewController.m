@@ -10,6 +10,7 @@
 #import "BLContractViewController.h"
 #import "BLTextField.h"
 #import "Masonry.h"
+#import "UINavigationController+BLPresentViewController.h"
 
 @interface BLSignupViewController () <UIGestureRecognizerDelegate, BLContractViewControllerDelegate, UITextFieldDelegate>
 
@@ -169,7 +170,7 @@
 
 #pragma mark - Actions
 - (void)close:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController dismissViewController];
 }
 
 - (void)signup:(id)sender {

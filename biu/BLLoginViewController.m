@@ -13,12 +13,13 @@
 #import "WeiboSDK.h"
 #import "BLHTTPClient.h"
 #import "BLProfileViewController.h"
-#import "BLPartnerViewController.h"//r
+#import "BLPartnerViewController.h"
 #import "BLWelcomeViewController.h"
-#import <MBProgressHUD/MBProgressHUD.h>
 #import "BLMatchViewController.h"
 #import "BLMenuViewController.h"
 #import "BLMenuNavController.h"
+#import "UINavigationController+BLPresentViewController.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
 @interface BLLoginViewController () <UIGestureRecognizerDelegate, MBProgressHUDDelegate, UIAlertViewDelegate, UITextFieldDelegate> {
     MBProgressHUD *_HUD;
@@ -164,7 +165,7 @@
 
 #pragma mark - Actions
 - (void)close:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController dismissViewController];
 }
 
 - (void)login:(id)sender {

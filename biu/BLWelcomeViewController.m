@@ -18,9 +18,10 @@
 #import "KeychainItemWrapper.h"
 #import "BLProfileViewController.h"
 #import "Masonry.h"
-#import <MBProgressHUD/MBProgressHUD.h>
 #import "BLPartnerViewController.h"
 #import "BLTextField.h"
+#import "UINavigationController+BLPresentViewController.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
 @interface BLWelcomeViewController () <BLSignupViewControllerDelegate, BLLoginViewControllerDelegate, MBProgressHUDDelegate>
 {
@@ -399,13 +400,13 @@ static double ICON_INITIAL_SIZE = 147.5;
 - (void)showLoginView:(id)sender {
     BLLoginViewController *loginViewController = [[BLLoginViewController alloc] init];
     loginViewController.delegate = self;
-    [self presentViewController:loginViewController animated:YES completion:nil];
+    [self.navigationController presentViewController:loginViewController];
 }
 
 - (void)showSignupView:(id)sender {
     BLSignupViewController *signupViewController = [[BLSignupViewController alloc] init];
     signupViewController.delegate = self;
-    [self presentViewController:signupViewController animated:YES completion:nil];
+    [self.navigationController presentViewController:signupViewController];
 }
 
 #pragma mark - BLLoginViewController delegate and BLSignupView delegate

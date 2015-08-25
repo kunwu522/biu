@@ -175,6 +175,7 @@
 		EA9F49901B1DDB220037D188 /* BLMenuButton.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9F498F1B1DDB220037D188 /* BLMenuButton.m */; };
 		EA9F49931B1EA5890037D188 /* BLSexualityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9F49921B1EA5890037D188 /* BLSexualityTableViewCell.m */; };
 		EA9F49981B1EB1EC0037D188 /* BLRingView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9F49971B1EB1EC0037D188 /* BLRingView.m */; };
+		EAA7AD5E1B8C19D90049B7DD /* UINavigationController+BLPresentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA7AD5D1B8C19D90049B7DD /* UINavigationController+BLPresentViewController.m */; };
 		EAA7FD6F1B0DD64F00C2B5C6 /* BLHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA7FD6E1B0DD64F00C2B5C6 /* BLHTTPClient.m */; };
 		EAA7FD731B12CFF700C2B5C6 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA7FD721B12CFF700C2B5C6 /* User.m */; };
 		EAA9CF511B7DC69A001574B9 /* BLWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA9CF501B7DC69A001574B9 /* BLWelcomeViewController.m */; };
@@ -558,6 +559,8 @@
 		EA9F49921B1EA5890037D188 /* BLSexualityTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLSexualityTableViewCell.m; path = CustomizeUI/BLSexualityTableViewCell.m; sourceTree = "<group>"; };
 		EA9F49961B1EB1EC0037D188 /* BLRingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLRingView.h; path = CustomizeUI/BLRingView.h; sourceTree = "<group>"; };
 		EA9F49971B1EB1EC0037D188 /* BLRingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLRingView.m; path = CustomizeUI/BLRingView.m; sourceTree = "<group>"; };
+		EAA7AD5C1B8C19D90049B7DD /* UINavigationController+BLPresentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UINavigationController+BLPresentViewController.h"; path = "Category/UINavigationController+BLPresentViewController.h"; sourceTree = "<group>"; };
+		EAA7AD5D1B8C19D90049B7DD /* UINavigationController+BLPresentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UINavigationController+BLPresentViewController.m"; path = "Category/UINavigationController+BLPresentViewController.m"; sourceTree = "<group>"; };
 		EAA7FD6B1B0DCDA000C2B5C6 /* Biu-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Biu-Prefix.pch"; sourceTree = "<group>"; };
 		EAA7FD6D1B0DD64F00C2B5C6 /* BLHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLHTTPClient.h; path = NetworkUtil/BLHTTPClient.h; sourceTree = "<group>"; };
 		EAA7FD6E1B0DD64F00C2B5C6 /* BLHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLHTTPClient.m; path = NetworkUtil/BLHTTPClient.m; sourceTree = "<group>"; };
@@ -1314,6 +1317,8 @@
 				EA9F49791B1D5BD90037D188 /* UIImage+ImageEffects.m */,
 				EA9A305B1B31633900B2DD94 /* UIViewController+BLMenuNavController.h */,
 				EA9A305C1B31633900B2DD94 /* UIViewController+BLMenuNavController.m */,
+				EAA7AD5C1B8C19D90049B7DD /* UINavigationController+BLPresentViewController.h */,
+				EAA7AD5D1B8C19D90049B7DD /* UINavigationController+BLPresentViewController.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -1949,6 +1954,7 @@
 				EAA7FD731B12CFF700C2B5C6 /* User.m in Sources */,
 				EA428AD21B5669B700EF4887 /* DDLog.m in Sources */,
 				EA4289851B54AF3100EF4887 /* BLGenernalDefinition.m in Sources */,
+				EAA7AD5E1B8C19D90049B7DD /* UINavigationController+BLPresentViewController.m in Sources */,
 				EA9F49981B1EB1EC0037D188 /* BLRingView.m in Sources */,
 				EA9F49771B1D5B0B0037D188 /* BLBirthTableViewCell.m in Sources */,
 				EA428A3E1B56687D00EF4887 /* GCDMulticastDelegate.m in Sources */,
