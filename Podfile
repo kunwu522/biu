@@ -9,7 +9,8 @@ target 'biu' do
     pod 'JSQMessagesViewController'
     pod 'MBProgressHUD', '~> 0.9.1'
     pod 'TransitionKit', '~> 2.0.0'
-    
+    pod 'AMap2DMap', '~> 2.6.0'
+ 
     pod 'SimulatorRemoteNotifications', '~> 0.0.3'
 end
 
@@ -21,7 +22,8 @@ target 'biuTests' do
     pod 'JSQMessagesViewController'
     pod 'MBProgressHUD', '~> 0.9.1'
     pod 'TransitionKit', '~> 2.0.0'
-    
+    pod 'AMap2DMap', '~> 2.6.0'
+ 
     pod 'SimulatorRemoteNotifications', '~> 0.0.3'
 end
 

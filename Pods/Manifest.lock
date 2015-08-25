@@ -20,6 +20,7 @@ PODS:
   - AFNetworking/UIKit (2.4.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - AMap2DMap (2.6.0)
   - HexColors (2.2.1)
   - JSQMessagesViewController (7.1.0):
     - JSQSystemSoundPlayer (~> 2.0.1)
@@ -32,10 +33,11 @@ PODS:
   - SimulatorRemoteNotifications (0.0.3)
   - TransitionKit (2.0.0)
   - TSMessages (0.9.12):
-    - HexColors
+    - HexColors (~> 2.2.0)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
+  - AMap2DMap (~> 2.6.0)
   - JSQMessagesViewController
   - Masonry (~> 0.5.3)
   - MBProgressHUD (~> 0.9.1)
@@ -46,6 +48,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: 41d45d2c14219af0fa5addf3cfd433a002c13c9f
+  AMap2DMap: b5ce82581ca53b71a0136da858f7ef04db1ffc59
   HexColors: abfd172e329dab59888614ccba6f216cec59289d
   JSQMessagesViewController: ca11f86fa68ca70835f05e169df9244147c1dc40
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
@@ -54,6 +57,6 @@ SPEC CHECKSUMS:
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   SimulatorRemoteNotifications: 1610643e0582b2af67bc254b071ace4077e8ef86
   TransitionKit: c150629869b0eab9d270f914aad2d1a088a8c19d
-  TSMessages: 2a52642128d7ab15b46930c810b9c9403a2b58f3
+  TSMessages: c8cc7b80f2a833af533872cd02010cac061532cc
 
-COCOAPODS: 0.37.0
+COCOAPODS: 0.36.3

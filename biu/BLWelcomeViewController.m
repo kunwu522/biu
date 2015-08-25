@@ -135,20 +135,23 @@ static double ICON_INITIAL_SIZE = 147.5;
         User *thirdLoginInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
         [thirdLoginInfo save];
         
-        if(responseObject[@"user"][@"profile"] && responseObject[@"user"][@"partner"]){
-            //进入menu
-            self.isIntoWhere = @"menu";
-            //NSLog(@"OK======");
-            BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
-            BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
-            UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
-            masterNavViewController.navigationBarHidden = YES;
-            // Create BL Menu view controller
-            BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
-                        menuViewController:menuViewController];
-            [_HUD hide:YES];
-            [self dismissViewControllerAnimated:NO completion:nil];
-            [self presentViewController:menuNavController animated:YES completion:nil];
+        if ((responseObject[@"user"][@"profile"] &&
+             responseObject[@"user"][@"partner"]) &&
+            (!([responseObject[@"user"][@"profile"] isKindOfClass:[NSNull class]]) &&
+             !([responseObject[@"user"][@"partner"] isKindOfClass:[NSNull class]]))){
+                //进入menu
+                self.isIntoWhere = @"menu";
+                //NSLog(@"OK======");
+                BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
+                BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
+                UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
+                masterNavViewController.navigationBarHidden = YES;
+                // Create BL Menu view controller
+                BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
+                            menuViewController:menuViewController];
+                [_HUD hide:YES];
+                [self dismissViewControllerAnimated:NO completion:nil];
+                [self presentViewController:menuNavController animated:YES completion:nil];
         } else {
             //进入填写个人信息
             NSLog(@"=====NULL======");
@@ -183,20 +186,23 @@ static double ICON_INITIAL_SIZE = 147.5;
         User *thirdLoginInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
         [thirdLoginInfo save];
         
-        if(responseObject[@"user"][@"profile"] && responseObject[@"user"][@"partner"]) {
-            //    进入menu
-            self.isIntoWhere = @"menu";
-            NSLog(@"OK======");
-            BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
-            BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
-            UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
-            masterNavViewController.navigationBarHidden = YES;
-            // Create BL Menu view controller
-            BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
-                        menuViewController:menuViewController];
-            [_HUD hide:YES];
-            [self dismissViewControllerAnimated:NO completion:nil];
-            [self presentViewController:menuNavController animated:YES completion:nil];
+        if ((responseObject[@"user"][@"profile"] &&
+             responseObject[@"user"][@"partner"]) &&
+            (!([responseObject[@"user"][@"profile"] isKindOfClass:[NSNull class]]) &&
+             !([responseObject[@"user"][@"partner"] isKindOfClass:[NSNull class]]))) {
+                //    进入menu
+                self.isIntoWhere = @"menu";
+                NSLog(@"OK======");
+                BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
+                BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
+                UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
+                masterNavViewController.navigationBarHidden = YES;
+                // Create BL Menu view controller
+                BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
+                            menuViewController:menuViewController];
+                [_HUD hide:YES];
+                [self dismissViewControllerAnimated:NO completion:nil];
+                [self presentViewController:menuNavController animated:YES completion:nil];
             
         } else if (responseObject[@"user"][@"profile"] && !responseObject[@"uesr"][@"partner"]){
             //   进入partner
@@ -399,9 +405,9 @@ static double ICON_INITIAL_SIZE = 147.5;
 
 - (void)showLoginView:(id)sender {
     BLLoginViewController *loginViewController = [[BLLoginViewController alloc] init];
-    loginViewController.delegate = self;
-    [self.navigationController presentViewController:loginViewController];
+    [self.navigationController pushViewController:loginViewController animated:YES];
 }
+
 
 - (void)showSignupView:(id)sender {
     BLSignupViewController *signupViewController = [[BLSignupViewController alloc] init];

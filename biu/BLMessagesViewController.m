@@ -8,6 +8,7 @@
 
 #import "BLMessagesViewController.h"
 #import "Masonry.h"
+#import "BLMAMapViewController.h"
 
 @interface BLMessagesViewController () <BLMessageDelegate, UIAlertViewDelegate, BLMatchNotificationDelegate>
 
@@ -107,7 +108,8 @@
 }
 
 - (void)showMap:(id)sender {
-    
+    BLMAMapViewController *maMapVC = [[BLMAMapViewController alloc] init];
+    [self.navigationController pushViewController:maMapVC animated:YES];
 }
 
 #pragma mark - JSQMessagesViewController method overrides

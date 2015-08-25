@@ -129,6 +129,7 @@
     [WeiboSDK enableDebugMode:YES];
     [WeiboSDK registerApp:kWeiBoAppKey];
     
+    [MAMapServices sharedServices].apiKey = kMAMapKey;
     return YES;
 }
 
@@ -214,9 +215,10 @@
                 
                 self.username = [dic objectForKey:@"nickname"];
                 self.avatar_url = [dic objectForKey:@"headimgurl"];
-                self.avatar_large_url = self.avatar_url;
+                self.avatar_large_url = [dic objectForKey:@"headimgurl"];
                 [[NSUserDefaults standardUserDefaults] setObject:self.username forKey:@"username"];
                 [[NSUserDefaults standardUserDefaults] setObject:self.avatar_url forKey:@"avatar_url"];
+                [[NSUserDefaults standardUserDefaults] setObject:self.avatar_large_url forKey:@"avatar_large_url"];
                 //像素1242             
                 if (self.openid) {
                     

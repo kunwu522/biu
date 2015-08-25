@@ -14,6 +14,8 @@
 #import "WeiboSDK.h"
 #import <TencentOpenAPI/TencentOAuth.h>
 
+#import <MAMapKit/MAMapKit.h>
+
 #define IS_IPHONE_4S (fabs((double)[[UIScreen mainScreen]bounds].size.height - (double)480) < DBL_EPSILON)
 #define IS_IPHONE_5 (fabs((double)[[UIScreen mainScreen]bounds].size.height - (double)568) < DBL_EPSILON)
 #define IS_IPHONE_6 (fabs((double)[[UIScreen mainScreen]bounds].size.height - (double)667) < DBL_EPSILON)
@@ -35,6 +37,7 @@
 #define kOpenId        @"OpenId"
 #define kRefreshToken  @"RefreshToken"
 
+#define kMAMapKey      @"735493b70b571f4339f62b071bf068b3"
 #endif
 
 @class KeychainItemWrapper;

@@ -21,7 +21,7 @@
 #import "UINavigationController+BLPresentViewController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
-@interface BLLoginViewController () <UIGestureRecognizerDelegate, MBProgressHUDDelegate, UIAlertViewDelegate, UITextFieldDelegate> {
+@interface BLLoginViewController () <UIGestureRecognizerDelegate, MBProgressHUDDelegate, UIAlertViewDelegate, UITextFieldDelegate, WXApiDelegate> {
     MBProgressHUD *_HUD;
 }
 
@@ -377,16 +377,16 @@
 }
 
 - (void)wechatLogin:(id)sender {
-    
+    SendAuthReq* req = [[SendAuthReq alloc] init];
     if ([WXApi isWXAppInstalled] == NO) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Don’t have WeChat                 Download now?", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"later", nil) otherButtonTitles:NSLocalizedString(@"download", nil), nil];
-        [alertView show];
-        self.alertViewWhere = @"WX";
+        req.scope = @"snsapi_userinfo";//snsapi_base只能获取到openid，意义不大，所以使用snsapi_userinfo
+        req.state = kAppDescription;//随便数字
+        [WXApi sendAuthReq:req viewController:self delegate:self];
+        [WXApi sendReq:req];
     } else {
-    SendAuthReq *req = [[SendAuthReq alloc] init];
-    req.scope = @"snsapi_userinfo";//snsapi_base只能获取到openid，意义不大，所以使用snsapi_userinfo
-    req.state = kAppDescription;//随便数字
-    [WXApi sendReq:req];
+        req.scope = @"snsapi_userinfo";//snsapi_base只能获取到openid，意义不大，所以使用snsapi_userinfo
+        req.state = kAppDescription;//随便数字
+        [WXApi sendReq:req];
     }
 }
 
@@ -403,12 +403,17 @@
 }
 
 - (void)weiboLogin:(id)sender {
+    WBAuthorizeRequest *request = [WBAuthorizeRequest request];
     if ([WeiboSDK isWeiboAppInstalled] == NO) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Don’t have Weibo                 Download now?", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"later", nil) otherButtonTitles:NSLocalizedString(@"download", nil), nil];
-        [alertView show];
-        self.alertViewWhere = @"WB";
+        request.shouldShowWebViewForAuthIfCannotSSO = YES;
+        request.redirectURI = kWeiBoRedirectURL;
+        request.scope = @"all";
+        request.userInfo = @{@"SSO_From": @"SendMessageToWeiboViewController",
+                             @"Other_Info_1": [NSNumber numberWithInt:123],
+                             @"Other_Info_2": @[@"obj1", @"obj2"],
+                             @"Other_Info_3": @{@"key1": @"obj1", @"key2": @"obj2"}};
+        [WeiboSDK sendRequest:request];
     } else {
-        WBAuthorizeRequest *request = [WBAuthorizeRequest request];
         request.redirectURI = kWeiBoRedirectURL;
         request.scope = @"all";
         request.userInfo = @{@"SSO_From": @"SendMessageToWeiboViewController",
@@ -417,20 +422,6 @@
                              @"Other_Info_3": @{@"key1": @"obj1", @"key2": @"obj2"}};
         [WeiboSDK sendRequest:request];
     }
-}
-
-
-#pragma mark --alertView
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
-        if ([self.alertViewWhere isEqualToString:@"WX"]) {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[WXApi getWXAppInstallUrl]]];
-            
-        } else if ([self.alertViewWhere isEqualToString:@"WB"]) {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[WeiboSDK getWeiboAppInstallUrl]]];
-        }
-    }
-    
 }
 
 - (UITapGestureRecognizer *)tapGestureRecognizer {

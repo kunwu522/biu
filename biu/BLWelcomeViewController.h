@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Category/UIImage+ImageEffects.h"
 
 #define _HUDTIMING 20.0
 @interface BLWelcomeViewController : UIViewController
@@ -16,6 +17,8 @@
 @property (strong, nonatomic)NSDictionary *profile;
 @property (strong, nonatomic)NSDictionary *partner;
 
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)popViewControllerAnimated:(BOOL)animated;
 
 @end
 
