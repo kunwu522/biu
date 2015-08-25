@@ -199,6 +199,7 @@
     navController.navigationBarHidden = YES;
     [self dismissViewControllerAnimated:NO completion:nil];
     [self presentViewController:navController animated:YES completion:nil];
+    
 }
 
 - (void)showMenu:(id)sender {

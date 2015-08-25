@@ -246,7 +246,6 @@
     [self.view addSubview:_HUD];
     _HUD.delegate = self;
     _HUD.labelText = @"Loading";
-    
 }
 
 #pragma mark -

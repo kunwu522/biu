@@ -111,17 +111,8 @@ static CGFloat kTempHeight = 80.0f;
         }];
     }
     [self addHUD];
-}
-- (void)addHUD{
-    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    [self.navigationController.view addSubview:_HUD];
-    _HUD.delegate = self;
-    _HUD.labelText = @"Loading";
-}
-
-
-- (void)viewWillAppear:(BOOL)animated {
-    if (self.profileViewType == BLProfileViewTypeUpdate && self.currentUser) {
+    
+    if (self.currentUser.profile) {
         self.gender = self.currentUser.profile.gender;
         self.sexuality = self.currentUser.profile.sexuality;
         self.birthday = self.currentUser.profile.birthday;
@@ -137,6 +128,32 @@ static CGFloat kTempHeight = 80.0f;
         self.zodiac = BLZodiacCapricorn;
         self.style = BLStyleTypeManOther;
     }
+}
+- (void)addHUD{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:_HUD];
+    _HUD.delegate = self;
+    _HUD.labelText = @"Loading";
+}
+
+
+- (void)viewWillAppear:(BOOL)animated {
+//    if (self.profileViewType == BLProfileViewTypeUpdate && self.currentUser.profile) {
+//        self.gender = self.currentUser.profile.gender;
+//        self.sexuality = self.currentUser.profile.sexuality;
+//        self.birthday = self.currentUser.profile.birthday;
+//        self.zodiac = self.currentUser.profile.zodiac;
+//        self.style = self.currentUser.profile.style;
+//    } else {
+//        self.gender = BLGenderMale;
+//        self.sexuality = BLSexualityTypeMan;
+//        NSString *defaultDate = @"1990-01-01";
+//        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//        [formatter setDateFormat:@"yyyy-MM-dd"];
+//        self.birthday = [formatter dateFromString:defaultDate];
+//        self.zodiac = BLZodiacCapricorn;
+//        self.style = BLStyleTypeManOther;
+//    }
     //    偏好设置取数据
     NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
 
@@ -152,12 +169,7 @@ static CGFloat kTempHeight = 80.0f;
     
         [self.imageViewAvatar setImage:[UIImage imageNamed:@"avatar_upload_icon.png"]];
     }
-//        else{
-//            [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@",
-//                                                                           [BLHTTPClient blBaseURL],self.currentUser.userId]]
-//                                    placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
-//                                             options: SDWebImageHandleCookies];
-//        }
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -506,16 +518,25 @@ static CGFloat kTempHeight = 80.0f;
 }
 
 - (void)createProfile:(id)sender {
-    Profile *profile = [Profile new];
-    profile.gender = _gender;
-    profile.birthday = _birthday;
-    profile.zodiac = _zodiac;
-    profile.style = _style;
-    profile.sexuality = _sexuality;
+    NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+    
+    if (self.currentUser.profile) {
+        
+        self.currentUser.profile.gender = _gender;
+        self.currentUser.profile.birthday = _birthday;
+        self.currentUser.profile.zodiac = _zodiac;
+        self.currentUser.profile.style = _style;
+        self.currentUser.profile.sexuality = _sexuality;
+    } else {
+        self.currentUser.profile = [Profile new];
+        self.currentUser.profile.gender = _gender;
+        self.currentUser.profile.birthday = _birthday;
+        self.currentUser.profile.zodiac = _zodiac;
+        self.currentUser.profile.style = _style;
+        self.currentUser.profile.sexuality = _sexuality;
+    }
     
     _whichAlertV = nil;
-    
-    NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
     if (dic[@"profile_id"]) {
         [[BLHTTPClient sharedBLHTTPClient] updateProfile:self.currentUser.profile user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"Update profile successed...");
@@ -536,10 +557,10 @@ static CGFloat kTempHeight = 80.0f;
             [alertView show];
         }];
     } else {
-        [[BLHTTPClient sharedBLHTTPClient] createProfile:profile user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[BLHTTPClient sharedBLHTTPClient] createProfile:self.currentUser.profile user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"create profile successed...");
-            profile.profileId = [responseObject objectForKey:@"profile_id"];
-            [profile save];
+            self.currentUser.profile.profileId = [responseObject objectForKey:@"profile_id"];
+            [self.currentUser.profile save];
             BLPartnerViewController *partnerController = [[BLPartnerViewController alloc] initWithNibName:nil bundle:nil];
             [self.navigationController pushViewController:partnerController animated:YES];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {

@@ -405,7 +405,9 @@ static double ICON_INITIAL_SIZE = 147.5;
 
 - (void)showLoginView:(id)sender {
     BLLoginViewController *loginViewController = [[BLLoginViewController alloc] init];
-    [self.navigationController pushViewController:loginViewController animated:YES];
+//    [self.navigationController pushViewController:loginViewController animated:YES];
+    loginViewController.delegate = self;
+    [self.navigationController presentViewController:loginViewController];
 }
 
 

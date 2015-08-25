@@ -101,6 +101,20 @@ static CGFloat kTempHeight = 80.0f;
     self.expandZoomImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"login_signup_background.png"]];
     self.expandZoomImageView.frame = CGRectMake(0, -kImageOriginHight - kTempHeight, self.tableView.frame.size.width, kImageOriginHight + kTempHeight);
     [self.tableView addSubview:self.expandZoomImageView];
+    
+    if (self.currentUser.partner) {
+        _minAge = self.currentUser.partner.minAge;
+        _maxAge = self.currentUser.partner.maxAge;
+        _sexuality = self.currentUser.partner.sexualities.firstObject;
+        _preferStyles = self.currentUser.partner.preferStyles;
+        _preferZodiacs = self.currentUser.partner.preferZodiacs;
+    } else {
+        _minAge = @20;
+        _maxAge = @25;
+        _sexuality = (NSNumber *)@"1";
+        _preferZodiacs = [NSArray array];
+        _preferStyles = [NSArray array];
+    }
 }
 
 //tableView下拉图片变长
@@ -118,21 +132,21 @@ static CGFloat kTempHeight = 80.0f;
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    if (self.partnerViewType == BLPartnerViewControllerUpdate && self.currentUser.partner) {
-        _minAge = self.currentUser.partner.minAge;
-        _maxAge = self.currentUser.partner.maxAge;
-        _sexuality = self.currentUser.partner.sexualities.firstObject;
-        _preferStyles = self.currentUser.partner.preferStyles;
-        _preferZodiacs = self.currentUser.partner.preferZodiacs;
-    } else {
-        _minAge = @20;
-        _maxAge = @25;
-        _sexuality = (NSNumber *)@"1";//判断profile中男女，给定数据
-        _preferZodiacs = [NSArray array];
-        _preferStyles = [NSArray array];
-    }
-}
+//- (void)viewWillAppear:(BOOL)animated {
+//    if (self.partnerViewType == BLPartnerViewControllerUpdate && self.currentUser.partner) {
+//        _minAge = self.currentUser.partner.minAge;
+//        _maxAge = self.currentUser.partner.maxAge;
+//        _sexuality = self.currentUser.partner.sexualities.firstObject;
+//        _preferStyles = self.currentUser.partner.preferStyles;
+//        _preferZodiacs = self.currentUser.partner.preferZodiacs;
+//    } else {
+//        _minAge = @20;
+//        _maxAge = @25;
+//        _sexuality = (NSNumber *)@"1";//判断profile中男女，给定数据
+//        _preferZodiacs = [NSArray array];
+//        _preferStyles = [NSArray array];
+//    }
+//}
 
 - (void)blLayoutSubViews {
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -396,6 +410,7 @@ static CGFloat kTempHeight = 80.0f;
             BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
                                                                                           menuViewController:menuViewController];
             [self presentViewController:menuNavController animated:YES completion:nil];
+
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSString *message = [BLHTTPClient responseMessage:task error:error];
             if (!message) {
