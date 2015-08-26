@@ -43,7 +43,7 @@
     [self.view addSubview:self.matchedUserImageView];
     [self.view addSubview:self.btnClose];
     [self.view addSubview:self.btnMessage];
-    [self.view addSubview:self.btnMatchedUserInfo];
+//    [self.view addSubview:self.btnMatchedUserInfo];
     [self.view addSubview:self.blurUserInfoView];
     [self layoutSubViews];
     
@@ -84,11 +84,11 @@
         make.edges.equalTo(self.matchedUserImageView.superview);
     }];
     
-    [self.btnMatchedUserInfo mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.btnMatchedUserInfo.superview).with.offset([BLGenernalDefinition resolutionForDevices:31.2f]);
-        make.right.equalTo(self.btnMatchedUserInfo.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.8f]);
-        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:45.3f]]);
-    }];
+//    [self.btnMatchedUserInfo mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.btnMatchedUserInfo.superview).with.offset([BLGenernalDefinition resolutionForDevices:31.2f]);
+//        make.right.equalTo(self.btnMatchedUserInfo.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.8f]);
+//        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:45.3f]]);
+//    }];
     
     [self.btnClose mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.btnClose.superview).with.offset([BLGenernalDefinition resolutionForDevices:60.0f]);

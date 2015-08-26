@@ -426,10 +426,7 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 #pragma mark -
 #pragma mark Private Methods
 - (void)fetchUserMatchedInfo {
-//    [_HUD show:YES];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(20.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [_HUD hide:YES];
-    });//20秒后执行
+    [_HUD show:YES];
     [[BLHTTPClient sharedBLHTTPClient] getMatchInfo:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
         [_HUD hide:YES];
         [self.currentUser updateState:[[[responseObject objectForKey:@"user"] objectForKey:@"state"] integerValue]];
