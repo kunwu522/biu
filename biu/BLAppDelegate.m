@@ -129,7 +129,7 @@
     [WeiboSDK enableDebugMode:YES];
     [WeiboSDK registerApp:kWeiBoAppKey];
     
-    [MAMapServices sharedServices].apiKey = kMAMapKey;
+//    [MAMapServices sharedServices].apiKey = kMAMapKey;
     return YES;
 }
 

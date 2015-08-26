@@ -328,10 +328,21 @@ static double ICON_INITIAL_SIZE = 147.5;
 }
 
 - (void)showLoginUI {
+    
+    //清userDefaults
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"dongClearHXCache"]) {
+        NSString *appDomainStr = [[NSBundle mainBundle] bundleIdentifier];
+        [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomainStr];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"dontClearHXCache"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"dontClearHXCache"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+
     if (_isLoginLayout) {
         return;
     }
-    
     [self loginViewLayout];
     [UIView animateWithDuration:0.5 animations:^{
         [self.view layoutIfNeeded];

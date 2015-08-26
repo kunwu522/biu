@@ -268,7 +268,7 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
         self.coupleResult = [[responseObject objectForKey:@"result"] integerValue];
         self.matchedUser = [[User alloc] initWithDictionary:[responseObject objectForKey:@"matched_user"]];
         
-        [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@", [BLHTTPClient blBaseURL], self.matchedUser.userId]]
+        [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:self.matchedUser.avatar_large_url]
                                 placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
                                          options:SDWebImageRefreshCached | SDWebImageHandleCookies];
         [self reloadViewController];

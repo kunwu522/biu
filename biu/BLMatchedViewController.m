@@ -225,7 +225,8 @@
         self.coupleResult = [[responseObject objectForKey:@"result"] integerValue];
         self.matchedUser = [[User alloc] initWithDictionary:[responseObject objectForKey:@"matched_user"]];
         SDWebImageManager *manager = [SDWebImageManager sharedManager];
-        [manager downloadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@rect/avatar/%@", [BLHTTPClient blBaseURL], self.matchedUser.userId]]
+        
+        [manager downloadImageWithURL:[NSURL URLWithString:self.matchedUser.avatar_large_url]
                               options:SDWebImageHandleCookies | SDWebImageProgressiveDownload | SDWebImageCacheMemoryOnly
                              progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                                  // progression tracking code

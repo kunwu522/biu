@@ -26,7 +26,9 @@ typedef NS_ENUM(NSInteger, BLMatchEvent) {
     BLMatchEventAccept = 2,
     BLMatchEventReject = 3,
     BLMatchEventTimout = 4,
-    BLMatchEventClose = 5
+    BLMatchEventClose = 5,
+    BLMatchEventStartNavigation = 6,
+    BLMatchEventStopNavigation = 7
 };
 
 typedef NS_ENUM(NSUInteger, BLCoupleState) {

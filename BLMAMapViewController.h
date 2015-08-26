@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <MAMapKit/MAMapKit.h>
 
 @interface BLMAMapViewController : UIViewController
 

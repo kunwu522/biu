@@ -8,12 +8,17 @@
 
 #import "BLMAMapViewController.h"
 #import "Masonry.h"
+#import <MAMapKit/MAMapKit.h>
+#import <AMapSearchKit/AMapSearchAPI.h>
 
-@interface BLMAMapViewController ()<MAMapViewDelegate>
+@interface BLMAMapViewController ()<MAMapViewDelegate, AMapSearchDelegate>
 {
     MAMapView *_mapView;
+    AMapSearchAPI *_search;
 }
 @property (strong, nonatomic) UIButton *btnBack;
+@property (strong, nonatomic) NSString *latitude;//纬度
+@property (strong, nonatomic) NSString *longitude;//经度
 
 @end
 
@@ -23,6 +28,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+//    配置定位
     [MAMapServices sharedServices].apiKey = kMAMapKey;
     _mapView = [[MAMapView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
     _mapView.delegate = self;
@@ -31,21 +38,30 @@
     [self.view addSubview:_mapView];
     
     [_mapView setUserTrackingMode: MAUserTrackingModeFollow animated:YES]; //地图跟着位置移动
-    
+    //自定义定位精度圈样式
+    _mapView.customizeUserLocationAccuracyCircleRepresentation = YES;
+    //是否追踪用户
+    _mapView.userTrackingMode = MAUserTrackingModeFollowWithHeading;
+    //后台定位
+    _mapView.pausesLocationUpdatesAutomatically = NO;
     [self.view addSubview:self.btnBack];
-
-    [self loadLayouts];
+    [self loadLayouts];//设置btnBack
+    
+//    配置路径规划
+    _search = [[AMapSearchAPI alloc] initWithSearchKey:kMAMapKey Delegate:self];
+    
+    //构造AMapNavigationSearchRequest对象，配置查询参数
+    AMapNavigationSearchRequest *naviRequest= [[AMapNavigationSearchRequest alloc] init];
+    naviRequest.searchType = AMapSearchType_NaviDrive;
+    naviRequest.requireExtension = YES;
+    naviRequest.origin = [AMapGeoPoint locationWithLatitude:39.994949 longitude:116.447265];
+    naviRequest.destination = [AMapGeoPoint locationWithLatitude:39.990459 longitude:116.481476];
+    
+    //发起路径搜索
+    [_search AMapNavigationSearch: naviRequest];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    _mapView.showsUserLocation = YES;
-    _mapView.userTrackingMode = MAUserTrackingModeFollowWithHeading;//是否追踪用户
-    
-//    [_mapView setZoomLevel:16.1 animated:YES];
-}
+
 
 #pragma mark Delegate
 -(void)mapView:(MAMapView *)mapView didUpdateUserLocation:(MAUserLocation *)userLocation
@@ -58,26 +74,39 @@ updatingLocation:(BOOL)updatingLocation
     }
 }
 
-
-- (void)mapView:(MAMapView *)mapView didAddAnnotationViews:(NSArray *)views
+- (MAOverlayView *)mapView:(MAMapView *)mapView viewForOverlay:(id <MAOverlay>)overlay
 {
-    MAAnnotationView *view = views[0];
-    
-    // 放到该方法中用以保证userlocation的annotationView已经添加到地图上了。
-    if ([view.annotation isKindOfClass:[MAUserLocation class]])
+    /* 自定义定位精度对应的MACircleView. */
+    if (overlay == mapView.userLocationAccuracyCircle)
     {
-        MAUserLocationRepresentation *pre = [[MAUserLocationRepresentation alloc] init];
-//        pre.fillColor = [UIColor colorWithRed:0.9 green:0.1 blue:0.1 alpha:0.3];
-//        pre.strokeColor = [UIColor colorWithRed:0.1 green:0.1 blue:0.9 alpha:1.0];
-        pre.image = [UIImage imageNamed:@"poi_2.png"];
-//        pre.lineWidth = 3;
-//        pre.lineDashPattern = @[@6, @3];
+        MACircleView *accuracyCircleView = [[MACircleView alloc] initWithCircle:overlay];
         
-        [_mapView updateUserLocationRepresentation:pre];
+        accuracyCircleView.lineWidth    = 2.f;
+        accuracyCircleView.strokeColor  = [UIColor lightGrayColor];
+        accuracyCircleView.fillColor    = [UIColor colorWithRed:1 green:0 blue:0 alpha:.3];
         
-        view.calloutOffset = CGPointMake(0, 0);
-    } 
+        return accuracyCircleView;
+    }
+    return nil;
 }
+- (MAAnnotationView *)mapView:(MAMapView *)mapView viewForAnnotation:(id <MAAnnotation>)annotation
+{
+    /* 自定义userLocation对应的annotationView. */
+    if ([annotation isKindOfClass:[MAUserLocation class]])
+    {
+        static NSString *userLocationStyleReuseIndetifier = @"userLocationStyleReuseIndetifier";
+        MAAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:userLocationStyleReuseIndetifier];
+        if (annotationView == nil)
+        {
+            annotationView = [[MAAnnotationView alloc] initWithAnnotation:annotation
+                                                          reuseIdentifier:userLocationStyleReuseIndetifier];
+        }
+        annotationView.image = [UIImage imageNamed:@"test_avator.png"];
+        return annotationView;
+    }
+    return nil;
+}
+
 
 
 

@@ -198,11 +198,8 @@ static CGFloat kTempHeight = 80.0f;
             }
             cell.delegate = self;
             cell.tag = BLPartnerSectionSexuality;
-            
-            
+            cell.title.text = NSLocalizedString(@"Choose your partner's sexuality", nil);
             cell.sexuality = _sexuality.integerValue;
-
-            
             return cell;
         }
         case BLPartnerSectionAgeRange:

@@ -33,7 +33,6 @@ static const float BL_SEXUALITY_CELL_WIDTH = 100.0f;
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.title.text = NSLocalizedString(@"Choose your partner's sexuality", nil);
         
         UICollectionViewFlowLayout *layout = [UICollectionViewFlowLayout alloc];
         layout.minimumInteritemSpacing = BL_SEXUALITY_MIN_INTER_SPACING;
