@@ -197,7 +197,6 @@
     BLWelcomeViewController *welViewController = [[BLWelcomeViewController alloc] initWithNibName:nil bundle:nil];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:welViewController];
     navController.navigationBarHidden = YES;
-    [self dismissViewControllerAnimated:NO completion:nil];
     [self presentViewController:navController animated:YES completion:nil];
     
 }

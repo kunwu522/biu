@@ -78,23 +78,23 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     _lbTitle.text = NSLocalizedString(@"Set the distance", nil);
     [self.view addSubview:_lbTitle];
     
-    _arrayDistanceData = [[NSArray alloc] initWithObjects:@"500",
+    _arrayDistanceData = [[NSArray alloc] initWithObjects:@"200",
+                                                          @"400",
+                                                          @"600",
+                                                          @"800",
                                                           @"1000",
-                                                          @"1500",
+                                                          @"1200",
+                                                          @"1400",
+                                                          @"1600",
+                                                          @"1800",
                                                           @"2000",
-                                                          @"2500",
-                                                          @"3000",
-                                                          @"3500",
-                                                          @"4000",
-                                                          @"4500",
-                                                          @"5000",
                                                             nil];
     _pickViewDistance = [[BLPickerView alloc] initWithFrame:CGRectMake(0, [BLGenernalDefinition resolutionForDevices:200],
                                                                        self.view.frame.size.width, [BLGenernalDefinition resolutionForDevices:225.0f])];
     _pickViewDistance.delegate = self;
     _pickViewDistance.dataSource = self;
     _pickViewDistance.fisheyeFactor = 0.001;
-    [_pickViewDistance selectRow:3 animated:NO];
+    [_pickViewDistance selectRow:4 animated:NO];
 
     [self.view addSubview:_pickViewDistance];
     self.distance = [_arrayDistanceData objectAtIndex:3];
@@ -289,10 +289,17 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
         case kCLAuthorizationStatusAuthorizedAlways:
         case kCLAuthorizationStatusAuthorizedWhenInUse:
             [manager startUpdatingLocation];
+            [self startMatchingAnimation];
             break;
         case kCLAuthorizationStatusNotDetermined:
         case kCLAuthorizationStatusDenied:
         case kCLAuthorizationStatusRestricted:
+        {
+            self.matchSwith.on = NO;
+            self.matchingLeft.alpha = 0.0f;
+            self.matchingRight.alpha = 0.0f;
+            self.pickViewDistance.alpha = 1.0f;
+        }
         default:
             break;
     }
@@ -653,7 +660,7 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     
     _locationManager.delegate = self;
     _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
-    _locationManager.distanceFilter = 500;
+    _locationManager.distanceFilter = 200;
     
     CLAuthorizationStatus authorizationStatus= [CLLocationManager authorizationStatus];
     if (authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
@@ -907,15 +914,14 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
                 self.matchedImageView.alpha = 1.0f;
             } completion:^(BOOL finished) {
                 [self startHeartbeatAnimation];
+                // add gesture to present matched view
+                UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(presentMatchedViewController)];
+                [self.matchedImageView addGestureRecognizer:tapGestureRecognizer];
+                self.matchedImageView.userInteractionEnabled = YES;
+                
+                // change current state
+                [self.currentUser updateState:BLMatchStateMatched];
             }];
-            
-            // add gesture to present matched view
-            UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(presentMatchedViewController)];
-            [self.matchedImageView addGestureRecognizer:tapGestureRecognizer];
-            self.matchedImageView.userInteractionEnabled = YES;
-            
-            // change current state
-            [self.currentUser updateState:BLMatchStateMatched];
         }];
         
         [matched setDidExitStateBlock:^(TKState *state, TKTransition *transition) {

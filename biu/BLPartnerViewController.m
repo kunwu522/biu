@@ -132,22 +132,6 @@ static CGFloat kTempHeight = 80.0f;
     }
 }
 
-//- (void)viewWillAppear:(BOOL)animated {
-//    if (self.partnerViewType == BLPartnerViewControllerUpdate && self.currentUser.partner) {
-//        _minAge = self.currentUser.partner.minAge;
-//        _maxAge = self.currentUser.partner.maxAge;
-//        _sexuality = self.currentUser.partner.sexualities.firstObject;
-//        _preferStyles = self.currentUser.partner.preferStyles;
-//        _preferZodiacs = self.currentUser.partner.preferZodiacs;
-//    } else {
-//        _minAge = @20;
-//        _maxAge = @25;
-//        _sexuality = (NSNumber *)@"1";//判断profile中男女，给定数据
-//        _preferZodiacs = [NSArray array];
-//        _preferStyles = [NSArray array];
-//    }
-//}
-
 - (void)blLayoutSubViews {
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
@@ -329,7 +313,7 @@ static CGFloat kTempHeight = 80.0f;
         _imageViewAvator.layer.cornerRadius = [BLGenernalDefinition resolutionForDevices:AVATOR_WIDTH] / 2;
         _imageViewAvator.layer.borderColor = [UIColor whiteColor].CGColor;
         _imageViewAvator.layer.borderWidth = 4.0f;
-        _imageViewAvator.image = [UIImage imageNamed:@"partner_avator.png"];
+        _imageViewAvator.image = [UIImage imageNamed:@"partner_default_avatar.png"];
         _imageViewAvator.clipsToBounds = YES;
         [sectionHeaderView addSubview:_imageViewAvator];
         
@@ -380,12 +364,6 @@ static CGFloat kTempHeight = 80.0f;
     partner.preferZodiacs = _preferZodiacs;
     partner.preferStyles = _preferStyles;
     
-    NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
-    User *user = [[User alloc] init];
-    user.userId = dic[@"user_id"];
-    user.username = dic[@"username"];
-    [user save];
-    
     if (_preferZodiacs.count == 0) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Please select zodiacs you prefer", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
         [alertView show];
@@ -394,7 +372,7 @@ static CGFloat kTempHeight = 80.0f;
         [alertView show];
     } else {
 
-        [[BLHTTPClient sharedBLHTTPClient] createPartner:partner user:user success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[BLHTTPClient sharedBLHTTPClient] createPartner:partner user:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"create profile successed, partner id: %@.", [responseObject objectForKey:@"partner_id"]);
             partner.partnerId = [responseObject objectForKey:@"partner_id"];
             [partner save];

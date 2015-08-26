@@ -257,7 +257,6 @@
     [self showSecondToResend];
     _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerfired:) userInfo:nil repeats:YES];
     
-    
 //    [[BLHTTPClient sharedBLHTTPClient] passcode:_code phoneNumber:_tfPhoneNumber.text success:^(NSURLSessionDataTask *task, id responseObject) {
 //        _secondLeftToResend = 60;
 //        _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", (long)_secondLeftToResend];

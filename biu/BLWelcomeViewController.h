@@ -17,6 +17,5 @@
 @property (strong, nonatomic)NSDictionary *profile;
 @property (strong, nonatomic)NSDictionary *partner;
 
-
 @end
 

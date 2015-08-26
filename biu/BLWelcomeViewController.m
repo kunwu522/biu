@@ -36,7 +36,6 @@
 @property (strong, nonatomic) UIView *background;
 @property (strong, nonatomic) UIImageView *imageView;
 @property (strong, nonatomic) UINavigationController *fillingInfoNavController;
-@property (strong, nonatomic) UINavigationController *partnerInfoNavController;
 @property (nonatomic) BOOL isLoginLayout;
 @property (strong, nonatomic) NSString *isIntoWhere;
 
@@ -109,129 +108,9 @@ static double ICON_INITIAL_SIZE = 147.5;
     
     [self addHUD];
 }
-- (void)addHUD{
-    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    [self.navigationController.view addSubview:_HUD];
-    _HUD.delegate = self;
-    _HUD.labelText = @"Loading";
-}
-
-//存储微信数据
-- (void)getWeixinData:(NSNotification *)noti {
-    User *user = [User new];
-    user.username = [noti.object[@"username"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    user.open_id = noti.object[@"openid"];
-    user.avatar_url = noti.object[@"avatar_url"];
-    user.avatar_large_url = noti.object[@"avatar_large_url"];
-    
-    [[NSUserDefaults standardUserDefaults] setObject:user.open_id forKey:@"open_id"];
-    [_HUD show:YES];
-
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_HUDTIMING * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [_HUD hide:YES];
-    });//20秒后执行
-    [[BLHTTPClient sharedBLHTTPClient] thirdParty:user success:^(NSURLSessionDataTask *task, id responseObject) {
-        
-        User *thirdLoginInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
-        [thirdLoginInfo save];
-        
-        if ((responseObject[@"user"][@"profile"] &&
-             responseObject[@"user"][@"partner"]) &&
-            (!([responseObject[@"user"][@"profile"] isKindOfClass:[NSNull class]]) &&
-             !([responseObject[@"user"][@"partner"] isKindOfClass:[NSNull class]]))){
-                //进入menu
-                self.isIntoWhere = @"menu";
-                //NSLog(@"OK======");
-                BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
-                BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
-                UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
-                masterNavViewController.navigationBarHidden = YES;
-                // Create BL Menu view controller
-                BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
-                            menuViewController:menuViewController];
-                [_HUD hide:YES];
-                [self dismissViewControllerAnimated:NO completion:nil];
-                [self presentViewController:menuNavController animated:YES completion:nil];
-        } else {
-            //进入填写个人信息
-            NSLog(@"=====NULL======");
-            self.isIntoWhere = @"profile";
-            [_HUD hide:YES];
-            [self dismissViewControllerAnimated:NO completion:nil];
-            [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
-        }
-        
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [_HUD hide:YES];
-        NSLog(@"failure, error: %@.", error.localizedDescription);
-    }];
-}
-
-//存储微博数据
-- (void)getWeiboData:(NSNotification*)noti {
-    
-    User *user = [User new];
-    user.open_id = noti.object[@"openid"];
-    user.avatar_url = noti.object[@"avatar_url"];
-    user.avatar_large_url = noti.object[@"avatar_large_url"];
-    user.username = [noti.object[@"username"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
-    [[NSUserDefaults standardUserDefaults] setObject:user.open_id forKey:@"open_id"];
-    [_HUD show:YES];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_HUDTIMING * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [_HUD hide:YES];
-    });
-
-    [[BLHTTPClient sharedBLHTTPClient] thirdParty:user success:^(NSURLSessionDataTask *task, id responseObject) {
-        User *thirdLoginInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
-        [thirdLoginInfo save];
-        
-        if ((responseObject[@"user"][@"profile"] &&
-             responseObject[@"user"][@"partner"]) &&
-            (!([responseObject[@"user"][@"profile"] isKindOfClass:[NSNull class]]) &&
-             !([responseObject[@"user"][@"partner"] isKindOfClass:[NSNull class]]))) {
-                //    进入menu
-                self.isIntoWhere = @"menu";
-                NSLog(@"OK======");
-                BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
-                BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
-                UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
-                masterNavViewController.navigationBarHidden = YES;
-                // Create BL Menu view controller
-                BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
-                            menuViewController:menuViewController];
-                [_HUD hide:YES];
-                [self dismissViewControllerAnimated:NO completion:nil];
-                [self presentViewController:menuNavController animated:YES completion:nil];
-            
-        } else if (responseObject[@"user"][@"profile"] && !responseObject[@"uesr"][@"partner"]){
-            //   进入partner
-            [_HUD hide:YES];
-            [self dismissViewControllerAnimated:NO completion:nil];
-            [self presentViewController:self.fillingInfoNavController.navigationController animated:YES completion:nil];
-        } else {
-            //    进入profile
-            NSLog(@"=====NULL======");
-             self.isIntoWhere = @"profile";
-            [_HUD hide:YES];
-            [self dismissViewControllerAnimated:NO completion:nil];
-            [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
-        }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [_HUD hide:YES];
-        NSLog(@"failure, error: %@.", error.localizedDescription);
-    }];
-
-}
 
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
-#pragma mark --通过cookie判断登录状态
+// 通过cookie判断登录状态
 - (void)viewDidAppear:(BOOL)animated {
     // NSLog(@"deviceToken=-=-=-%@", blDelegate.deviceToken);
     
@@ -294,68 +173,7 @@ static double ICON_INITIAL_SIZE = 147.5;
     }
 }
 
-//- (void)viewDidDisappear:(BOOL)animated {
-//    BLAppDelegate *blDelegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
-//    NSDictionary *dic = [[NSDictionary alloc] init];
-//    dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
-//    User *user = [User new];
-//    user.userId = dic[@"user_id"];
-//    
-//    if (blDelegate.deviceToken && user.userId) {
-//        [[BLHTTPClient sharedBLHTTPClient] registToken:blDelegate.deviceToken user:user success:^(NSURLSessionDataTask *task, id responseObject) {
-//            NSLog(@"Regist device token successed.");
-//        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//            NSLog(@"Regist device token failed. error: %@", error.localizedDescription);
-//        }];
-//    }
-
-//}
-
-#pragma mark --取出cookie
-- (NSHTTPCookie *) findCookieByName:(NSString *)name isExpiredBy:(NSDate *)time {
-    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-    if (!cookies || cookies.count == 0) {
-        return nil;
-    }
-    for (NSHTTPCookie *cookie in cookies) {
-        if ([cookie.name isEqualToString:name] && [cookie.expiresDate compare:time] == NSOrderedDescending) {
-        
-            NSLog(@"welcomeVC%@",cookie);
-            return cookie;
-        }
-    }
-    return nil;
-}
-
-- (void)showLoginUI {
-    
-    //清userDefaults
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"dongClearHXCache"]) {
-        NSString *appDomainStr = [[NSBundle mainBundle] bundleIdentifier];
-        [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomainStr];
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"dontClearHXCache"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    } else {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"dontClearHXCache"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
-
-    if (_isLoginLayout) {
-        return;
-    }
-    [self loginViewLayout];
-    [UIView animateWithDuration:0.5 animations:^{
-        [self.view layoutIfNeeded];
-        _biuTitle.transform = CGAffineTransformScale(_biuTitle.transform, 0.67, 0.67);
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:1.0 animations:^{
-            _btnLogin.alpha = 1;
-            _btnSignup.alpha = 1;
-        }];
-    }];
-    _isLoginLayout = YES;
-}
-
+#pragma mark Layouts
 - (void)loginViewLayout {
     [_logo mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).with.offset([BLGenernalDefinition resolutionForDevices:120.7f]);
@@ -414,9 +232,9 @@ static double ICON_INITIAL_SIZE = 147.5;
     }];
 }
 
+#pragma mark - Actions
 - (void)showLoginView:(id)sender {
     BLLoginViewController *loginViewController = [[BLLoginViewController alloc] init];
-//    [self.navigationController pushViewController:loginViewController animated:YES];
     loginViewController.delegate = self;
     [self.navigationController presentViewController:loginViewController];
 }
@@ -426,6 +244,111 @@ static double ICON_INITIAL_SIZE = 147.5;
     BLSignupViewController *signupViewController = [[BLSignupViewController alloc] init];
     signupViewController.delegate = self;
     [self.navigationController presentViewController:signupViewController];
+}
+
+#pragma mark - Notifications
+#pragma mark WeChat Notification
+//存储微信数据
+- (void)getWeixinData:(NSNotification *)noti {
+    User *user = [User new];
+    user.username = [noti.object[@"username"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    user.open_id = noti.object[@"openid"];
+    user.avatar_url = noti.object[@"avatar_url"];
+    user.avatar_large_url = noti.object[@"avatar_large_url"];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:user.open_id forKey:@"open_id"];
+    [_HUD show:YES];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_HUDTIMING * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [_HUD hide:YES];
+    });//20秒后执行
+    [[BLHTTPClient sharedBLHTTPClient] thirdParty:user success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+        User *thirdLoginInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
+        [thirdLoginInfo save];
+        
+        if ((responseObject[@"user"][@"profile"] &&
+             responseObject[@"user"][@"partner"]) &&
+            (!([responseObject[@"user"][@"profile"] isKindOfClass:[NSNull class]]) &&
+             !([responseObject[@"user"][@"partner"] isKindOfClass:[NSNull class]]))){
+                //进入menu
+                self.isIntoWhere = @"menu";
+                //NSLog(@"OK======");
+                BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
+                BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
+                UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
+                masterNavViewController.navigationBarHidden = YES;
+                // Create BL Menu view controller
+                BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
+                                                                                              menuViewController:menuViewController];
+                [_HUD hide:YES];
+                [self dismissViewControllerAnimated:NO completion:nil];
+                [self presentViewController:menuNavController animated:YES completion:nil];
+            } else {
+                //进入填写个人信息
+                NSLog(@"=====NULL======");
+                self.isIntoWhere = @"profile";
+                [_HUD hide:YES];
+                [self dismissViewControllerAnimated:NO completion:nil];
+                [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
+            }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [_HUD hide:YES];
+        NSLog(@"failure, error: %@.", error.localizedDescription);
+    }];
+}
+
+#pragma mark Webo notification
+//存储微博数据
+- (void)getWeiboData:(NSNotification*)noti {
+    
+    User *user = [User new];
+    user.open_id = noti.object[@"openid"];
+    user.avatar_url = noti.object[@"avatar_url"];
+    user.avatar_large_url = noti.object[@"avatar_large_url"];
+    user.username = [noti.object[@"username"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:user.open_id forKey:@"open_id"];
+    [_HUD show:YES];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_HUDTIMING * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [_HUD hide:YES];
+    });
+    
+    [[BLHTTPClient sharedBLHTTPClient] thirdParty:user success:^(NSURLSessionDataTask *task, id responseObject) {
+        User *thirdLoginInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
+        [thirdLoginInfo save];
+        
+        if ((responseObject[@"user"][@"profile"] &&
+             responseObject[@"user"][@"partner"]) &&
+            (!([responseObject[@"user"][@"profile"] isKindOfClass:[NSNull class]]) &&
+             !([responseObject[@"user"][@"partner"] isKindOfClass:[NSNull class]]))) {
+                //    进入menu
+                self.isIntoWhere = @"menu";
+                NSLog(@"OK======");
+                BLMatchViewController *matchViewController = [[BLMatchViewController alloc] initWithNibName:nil bundle:nil];
+                BLMenuViewController *menuViewController = [[BLMenuViewController alloc] init];
+                UINavigationController *masterNavViewController = [[UINavigationController alloc] initWithRootViewController:matchViewController];
+                masterNavViewController.navigationBarHidden = YES;
+                // Create BL Menu view controller
+                BLMenuNavController *menuNavController = [[BLMenuNavController alloc] initWithRootViewController:masterNavViewController
+                                                                                              menuViewController:menuViewController];
+                [_HUD hide:YES];
+                [self dismissViewControllerAnimated:NO completion:nil];
+                [self presentViewController:menuNavController animated:YES completion:nil];
+                
+            } else {
+                //    进入profile
+                NSLog(@"=====NULL======");
+                self.isIntoWhere = @"profile";
+                [_HUD hide:YES];
+                [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
+            }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [_HUD hide:YES];
+        NSLog(@"failure, error: %@.", error.localizedDescription);
+    }];
+    
 }
 
 #pragma mark - BLLoginViewController delegate and BLSignupView delegate
@@ -445,24 +368,60 @@ static double ICON_INITIAL_SIZE = 147.5;
 }
 
 #pragma mark - private method
+// 取出cookie
+- (NSHTTPCookie *) findCookieByName:(NSString *)name isExpiredBy:(NSDate *)time {
+    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    if (!cookies || cookies.count == 0) {
+        return nil;
+    }
+    for (NSHTTPCookie *cookie in cookies) {
+        if ([cookie.name isEqualToString:name] && [cookie.expiresDate compare:time] == NSOrderedDescending) {
+            
+            NSLog(@"welcomeVC%@",cookie);
+            return cookie;
+        }
+    }
+    return nil;
+}
+
+- (void)addHUD{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:_HUD];
+    _HUD.delegate = self;
+    _HUD.labelText = @"Loading";
+}
+
+- (void)showLoginUI {
+    //清userDefaults
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"dongClearHXCache"]) {
+        NSString *appDomainStr = [[NSBundle mainBundle] bundleIdentifier];
+        [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomainStr];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"dontClearHXCache"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"dontClearHXCache"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
+    if (_isLoginLayout) {
+        return;
+    }
+    
+    [self loginViewLayout];
+    [UIView animateWithDuration:0.5 animations:^{
+        [self.view layoutIfNeeded];
+        _biuTitle.transform = CGAffineTransformScale(_biuTitle.transform, 0.67, 0.67);
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:1.0 animations:^{
+            _btnLogin.alpha = 1;
+            _btnSignup.alpha = 1;
+        }];
+    }];
+    _isLoginLayout = YES;
+}
 
 #pragma mark -
 #pragma mark Getter
-
-- (UINavigationController *)partnerInfoNavController {
-    if (!_partnerInfoNavController) {
-        // Create filling information navigation controller
-        BLProfileViewController *profileViewController = [[BLProfileViewController alloc] initWithNibName:nil bundle:nil];
-        profileViewController.profileViewType = BLProfileViewTypeCreate;
-        _fillingInfoNavController = [[UINavigationController alloc] initWithRootViewController:profileViewController];
-        
-        
-        
-        _partnerInfoNavController.navigationBarHidden = YES;
-        
-    }
-    return _fillingInfoNavController;
-}
 
 - (UINavigationController *)fillingInfoNavController {
     if (!_fillingInfoNavController) {

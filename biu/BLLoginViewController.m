@@ -378,10 +378,12 @@
 - (void)wechatLogin:(id)sender {
     SendAuthReq* req = [[SendAuthReq alloc] init];
     if ([WXApi isWXAppInstalled] == NO) {
+#if !TARGET_IPHONE_SIMULATOR
         req.scope = @"snsapi_userinfo";//snsapi_base只能获取到openid，意义不大，所以使用snsapi_userinfo
         req.state = kAppDescription;//随便数字
         [WXApi sendAuthReq:req viewController:self delegate:self];
         [WXApi sendReq:req];
+#endif
     } else {
         req.scope = @"snsapi_userinfo";//snsapi_base只能获取到openid，意义不大，所以使用snsapi_userinfo
         req.state = kAppDescription;//随便数字

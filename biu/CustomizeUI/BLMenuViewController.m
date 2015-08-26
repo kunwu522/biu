@@ -87,29 +87,10 @@ typedef NS_ENUM(NSUInteger, BLSubViewController) {
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
-    User *user = [[User alloc] init];
-    user.userId = dic[@"user_id"];
-    user.avatar_url = dic[@"avatar_url"];
-    user.avatar_large_url = dic[@"avatar_large_url"];
-    user.username = dic[@"username"];
-    self.avatar_url = user.avatar_url;
-    self.avatar_large_url = user.avatar_large_url;
-    
-    if (user.avatar_url && user.username) {
-        [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:self.avatar_url]
-                                placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
-                                         options:SDWebImageRefreshCached | SDWebImageHandleCookies];
-        
-        self.lbUsername.text = user.username;
-
-    } else {
-        [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@cycle/avatar/%@", [BLHTTPClient blBaseURL], user.userId]]
+    [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:self.currentUser.avatar_url]
                             placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
                                      options:SDWebImageRefreshCached | SDWebImageHandleCookies];
-        self.lbUsername.text = user.username;
-    }
-
+    self.lbUsername.text = self.currentUser.username;
 }
 
 #pragma mark -

@@ -15,6 +15,8 @@
 
 // For View
 "BIU" = "彼优";
+"Biu" = "彼优";
+"biu" = "彼优";
 "I ' M   C L O S E" = "我 在 附 近";
 "Login" = "登陆";
 "LOG IN" = "登陆";
@@ -135,7 +137,7 @@
 // Message
 "You've just started your lovestory" = "开始你的爱情之旅";
 "Cancel" = "取消";
-"Chat is instance! No record if you close the page!!" = "此为一次性同化，关闭后讲没有任何记录，确认吗？";
+"Chat is instance! No record if you close the page!!" = "此为一次性通话，关闭后将没有任何记录，确认吗？";
 
 // Setting
 "Share to WeChai" = "分享到朋友圈";
@@ -169,6 +171,9 @@
 "please enter same password" = "密码不一致";
 "Reset password successed!" = "修改密码成功!";
 "Reset password failed, please try again later!" = "修改密码失败，请稍后再试";
+
+// Login View Controller
+"Log in failed. Please try again later" = "登录失败,请稍后再试";
 
 // ThirdLogin
 "Don’t have WeChat                 Download now?" = "未安装微信客户端，                 是否现在去下载？";

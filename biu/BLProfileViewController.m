@@ -162,14 +162,9 @@ static CGFloat kTempHeight = 80.0f;
     user.userId = dic[@"user_id"];
     user.avatar_url = dic[@"avatar_url"];
     self.avatar_url = user.avatar_url;
-    if (avatar_url) {
-        [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatar_url] placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"] options:SDWebImageHandleCookies];
-        
-    } else {
-    
-        [self.imageViewAvatar setImage:[UIImage imageNamed:@"avatar_upload_icon.png"]];
-    }
-
+    [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatar_url]
+                            placeholderImage:[UIImage imageNamed:@"profile_default_avatar.png"]
+                                     options:SDWebImageHandleCookies];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -441,9 +436,12 @@ static CGFloat kTempHeight = 80.0f;
 //        User *user = [User new];
         self.currentUser.avatar_url = responseObject[@"avatar_url"];
         [self.currentUser save];
-        [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:self.currentUser.avatar_url] placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"] options:SDWebImageHandleCookies | SDWebImageRefreshCached completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-            [_HUD hide:YES];
-        }];
+        [self.imageViewAvatar sd_setImageWithURL:[NSURL URLWithString:self.currentUser.avatar_url]
+                                placeholderImage:[UIImage imageNamed:@"profile_default_avatar.png"]
+                                         options:SDWebImageHandleCookies | SDWebImageRefreshCached
+                                       completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                           [_HUD hide:YES];
+                                       }];
 //        [_tableView reloadData];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];

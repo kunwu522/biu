@@ -308,7 +308,9 @@
         return YES;
     }
     
-    if (self.currentUser.phone == nil || self.currentUser.password == nil) {
+    if (self.currentUser.phone == nil
+        || self.currentUser.password == nil
+        || self.currentUser.open_id) {
         return NO;
     }
     
@@ -366,7 +368,11 @@
     NSLog(@"Connection to the server successful.");
     isOpen = YES;
     NSError *error = nil;
-    [self.xmppStream authenticateWithPassword:self.currentUser.password error:&error];
+    if (self.currentUser.open_id) {
+        [self.xmppStream authenticateWithPassword:self.currentUser.open_id error:&error];
+    } else {
+        [self.xmppStream authenticateWithPassword:self.currentUser.password error:&error];
+    }
 }
 
 - (void)xmppStreamDidAuthenticate:(XMPPStream *)sender {

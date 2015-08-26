@@ -178,6 +178,9 @@
 		EA9F49931B1EA5890037D188 /* BLSexualityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9F49921B1EA5890037D188 /* BLSexualityTableViewCell.m */; };
 		EA9F49981B1EB1EC0037D188 /* BLRingView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9F49971B1EB1EC0037D188 /* BLRingView.m */; };
 		EAA7AD5E1B8C19D90049B7DD /* UINavigationController+BLPresentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA7AD5D1B8C19D90049B7DD /* UINavigationController+BLPresentViewController.m */; };
+		EAA7AD611B8C73670049B7DD /* partner_default_avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = EAA7AD5F1B8C73670049B7DD /* partner_default_avatar.png */; };
+		EAA7AD621B8C73670049B7DD /* profile_default_avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = EAA7AD601B8C73670049B7DD /* profile_default_avatar.png */; };
+		EAA7AD661B8DAEBC0049B7DD /* close_icon3.png in Resources */ = {isa = PBXBuildFile; fileRef = EAA7AD651B8DAEBC0049B7DD /* close_icon3.png */; };
 		EAA7FD6F1B0DD64F00C2B5C6 /* BLHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA7FD6E1B0DD64F00C2B5C6 /* BLHTTPClient.m */; };
 		EAA7FD731B12CFF700C2B5C6 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA7FD721B12CFF700C2B5C6 /* User.m */; };
 		EAA9CF511B7DC69A001574B9 /* BLWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA9CF501B7DC69A001574B9 /* BLWelcomeViewController.m */; };
@@ -566,6 +569,9 @@
 		EA9F49971B1EB1EC0037D188 /* BLRingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLRingView.m; path = CustomizeUI/BLRingView.m; sourceTree = "<group>"; };
 		EAA7AD5C1B8C19D90049B7DD /* UINavigationController+BLPresentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UINavigationController+BLPresentViewController.h"; path = "Category/UINavigationController+BLPresentViewController.h"; sourceTree = "<group>"; };
 		EAA7AD5D1B8C19D90049B7DD /* UINavigationController+BLPresentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UINavigationController+BLPresentViewController.m"; path = "Category/UINavigationController+BLPresentViewController.m"; sourceTree = "<group>"; };
+		EAA7AD5F1B8C73670049B7DD /* partner_default_avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = partner_default_avatar.png; path = images/partner_default_avatar.png; sourceTree = "<group>"; };
+		EAA7AD601B8C73670049B7DD /* profile_default_avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = profile_default_avatar.png; path = images/profile_default_avatar.png; sourceTree = "<group>"; };
+		EAA7AD651B8DAEBC0049B7DD /* close_icon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = close_icon3.png; path = images/close_icon3.png; sourceTree = "<group>"; };
 		EAA7FD6B1B0DCDA000C2B5C6 /* Biu-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Biu-Prefix.pch"; sourceTree = "<group>"; };
 		EAA7FD6D1B0DD64F00C2B5C6 /* BLHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLHTTPClient.h; path = NetworkUtil/BLHTTPClient.h; sourceTree = "<group>"; };
 		EAA7FD6E1B0DD64F00C2B5C6 /* BLHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLHTTPClient.m; path = NetworkUtil/BLHTTPClient.m; sourceTree = "<group>"; };
@@ -1334,6 +1340,9 @@
 		EA6AAC5B1AF88DB600ED3A55 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				EAA7AD651B8DAEBC0049B7DD /* close_icon3.png */,
+				EAA7AD5F1B8C73670049B7DD /* partner_default_avatar.png */,
+				EAA7AD601B8C73670049B7DD /* profile_default_avatar.png */,
 				EA9C6D3F1B662901009FF6C2 /* app_icon.png */,
 				EA9C6D381B625EE3009FF6C2 /* left_arrow.png */,
 				EA9C6D331B6230D9009FF6C2 /* right_arrow.png */,
@@ -1703,6 +1712,7 @@
 				EAEC0AFA1B1EEAC3000A7C5B /* zodiac_selected_icon3.png in Resources */,
 				EA9B09011B2A97930059DBA7 /* style_woman_selected_icon6.png in Resources */,
 				EAEC0B1E1B1EEAE8000A7C5B /* sexuality_selected_icon2.png in Resources */,
+				EAA7AD661B8DAEBC0049B7DD /* close_icon3.png in Resources */,
 				EAEC0B491B20953B000A7C5B /* style_woman_unselected_icon2.png in Resources */,
 				EA9C6D341B6230D9009FF6C2 /* right_arrow.png in Resources */,
 				EAEC0AFB1B1EEAC3000A7C5B /* zodiac_selected_icon4.png in Resources */,
@@ -1751,6 +1761,7 @@
 				EA428ADC1B5669B700EF4887 /* build-libidn.sh in Resources */,
 				EAEC0B0B1B1EEAC3000A7C5B /* zodiac_unselected_icon8.png in Resources */,
 				A30D966A1B20BD8800A1CF88 /* style_woman_unselected_icon8.png in Resources */,
+				EAA7AD621B8C73670049B7DD /* profile_default_avatar.png in Resources */,
 				EA9B08DF1B29BADF0059DBA7 /* Launch_debug.png in Resources */,
 				EAE286031B3283D000340C1B /* choosing_photo_icon.png in Resources */,
 				EAEC0B051B1EEAC3000A7C5B /* zodiac_unselected_icon2.png in Resources */,
@@ -1769,6 +1780,7 @@
 				EA017F101B454D8F00FCFB18 /* matched_icon.png in Resources */,
 				EA9B09031B2A97930059DBA7 /* style_woman_selected_icon8.png in Resources */,
 				EAEC0B201B1EEAE8000A7C5B /* sexuality_selected_icon4.png in Resources */,
+				EAA7AD611B8C73670049B7DD /* partner_default_avatar.png in Resources */,
 				E3CCFCE91B688DDD006B2E59 /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				EA9B08F11B2A97860059DBA7 /* style_man_selected_icon8.png in Resources */,
 				EAEC0B251B1EEAE8000A7C5B /* sexuality_unselected_icon3.png in Resources */,

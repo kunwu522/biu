@@ -419,7 +419,7 @@
 - (UIButton *)btnBack {
     if (!_btnBack) {
         _btnBack = [[UIButton alloc] init];
-        [_btnBack setImage:[UIImage imageNamed:@"back_icon2.png"] forState:UIControlStateNormal];
+        [_btnBack setImage:[UIImage imageNamed:@"close_icon3.png"] forState:UIControlStateNormal];
         [_btnBack addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _btnBack;
