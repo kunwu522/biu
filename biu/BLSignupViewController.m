@@ -598,6 +598,11 @@
             return NO;
         }
         
+    } else if (textField == _tfPasscode){
+        if (toBeString.length > 6) {
+            return NO;
+        }
+    
     } else if ((textField == _tfPassword) || (textField == _tfUsername)) {
         if (toBeString.length > 16) {
             return NO;

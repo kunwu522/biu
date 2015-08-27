@@ -15,10 +15,11 @@
 {
     MAMapView *_mapView;
     AMapSearchAPI *_search;
+    CGFloat _latitude;//纬度
+    CGFloat _longitude;//经度
 }
 @property (strong, nonatomic) UIButton *btnBack;
-@property (strong, nonatomic) NSString *latitude;//纬度
-@property (strong, nonatomic) NSString *longitude;//经度
+@property (strong, nonatomic) User *currentUser;
 
 @end
 
@@ -47,9 +48,6 @@
     [self.view addSubview:self.btnBack];
     [self loadLayouts];//设置btnBack
     
-//    配置路径规划
-    _search = [[AMapSearchAPI alloc] initWithSearchKey:kMAMapKey Delegate:self];
-    
 //    //构造AMapNavigationSearchRequest对象，配置查询参数
 //    AMapNavigationSearchRequest *naviRequest= [[AMapNavigationSearchRequest alloc] init];
 //    naviRequest.searchType = AMapSearchType_NaviWalking;
@@ -67,22 +65,14 @@
         //取出当前位置的坐标
         NSLog(@"latitude : %f,longitude: %f",userLocation.coordinate.latitude,userLocation.coordinate.longitude);
         
-        self.latitude = [NSString stringWithFormat:@"%f",userLocation.coordinate.latitude];
-        self.longitude = [NSString stringWithFormat:@"%f",userLocation.coordinate.longitude];
+        _latitude = userLocation.coordinate.latitude;
+        _longitude = userLocation.coordinate.longitude;
+        
+        [self startNavigation];
         
         
-        //构造AMapNavigationSearchRequest对象，配置查询参数
-        AMapNavigationSearchRequest *naviRequest= [[AMapNavigationSearchRequest alloc] init];
-        naviRequest.searchType = AMapSearchType_NaviWalking;
-        naviRequest.requireExtension = YES;
-        naviRequest.origin = [AMapGeoPoint locationWithLatitude:userLocation.coordinate.latitude longitude:userLocation.coordinate.longitude];
-        naviRequest.destination = [AMapGeoPoint locationWithLatitude:45.990459 longitude:126.481476];
-        
-        //发起路径搜索
-        [_search AMapNavigationSearch: naviRequest];
     }
 }
-
 
 #pragma mark MAMap Delegate
 - (MAOverlayView *)mapView:(MAMapView *)mapView viewForOverlay:(id <MAOverlay>)overlay
@@ -92,11 +82,9 @@
     {
         MACircleView *accuracyCircleView = [[MACircleView alloc] initWithCircle:overlay];
         
-        accuracyCircleView.lineWidth    = 2.f;
-        accuracyCircleView.strokeColor  = [UIColor redColor];
-//        accuracyCircleView.fillColor    = [UIColor colorWithRed:1 green:0 blue:0 alpha:.3];
+        accuracyCircleView.lineWidth    = 1.f;
         accuracyCircleView.strokeColor = [UIColor clearColor];
-        
+        accuracyCircleView.fillColor = [UIColor clearColor];
         return accuracyCircleView;
     }
     return nil;
@@ -121,13 +109,11 @@
 }
 
 //实现路径搜索的回调函数
-- (void)onNavigationSearchDone:(AMapNavigationSearchRequest *)request response:(AMapNavigationSearchResponse *)response
-{
+- (void)onNavigationSearchDone:(AMapNavigationSearchRequest *)request response:(AMapNavigationSearchResponse *)response {
 //    if(response.route = nil)
     if (response.route == nil){
         return;
     }
-    
     //通过AMapNavigationSearchResponse对象处理搜索结果
     NSString *route = [NSString stringWithFormat:@"Navi: %@", response.route];
     NSLog(@"%@", route);
@@ -142,6 +128,23 @@
         make.left.equalTo(self.btnBack.superview).with.offset([BLGenernalDefinition resolutionForDevices:20.8f]);
         make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:45.3]]);
     }];
+}
+
+- (void)startNavigation {
+    //    配置路径规划
+    _search = [[AMapSearchAPI alloc] initWithSearchKey:kMAMapKey Delegate:self];
+    //构造AMapNavigationSearchRequest对象，配置查询参数
+    AMapNavigationSearchRequest *naviRequest= [[AMapNavigationSearchRequest alloc] init];
+    naviRequest.searchType = AMapSearchType_NaviWalking;
+    naviRequest.requireExtension = YES;
+    
+    naviRequest.origin = [AMapGeoPoint locationWithLatitude:_latitude longitude:_longitude];
+    naviRequest.destination = [AMapGeoPoint locationWithLatitude:45.990459 longitude:126.481476];
+    
+    naviRequest.multipath = 1;
+    //发起路径搜索
+    [_search AMapNavigationSearch: naviRequest];
+
 }
 
 #pragma mark - Actions
@@ -159,6 +162,18 @@
     }
     return _btnBack;
 }
+
+- (User *)currentUser {
+    if (!_currentUser) {
+        _currentUser = [[User alloc] initWithFromUserDefault];
+    }
+    return _currentUser;
+}
+
+
+
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

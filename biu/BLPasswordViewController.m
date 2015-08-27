@@ -12,7 +12,7 @@
 #import "UIViewController+BLMenuNavController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
-@interface BLPasswordViewController () <UIGestureRecognizerDelegate, MBProgressHUDDelegate> {
+@interface BLPasswordViewController () <UIGestureRecognizerDelegate, MBProgressHUDDelegate, UITextFieldDelegate> {
     MBProgressHUD *_HUD;
 }
 
@@ -181,6 +181,7 @@
         _tfOldPassword.placeholder = NSLocalizedString(@"Old Password", nil);
         _tfOldPassword.secureTextEntry = YES;
         _tfOldPassword.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _tfOldPassword.delegate = self;
         [_tfOldPassword showClearButton];
     }
     return _tfOldPassword;
@@ -192,6 +193,7 @@
         _tfNewPassword.placeholder = NSLocalizedString(@"New Password", nil);
         _tfNewPassword.secureTextEntry = YES;
         _tfNewPassword.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _tfNewPassword.delegate = self;
         [_tfNewPassword showClearButton];
     }
     return _tfNewPassword;
@@ -203,6 +205,8 @@
         _tfNewPasswordConfirmation.placeholder = NSLocalizedString(@"Confirmation", nil);
         _tfNewPasswordConfirmation.secureTextEntry = YES;
         _tfNewPasswordConfirmation.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _tfNewPasswordConfirmation.delegate = self;
+        _tfNewPasswordConfirmation.returnKeyType = UIReturnKeyDone;
         [_tfNewPasswordConfirmation showClearButton];
     }
     return _tfNewPasswordConfirmation;
@@ -234,6 +238,33 @@
         _tapGestureRecognizer.delegate = self;
     }
     return _tapGestureRecognizer;
+}
+
+
+#pragma mark --textFieldDelegate
+//return方法
+- (BOOL) textFieldShouldReturn:(UITextField *)textField {
+    if (textField == _tfOldPassword) {
+        [self.tfNewPassword becomeFirstResponder];
+    } else if (textField == _tfNewPassword) {
+        [self.tfNewPasswordConfirmation becomeFirstResponder];
+    } else {
+        [self done:_btnDone];
+    }
+    return YES;
+
+}
+//限制textField输入个数
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+    NSString *toBeString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        
+    if ((textField == _tfNewPassword) || (textField == _tfOldPassword) || (textField == _tfNewPasswordConfirmation)) {
+        if (toBeString.length > 16) {
+            return NO;
+        }
+    }
+    return YES;
 }
 
 @end
