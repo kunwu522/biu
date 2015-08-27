@@ -52,28 +52,29 @@
     
     //构造AMapNavigationSearchRequest对象，配置查询参数
     AMapNavigationSearchRequest *naviRequest= [[AMapNavigationSearchRequest alloc] init];
-    naviRequest.searchType = AMapSearchType_NaviDrive;
+    naviRequest.searchType = AMapSearchType_NaviWalking;
     naviRequest.requireExtension = YES;
-    naviRequest.origin = [AMapGeoPoint locationWithLatitude:39.994949 longitude:116.447265];
-    naviRequest.destination = [AMapGeoPoint locationWithLatitude:39.990459 longitude:116.481476];
+//    naviRequest.origin = [AMapGeoPoint locationWithLatitude:39.994949 longitude:116.447265];
+//    naviRequest.destination = [AMapGeoPoint locationWithLatitude:39.990459 longitude:116.481476];
     
     //发起路径搜索
     [_search AMapNavigationSearch: naviRequest];
 }
 
-
-
-#pragma mark Delegate
--(void)mapView:(MAMapView *)mapView didUpdateUserLocation:(MAUserLocation *)userLocation
-updatingLocation:(BOOL)updatingLocation
+-(void)mapView:(MAMapView *)mapView didUpdateUserLocation:(MAUserLocation *)userLocation updatingLocation:(BOOL)updatingLocation
 {
-    if(updatingLocation)
-    {
+    if(updatingLocation) {
         //取出当前位置的坐标
         NSLog(@"latitude : %f,longitude: %f",userLocation.coordinate.latitude,userLocation.coordinate.longitude);
+        
+        self.latitude = [NSString stringWithFormat:@"%f",userLocation.coordinate.latitude];
+        self.longitude = [NSString stringWithFormat:@"%f",userLocation.coordinate.longitude];
+        
     }
 }
 
+
+#pragma mark MAMap Delegate
 - (MAOverlayView *)mapView:(MAMapView *)mapView viewForOverlay:(id <MAOverlay>)overlay
 {
     /* 自定义定位精度对应的MACircleView. */
@@ -82,8 +83,9 @@ updatingLocation:(BOOL)updatingLocation
         MACircleView *accuracyCircleView = [[MACircleView alloc] initWithCircle:overlay];
         
         accuracyCircleView.lineWidth    = 2.f;
-        accuracyCircleView.strokeColor  = [UIColor lightGrayColor];
-        accuracyCircleView.fillColor    = [UIColor colorWithRed:1 green:0 blue:0 alpha:.3];
+        accuracyCircleView.strokeColor  = [UIColor redColor];
+//        accuracyCircleView.fillColor    = [UIColor colorWithRed:1 green:0 blue:0 alpha:.3];
+        accuracyCircleView.strokeColor = [UIColor clearColor];
         
         return accuracyCircleView;
     }
@@ -94,6 +96,7 @@ updatingLocation:(BOOL)updatingLocation
     /* 自定义userLocation对应的annotationView. */
     if ([annotation isKindOfClass:[MAUserLocation class]])
     {
+        
         static NSString *userLocationStyleReuseIndetifier = @"userLocationStyleReuseIndetifier";
         MAAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:userLocationStyleReuseIndetifier];
         if (annotationView == nil)
@@ -101,7 +104,7 @@ updatingLocation:(BOOL)updatingLocation
             annotationView = [[MAAnnotationView alloc] initWithAnnotation:annotation
                                                           reuseIdentifier:userLocationStyleReuseIndetifier];
         }
-        annotationView.image = [UIImage imageNamed:@"test_avator.png"];
+        annotationView.image = [UIImage imageNamed:@"startPoint@2x.png"];
         return annotationView;
     }
     return nil;

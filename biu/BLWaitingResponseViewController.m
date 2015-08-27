@@ -267,10 +267,16 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
         self.coupleState = [[responseObject objectForKey:@"state"] integerValue];
         self.coupleResult = [[responseObject objectForKey:@"result"] integerValue];
         self.matchedUser = [[User alloc] initWithDictionary:[responseObject objectForKey:@"matched_user"]];
-        
-        [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:self.matchedUser.avatar_url]
+
+        if ((self.matchedUser.avatar_url == nil) || ([self.matchedUser.avatar_large_url isKindOfClass:[NSNull class]])) {
+            
+            self.avatarImageView.image = [UIImage imageNamed:@"Launch.png"];
+        } else {
+
+        [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:self.matchedUser.avatar_large_url]
                                 placeholderImage:[UIImage imageNamed:@"avatar_upload_icon.png"]
                                          options:SDWebImageRefreshCached | SDWebImageHandleCookies];
+        }
         [self reloadViewController];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"Get match info failed, error: %@.", error.localizedDescription);

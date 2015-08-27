@@ -219,26 +219,31 @@
 
 #pragma mark - Private methods
 - (void)fetchUserMatchedInfo {
+
     [[BLHTTPClient sharedBLHTTPClient] getMatchInfo:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
         [self.currentUser updateState:[[[responseObject objectForKey:@"user"] objectForKey:@"state"] integerValue]];
         self.coupleState = [[responseObject objectForKey:@"state"] integerValue];
         self.coupleResult = [[responseObject objectForKey:@"result"] integerValue];
         self.matchedUser = [[User alloc] initWithDictionary:[responseObject objectForKey:@"matched_user"]];
         SDWebImageManager *manager = [SDWebImageManager sharedManager];
-        
-        [manager downloadImageWithURL:[NSURL URLWithString:self.matchedUser.avatar_large_url]
-                              options:SDWebImageHandleCookies | SDWebImageProgressiveDownload | SDWebImageCacheMemoryOnly
-                             progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                                 // progression tracking code
-                                 [_HUD show:YES];
-                             }
-                            completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-                                [_HUD hide:YES];
-                                if (image) {
-                                    // do something with image
-                                    self.matchedUserImageView.image = image;
-                                }
-                            }];
+        if ((self.matchedUser.avatar_url == nil) || ([self.matchedUser.avatar_large_url isKindOfClass:[NSNull class]])) {
+            
+            self.matchedUserImageView.image = [UIImage imageNamed:@"Launch.png"];
+        } else {
+            [manager downloadImageWithURL:[NSURL URLWithString:self.matchedUser.avatar_large_url]
+                                  options:SDWebImageHandleCookies | SDWebImageProgressiveDownload | SDWebImageCacheMemoryOnly
+                                 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                                     // progression tracking code
+                                     [_HUD show:YES];
+                                 }
+                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                                    [_HUD hide:YES];
+                                    if (image) {
+                                        // do something with image
+                                        self.matchedUserImageView.image = image;
+                                    }
+                                }];
+        }
         [self reloadViewController];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"Get match info failed, error: %@.", error.localizedDescription);

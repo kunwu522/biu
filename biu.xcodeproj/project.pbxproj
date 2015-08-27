@@ -27,6 +27,7 @@
 		E36E06A71B8C7BB3004F1064 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E36E06A31B8C7BB3004F1064 /* libWeChatSDK.a */; };
 		E36E06A81B8C7BB3004F1064 /* read_me.txt in Resources */ = {isa = PBXBuildFile; fileRef = E36E06A41B8C7BB3004F1064 /* read_me.txt */; };
 		E37225A81B7C8A0C00CB912A /* BLFaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = E37225A71B7C8A0C00CB912A /* BLFaceView.m */; };
+		E37F3D721B8EC3EA0051E0FB /* startPoint@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E37F3D711B8EC3EA0051E0FB /* startPoint@2x.png */; };
 		E3C041E71B8BFDCE00D3A25B /* BLMAMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E3C041E61B8BFDCE00D3A25B /* BLMAMapViewController.m */; };
 		E3C19E831B69F8A700E83092 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3C19E821B69F8A700E83092 /* CoreText.framework */; };
 		E3C19E851B69F8BB00E83092 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3C19E841B69F8BB00E83092 /* UIKit.framework */; };
@@ -326,6 +327,7 @@
 		E36E06A61B8C7BB3004F1064 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		E37225A61B7C8A0C00CB912A /* BLFaceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLFaceView.h; sourceTree = "<group>"; };
 		E37225A71B7C8A0C00CB912A /* BLFaceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLFaceView.m; sourceTree = "<group>"; };
+		E37F3D711B8EC3EA0051E0FB /* startPoint@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "startPoint@2x.png"; path = "../../../../../Downloads/AMap_iOS_API_3DMap_Demo_V2/OfficialDemo3D/OfficialDemo3D/Images/startPoint@2x.png"; sourceTree = "<group>"; };
 		E3C041E51B8BFDCE00D3A25B /* BLMAMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLMAMapViewController.h; sourceTree = SOURCE_ROOT; };
 		E3C041E61B8BFDCE00D3A25B /* BLMAMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLMAMapViewController.m; sourceTree = SOURCE_ROOT; };
 		E3C19E821B69F8A700E83092 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -836,6 +838,7 @@
 				EAA9CF661B7DCB26001574B9 /* BLMessagesViewController.h */,
 				EAA9CF671B7DCB26001574B9 /* BLMessagesViewController.m */,
 				E3C041E51B8BFDCE00D3A25B /* BLMAMapViewController.h */,
+				E37F3D711B8EC3EA0051E0FB /* startPoint@2x.png */,
 				E3C041E61B8BFDCE00D3A25B /* BLMAMapViewController.m */,
 			);
 			path = MatchVC;
@@ -1763,6 +1766,7 @@
 				A30D966A1B20BD8800A1CF88 /* style_woman_unselected_icon8.png in Resources */,
 				EAA7AD621B8C73670049B7DD /* profile_default_avatar.png in Resources */,
 				EA9B08DF1B29BADF0059DBA7 /* Launch_debug.png in Resources */,
+				E37F3D721B8EC3EA0051E0FB /* startPoint@2x.png in Resources */,
 				EAE286031B3283D000340C1B /* choosing_photo_icon.png in Resources */,
 				EAEC0B051B1EEAC3000A7C5B /* zodiac_unselected_icon2.png in Resources */,
 				EA7805321B0C7F0E00696FEF /* forward_icon.png in Resources */,

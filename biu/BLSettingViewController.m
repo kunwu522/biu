@@ -38,8 +38,10 @@
     [self.view addSubview:self.btnClose];
     [self.view addSubview:self.btnLogout];
 
-    self.dataSource = @[@{@"label" : NSLocalizedString(@"Share to WeChai", nil), @"haveDetailView" : @NO},
-                        @{@"label" : NSLocalizedString(@"Share to Weibo", nil), @"haveDetailView" : @NO},
+    self.dataSource = @[
+//  注释掉分享，需要时打开
+//  @{@"label" : NSLocalizedString(@"Share to WeChai", nil), @"haveDetailView" : @NO},
+//                        @{@"label" : NSLocalizedString(@"Share to Weibo", nil), @"haveDetailView" : @NO},
                         @{@"label" : NSLocalizedString(@"Suggestion", nil), @"haveDetailView" : @YES},
                         @{@"label" : NSLocalizedString(@"About us", nil), @"haveDetailView" : @YES},
                         @{@"label" : NSLocalizedString(@"Contract", nil), @"haveDetailView" : @YES}];
@@ -126,23 +128,23 @@
 #pragma mark TableView delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.row) {
+//        case 0:
+//            break;
+//        case 1:
+//            break;
         case 0:
-            break;
-        case 1:
-            break;
-        case 2:
         {
             BLSuggestionViewController *suggestionViewController = [[BLSuggestionViewController alloc] init];
             [self.navigationController pushViewController:suggestionViewController animated:YES];
             break;
         }
-        case 3:
+        case 1:
         {
             BLAboutUsViewController *aboutUsViewController = [[BLAboutUsViewController alloc] init];
             [self.navigationController pushViewController:aboutUsViewController animated:YES];
             break;
         }
-        case 4:
+        case 2:
         {
             BLContractViewController *contractViewController = [[BLContractViewController alloc] init];
             contractViewController.delegate = self;

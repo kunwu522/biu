@@ -109,7 +109,6 @@ static double ICON_INITIAL_SIZE = 147.5;
     [self addHUD];
 }
 
-
 // 通过cookie判断登录状态
 - (void)viewDidAppear:(BOOL)animated {
     // NSLog(@"deviceToken=-=-=-%@", blDelegate.deviceToken);
@@ -406,7 +405,6 @@ static double ICON_INITIAL_SIZE = 147.5;
     if (_isLoginLayout) {
         return;
     }
-    
     [self loginViewLayout];
     [UIView animateWithDuration:0.5 animations:^{
         [self.view layoutIfNeeded];
