@@ -208,7 +208,6 @@
                 }
             }else {
                 //进入profile
-//                BLProfileViewController *profileVC = [[BLProfileViewController alloc] init];
                 [self dismissViewControllerAnimated:NO completion:nil];
                 [self presentViewController:self.fillingInfoNavController animated:YES completion:nil];
             }

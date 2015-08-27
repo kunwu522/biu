@@ -100,12 +100,9 @@ static double ICON_INITIAL_SIZE = 147.5;
         make.top.equalTo(_biuTitle.mas_bottom).with.offset([BLGenernalDefinition resolutionForDevices:40.0f]);
     }];
     
-    
+    self.isIntoWhere = nil;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getWeixinData:) name:@"weixinIfo" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getWeiboData:) name:@"weiboIfo" object:nil];
-    
-    self.isIntoWhere = nil;
-    
     [self addHUD];
 }
 

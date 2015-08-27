@@ -392,9 +392,11 @@ static CGFloat kTempHeight = 80.0f;
             switch (_gender) {
                 case BLGenderMale:
                     _sexuality = BLSexualityTypeMan;
+                    _style = BLStyleTypeManOther;
                     break;
                 case BLGenderFemale:
                     _sexuality = BLSexualityTypeWoman;
+                    _style = BLStyleTypeWomanOther;
                     break;
                 default:
                     break;

@@ -50,15 +50,15 @@
 //    配置路径规划
     _search = [[AMapSearchAPI alloc] initWithSearchKey:kMAMapKey Delegate:self];
     
-    //构造AMapNavigationSearchRequest对象，配置查询参数
-    AMapNavigationSearchRequest *naviRequest= [[AMapNavigationSearchRequest alloc] init];
-    naviRequest.searchType = AMapSearchType_NaviWalking;
-    naviRequest.requireExtension = YES;
+//    //构造AMapNavigationSearchRequest对象，配置查询参数
+//    AMapNavigationSearchRequest *naviRequest= [[AMapNavigationSearchRequest alloc] init];
+//    naviRequest.searchType = AMapSearchType_NaviWalking;
+//    naviRequest.requireExtension = YES;
 //    naviRequest.origin = [AMapGeoPoint locationWithLatitude:39.994949 longitude:116.447265];
-//    naviRequest.destination = [AMapGeoPoint locationWithLatitude:39.990459 longitude:116.481476];
-    
-    //发起路径搜索
-    [_search AMapNavigationSearch: naviRequest];
+//    naviRequest.destination = [AMapGeoPoint locationWithLatitude:45.990459 longitude:126.481476];
+//    
+//    //发起路径搜索
+//    [_search AMapNavigationSearch: naviRequest];
 }
 
 -(void)mapView:(MAMapView *)mapView didUpdateUserLocation:(MAUserLocation *)userLocation updatingLocation:(BOOL)updatingLocation
@@ -70,6 +70,16 @@
         self.latitude = [NSString stringWithFormat:@"%f",userLocation.coordinate.latitude];
         self.longitude = [NSString stringWithFormat:@"%f",userLocation.coordinate.longitude];
         
+        
+        //构造AMapNavigationSearchRequest对象，配置查询参数
+        AMapNavigationSearchRequest *naviRequest= [[AMapNavigationSearchRequest alloc] init];
+        naviRequest.searchType = AMapSearchType_NaviWalking;
+        naviRequest.requireExtension = YES;
+        naviRequest.origin = [AMapGeoPoint locationWithLatitude:userLocation.coordinate.latitude longitude:userLocation.coordinate.longitude];
+        naviRequest.destination = [AMapGeoPoint locationWithLatitude:45.990459 longitude:126.481476];
+        
+        //发起路径搜索
+        [_search AMapNavigationSearch: naviRequest];
     }
 }
 
@@ -110,7 +120,19 @@
     return nil;
 }
 
-
+//实现路径搜索的回调函数
+- (void)onNavigationSearchDone:(AMapNavigationSearchRequest *)request response:(AMapNavigationSearchResponse *)response
+{
+//    if(response.route = nil)
+    if (response.route == nil){
+        return;
+    }
+    
+    //通过AMapNavigationSearchResponse对象处理搜索结果
+    NSString *route = [NSString stringWithFormat:@"Navi: %@", response.route];
+    NSLog(@"%@", route);
+    
+}
 
 
 #pragma mark Layouts
