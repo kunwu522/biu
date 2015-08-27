@@ -191,13 +191,15 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
     BLTableViewCellParams *params = [self.dataSource objectAtIndex:indexPath.row];
     UIImageView *imageView = [[UIImageView alloc] init];
     imageView.image = params.icon;
+    
     [cell addSubview:imageView];
     
     UILabel *label = [[UILabel alloc] init];
     label.textColor = params.color;
-    label.numberOfLines = 0;
+    label.numberOfLines = 2;
     label.font = [BLFontDefinition lightFont:15.0f];
     label.text = params.text;
+    label.adjustsFontSizeToFitWidth = YES;
     [cell addSubview:label];
     
     // Draw top border only on first cell
@@ -219,7 +221,7 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
     }];
     
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(label.superview).with.offset([BLGenernalDefinition resolutionForDevices:10.0f]);
+        make.top.equalTo(label.superview).with.offset([BLGenernalDefinition resolutionForDevices:19.0f]);
         make.left.equalTo(imageView.mas_right).with.offset([BLGenernalDefinition resolutionForDevices:20.0f]);
         make.right.equalTo(label.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.0f]);
     }];
