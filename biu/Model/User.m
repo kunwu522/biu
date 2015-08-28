@@ -103,10 +103,7 @@ static NSString *AVATAR_LARGE_URL = @"avatar_large_url";
         
         self.avatar_url = [defaults objectForKey:AVATAR_URL];
         self.avatar_large_url = [defaults objectForKey:AVATAR_LARGE_URL];
-        
-        if (self.open_id) {
-            self.open_id = [defaults objectForKey:OPEN_ID];
-        }
+        self.open_id = [defaults objectForKey:OPEN_ID];
         
         if (!self.userId || !self.username) {
             return nil;

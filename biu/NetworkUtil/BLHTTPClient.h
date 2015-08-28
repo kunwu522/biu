@@ -114,6 +114,13 @@
               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
+//Sending message
+- (void)sendingMessage:(User *)sender
+              receiver:(User *)receiver
+               content:(NSString *)content
+               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
 
 
 @end

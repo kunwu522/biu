@@ -292,6 +292,7 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
             [self startMatchingAnimation];
             break;
         case kCLAuthorizationStatusNotDetermined:
+            break;
         case kCLAuthorizationStatusDenied:
         case kCLAuthorizationStatusRestricted:
         {
@@ -311,18 +312,19 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 }
 
 - (void)didCloseConversation {
-    [self stateMachine:BLMatchViewEventStop];
+//    [self stateMachine:BLMatchViewEventStop];
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 #pragma mark BLMessageViewController Delegate
 - (void)didDismissBLMessagesViewController:(BLMessagesViewController *)vc {
-    [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventClose distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"Stop conversation user successed.");
-        [vc.navigationController popToRootViewControllerAnimated:YES];
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"Stop conversation faield.");
-    }];
+    [vc.navigationController popToRootViewControllerAnimated:YES];
+//    [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventClose distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
+//        NSLog(@"Stop conversation user successed.");
+//        [vc.navigationController popToRootViewControllerAnimated:YES];
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        NSLog(@"Stop conversation faield.");
+//    }];
 }
 
 #pragma mark BLNotification Delegate
@@ -526,16 +528,16 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
             user.userId = dic[@"user_id"];
             
             //send http request to update match state
-                [[BLHTTPClient sharedBLHTTPClient] match:user event:BLMatchEventStartMatching distance:self.distance matchedUser:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
-                    NSLog(@"start matching");
-                    
-                } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                    NSLog(@"start match failed.");
-                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Matching failed, please try again later", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
-                    [av show];
-                    [self stopMatching];
-                    self.matchSwith.on = NO;
-                }];
+            [[BLHTTPClient sharedBLHTTPClient] match:user event:BLMatchEventStartMatching distance:self.distance matchedUser:self.currentUser success:^(NSURLSessionDataTask *task, id responseObject) {
+                NSLog(@"start matching");
+                
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                NSLog(@"start match failed.");
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Matching failed, please try again later", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
+                [av show];
+                [self stopMatching];
+                self.matchSwith.on = NO;
+            }];
 
             //change current state
             [self.currentUser updateState:BLMatchStateMatching];
@@ -775,8 +777,8 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 
 - (NSArray *)arrayDistanceData {
     if (!_arrayDistanceData) {
-        _arrayDistanceData = [[NSArray alloc] initWithObjects:@"500", @"1000", @"1500", @"2000", @"2500",
-                              @"3000", @"3500", @"4000", @"4500", @"5000", nil];
+        _arrayDistanceData = [[NSArray alloc] initWithObjects:@"200", @"400", @"600", @"800", @"1000",
+                              @"1200", @"1400", @"1600", @"1800", @"2000", nil];
     }
     return _arrayDistanceData;
 }
@@ -866,6 +868,9 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
             [UIView animateWithDuration:0.5f animations:^{
                 self.pickViewDistance.alpha = 1.0f;
             }];
+            if (self.matchSwith.on) {
+                self.matchSwith.on = NO;
+            }
         }];
         
         [idle setDidExitStateBlock:^(TKState *state, TKTransition *transition) {

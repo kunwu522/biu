@@ -183,21 +183,21 @@
     }
     
     if (![_code isEqualToString:_tfPasscode.text]) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Invalid passcode", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Invalid passcode", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
         [av show];
         return;
     }
     
     errMsg = [User validateUsername:_tfUsername.text];
     if (errMsg) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
         [av show];
         return;
     }
     
     errMsg = [User validatePassword:_tfPassword.text];
     if (errMsg) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
         [av show];
         return;
     }
@@ -230,7 +230,7 @@
         }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"Signup failed%@",error.localizedDescription);
+        NSLog(@"Signup failed, %@",error.localizedDescription);
         
         UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sign up failed", nil) message:NSLocalizedString(@"Please try again", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil, nil];
         [alertV show];
@@ -250,24 +250,24 @@
     _code = [NSString stringWithFormat:@"%d", code];
     
     //For debug
-    NSLog(@"code: %@", _code);
-    _secondLeftToResend = 60;
-    _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", (long)_secondLeftToResend];
-    _btnGetCode.enabled = NO;
-    [self showSecondToResend];
-    _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerfired:) userInfo:nil repeats:YES];
+//    NSLog(@"code: %@", _code);
+//    _secondLeftToResend = 60;
+//    _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", (long)_secondLeftToResend];
+//    _btnGetCode.enabled = NO;
+//    [self showSecondToResend];
+//    _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerfired:) userInfo:nil repeats:YES];
     
-//    [[BLHTTPClient sharedBLHTTPClient] passcode:_code phoneNumber:_tfPhoneNumber.text success:^(NSURLSessionDataTask *task, id responseObject) {
-//        _secondLeftToResend = 60;
-//        _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", (long)_secondLeftToResend];
-//        _btnGetCode.enabled = NO;
-//        [self showSecondToResend];
-//        _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerfired:) userInfo:nil repeats:YES];
-//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//        NSLog(@"Sending passcode failed, error: %@", error.description);
-//        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:error.localizedDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-//        [av show];
-//    }];
+    [[BLHTTPClient sharedBLHTTPClient] passcode:_code phoneNumber:_tfPhoneNumber.text success:^(NSURLSessionDataTask *task, id responseObject) {
+        _secondLeftToResend = 60;
+        _lbSecondLeft.text = [NSString stringWithFormat:@"%ld", (long)_secondLeftToResend];
+        _btnGetCode.enabled = NO;
+        [self showSecondToResend];
+        _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerfired:) userInfo:nil repeats:YES];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"Sending passcode failed, error: %@", error.description);
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:error.localizedDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [av show];
+    }];
 }
 
 - (void)showContract:(id)sender {
@@ -404,7 +404,7 @@
         _tfPhoneNumber = [[BLTextField alloc] init];
         _tfPhoneNumber.placeholder = NSLocalizedString(@"Phone", nil);
         _tfPhoneNumber.delegate = self;
-//        _tfPhoneNumber.keyboardType = UIKeyboardTypePhonePad;
+        _tfPhoneNumber.keyboardType = UIKeyboardTypePhonePad;
 //        [_tfPhoneNumber showClearButton];
     }
     return _tfPhoneNumber;

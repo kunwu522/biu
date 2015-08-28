@@ -174,6 +174,9 @@
 
 // Login View Controller
 "Log in failed. Please try again later" = "登录失败,请稍后再试";
+"Please input phone number." = "请输入手机号";
+"Please input password." = "请输入密码";
+
 
 // ThirdLogin
 "Don’t have WeChat                 Download now?" = "未安装微信客户端，                 是否现在去下载？";

@@ -175,14 +175,14 @@
         return;
     }
     if ([self.tfPassword.text isEqualToString:@""]) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Please input password.", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Please input password.", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
         [av show];
         return;
     }
     
     NSString *errMsg = [User validatePhoneNumber:self.tfPhoneNumber.text];
     if (errMsg) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
         [av show];
         return;
     }
@@ -219,9 +219,9 @@
             }
             NSString *message = [BLHTTPClient responseMessage:task error:error];
             if (!message) {
-                message = @"Log in failed. Please try again later";
+                message = NSLocalizedString(@"Log in failed. Please try again later", nil);
             }
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(message, nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(message, nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
             [av show];
         }];
 
@@ -244,7 +244,7 @@
     _HUD = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:_HUD];
     _HUD.delegate = self;
-    _HUD.labelText = @"Loading";
+    _HUD.labelText = NSLocalizedString(@"Loading", nil);
 }
 
 #pragma mark -
@@ -377,12 +377,10 @@
 - (void)wechatLogin:(id)sender {
     SendAuthReq* req = [[SendAuthReq alloc] init];
     if ([WXApi isWXAppInstalled] == NO) {
-#if !TARGET_IPHONE_SIMULATOR
         req.scope = @"snsapi_userinfo";//snsapi_base只能获取到openid，意义不大，所以使用snsapi_userinfo
         req.state = kAppDescription;//随便数字
         [WXApi sendAuthReq:req viewController:self delegate:self];
         [WXApi sendReq:req];
-#endif
     } else {
         req.scope = @"snsapi_userinfo";//snsapi_base只能获取到openid，意义不大，所以使用snsapi_userinfo
         req.state = kAppDescription;//随便数字
@@ -461,12 +459,3 @@
 }
 
 @end
-
-
-
-
-
-
-
-
-

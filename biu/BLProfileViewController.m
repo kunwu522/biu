@@ -16,6 +16,7 @@
 #import "BLPartnerViewController.h"
 #import "UIViewController+BLMenuNavController.h"
 #import "Masonry.h"
+#import "BLWelcomeViewController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -38,6 +39,8 @@
 
 @property (strong, nonatomic) NSString *avatar_url;
 @property (strong, nonatomic) NSString *whichAlertV;
+
+@property (assign, nonatomic) NSInteger age;
 
 @end
 
@@ -281,6 +284,15 @@ static CGFloat kTempHeight = 80.0f;
             [button setBackgroundColor:[BLColorDefinition fontGreenColor]];
             button.layer.cornerRadius = 5.0f;
             button.clipsToBounds = YES;
+            if (self.age < 18) {
+                button.enabled = NO;
+                [button setBackgroundColor:[BLColorDefinition grayColor]];
+                
+            } else {
+                button.enabled = YES;
+                [button setBackgroundColor:[BLColorDefinition fontGreenColor]];
+                
+            }
             if (self.profileViewType == BLProfileViewTypeCreate) {
                 [button setTitle:NSLocalizedString(@"Continue", nil) forState:UIControlStateNormal];
                 [button addTarget:self action:@selector(createProfile:) forControlEvents:UIControlEventTouchDown];
@@ -408,6 +420,12 @@ static CGFloat kTempHeight = 80.0f;
             break;
         case SECTION_BIRTHDAY:
             _birthday = (NSDate *)value;
+            self.age = [Profile getAgeFromBirthday:_birthday];
+            if (self.age < 18) {
+                UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:@"非常抱歉,本软件不向未成年人提供服务!" message:nil delegate:self cancelButtonTitle:@"修改年龄" otherButtonTitles:@"退出", nil];
+                alertV.tag = 0;
+                [alertV show];
+            }
             [_tableView reloadData];
             break;
         case SECTION_ZODIAC_AND_AGE:
@@ -457,6 +475,7 @@ static CGFloat kTempHeight = 80.0f;
             errMsg = NSLocalizedString(@"Opps, upload avatar failed, please try later", nil);
         }
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:errMsg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        av.tag = 1;
         [av show];
     }];
     
@@ -573,15 +592,39 @@ static CGFloat kTempHeight = 80.0f;
 }
 #pragma mark --alertView
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if ([_whichAlertV isEqualToString:@"creatProfile"]) {
-        if (buttonIndex == 0) {
-            BLPartnerViewController *partnerController = [[BLPartnerViewController alloc] initWithNibName:nil bundle:nil];
-            //    partnerController.profile = profile;
-            [self.navigationController pushViewController:partnerController animated:YES];
-        }
+    switch (alertView.tag) {
+        case 0:
+            if (buttonIndex == 0) {
+                return;
+            } else {
+                //清userDefaults
+                if (![[NSUserDefaults standardUserDefaults] boolForKey:@"dongClearHXCache"]) {
+                    NSString *appDomainStr = [[NSBundle mainBundle] bundleIdentifier];
+                    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomainStr];
+                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"dontClearHXCache"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                } else {
+                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"dontClearHXCache"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                }
+                BLWelcomeViewController *welViewController = [[BLWelcomeViewController alloc] initWithNibName:nil bundle:nil];
+                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:welViewController];
+                navController.navigationBarHidden = YES;
+                [self presentViewController:navController animated:YES completion:nil];
+            }
+            break;
+        case 1:
+            if ([_whichAlertV isEqualToString:@"creatProfile"]) {
+                if (buttonIndex == 0) {
+                    BLPartnerViewController *partnerController = [[BLPartnerViewController alloc] initWithNibName:nil bundle:nil];
+                    //    partnerController.profile = profile;
+                    [self.navigationController pushViewController:partnerController animated:YES];
+                }
+            }
+            break;
+        default:
+            break;
     }
-    
-    
 }
 #pragma mark - 
 #pragma mark Setter

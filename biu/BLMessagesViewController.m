@@ -9,14 +9,18 @@
 #import "BLMessagesViewController.h"
 #import "Masonry.h"
 #import "BLMAMapViewController.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
-@interface BLMessagesViewController () <BLMessageDelegate, UIAlertViewDelegate, BLMatchNotificationDelegate>
+@interface BLMessagesViewController () <BLMessageDelegate, UIAlertViewDelegate, BLMatchNotificationDelegate, MBProgressHUDDelegate> {
+    MBProgressHUD *_HUD;
+}
 
 @property (strong, nonatomic) UIButton *btnBack;
 @property (strong, nonatomic) UIButton *btnMap;
 @property (strong, nonatomic) User *currentUser;
 @property (assign, nonatomic) NSInteger coupleState;
 @property (assign, nonatomic) NSInteger coupleResult;
+@property (assign, nonatomic) BOOL isTitleShows;
 
 @end
 
@@ -50,34 +54,40 @@
     
     self.coupleState = -1;
     self.coupleResult = -1;
+    self.isTitleShows = NO;
+    
+    [self addHUD];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveCloseNotification) name:@"close conversation" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNewMessage:) name:@"new message" object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    if (self.currentUser.phone) {
-        if ([[self blAppDelegate] connect]) {
-            NSLog(@"Connecting to server...");
-        } else {
-            NSLog(@"Connection failed.");
-        }
-    }
+//    if (self.currentUser.phone || self.currentUser.open_id) {
+//        if ([[self blAppDelegate] connect]) {
+//            NSLog(@"Connecting to server...");
+//        } else {
+//            NSLog(@"Connection failed.");
+//        }
+//    }
     self.collectionView.collectionViewLayout.springinessEnabled = YES;
-    [self blAppDelegate].notificationDelegate = self;
+//    [self blAppDelegate].notificationDelegate = self;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self blAppDelegate].notificationDelegate = nil;
+//    [self blAppDelegate].notificationDelegate = nil;
+//    [[self blAppDelegate] disconnect];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"close conversation" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"new message" object:nil];
 }
 
 #pragma mark Layouts
@@ -102,7 +112,7 @@
                                                  message:NSLocalizedString(@"Chat is instance! No record if you close the page!!", nil)
                                                 delegate:self
                                        cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                       otherButtonTitles:@"Ok", nil];
+                                       otherButtonTitles:NSLocalizedString(@"Ok", nil), nil];
     av.tag = 0;
     [av show];
 }
@@ -122,25 +132,30 @@
     JSQMessage *message = [[JSQMessage alloc] initWithSenderId:senderId senderDisplayName:senderDisplayName date:date text:text];
     
     if (text.length > 0) {
-        NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
-        [body setStringValue:text];
-        NSXMLElement *message = [NSXMLElement elementWithName:@"message"];
-        [message addAttributeWithName:@"type" stringValue:@"chat"];
-#if TARGET_IPHONE_SIMULATOR
-        [message addAttributeWithName:@"to" stringValue:[NSString stringWithFormat:@"%@@localhost", self.receiver.phone]];
-#else
-        if (self.receiver.phone) {
-            [message addAttributeWithName:@"to" stringValue:[NSString stringWithFormat:@"%@@biulove.com", self.receiver.phone]];
-        } else if (self.receiver.open_id) {
-            [message addAttributeWithName:@"to" stringValue:[NSString stringWithFormat:@"%@@biulove.com", self.receiver.open_id]];
-        } else {
-            NSLog(@"There is something error. no phone and openId");
-            return;
-        }
-#endif
-        [message addChild:body];
-        
-        [[self blAppDelegate].xmppStream sendElement:message];
+        [[BLHTTPClient sharedBLHTTPClient] sendingMessage:self.sender receiver:self.receiver content:text success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"Sending message success.");
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"Sending message failed.");
+        }];
+//        NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
+//        [body setStringValue:text];
+//        NSXMLElement *message = [NSXMLElement elementWithName:@"message"];
+//        [message addAttributeWithName:@"type" stringValue:@"chat"];
+//#if TARGET_IPHONE_SIMULATOR
+//        [message addAttributeWithName:@"to" stringValue:[NSString stringWithFormat:@"%@@localhost", self.receiver.phone]];
+//#else
+//        if (self.receiver.phone) {
+//            [message addAttributeWithName:@"to" stringValue:[NSString stringWithFormat:@"%@@biulove.com", self.receiver.phone]];
+//        } else if (self.receiver.open_id) {
+//            [message addAttributeWithName:@"to" stringValue:[NSString stringWithFormat:@"%@@biulove.com", self.receiver.open_id]];
+//        } else {
+//            NSLog(@"There is something error. no phone and openId");
+//            return;
+//        }
+//#endif
+//        [message addChild:body];
+//        
+//        [[self blAppDelegate].xmppStream sendElement:message];
     }
     
     [self.messageData.messages addObject:message];
@@ -252,16 +267,10 @@
                                               NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle | NSUnderlinePatternSolid) };
     }
     
-    if (indexPath.item == 0) {
-//        cell.cellTopLabel.backgroundColor = [UIColor colorWithRed:160.0f / 255.0f green:160.0f / 255.0f blue:161.0f / 255.0f alpha:1.0f];
-//        CGFloat width = cell.bounds.size.width - 120.0f;
-//        cell.cellTopLabel.frame = CGRectMake((cell.bounds.size.width - width) * 0.5f, 0, width, 30.0f);
-//        cell.cellTopLabel.layer.cornerRadius = 5.0f;
-//        cell.cellTopLabel.clipsToBounds = YES;
+    if (indexPath.item == 0 && !self.isTitleShows) {
         CGFloat width = cell.bounds.size.width - 120.0f;
         UILabel *lbStart = [[UILabel alloc] initWithFrame:CGRectMake((cell.bounds.size.width - width) * 0.5f, 0, width, 30.0f)];
         lbStart.text = NSLocalizedString(@"You've just started your lovestory", nil);
-//        lbStart.text = @"You've just started your lovestory";
         lbStart.textAlignment = NSTextAlignmentCenter;
         lbStart.textColor = [UIColor whiteColor];
         lbStart.font = [BLFontDefinition boldFont:10.0f];
@@ -269,6 +278,7 @@
         lbStart.layer.cornerRadius = 5.0f;
         lbStart.clipsToBounds = YES;
         [cell addSubview:lbStart];
+        self.isTitleShows = YES;
     }
     
     // add customized time label
@@ -354,13 +364,30 @@
         case 0:
             if (buttonIndex == 1) {
                 [[self blAppDelegate] disconnect];
-                [self.delegate didDismissBLMessagesViewController:self];
+                [_HUD show:YES];
+                [[BLHTTPClient sharedBLHTTPClient] match:self.sender event:BLMatchEventClose distance:nil matchedUser:self.receiver success:^(NSURLSessionDataTask *task, id responseObject) {
+                    [_HUD hide:YES];
+                    NSLog(@"Stop conversation user successed.");
+                    [self.delegate didDismissBLMessagesViewController:self];
+                } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                    [_HUD hide:YES];
+                    NSLog(@"Stop conversation faield.");
+                }];
+//                [self.delegate didDismissBLMessagesViewController:self];
             }
             break;
         case 1:
             if (buttonIndex == 0) {
                 [[self blAppDelegate] disconnect];
-                [self.delegate didDismissBLMessagesViewController:self];
+                [_HUD show:YES];
+                [[BLHTTPClient sharedBLHTTPClient] match:self.sender event:BLMatchEventClose distance:nil matchedUser:self.receiver success:^(NSURLSessionDataTask *task, id responseObject) {
+                    [_HUD hide:YES];
+                    NSLog(@"Stop conversation user successed.");
+                    [self.delegate didDismissBLMessagesViewController:self];
+                } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                    [_HUD hide:YES];
+                    NSLog(@"Stop conversation faield.");
+                }];
             }
             break;
         default:
@@ -373,6 +400,21 @@
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"对方已经退出对话" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
     av.tag = 1;
     [av show];
+}
+
+- (void)receiveNewMessage:(NSNotification *)notifiction {
+    self.showTypingIndicator = !self.showTypingIndicator;
+    [self scrollToBottomAnimated:YES];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        JSQMessage *newMessage = [JSQMessage messageWithSenderId:[NSString stringWithFormat:@"%@", self.receiver.userId]
+                                                     displayName:self.receiver.username
+                                                            text:[notifiction.object objectForKey:@"content"]];
+        
+        [JSQSystemSoundPlayer jsq_playMessageReceivedSound];
+        [self.messageData.messages addObject:newMessage];
+        [self finishReceivingMessageAnimated:YES];
+    });
 }
 
 #pragma mark - Private methods
@@ -443,6 +485,13 @@
 
 - (BLAppDelegate *)blAppDelegate {
     return (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
+}
+
+- (void)addHUD {
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    _HUD.labelText = @"loading";
+    _HUD.delegate = self;
+    [self.view addSubview:_HUD];
 }
 
 @end

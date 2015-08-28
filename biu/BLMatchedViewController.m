@@ -174,21 +174,23 @@
 #pragma mark - Delegates
 #pragma mark BLMessageViewController delegate
 - (void)didDismissBLMessagesViewController:(BLMessagesViewController *)vc {
-    [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventClose distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"Stop conversation user successed.");
-        [self.delegate didCloseConversation];
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"Stop conversation faield.");
-    }];
+    [self.delegate didCloseConversation];
+//    [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventClose distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
+//        NSLog(@"Stop conversation user successed.");
+//        [self.delegate didCloseConversation];
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        NSLog(@"Stop conversation faield.");
+//    }];
 }
 
 - (void)didCloseConversation {
-    [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventClose distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"Stop conversation user successed.");
-        [self.delegate didCloseConversation];
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"Stop conversation faield.");
-    }];
+    [self.delegate didCloseConversation];
+//    [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventClose distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
+//        NSLog(@"Stop conversation user successed.");
+//        [self.delegate didCloseConversation];
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        NSLog(@"Stop conversation faield.");
+//    }];
 }
 
 - (void)didRejectMatchedUser {

@@ -308,11 +308,11 @@
         return YES;
     }
     
-    if (self.currentUser.phone == nil
-        || self.currentUser.password == nil
-        || self.currentUser.open_id) {
-        return NO;
-    }
+//    if (!self.currentUser.phone
+//        && !self.currentUser.password
+//        && !self.currentUser.open_id) {
+//        return NO;
+//    }
     
 #if TARGET_IPHONE_SIMULATOR
     [xmppStream setMyJID:[XMPPJID jidWithString:[NSString stringWithFormat:@"%@@localhost", self.currentUser.phone]]];
@@ -378,6 +378,10 @@
 - (void)xmppStreamDidAuthenticate:(XMPPStream *)sender {
     NSLog(@"authentication successful.");
     [self goOnline];
+}
+
+- (void)xmppStream:(XMPPStream *)sender didNotAuthenticate:(NSXMLElement *)error {
+    NSLog(@"Authentication failed, error: %@", error);
 }
 
 - (void)xmppStream:(XMPPStream *)sender didReceiveMessage:(XMPPMessage *)message {
@@ -526,6 +530,8 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"matched user rejected" object:nil];
     } else if ([category isEqualToString:@"CONVERSATION_CLOSE"]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"close conversation" object:nil];
+    } else if ([category isEqualToString:@"MESSAGE"]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"new message" object:[userInfo objectForKey:@"message"]];
     }
 //    if ([category isEqualToString:@"MATCHED"]) {
 //        User *matchedUser = [[User alloc] initWithDictionary:[userInfo objectForKey:@"matched_user"]];

@@ -40,10 +40,10 @@
     if (self) {
         self.title.text = NSLocalizedString(@"Choose your Gender", nil);
         
-        _imageMaleSelected = [UIImage imageNamed:@"male_selected_icon.png"];
-        _imageMaleUnselected = [UIImage imageNamed:@"male_unselected_icon.png"];
-        _imageFemaleSelected = [UIImage imageNamed:@"female_selected_icon.png"];
-        _imageFemaleUnselected = [UIImage imageNamed:@"female_unselected_icon.png"];
+        _imageMaleSelected = [UIImage imageNamed:@"male_selected_icon_cn.png"];
+        _imageMaleUnselected = [UIImage imageNamed:@"male_unselected_icon_cn.png"];
+        _imageFemaleSelected = [UIImage imageNamed:@"female_selected_icon_cn.png"];
+        _imageFemaleUnselected = [UIImage imageNamed:@"female_unselected_icon_cn.png"];
         
         _imageViewDivision = [[UIImageView alloc] init];
         _imageViewDivision.image = [UIImage imageNamed:@"division_icon.png"];

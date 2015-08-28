@@ -350,7 +350,6 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
 }
 
 //获取userIfo
-
 - (void)getUserIfo:(User *)user
            success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
            failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure{
@@ -368,6 +367,22 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
     }
     
     [self GET:[NSString stringWithFormat:@"match/%@.json", user.userId] parameters:nil success:success failure:failure];
+}
+
+- (void)sendingMessage:(User *)sender
+              receiver:(User *)receiver
+               content:(NSString *)content
+               success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    if (!sender || !receiver || !content) {
+        return;
+    }
+    
+    NSDictionary *parameters = @{@"message" : @{@"from" : sender.userId,
+                                               @"to" : receiver.userId,
+                                               @"type" : @"chat",
+                                               @"content" : content}};
+    [self POST:@"messages.json" parameters:parameters success:success failure:failure];
 }
 @end
 
