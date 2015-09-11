@@ -20,6 +20,7 @@
 @property (strong, nonatomic) User *currentUser;
 @property (assign, nonatomic) NSInteger coupleState;
 @property (assign, nonatomic) NSInteger coupleResult;
+@property (strong, nonatomic) User *matchedUser;
 @property (assign, nonatomic) BOOL isTitleShows;
 
 @end
@@ -424,6 +425,7 @@
         if ([[responseObject objectForKey:@"state"] integerValue]) {
             self.coupleState = [[responseObject objectForKey:@"state"] integerValue];
             self.coupleResult = [[responseObject objectForKey:@"result"] integerValue];
+            self.matchedUser = [[User alloc] initWithDictionary:[responseObject objectForKey:@"matched_user"]];
         }
         [self reloadViewController];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -447,6 +449,12 @@
         }
         case BLCoupleStateCommunication:
         {
+            if (self.matchedUser.state != BLMatchStateCommunication) {
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"对方已经退出对话" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                av.tag = 1;
+                [av show];
+                return;
+            }
             NSLog(@"State is communication, stay on this view");
             break;
         }

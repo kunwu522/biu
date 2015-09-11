@@ -121,6 +121,7 @@ static CGFloat kTempHeight = 80.0f;
         self.birthday = self.currentUser.profile.birthday;
         self.zodiac = self.currentUser.profile.zodiac;
         self.style = self.currentUser.profile.style;
+        self.age = [Profile getAgeFromBirthday:self.birthday];
     } else {
         self.gender = BLGenderMale;
         self.sexuality = BLSexualityTypeMan;
@@ -130,6 +131,7 @@ static CGFloat kTempHeight = 80.0f;
         self.birthday = [formatter dateFromString:defaultDate];
         self.zodiac = BLZodiacCapricorn;
         self.style = BLStyleTypeManOther;
+        self.age = 25;
     }
 }
 - (void)addHUD{
