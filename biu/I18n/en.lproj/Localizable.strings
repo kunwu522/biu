@@ -98,7 +98,8 @@
 // Match View
 "Matching..." = "Matching...";
 "Slide to love" = "Slide to love";
-
+"Start to love" = "Start to love";
+"Stop matching" = "Stop matching";
 
 // Font
 "FontLight" = "HelveticaNeue-Light";

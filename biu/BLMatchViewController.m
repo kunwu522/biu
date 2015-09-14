@@ -41,6 +41,8 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 @property (strong, nonatomic) NSArray *arrayDistanceData;
 @property (strong, nonatomic) NSNumber *distance;
 @property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) UIButton *btnMatchSwitch;
+@property (assign, nonatomic) BOOL isMatchSwitchOpen;
 
 @property (strong, nonatomic) UIImageView *matchingLeft;
 @property (strong, nonatomic) UIImageView *matchingRight;
@@ -102,13 +104,14 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     _matchSwith = [[BLMatchSwitch alloc] init];
     _matchSwith.backgroundColor = [UIColor clearColor];
     [_matchSwith addTarget:self action:@selector(matchToLove:) forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:_matchSwith];
+//    [self.view addSubview:_matchSwith];
     [self.view addSubview:self.lbTitle];
     [self.view addSubview:self.pickViewDistance];
-    [self.view addSubview:self.matchSwith];
+//    [self.view addSubview:self.matchSwith];
     [self.view addSubview:self.matchingLeft];
     [self.view addSubview:self.matchingRight];
     [self.view addSubview:self.matchedImageView];
+    [self.view addSubview:self.btnMatchSwitch];
     [self loadLayouts];
     [self addHUD];
     
@@ -152,11 +155,18 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
         make.centerX.equalTo(self.view.mas_centerX);
     }];
     
-    [_matchSwith mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view).with.offset([BLGenernalDefinition resolutionForDevices:-64.9f]);
+//    [_matchSwith mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.equalTo(self.view).with.offset([BLGenernalDefinition resolutionForDevices:-64.9f]);
+//        make.centerX.equalTo(self.view.mas_centerX);
+//        make.width.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:250.0f]]);
+//        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:78.0f]]);
+//    }];
+    
+    [self.btnMatchSwitch mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view).with.offset([BLGenernalDefinition resolutionForDevices:-84.9f]);
         make.centerX.equalTo(self.view.mas_centerX);
         make.width.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:250.0f]]);
-        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:78.0f]]);
+        make.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:60.0f]]);
     }];
     
     [self.btnMenu mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -393,6 +403,36 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 //    matchedViewController.matchedUser = self.matchedUser;
     matchedViewController.delegate = self;
     [self.navigationController pushViewController:matchedViewController animated:YES];
+}
+
+- (void)switchMatchButton {
+    if (self.isMatchSwitchOpen) {
+        self.isMatchSwitchOpen = NO;
+        [self.btnMatchSwitch setBackgroundColor:[BLColorDefinition greenColor]];
+        [self.btnMatchSwitch setTitle:NSLocalizedString(@"Start to love", nil) forState:UIControlStateNormal];
+        
+        NSLog(@"Finish Matching...");
+        NSDictionary *userInfo = nil;
+        NSError *error = nil;
+        BOOL success = [self.viewControlelrStateMachine fireEvent:@"close" userInfo:userInfo error:&error];
+        if (!success) {
+            NSLog(@"State machine error: %@.", error.localizedDescription);
+        }
+        
+    } else {
+        self.isMatchSwitchOpen = YES;
+//        [self.btnMatchSwitch setBackgroundColor:[UIColor colorWithRed:234.0f / 255.0f green:94.0f / 255.0f blue:91.0f / 255.0f alpha:1.0f]];
+        [self.btnMatchSwitch setBackgroundColor:[UIColor grayColor]];
+        [self.btnMatchSwitch setTitle:NSLocalizedString(@"Stop matching", nil) forState:UIControlStateNormal];
+        
+        NSLog(@"Starting to Match...");
+        NSDictionary *userInfo = nil;
+        NSError *error = nil;
+        BOOL success = [self.viewControlelrStateMachine fireEvent:@"open" userInfo:userInfo error:&error];
+        if (!success) {
+            NSLog(@"State machine error: %@.", error.localizedDescription);
+        }
+    }
 }
 
 - (void)timerfired {
@@ -846,6 +886,20 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 
 - (BLAppDelegate *)blAppDelegate {
     return (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
+}
+
+- (UIButton *)btnMatchSwitch {
+    if (!_btnMatchSwitch) {
+        _btnMatchSwitch = [[UIButton alloc] init];
+        [_btnMatchSwitch setBackgroundColor:[BLColorDefinition greenColor]];
+        [_btnMatchSwitch setTitle:NSLocalizedString(@"Start to love", nil) forState:UIControlStateNormal];
+        [_btnMatchSwitch addTarget:self action:@selector(switchMatchButton) forControlEvents:UIControlEventTouchUpInside];
+        [_btnMatchSwitch setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _btnMatchSwitch.titleLabel.font = [BLFontDefinition boldFont:16.0f];
+        _btnMatchSwitch.layer.cornerRadius = 10.0f;
+        self.isMatchSwitchOpen = NO;
+    }
+    return _btnMatchSwitch;
 }
 
 - (TKStateMachine *)viewControlelrStateMachine {

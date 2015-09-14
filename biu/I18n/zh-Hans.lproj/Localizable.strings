@@ -133,6 +133,9 @@
 "were accepted subtitle" = "5分钟没有应答会自动关闭";
 "were rejected title" = "对不起！永远会有下一个！请忽略Ta";
 "were rejected subtitle" = "5分钟后会自动关闭";
+"Start to love" = "开始匹配";
+"Stop matching" = "结束匹配";
+
 
 // Message
 "You've just started your lovestory" = "开始你的爱情之旅";
