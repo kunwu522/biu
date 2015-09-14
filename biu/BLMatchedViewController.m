@@ -28,6 +28,7 @@
 @property (strong, nonatomic) User *currentUser;
 @property (assign, nonatomic) NSInteger coupleState;
 @property (assign, nonatomic) NSInteger coupleResult;
+@property (strong, nonatomic) UIButton *btnReport;//举报
 
 @end
 
@@ -45,6 +46,8 @@
     [self.view addSubview:self.btnMessage];
 //    [self.view addSubview:self.btnMatchedUserInfo];
     [self.view addSubview:self.blurUserInfoView];
+    [self.view addSubview:self.btnReport];
+
     [self layoutSubViews];
     
     [self addHUD];
@@ -101,6 +104,13 @@
         make.bottom.equalTo(self.btnMessage.superview).with.offset([BLGenernalDefinition resolutionForDevices:-62.0f]);
         make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:88.0f]]);
     }];
+    
+    [self.btnReport mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.btnReport.superview).with.offset([BLGenernalDefinition resolutionForDevices:31.2f]);
+        make.right.equalTo(self.btnReport.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.8f]);
+        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:88.0f]]);
+    }];
+
 }
 
 #pragma mark -
@@ -169,6 +179,11 @@
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"Rejected matched user failed. error: %@", error);
     }];
+}
+
+- (void)reportClick:(id)sender {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"是否确定举报该人?" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"举报", nil];
+    [alert show];
 }
 
 #pragma mark - Delegates
@@ -322,6 +337,23 @@
     return _btnClose;
 }
 
+- (UIButton *)btnReport {
+    if (!_btnReport) {
+        _btnReport = [[UIButton alloc] init];
+        _btnReport.backgroundColor = [UIColor grayColor];
+        [_btnReport setTitle:@"举报" forState:UIControlStateNormal];
+        [_btnReport setTintColor:[UIColor whiteColor]];
+        _btnReport.layer.cornerRadius = [BLGenernalDefinition resolutionForDevices:88.0f]/2;
+        _btnReport.layer.masksToBounds = YES;
+        _btnReport.layer.borderWidth = 3.0;
+        _btnReport.alpha = 0.8;
+        [_btnReport.layer setBorderColor:([UIColor whiteColor].CGColor)];
+//        [_btnReport sizeToFit];
+        [_btnReport addTarget:self action:@selector(reportClick:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _btnReport;
+}
+
 - (UIButton *)btnMatchedUserInfo {
     if (!_btnMatchedUserInfo) {
         _btnMatchedUserInfo = [[UIButton alloc] init];
@@ -353,4 +385,11 @@
     [self.view addSubview:_HUD];
 }
 
+
+#pragma mark UIAlertView Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        [self btnClose];
+    }
+}
 @end

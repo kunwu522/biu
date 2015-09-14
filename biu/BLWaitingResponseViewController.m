@@ -156,6 +156,8 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
+
+
 #pragma mark Timer callback
 - (void)updateCounter {
     if (secondsLeft >= 0) {
@@ -340,6 +342,7 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
         _avatarImageView.layer.borderColor = [[UIColor whiteColor] CGColor];
         _avatarImageView.layer.borderWidth = 2.0f;
         _avatarImageView.clipsToBounds = YES;
+        
     }
     return _avatarImageView;
 }
@@ -353,6 +356,8 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
     }
     return _lbTimeCounter;
 }
+
+
 
 - (UIButton *)btnClose {
     if (!_btnClose) {

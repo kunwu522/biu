@@ -10,6 +10,7 @@
 #import "Masonry.h"
 #import "BLMAMapViewController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
+#import "BLLabel.h"
 
 @interface BLMessagesViewController () <BLMessageDelegate, UIAlertViewDelegate, BLMatchNotificationDelegate, MBProgressHUDDelegate> {
     MBProgressHUD *_HUD;
@@ -270,6 +271,7 @@
     
     if (indexPath.item == 0 && !self.isTitleShows) {
         CGFloat width = cell.bounds.size.width - 120.0f;
+        
         UILabel *lbStart = [[UILabel alloc] initWithFrame:CGRectMake((cell.bounds.size.width - width) * 0.5f, 0, width, 30.0f)];
         lbStart.text = NSLocalizedString(@"You've just started your lovestory", nil);
         lbStart.textAlignment = NSTextAlignmentCenter;
@@ -279,6 +281,26 @@
         lbStart.layer.cornerRadius = 5.0f;
         lbStart.clipsToBounds = YES;
         [cell addSubview:lbStart];
+        
+        BLLabel *reportLabel = [[BLLabel alloc] initWithFrame:CGRectMake((cell.bounds.size.width - width) * 0.5f, 35, width, 30.0f)];
+        reportLabel.userInteractionEnabled = YES;
+        reportLabel.textAlignment = NSTextAlignmentCenter;
+        
+        //定义不同字的颜色
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"如有骚扰欺诈传销或其他等犯罪行为请举报"];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(0,17)];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(17,2)];
+        reportLabel.attributedText = str;
+        [reportLabel setAttributedText:str];
+        reportLabel.font = [BLFontDefinition boldFont:10.0f];
+        
+        reportLabel.backgroundColor = [UIColor colorWithRed:160.0f / 255.0f green:160.0f / 255.0f blue:161.0f / 255.0f alpha:1.0f];
+        [reportLabel addTarget:self action:@selector(reportClick) forControlEvents:BLLabelControlEventTap];
+        reportLabel.layer.cornerRadius = 5.0f;
+        reportLabel.clipsToBounds = YES;
+
+        [cell addSubview:reportLabel];
+        
         self.isTitleShows = YES;
     }
     
@@ -482,6 +504,12 @@
         [_btnMap addTarget:self action:@selector(showMap:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _btnMap;
+}
+
+- (void)reportClick{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"是否确定举报该人?" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"举报", nil];
+    alert.tag = 0;
+    [alert show];
 }
 
 - (User *)currentUser {

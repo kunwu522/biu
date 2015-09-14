@@ -182,7 +182,7 @@ static NSString *AVATAR_LARGE_URL = @"avatar_large_url";
     if (self.userId == nil) {
         NSLog(@"User id is nil...");
         return;
-    } 
+    }
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:self.userId forKey:USER_ID];
     [defaults setObject:self.username forKey:USERNAME];

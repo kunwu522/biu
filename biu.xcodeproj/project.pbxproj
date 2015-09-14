@@ -24,6 +24,7 @@
 		A3CCFD011B1B647300C9BAE8 /* avator_default.png in Resources */ = {isa = PBXBuildFile; fileRef = A3CCFD001B1B647300C9BAE8 /* avator_default.png */; };
 		A3CCFD071B1CBB2D00C9BAE8 /* BLZodiacTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A3CCFD061B1CBB2D00C9BAE8 /* BLZodiacTableViewCell.m */; };
 		A3F7EC691B0AD6520084DA70 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A3F7EC6B1B0AD6520084DA70 /* Localizable.strings */; };
+		E3640E721BA6A3AE0011788D /* BLLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = E3640E711BA6A3AE0011788D /* BLLabel.m */; };
 		E36E06A71B8C7BB3004F1064 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E36E06A31B8C7BB3004F1064 /* libWeChatSDK.a */; };
 		E36E06A81B8C7BB3004F1064 /* read_me.txt in Resources */ = {isa = PBXBuildFile; fileRef = E36E06A41B8C7BB3004F1064 /* read_me.txt */; };
 		E37225A81B7C8A0C00CB912A /* BLFaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = E37225A71B7C8A0C00CB912A /* BLFaceView.m */; };
@@ -325,6 +326,8 @@
 		A3F7EC681B0AD5BF0084DA70 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		A3F7EC6A1B0AD6520084DA70 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A3F7EC6C1B0AD65A0084DA70 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E3640E701BA6A3AE0011788D /* BLLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLLabel.h; sourceTree = "<group>"; };
+		E3640E711BA6A3AE0011788D /* BLLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLLabel.m; sourceTree = "<group>"; };
 		E36E06A31B8C7BB3004F1064 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
 		E36E06A41B8C7BB3004F1064 /* read_me.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = read_me.txt; sourceTree = "<group>"; };
 		E36E06A51B8C7BB3004F1064 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
@@ -990,6 +993,8 @@
 				EAE285F91B327F7B00340C1B /* BLCropImageMaskView.m */,
 				E37225A61B7C8A0C00CB912A /* BLFaceView.h */,
 				E37225A71B7C8A0C00CB912A /* BLFaceView.m */,
+				E3640E701BA6A3AE0011788D /* BLLabel.h */,
+				E3640E711BA6A3AE0011788D /* BLLabel.m */,
 			);
 			name = CustomizeUI;
 			sourceTree = "<group>";
@@ -1931,6 +1936,7 @@
 				EA305ED91B16F32100DD904D /* BLPickerView.m in Sources */,
 				EAA9CF711B7DCB40001574B9 /* BLMatchedViewController.m in Sources */,
 				EA428A2A1B56687D00EF4887 /* XMPPDeprecatedDigestAuthentication.m in Sources */,
+				E3640E721BA6A3AE0011788D /* BLLabel.m in Sources */,
 				EAA9CF511B7DC69A001574B9 /* BLWelcomeViewController.m in Sources */,
 				EA9B091A1B2C36720059DBA7 /* BLCamViewController.m in Sources */,
 				EA428A2C1B56687D00EF4887 /* XMPPDigestMD5Authentication.m in Sources */,
