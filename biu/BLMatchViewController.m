@@ -336,7 +336,10 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     _locationManager.distanceFilter = 200;
     _locationManager.pausesLocationUpdatesAutomatically = NO;
     
+    [_locationManager requestAlwaysAuthorization];
     [_locationManager startMonitoringSignificantLocationChanges];
+    [_locationManager startUpdatingLocation];
+
 }
 
 - (void)stopSignificantChangeUpdates {
