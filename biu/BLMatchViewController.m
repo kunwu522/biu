@@ -306,7 +306,8 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
         case kCLAuthorizationStatusDenied:
         case kCLAuthorizationStatusRestricted:
         {
-            self.matchSwith.on = NO;
+//            self.matchSwith.on = NO;
+            [self btnMatchSwitchOff];
             self.matchingLeft.alpha = 0.0f;
             self.matchingRight.alpha = 0.0f;
             self.pickViewDistance.alpha = 1.0f;
@@ -407,9 +408,10 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 
 - (void)switchMatchButton {
     if (self.isMatchSwitchOpen) {
-        self.isMatchSwitchOpen = NO;
-        [self.btnMatchSwitch setBackgroundColor:[BLColorDefinition greenColor]];
-        [self.btnMatchSwitch setTitle:NSLocalizedString(@"Start to love", nil) forState:UIControlStateNormal];
+        [self btnMatchSwitchOff];
+//        self.isMatchSwitchOpen = NO;
+//        [self.btnMatchSwitch setBackgroundColor:[BLColorDefinition greenColor]];
+//        [self.btnMatchSwitch setTitle:NSLocalizedString(@"Start to love", nil) forState:UIControlStateNormal];
         
         NSLog(@"Finish Matching...");
         NSDictionary *userInfo = nil;
@@ -420,10 +422,10 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
         }
         
     } else {
-        self.isMatchSwitchOpen = YES;
-//        [self.btnMatchSwitch setBackgroundColor:[UIColor colorWithRed:234.0f / 255.0f green:94.0f / 255.0f blue:91.0f / 255.0f alpha:1.0f]];
-        [self.btnMatchSwitch setBackgroundColor:[UIColor grayColor]];
-        [self.btnMatchSwitch setTitle:NSLocalizedString(@"Stop matching", nil) forState:UIControlStateNormal];
+        [self btnMatchSwitchOn];
+//        self.isMatchSwitchOpen = YES;
+//        [self.btnMatchSwitch setBackgroundColor:[UIColor grayColor]];
+//        [self.btnMatchSwitch setTitle:NSLocalizedString(@"Stop matching", nil) forState:UIControlStateNormal];
         
         NSLog(@"Starting to Match...");
         NSDictionary *userInfo = nil;
@@ -584,7 +586,8 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Matching failed, please try again later", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
                 [av show];
                 [self stopMatching];
-                self.matchSwith.on = NO;
+//                self.matchSwith.on = NO;
+                [self btnMatchSwitchOff];
             }];
 
             //change current state
@@ -766,6 +769,18 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     _HUD.labelText = @"loading";
     _HUD.delegate = self;
     [self.view addSubview:_HUD];
+}
+
+- (void)btnMatchSwitchOn {
+    self.isMatchSwitchOpen = YES;
+    [self.btnMatchSwitch setBackgroundColor:[UIColor grayColor]];
+    [self.btnMatchSwitch setTitle:NSLocalizedString(@"Stop matching", nil) forState:UIControlStateNormal];
+}
+
+- (void)btnMatchSwitchOff {
+    self.isMatchSwitchOpen = NO;
+    [self.btnMatchSwitch setBackgroundColor:[BLColorDefinition greenColor]];
+    [self.btnMatchSwitch setTitle:NSLocalizedString(@"Start to love", nil) forState:UIControlStateNormal];
 }
 
 #pragma mark Animations
@@ -959,6 +974,9 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
             if (self.matchSwith.on) {
                 self.matchSwith.on = NO;
             }
+            if (self.isMatchSwitchOpen) {
+                [self btnMatchSwitchOff];
+            }
         }];
         
         [idle setDidExitStateBlock:^(TKState *state, TKTransition *transition) {
@@ -1021,7 +1039,8 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
         }];
         
         [startMatching setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
-            self.matchSwith.on = YES;
+//            self.matchSwith.on = YES;
+            [self btnMatchSwitchOn];
         }];
         
         [closeSwitch setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
