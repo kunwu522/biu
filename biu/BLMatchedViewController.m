@@ -106,9 +106,9 @@
     }];
     
     [self.btnReport mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.btnReport.superview).with.offset([BLGenernalDefinition resolutionForDevices:31.2f]);
+        make.top.equalTo(self.btnReport.superview).with.offset([BLGenernalDefinition resolutionForDevices:20.8f]);
         make.right.equalTo(self.btnReport.superview).with.offset([BLGenernalDefinition resolutionForDevices:-20.8f]);
-        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:88.0f]]);
+        make.width.height.equalTo([NSNumber numberWithDouble:[BLGenernalDefinition resolutionForDevices:46.0f]]);
     }];
 
 }
@@ -340,15 +340,14 @@
 - (UIButton *)btnReport {
     if (!_btnReport) {
         _btnReport = [[UIButton alloc] init];
-        _btnReport.backgroundColor = [UIColor grayColor];
+        _btnReport.backgroundColor = [UIColor colorWithRed:213.0f / 255.0f green:213.0f / 255.0f blue:213.0f / 255.0f alpha:0.8f];
         [_btnReport setTitle:@"举报" forState:UIControlStateNormal];
         [_btnReport setTintColor:[UIColor whiteColor]];
-        _btnReport.layer.cornerRadius = [BLGenernalDefinition resolutionForDevices:88.0f]/2;
+        _btnReport.titleLabel.font = [UIFont systemFontOfSize:[BLGenernalDefinition resolutionForDevices:11.0f]];
+        _btnReport.layer.cornerRadius = [BLGenernalDefinition resolutionForDevices:46.0f]/2;
         _btnReport.layer.masksToBounds = YES;
-        _btnReport.layer.borderWidth = 3.0;
-        _btnReport.alpha = 0.8;
+        _btnReport.layer.borderWidth = 0.5;
         [_btnReport.layer setBorderColor:([UIColor whiteColor].CGColor)];
-//        [_btnReport sizeToFit];
         [_btnReport addTarget:self action:@selector(reportClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _btnReport;
@@ -389,7 +388,7 @@
 #pragma mark UIAlertView Delegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        [self btnClose];
+        [self close:_btnClose];
     }
 }
 @end

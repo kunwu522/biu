@@ -316,6 +316,35 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     }
 }
 
+
+- (void)startSignificantChangeUpdates
+{
+    // Create the location manager if this object does not
+    // already have one.
+    if (nil == _locationManager) {
+        _locationManager = [[CLLocationManager alloc] init];
+    }
+    
+    if ([CLLocationManager significantLocationChangeMonitoringAvailable]) {
+        NSLog(@"significant location is available!");
+    } else {
+        NSLog(@"Fuck you! Significant location is no available!");
+    }
+
+    _locationManager.delegate = self;
+    _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+    _locationManager.distanceFilter = 200;
+    _locationManager.pausesLocationUpdatesAutomatically = NO;
+    
+    [_locationManager startMonitoringSignificantLocationChanges];
+}
+
+- (void)stopSignificantChangeUpdates {
+    if (_locationManager) {
+        [_locationManager stopMonitoringSignificantLocationChanges];
+    }
+}
+
 #pragma mark BLMatchedViewController Delegate
 - (void)didRejectedMatchedUser {
     [self stateMachine:BLMatchViewEventMatching];
@@ -453,16 +482,24 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 }
 
 #pragma mark - Notifications
-- (void)applicationWillEnterForeground {
+- (void)applicationWillEnterForeground {//回到前台
     if (self.currentUser.state == BLMatchStateMatching) {
         [self startMatchingAnimation];
     }
+//    [self.locationManager stopMonitoringSignificantLocationChanges];
+//    [self.locationManager startUpdatingLocation];
+    [self stopSignificantChangeUpdates];
+    [self startStandardUpdates];
 }
 
-- (void)applicationWillResignActive {
+- (void)applicationWillResignActive {//进入后台
     if (self.currentUser.state == BLMatchStateMatching) {
         [self stopMatchingAnimationWithCompletion:nil];
     }
+//    [self.locationManager stopUpdatingLocation];
+    [self stopStandarUpdates];
+    [self startSignificantChangeUpdates];
+//    [self.locationManager startMonitoringSignificantLocationChanges];
 }
 
 #pragma mark -
@@ -700,6 +737,7 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     _locationManager.delegate = self;
     _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
     _locationManager.distanceFilter = 200;
+    _locationManager.pausesLocationUpdatesAutomatically = NO;
     
     CLAuthorizationStatus authorizationStatus= [CLLocationManager authorizationStatus];
     if (authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||

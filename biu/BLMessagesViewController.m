@@ -282,23 +282,23 @@
         lbStart.clipsToBounds = YES;
         [cell addSubview:lbStart];
         
-        BLLabel *reportLabel = [[BLLabel alloc] initWithFrame:CGRectMake((cell.bounds.size.width - width) * 0.5f, 35, width, 30.0f)];
+        BLLabel *reportLabel = [[BLLabel alloc] initWithFrame:CGRectMake((cell.bounds.size.width - width - 50) * 0.5f, 35, width + 50, 30.0f)];
         reportLabel.userInteractionEnabled = YES;
         reportLabel.textAlignment = NSTextAlignmentCenter;
         
         //定义不同字的颜色
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"如有骚扰欺诈传销或其他等犯罪行为请举报"];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(0,17)];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(17,2)];
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"如有骚扰、欺诈、传销等犯罪行为请 举报"];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(0,16)];
+        [str addAttribute:NSForegroundColorAttributeName value:[BLColorDefinition greenColor] range:NSMakeRange(17,2)];
         reportLabel.attributedText = str;
         [reportLabel setAttributedText:str];
-        reportLabel.font = [BLFontDefinition boldFont:10.0f];
+//        reportLabel.font = [BLFontDefinition boldFont:10.0f];
+        reportLabel.font = [UIFont fontWithName:@"Arial" size:10.0];
         
-        reportLabel.backgroundColor = [UIColor colorWithRed:160.0f / 255.0f green:160.0f / 255.0f blue:161.0f / 255.0f alpha:1.0f];
+        reportLabel.backgroundColor = [UIColor colorWithRed:213.0f / 255.0f green:213.0f / 255.0f blue:213.0f / 255.0f alpha:0.8f];
         [reportLabel addTarget:self action:@selector(reportClick) forControlEvents:BLLabelControlEventTap];
         reportLabel.layer.cornerRadius = 5.0f;
         reportLabel.clipsToBounds = YES;
-
         [cell addSubview:reportLabel];
         
         self.isTitleShows = YES;
@@ -327,7 +327,7 @@
 - (CGFloat)collectionView:(JSQMessagesCollectionView *)collectionView
                    layout:(JSQMessagesCollectionViewFlowLayout *)collectionViewLayout heightForCellTopLabelAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.item == 0) {
-        return kJSQMessagesCollectionViewCellLabelHeightDefault + 20;
+        return kJSQMessagesCollectionViewCellLabelHeightDefault + 45;
     } else {
         return 5.0f;
     }

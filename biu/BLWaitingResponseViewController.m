@@ -48,7 +48,7 @@ static const NSInteger BL_AVATAR_WIDTH = 80.0f;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    secondsLeft = 5 * 60;
+    secondsLeft = 2 * 60;
     
     [self.view addSubview:self.background];
     [self.view addSubview:self.avatarImageView];
