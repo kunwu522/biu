@@ -316,38 +316,6 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     }
 }
 
-
-- (void)startSignificantChangeUpdates
-{
-    // Create the location manager if this object does not
-    // already have one.
-    if (nil == _locationManager) {
-        _locationManager = [[CLLocationManager alloc] init];
-    }
-    
-    if ([CLLocationManager significantLocationChangeMonitoringAvailable]) {
-        NSLog(@"significant location is available!");
-    } else {
-        NSLog(@"Fuck you! Significant location is no available!");
-    }
-
-    _locationManager.delegate = self;
-    _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
-    _locationManager.distanceFilter = 200;
-    _locationManager.pausesLocationUpdatesAutomatically = NO;
-    
-    [_locationManager requestAlwaysAuthorization];
-    [_locationManager startMonitoringSignificantLocationChanges];
-    [_locationManager startUpdatingLocation];
-
-}
-
-- (void)stopSignificantChangeUpdates {
-    if (_locationManager) {
-        [_locationManager stopMonitoringSignificantLocationChanges];
-    }
-}
-
 #pragma mark BLMatchedViewController Delegate
 - (void)didRejectedMatchedUser {
     [self stateMachine:BLMatchViewEventMatching];
@@ -755,6 +723,31 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 
 - (void)stopStandarUpdates {
     [_locationManager stopUpdatingLocation];
+}
+
+- (void)startSignificantChangeUpdates
+{
+    // Create the location manager if this object does not
+    // already have one.
+    if (nil == _locationManager) {
+        _locationManager = [[CLLocationManager alloc] init];
+    }
+    
+    _locationManager.delegate = self;
+    _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+    _locationManager.distanceFilter = 200;
+    _locationManager.pausesLocationUpdatesAutomatically = NO;
+    
+    [_locationManager requestAlwaysAuthorization];
+    [_locationManager startMonitoringSignificantLocationChanges];
+    [_locationManager startUpdatingLocation];
+    
+}
+
+- (void)stopSignificantChangeUpdates {
+    if (_locationManager) {
+        [_locationManager stopMonitoringSignificantLocationChanges];
+    }
 }
 
 - (void)stopMatching {
