@@ -46,7 +46,7 @@ static const float LINE_SPACING = 10.0f;
         _lbZodiac = [[UILabel alloc]init];
         _lbZodiac.textAlignment = NSTextAlignmentCenter;
         _lbZodiac.textColor = [BLColorDefinition fontGrayColor];
-        _lbZodiac.font = [BLFontDefinition lightFont:18.0f];
+        _lbZodiac.font = [BLFontDefinition lightFont:[BLGenernalDefinition resolutionForDevices:18.0f]];
         _lbZodiac.text = [Profile getZodiacNameFromZodiac:BLZodiacAries isShotVersion:NO];
         [_zodiacView addSubview:_lbZodiac];
         
@@ -71,7 +71,7 @@ static const float LINE_SPACING = 10.0f;
         _lbAgeDesc = [[UILabel alloc] init];
         _lbAgeDesc.textAlignment = NSTextAlignmentCenter;
         _lbAgeDesc.textColor = [BLColorDefinition fontGrayColor];
-        _lbAgeDesc.font = [BLFontDefinition lightFont:18.0f];
+        _lbAgeDesc.font = [BLFontDefinition lightFont:[BLGenernalDefinition resolutionForDevices:18.0f]];
         _lbAgeDesc.text = NSLocalizedString(@"Age", nil);
         [_age addSubview:_lbAgeDesc];
         

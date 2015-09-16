@@ -33,7 +33,7 @@
 
 static const float MIN_LINE_SPACING = 21.0f;
 static const float CELL_HEIGHT = 120.0;
-static const float CELL_WIDTH = 90.0;
+static const float CELL_WIDTH = 60.0;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -298,13 +298,13 @@ static const float CELL_WIDTH = 90.0;
 }
 
 - (void)setup {
-    self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.width)];
+    self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(-13, 0, self.frame.size.width + 25, self.frame.size.width + 25)];
     [self addSubview:self.imageView];
     
-    UIFont *font = [BLFontDefinition normalFont:18.0f];
-    self.style = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height - font.lineHeight, self.frame.size.width, font.lineHeight)];
+    UIFont *font = [BLFontDefinition normalFont:[BLGenernalDefinition resolutionForDevices:18.0f]];
+    self.style = [[UILabel alloc] initWithFrame:CGRectMake(-13, self.frame.size.height - font.lineHeight, self.imageView.frame.size.width, font.lineHeight)];
     self.style.backgroundColor = [UIColor clearColor];
-    self.style.font = [BLFontDefinition normalFont:18.0f];
+    self.style.font = [BLFontDefinition normalFont:[BLGenernalDefinition resolutionForDevices:18.0f]];
     self.style.textColor = [BLColorDefinition fontGrayColor];
     self.style.textAlignment = NSTextAlignmentCenter;
     self.style.numberOfLines = 1;

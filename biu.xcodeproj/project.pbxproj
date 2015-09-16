@@ -840,10 +840,10 @@
 		E311BEB81B6F7A6300091F4B /* MatchVC */ = {
 			isa = PBXGroup;
 			children = (
+				EAA9CF6F1B7DCB40001574B9 /* BLMatchViewController.h */,
+				EAA9CF701B7DCB40001574B9 /* BLMatchViewController.m */,
 				EAA9CF6D1B7DCB40001574B9 /* BLMatchedViewController.h */,
 				EAA9CF6E1B7DCB40001574B9 /* BLMatchedViewController.m */,
-				EAA9CF701B7DCB40001574B9 /* BLMatchViewController.m */,
-				EAA9CF6F1B7DCB40001574B9 /* BLMatchViewController.h */,
 				EAA9CF731B817C36001574B9 /* BLWaitingResponseViewController.h */,
 				EAA9CF741B817C36001574B9 /* BLWaitingResponseViewController.m */,
 				EAA9CF661B7DCB26001574B9 /* BLMessagesViewController.h */,

@@ -127,6 +127,7 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+
     [self fetchUserMatchedInfo];
     // Regiest Notification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchUserMatchedInfo) name:@"getMatchInfo" object:nil];
@@ -286,13 +287,56 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     }
 }
 
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    NSLog(@"Error while getting loaction: %@", error.localizedDescription);
-    if (error.code == kCLErrorDenied) {
-        NSLog(@"app denied.");
+//- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+//    NSLog(@"Error while getting loaction: %@", error.localizedDescription);
+//    if (error.code == kCLErrorDenied) {
+//        NSLog(@"app denied.");
+//    }
+//    [_locationManager stopUpdatingLocation];
+//}
+//- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+//{
+//    if ([error code] == kCLErrorDenied)
+//    {
+//        //访问被拒绝
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"无法获取你的位置" message:@"请前往设置开启" delegate:self cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
+//        [alertView show];
+//    }
+//    if ([error code] == kCLErrorLocationUnknown) {
+//        //无法获取位置信息
+//    }
+//    [_locationManager stopUpdatingLocation];
+//}
+
+
+- (void)locationManager: (CLLocationManager *)manager
+       didFailWithError: (NSError *)error {
+    
+    NSString *errorString;
+    [manager stopUpdatingLocation];
+    NSLog(@"Error: %@",[error localizedDescription]);
+    switch([error code]) {
+        case kCLErrorDenied:
+            //Access denied by user
+            errorString = @"Access to Location Services denied by user";
+            //Do something...
+            break;
+        case kCLErrorLocationUnknown:
+            //Probably temporary...
+            errorString = @"Location data unavailable";
+            //Do something else...
+            break;
+        default:
+            errorString = @"An unknown error has occurred";
+            break;
     }
-    [_locationManager stopUpdatingLocation];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:errorString delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    [alert show];
 }
+
+
+
+
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
     switch (status) {
@@ -302,6 +346,8 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
             [self startMatchingAnimation];
             break;
         case kCLAuthorizationStatusNotDetermined:
+            if ([_locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {                [_locationManager requestWhenInUseAuthorization];
+            }
             break;
         case kCLAuthorizationStatusDenied:
         case kCLAuthorizationStatusRestricted:
@@ -316,6 +362,12 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
             break;
     }
 }
+
+//- (void)locationManager:(CLLocationManager *)manager
+//       didFailWithError:(NSError *)error {
+//    NSLog(@"失败");
+//}
+
 
 #pragma mark BLMatchedViewController Delegate
 - (void)didRejectedMatchedUser {
@@ -422,6 +474,17 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
         }
         
     } else {
+        if ([CLLocationManager locationServicesEnabled] &&
+            (([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways)
+             || ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined))) {
+            
+            
+            } else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"无法获取你的位置" message:@"请修改设置" delegate:self cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
+                [alertView show];
+                return;
+            
+            }
         [self btnMatchSwitchOn];
 //        self.isMatchSwitchOpen = YES;
 //        [self.btnMatchSwitch setBackgroundColor:[UIColor grayColor]];
@@ -466,13 +529,22 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 }
 
 - (void)applicationWillResignActive {//进入后台
+    NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
     if (self.currentUser.state == BLMatchStateMatching) {
         [self stopMatchingAnimationWithCompletion:nil];
+        if ([dic[@"matchingEven"] isEqualToString:@"stopMatching"]) {
+            [self stopSignificantChangeUpdates];
+            [self stopStandarUpdates];
+        } else {
+            [self stopStandarUpdates];
+            [self startSignificantChangeUpdates];
+        }
+
+    } else if (self.currentUser.state == BLMatchEventStop) {
+        [self stopSignificantChangeUpdates];
+        [self stopStandarUpdates];
     }
-//    [self.locationManager stopUpdatingLocation];
-    [self stopStandarUpdates];
-    [self startSignificantChangeUpdates];
-//    [self.locationManager startMonitoringSignificantLocationChanges];
+    
 }
 
 #pragma mark -
@@ -711,7 +783,7 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     _locationManager.delegate = self;
     _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
     _locationManager.distanceFilter = 200;
-    _locationManager.pausesLocationUpdatesAutomatically = NO;
+//    _locationManager.pausesLocationUpdatesAutomatically = NO;
     
     CLAuthorizationStatus authorizationStatus= [CLLocationManager authorizationStatus];
     if (authorizationStatus == kCLAuthorizationStatusAuthorizedAlways ||
@@ -735,7 +807,11 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     if (nil == _locationManager) {
         _locationManager = [[CLLocationManager alloc] init];
     }
-    
+    if ([CLLocationManager significantLocationChangeMonitoringAvailable]) {
+        NSLog(@"Significant location is available!");
+    } else {
+        NSLog(@"Significant location is no available!");
+    }
     _locationManager.delegate = self;
     _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
     _locationManager.distanceFilter = 200;
@@ -761,6 +837,7 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
             self.matchingLeft.alpha = 0.0f;
             self.matchingRight.alpha = 0.0f;
         }];
+    [[NSUserDefaults standardUserDefaults] setObject:@"stopMatching" forKey:@"matchingEven"];
     }];
 }
 
@@ -772,12 +849,14 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
 }
 
 - (void)btnMatchSwitchOn {
+    [[NSUserDefaults standardUserDefaults] setObject:@"startMatching" forKey:@"matchingEven"];
     self.isMatchSwitchOpen = YES;
     [self.btnMatchSwitch setBackgroundColor:[UIColor grayColor]];
     [self.btnMatchSwitch setTitle:NSLocalizedString(@"Stop matching", nil) forState:UIControlStateNormal];
 }
 
 - (void)btnMatchSwitchOff {
+    [[NSUserDefaults standardUserDefaults] setObject:@"stopMatching" forKey:@"matchingEven"];
     self.isMatchSwitchOpen = NO;
     [self.btnMatchSwitch setBackgroundColor:[BLColorDefinition greenColor]];
     [self.btnMatchSwitch setTitle:NSLocalizedString(@"Start to love", nil) forState:UIControlStateNormal];

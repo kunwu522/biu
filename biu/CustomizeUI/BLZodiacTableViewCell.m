@@ -32,7 +32,7 @@
 
 static const float MIN_LINE_SPACING = 21.0f;
 static const float CELL_HEIGHT = 120.0f;
-static const float CELL_WIDTH = 90.0f;
+static const float CELL_WIDTH = 60.0f;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -188,13 +188,13 @@ static const float CELL_WIDTH = 90.0f;
 }
 
 - (void)setup {
-    self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.width)];
+    self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(-13, 0, self.frame.size.width + 25, self.frame.size.width + 25)];
     [self addSubview:self.imageView];
     
-    UIFont *font = [BLFontDefinition normalFont:20.0f];
-    self.lbZoidac = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height - font.lineHeight, self.frame.size.width, font.lineHeight)];
+    UIFont *font = [BLFontDefinition normalFont:[BLGenernalDefinition resolutionForDevices:18.0]];
+    self.lbZoidac = [[UILabel alloc] initWithFrame:CGRectMake(-13, self.frame.size.height - font.lineHeight, self.imageView.frame.size.width, font.lineHeight)];
     self.lbZoidac.backgroundColor = [UIColor clearColor];
-    self.lbZoidac.font = [BLFontDefinition normalFont:20.0f];
+    self.lbZoidac.font = [BLFontDefinition normalFont:[BLGenernalDefinition resolutionForDevices:18.0]];
     self.lbZoidac.textColor = [BLColorDefinition fontGrayColor];
     self.lbZoidac.textAlignment = NSTextAlignmentCenter;
     self.lbZoidac.numberOfLines = 1;

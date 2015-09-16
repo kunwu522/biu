@@ -12,8 +12,8 @@
 static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
 //static NSString* const BLBaseURLString = @"http://182.92.117.218:3001/cn/api/v1/";
 #else
-//static NSString* const BLBaseURLString = @"http://182.92.117.218:3001/cn/api/v1/";
-static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
+static NSString* const BLBaseURLString = @"http://182.92.117.218:3001/cn/api/v1/";
+//static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
 #endif
 
 @implementation BLHTTPClient
