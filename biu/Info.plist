@@ -75,5 +75,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>CFBundleDisplayName</key>
+	<string>彼优</string>
 </dict>
 </plist>
