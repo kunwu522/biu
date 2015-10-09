@@ -19,7 +19,7 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 #import <TransitionKit/TransitionKit.h>
 
-@interface BLMatchViewController () <CLLocationManagerDelegate, BLPickerViewDataSource, BLPickerViewDelegate, BLMatchedViewControllerDelegate, BLMatchNotificationDelegate, MBProgressHUDDelegate, BLMessagesViewControllerDelegate, MBProgressHUDDelegate> {
+@interface BLMatchViewController () <CLLocationManagerDelegate, BLPickerViewDataSource, BLPickerViewDelegate, BLMatchedViewControllerDelegate, BLMatchNotificationDelegate, MBProgressHUDDelegate, BLMessagesViewControllerDelegate, MBProgressHUDDelegate, UIAlertViewDelegate> {
     MBProgressHUD *_HUD;
 }
 
@@ -133,6 +133,7 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchUserMatchedInfo) name:@"getMatchInfo" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(matchedUserRejected) name:@"matched user rejected" object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -147,6 +148,7 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"getMatchInfo" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"matched user rejected" object:nil];
 }
 
 #pragma mark - Layouts
@@ -546,6 +548,28 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
     }
     
 }
+//拒绝
+- (void)matchedUserRejected {
+    UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:@"对方已拒绝" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertV show];
+    [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventReject distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
+    if (self.currentUser.state == BLMatchStateStop) {
+        
+    } else {
+        NSDictionary *userInfo = nil;
+        NSError *error = nil;
+        BOOL success = [self.viewControlelrStateMachine fireEvent:@"start matching" userInfo:userInfo error:&error];
+        if (!success) {
+            NSLog(@"State machine error: %@.", error.localizedDescription);
+        }
+    }
+}
+
 
 #pragma mark -
 #pragma mark Private Methods
@@ -1062,6 +1086,7 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
             [UIView animateWithDuration:0.5f animations:^{
                 self.pickViewDistance.alpha = 0;
             }];
+            
         }];
         
         [matching setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
@@ -1115,6 +1140,8 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
             [UIView animateWithDuration:0.5f animations:^{
                 self.matchedImageView.alpha = 0;
             }];
+            
+            
         }];
         
         [startMatching setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
@@ -1123,11 +1150,21 @@ typedef NS_ENUM(NSInteger, BLMatchViewEvent) {
         }];
         
         [closeSwitch setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
-            [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventStop distance:nil matchedUser:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-                NSLog(@"Stop matching success...");
-            } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                NSLog(@"Stop matching failed...");
-            }];
+            if (_currentUser.state == BLMatchStateMatched) {
+                [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventReject distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
+                    
+                } failure:^(NSURLSessionDataTask *task, NSError *error) {
+
+                }];
+                
+            } else {
+                
+                [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventStop distance:nil matchedUser:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+                    NSLog(@"Stop matching success...");
+                } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                    NSLog(@"Stop matching failed...");
+                }];
+            }
         }];
     }
     return _viewControlelrStateMachine;
