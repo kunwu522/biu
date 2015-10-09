@@ -127,12 +127,12 @@
 //"FontBold" = "HelveticaNeue-Bold";
 
 // Match
-"notified matched user" = "已经通知Ta... \n5分钟后没有回应,Ta将错过你,耐心等待...";
+"notified matched user" = "已经通知Ta... \n2分钟后没有回应,Ta将错过你,耐心等待...";
 "matched user rejected" = "对不起，对方眼拙，错过了你。永远会有下一个！请忽略Ta";
 "were accepted title" = "Ta觉得你很好，对你发出了消息请求，见见Ta吗？";
-"were accepted subtitle" = "5分钟没有应答会自动关闭";
+"were accepted subtitle" = "2分钟没有应答会自动关闭";
 "were rejected title" = "对不起！永远会有下一个！请忽略Ta";
-"were rejected subtitle" = "5分钟后会自动关闭";
+"were rejected subtitle" = "2分钟后会自动关闭";
 "Start to love" = "开始匹配";
 "Stop matching" = "结束匹配";
 

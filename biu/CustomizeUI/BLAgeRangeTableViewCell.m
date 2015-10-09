@@ -35,7 +35,7 @@ static const int BL_AGE_RANGE_MAX_PICKER = 1;
         _maxAge = 25;
         
         _ageRange = [[NSMutableArray alloc] init];
-        for (int i = 16; i < 101; i++) {
+        for (int i = 18; i < 101; i++) {
             [_ageRange addObject:[NSString stringWithFormat:@"%d",i]];
         }
         
@@ -125,11 +125,11 @@ static const int BL_AGE_RANGE_MAX_PICKER = 1;
 
 #pragma mark - Private Method
 - (NSInteger)ageFormIndexRow:(NSInteger)row {
-    return row + 16;
+    return row + 18;
 }
 
 - (NSInteger)rowFromAge:(NSInteger)age {
-    return age > 16 ? age - 16 : 0;
+    return age > 18 ? age - 18 : 0;
 }
 
 @end
