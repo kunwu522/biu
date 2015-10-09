@@ -174,11 +174,14 @@
 }
 
 - (void)close:(id)sender {
+    [_HUD show:YES];
     [[BLHTTPClient sharedBLHTTPClient] match:self.currentUser event:BLMatchEventReject distance:nil matchedUser:self.matchedUser success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Rejected matched user.");
         [self.navigationController popViewControllerAnimated:YES];
+        [_HUD hide:YES];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"Rejected matched user failed. error: %@", error);
+        [_HUD hide:YES];
     }];
 }
 
