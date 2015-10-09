@@ -93,7 +93,9 @@
 
 #pragma mark - Actions
 - (void)close:(id)sender {
+    [_HUD show:YES];
     [self closeViewToRootViewController:sender];
+    [_HUD hide:YES];
 }
 
 - (void)done:(id)sender {

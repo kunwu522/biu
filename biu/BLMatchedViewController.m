@@ -125,6 +125,7 @@
 }
 
 - (void)matchedUserRejected {
+    [TSMessage dismissActiveNotification];
     [TSMessage showNotificationInViewController:self
                                           title:NSLocalizedString(@"were rejected title", nil)
                                        subtitle:NSLocalizedString(@"were rejected subtitle", nil)
