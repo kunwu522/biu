@@ -32,7 +32,7 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
         [manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
             switch (status) {
                 case AFNetworkReachabilityStatusNotReachable:
-                    [operationQueue setSuspended:YES];                    
+                    [operationQueue setSuspended:YES];
                 case AFNetworkReachabilityStatusReachableViaWWAN:
                 case AFNetworkReachabilityStatusReachableViaWiFi:
                 default:
@@ -82,7 +82,7 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
     }
     
     NSDictionary *parameter = @{@"code" : code,
-                        @"phone_number" : phoneNumber};
+                                @"phone_number" : phoneNumber};
     
     [self POST:@"passcode.json" parameters:parameter success:success failure:failure];
 }
@@ -139,9 +139,9 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
     NSDictionary *parameters = @{@"profile" : @{@"user_id" : user.userId,
                                                 @"gender" : [NSNumber numberWithInteger:profile.gender],
                                                 @"sexuality_id" : [NSNumber numberWithInteger:profile.sexuality],
-                                              @"birthday" : dateString,
-                                             @"zodiac_id" : [NSNumber numberWithInteger:profile.zodiac],
-                                              @"style_id" : [NSNumber numberWithInteger:profile.style]}};
+                                                @"birthday" : dateString,
+                                                @"zodiac_id" : [NSNumber numberWithInteger:profile.zodiac],
+                                                @"style_id" : [NSNumber numberWithInteger:profile.style]}};
     
     [self POST:@"profiles.json" parameters:parameters success:success failure:failure];
 }
@@ -165,11 +165,11 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
     NSString *dateString = [dateFormatter stringFromDate:profile.birthday];
     
     NSDictionary *parameters = @{@"profile" : @{@"user_id" : user.userId,
-                                                 @"gender" : [NSNumber numberWithInteger:profile.gender],
-                                           @"sexuality_id" : [NSNumber numberWithInteger:profile.sexuality],
-                                               @"birthday" : dateString,
-                                              @"zodiac_id" : [NSNumber numberWithInteger:profile.zodiac],
-                                               @"style_id" : [NSNumber numberWithInteger:profile.style]}};
+                                                @"gender" : [NSNumber numberWithInteger:profile.gender],
+                                                @"sexuality_id" : [NSNumber numberWithInteger:profile.sexuality],
+                                                @"birthday" : dateString,
+                                                @"zodiac_id" : [NSNumber numberWithInteger:profile.zodiac],
+                                                @"style_id" : [NSNumber numberWithInteger:profile.style]}};
     
     [self PUT:[NSString stringWithFormat:@"profiles/%@.json", profile.profileId] parameters:parameters success:success failure:failure];
 }
@@ -204,11 +204,11 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
     }
     
     NSDictionary *parameters = @{@"partner" : @{@"user_id" : user.userId,
-                                          @"sexuality_ids" : partner.sexualities,
+                                                @"sexuality_ids" : partner.sexualities,
                                                 @"min_age" : partner.minAge,
                                                 @"max_age" : partner.maxAge,
-                                             @"zodiac_ids" : partner.preferZodiacs,
-                                              @"style_ids" : partner.preferStyles}};
+                                                @"zodiac_ids" : partner.preferZodiacs,
+                                                @"style_ids" : partner.preferStyles}};
     [self PUT:[NSString stringWithFormat:@"partners/%@.json", partner.partnerId] parameters:parameters success:success failure:failure];
 }
 
@@ -237,7 +237,7 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
                failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
     
     NSDictionary *parameters = @{@"location" : @{@"latitude" : user.latitude,
-                                                @"longitude" : user.longitude}};
+                                                 @"longitude" : user.longitude}};
     [self PUT:[NSString stringWithFormat:@"location/%@.json", user.userId] parameters:parameters success:success failure:failure];
 }
 
@@ -270,7 +270,7 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
         return;
     }
     NSDictionary *parameters = @{@"device" : @{@"token" : token,
-                                             @"user_id" : user.userId}};
+                                               @"user_id" : user.userId}};
     [self POST:@"devices.json" parameters:parameters success:success failure:failure];
 }
 
@@ -294,7 +294,7 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
     }
     
     NSDictionary *parameters = @{@"user" : @{@"password" : user.password,
-                                @"password_confirmation" : user.password}};
+                                             @"password_confirmation" : user.password}};
     [self PUT:[NSString stringWithFormat:@"password/%@", user.phone] parameters:parameters success:success failure:failure];
 }
 
@@ -346,16 +346,16 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
                                              @"avatar_url" : user.avatar_url,
                                              @"avatar_large_url" : user.avatar_large_url}};
     [self POST:@"tplogin" parameters:parameters success:success failure:failure];
-
+    
 }
 
 //获取userIfo
 - (void)getUserIfo:(User *)user
            success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
            failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure{
-
+    
     [self GET:[NSString stringWithFormat:@"users/%@", user.userId] parameters:nil success:success failure:failure];
-
+    
 }
 
 
@@ -379,9 +379,9 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
     }
     
     NSDictionary *parameters = @{@"message" : @{@"from" : sender.userId,
-                                               @"to" : receiver.userId,
-                                               @"type" : @"chat",
-                                               @"content" : content}};
+                                                @"to" : receiver.userId,
+                                                @"type" : @"chat",
+                                                @"content" : content}};
     [self POST:@"messages.json" parameters:parameters success:success failure:failure];
 }
 @end

@@ -41,6 +41,7 @@
 @property (strong, nonatomic) UINavigationController *fillingInfoNavController;
 @property (strong, nonatomic) NSString *alertViewWhere;
 
+@property (strong, nonatomic) NSString *HUDState;//判断指示器状态
 @end
 
 @implementation BLLoginViewController
@@ -67,6 +68,7 @@
     
     [self loadLayout];
     self.alertViewWhere = nil;
+    self.HUDState = nil;
 }
 
 - (void)viewDidDisappear:(BOOL)animated{
@@ -192,10 +194,18 @@
     user.password = self.tfPassword.text;
     [user save];
     [_HUD show:YES];
+    self.HUDState = @"YES";
     if (user.phone && user.password) {
-       
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(30.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            [_HUD hide:YES];
+//            if ([_HUDState isEqualToString:@"YES"]) {
+//                UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"网络异常", nil) message:NSLocalizedString(@"请检查网络后,重新登陆", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
+//                [alertV show];
+//            }
+//        });
         [[BLHTTPClient sharedBLHTTPClient] login:user success:^(NSURLSessionDataTask *task, id responseObject) {
             [_HUD hide:YES];
+            self.HUDState = @"NO";
             User *loginUser = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];
             [loginUser save];
             if ((responseObject[@"user"][@"profile"] &&
@@ -213,6 +223,7 @@
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [_HUD hide:YES];
+            self.HUDState = @"NO";
             if ([task.response isKindOfClass:[NSHTTPURLResponse class]]) {
                 NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
                 NSLog(@"Status code: %ld", (long)response.statusCode);
@@ -227,6 +238,7 @@
 
     }
 }
+
 
 - (void)forgotPassword:(id)sender {
     BLForgotPasswordViewController *forgotPwViewController = [[BLForgotPasswordViewController alloc] init];

@@ -8,7 +8,6 @@
 
 #import "BLMessagesViewController.h"
 #import "Masonry.h"
-#import "BLMAMapViewController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "BLLabel.h"
 
@@ -120,8 +119,8 @@
 }
 
 - (void)showMap:(id)sender {
-    BLMAMapViewController *maMapVC = [[BLMAMapViewController alloc] init];
-    [self.navigationController pushViewController:maMapVC animated:YES];
+//    BLMAMapViewController *maMapVC = [[BLMAMapViewController alloc] init];
+//    [self.navigationController pushViewController:maMapVC animated:YES];
 }
 
 #pragma mark - JSQMessagesViewController method overrides

@@ -111,8 +111,8 @@
 
 //获取userIfo
 - (void)getUserIfo:(User *)user
-              success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
-              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+           success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+           failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
 //Sending message
 - (void)sendingMessage:(User *)sender
