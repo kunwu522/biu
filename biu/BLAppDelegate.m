@@ -69,34 +69,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
-    //    检测网络连接的单例，网络变化时的回调方法
-    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        NSString *string = nil;
-        switch (status) {
-//            case AFNetworkReachabilityStatusUnknown:
-//                string = @"未知";
-//                break;
-            case AFNetworkReachabilityStatusNotReachable:
-                string = @"无网络连接。。。";
-                break;
-//            case AFNetworkReachabilityStatusReachableViaWWAN:
-//                string = @"需要使用流量，请注意！";
-//                break;
-//            case AFNetworkReachabilityStatusReachableViaWiFi:
-//                string = @"WIFI，请放心使用";
-//                break;
-            default:
-                break;
-        }
-        if (string) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:string delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alertView show];
-        }
-        
-    }];
-    
-    
      self.passwordItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"Password" accessGroup:nil];
     
     // Get current user

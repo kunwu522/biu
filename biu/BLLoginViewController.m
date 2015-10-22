@@ -198,9 +198,10 @@
     if (user.phone && user.password) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             if ([_HUDState isEqualToString:@"YES"]) {
-                UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:@"网络不稳定" message:@"是否继续等待" delegate:self cancelButtonTitle:@"继续" otherButtonTitles:NSLocalizedString(@"Cancel", nil), nil];
-                alertV.tag = 100;
+                UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:@"网络不稳定" message:@"稍后重试" delegate:self cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
+//                alertV.tag = 100;
                 [alertV show];
+                [_HUD hide:YES];
             }
         });
         [[BLHTTPClient sharedBLHTTPClient] login:user success:^(NSURLSessionDataTask *task, id responseObject) {

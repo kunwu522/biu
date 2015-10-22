@@ -9,8 +9,8 @@
 #import "BLHTTPClient.h"
 
 #if TARGET_IPHONE_SIMULATOR
-static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
-//static NSString* const BLBaseURLString = @"http://182.92.117.218:3001/cn/api/v1/";
+//static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
+static NSString* const BLBaseURLString = @"http://182.92.117.218:3001/cn/api/v1/";
 #else
 static NSString* const BLBaseURLString = @"http://182.92.117.218:3001/cn/api/v1/";
 //static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
@@ -30,22 +30,40 @@ static BLHTTPClient *_sharedHttpClient = nil;
         _sharedHttpClient.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:BLBaseURLString]];
     
         // 设置超时时间
-//        [_sharedHttpClient.manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
-//        _sharedHttpClient.manager.requestSerializer.timeoutInterval = 10.f;
-//        [_sharedHttpClient.manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
+        [_sharedHttpClient.manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
+        _sharedHttpClient.manager.requestSerializer.timeoutInterval = 10.f;
+        [_sharedHttpClient.manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
         
-        NSOperationQueue *operationQueue = _sharedHttpClient.manager.operationQueue;
-        [_sharedHttpClient.manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        _sharedHttpClient.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+        [_sharedHttpClient.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+            NSString *string = nil;
             switch (status) {
+//                case AFNetworkReachabilityStatusUnknown:
+//                    string = @"未知";
+//                    break;
+//                case AFNetworkReachabilityStatusReachableViaWWAN:
+//                    string = @"需要使用流量，请注意！";
+//                    break;
+//                    
+//                case AFNetworkReachabilityStatusReachableViaWiFi:
+//                    string = @"WIFI，请放心使用";
+//                    break;
                 case AFNetworkReachabilityStatusNotReachable:
-                    [operationQueue setSuspended:YES];
-                case AFNetworkReachabilityStatusReachableViaWWAN:
-                case AFNetworkReachabilityStatusReachableViaWiFi:
+                    string = @"无网络连接。。。";
+                    break;
                 default:
-                    [operationQueue setSuspended:NO];
                     break;
             }
+            if (string) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:string delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alertView show];
+            }
         }];
+
+        NSOperationQueue *operationQueue = _sharedHttpClient.manager.operationQueue;
+        NSLog(@"-=-=-=-=-=-=- operationQueue = %@", operationQueue);
+        NSLog(@"-=-=-=-=-=-=- _sharedHttpClient.manager = %@", _sharedHttpClient.manager);
+        NSLog(@"-=-=-=-=-=-=-_sharedHttpClient = %@", _sharedHttpClient);
         
         [_sharedHttpClient.manager.reachabilityManager startMonitoring];
     });
@@ -122,7 +140,7 @@ static BLHTTPClient *_sharedHttpClient = nil;
     
     NSDictionary *parameter = @{@"phone" : user.phone,
                                 @"password" : user.password};
-    [self POST:@"login.json" parameters:parameter success:success failure:failure];
+    [_sharedHttpClient POST:@"login.json" parameters:parameter success:success failure:failure];
 }
 
 - (void)logout:(User *)user
