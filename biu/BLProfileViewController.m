@@ -564,6 +564,7 @@ static CGFloat kTempHeight = 80.0f;
             
             [self.currentUser.profile save];
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Save Successed!", nil) delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            av.tag = 1;
             [av show];
             
             _whichAlertV = @"creatProfile";

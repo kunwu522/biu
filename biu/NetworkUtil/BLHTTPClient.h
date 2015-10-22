@@ -14,12 +14,15 @@
 @interface BLHTTPClient : AFHTTPSessionManager
 
 @property (weak, nonatomic) id<BLHTTPClientDelegate> delegate;
+@property (strong, nonatomic) AFHTTPRequestOperationManager *manager;
 
 + (BLHTTPClient *)sharedBLHTTPClient;
 + (NSString *)responseMessage:(NSURLSessionDataTask *)task error:(NSError *)error;
 + (NSString *)blBaseURL;
 
 - (instancetype)initWithBaseURL:(NSURL *)url;
+
++ (void)cancelOperations;
 
 - (void)registToken:(NSString *)token
                user:(User *)user
@@ -127,6 +130,7 @@
 
 @protocol BLHTTPClientDelegate <NSObject>
 @optional
+
 - (void)canNotReachNetworkWithHttpClient:(BLHTTPClient *)client;
 - (void)blHTTPClient:(BLHTTPClient *)client didFailWithError:(NSError *)error;
 @end

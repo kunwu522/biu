@@ -35,7 +35,7 @@ PODS:
     - HexColors (~> 2.2.0)
 
 DEPENDENCIES:
-  - AFNetworking (~> 2.4.0)
+  - AFNetworking (~> 2.4.1)
   - JSQMessagesViewController
   - Masonry (~> 0.5.3)
   - MBProgressHUD (~> 0.9.1)

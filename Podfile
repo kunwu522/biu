@@ -2,7 +2,7 @@
 platform :ios, '8.0'
 
 target 'biu' do
-    pod "AFNetworking", "~> 2.4.0"
+    pod "AFNetworking", "~> 2.4.1"
     pod 'Masonry', '~> 0.5.3'
     pod 'SDWebImage'
     pod "TSMessages"
@@ -14,7 +14,7 @@ target 'biu' do
 end
 
 target 'biuTests' do
-    pod "AFNetworking", "~> 2.4.0"
+    pod "AFNetworking", "~> 2.4.1"
     pod 'Masonry', '~> 0.5.3'
     pod 'SDWebImage'
     pod "TSMessages"

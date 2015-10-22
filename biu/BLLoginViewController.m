@@ -196,13 +196,13 @@
     [_HUD show:YES];
     self.HUDState = @"YES";
     if (user.phone && user.password) {
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(30.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            [_HUD hide:YES];
-//            if ([_HUDState isEqualToString:@"YES"]) {
-//                UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"网络异常", nil) message:NSLocalizedString(@"请检查网络后,重新登陆", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
-//                [alertV show];
-//            }
-//        });
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if ([_HUDState isEqualToString:@"YES"]) {
+                UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:@"网络不稳定" message:@"是否继续等待" delegate:self cancelButtonTitle:@"继续" otherButtonTitles:NSLocalizedString(@"Cancel", nil), nil];
+                alertV.tag = 100;
+                [alertV show];
+            }
+        });
         [[BLHTTPClient sharedBLHTTPClient] login:user success:^(NSURLSessionDataTask *task, id responseObject) {
             [_HUD hide:YES];
             self.HUDState = @"NO";
@@ -440,6 +440,21 @@
         _tapGestureRecognizer.delegate = self;
     }
     return _tapGestureRecognizer;
+}
+
+#pragma mark --alertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+        switch (alertView.tag) {
+            case 100:
+                if (buttonIndex == 1) {
+
+                    [BLHTTPClient cancelOperations];
+                    [_HUD hide:YES];
+                }
+                break;
+            default:
+                break;
+        }
 }
 
 #pragma mark --textFieldDelegate

@@ -126,9 +126,9 @@ static double ICON_INITIAL_SIZE = 147.5;
             
         if ((userIdCookie) && (rememberTokenCookie) && (dic[@"user_id"])) {
             [_HUD show:YES];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_HUDTIMING * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [_HUD hide:YES];
-            });//20秒后执行
+//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_HUDTIMING * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                [_HUD hide:YES];
+//            });//20秒后执行
             [[BLHTTPClient sharedBLHTTPClient] getUserIfo:user success:^(NSURLSessionDataTask *task, id responseObject) {
                 
                 User *userInfo = [[User alloc] initWithDictionary:[responseObject objectForKey:@"user"]];

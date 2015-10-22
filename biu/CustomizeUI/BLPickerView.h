@@ -37,6 +37,7 @@
 @property (retain, nonatomic) UIColor *highLightedTextColor;
 @property (assign, nonatomic, readonly) NSUInteger selectedRow;
 @property (assign, nonatomic) CGFloat fisheyeFactor; // 0...1; slight value recommended such as 0.0001
+@property (retain, nonatomic) NSString *whichCreat;//判断哪个创建的picker
 
 - (void)reloadData;
 - (void)scrollToRow:(NSUInteger)row animated:(BOOL)animated;

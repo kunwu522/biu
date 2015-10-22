@@ -12,24 +12,30 @@
 static NSString* const BLBaseURLString = @"http://localhost:3000/cn/api/v1/";
 //static NSString* const BLBaseURLString = @"http://182.92.117.218:3001/cn/api/v1/";
 #else
-//static NSString* const BLBaseURLString = @"http://182.92.117.218:3001/cn/api/v1/";
-static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
+static NSString* const BLBaseURLString = @"http://182.92.117.218:3001/cn/api/v1/";
+//static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
 #endif
+static BLHTTPClient *_sharedHttpClient = nil;
 
 @implementation BLHTTPClient
 
 //@synthesize delegate = _delegate;
 
 + (BLHTTPClient *)sharedBLHTTPClient {
-    static BLHTTPClient *_sharedHttpClient = nil;
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _sharedHttpClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:BLBaseURLString] sessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+        _sharedHttpClient = [[BLHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:BLBaseURLString] sessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
         
-        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:BLBaseURLString]];
-        NSOperationQueue *operationQueue = manager.operationQueue;
-        [manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        _sharedHttpClient.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:BLBaseURLString]];
+    
+        // 设置超时时间
+//        [_sharedHttpClient.manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
+//        _sharedHttpClient.manager.requestSerializer.timeoutInterval = 10.f;
+//        [_sharedHttpClient.manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
+        
+        NSOperationQueue *operationQueue = _sharedHttpClient.manager.operationQueue;
+        [_sharedHttpClient.manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
             switch (status) {
                 case AFNetworkReachabilityStatusNotReachable:
                     [operationQueue setSuspended:YES];
@@ -41,7 +47,7 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
             }
         }];
         
-        [manager.reachabilityManager startMonitoring];
+        [_sharedHttpClient.manager.reachabilityManager startMonitoring];
     });
     
     return _sharedHttpClient;
@@ -72,6 +78,11 @@ static NSString* const BLBaseURLString = @"http://123.56.129.119/cn/api/v1/";
     }
     
     return self;
+}
+
++ (void)cancelOperations {
+    [_sharedHttpClient.manager.operationQueue cancelAllOperations];
+
 }
 
 - (void)passcode:(NSString *)code phoneNumber:(NSString *)phoneNumber

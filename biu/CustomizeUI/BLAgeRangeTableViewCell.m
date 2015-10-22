@@ -45,6 +45,7 @@ static const int BL_AGE_RANGE_MAX_PICKER = 1;
         
         _minAgePicker = [[BLPickerView alloc] init];
         _minAgePicker.tag = BL_AGE_RANGE_MIN_PICKER;
+        _minAgePicker.whichCreat = @"Partner";
         _minAgePicker.delegate = self;
         _minAgePicker.dataSource = self;
         _minAgePicker.fisheyeFactor = 0.001;
@@ -53,6 +54,7 @@ static const int BL_AGE_RANGE_MAX_PICKER = 1;
 
         _maxAgePicker = [[BLPickerView alloc] init];
         _maxAgePicker.tag = BL_AGE_RANGE_MAX_PICKER;
+        _maxAgePicker.whichCreat = @"Partner";
         _maxAgePicker.delegate = self;
         _maxAgePicker.dataSource = self;
         _maxAgePicker.fisheyeFactor = 0.001;
