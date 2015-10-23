@@ -79,17 +79,16 @@ static NSString *AVATAR_LARGE_URL = @"avatar_large_url";
     if (self) {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
-        BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
-        self.phone = [delegate.passwordItem objectForKey:(__bridge id)kSecAttrAccount];
+        self.phone = [defaults dictionaryRepresentation][@"phone"];
         if ([self.phone isEqualToString:@""]) {
             self.phone = nil;
         }
-        NSObject *pwd = [delegate.passwordItem objectForKey:(__bridge id)(kSecValueData)];
-        if ([pwd isKindOfClass:[NSData class]]) {
-            self.password = [[NSString alloc] initWithData:(NSData *)pwd encoding:NSUTF8StringEncoding];
-        } else if ([pwd isKindOfClass:[NSString class]]) {
-            self.password = (NSString *)pwd;
-        }
+//        NSObject *pwd = [delegate.passwordItem objectForKey:(__bridge id)(kSecValueData)];
+//        if ([pwd isKindOfClass:[NSData class]]) {
+//            self.password = [[NSString alloc] initWithData:(NSData *)pwd encoding:NSUTF8StringEncoding];
+//        } else if ([pwd isKindOfClass:[NSString class]]) {
+//            self.password = (NSString *)pwd;
+//        }
         
         if ((!self.phone || [self.password isEqualToString:@""])
             && (![defaults objectForKey:OPEN_ID])) {
@@ -169,14 +168,7 @@ static NSString *AVATAR_LARGE_URL = @"avatar_large_url";
     }
     
     if (self.phone && self.password ) {
-        BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
-        
-        if (![self.phone isEqualToString:[delegate.passwordItem objectForKey:(__bridge id)kSecAttrAccount]]) {
-            [delegate.passwordItem setObject:self.phone forKey:(__bridge id)kSecAttrAccount];
-        }
-        if (![self.password isEqualToString:[delegate.passwordItem objectForKey:(__bridge id)kSecValueData]]) {
-            [delegate.passwordItem setObject:self.password forKey:(__bridge id)kSecValueData];
-        }
+        [[NSUserDefaults standardUserDefaults] setObject:self.phone forKey:@"phone"];
     }
     
     if (self.userId == nil) {

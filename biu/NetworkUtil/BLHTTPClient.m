@@ -38,16 +38,16 @@ static BLHTTPClient *_sharedHttpClient = nil;
         [_sharedHttpClient.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
             NSString *string = nil;
             switch (status) {
-//                case AFNetworkReachabilityStatusUnknown:
-//                    string = @"未知";
-//                    break;
-//                case AFNetworkReachabilityStatusReachableViaWWAN:
-//                    string = @"需要使用流量，请注意！";
-//                    break;
-//                    
-//                case AFNetworkReachabilityStatusReachableViaWiFi:
-//                    string = @"WIFI，请放心使用";
-//                    break;
+                //case AFNetworkReachabilityStatusUnknown:
+                //    string = @"未知";
+                //    break;
+                //case AFNetworkReachabilityStatusReachableViaWWAN:
+                //    string = @"需要使用流量，请注意！";
+                //    break;
+                //    
+                //case AFNetworkReachabilityStatusReachableViaWiFi:
+                //    string = @"WIFI，请放心使用";
+                //    break;
                 case AFNetworkReachabilityStatusNotReachable:
                     string = @"无网络连接。。。";
                     break;
@@ -60,11 +60,8 @@ static BLHTTPClient *_sharedHttpClient = nil;
             }
         }];
 
-        NSOperationQueue *operationQueue = _sharedHttpClient.manager.operationQueue;
-        NSLog(@"-=-=-=-=-=-=- operationQueue = %@", operationQueue);
-        NSLog(@"-=-=-=-=-=-=- _sharedHttpClient.manager = %@", _sharedHttpClient.manager);
-        NSLog(@"-=-=-=-=-=-=-_sharedHttpClient = %@", _sharedHttpClient);
-        
+        //NSOperationQueue *operationQueue = _sharedHttpClient.manager.operationQueue;
+ 
         [_sharedHttpClient.manager.reachabilityManager startMonitoring];
     });
     

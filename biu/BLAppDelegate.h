@@ -7,12 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "KeychainItemWrapper.h"
 #import "User.h"
 #import "XMPPFramework.h"
 #import "WXApi.h"
 #import "WeiboSDK.h"
-#import <TencentOpenAPI/TencentOAuth.h>
 
 
 #define IS_IPHONE_4S (fabs((double)[[UIScreen mainScreen]bounds].size.height - (double)480) < DBL_EPSILON)
@@ -39,8 +37,6 @@
 #define kMAMapKey      @"735493b70b571f4339f62b071bf068b3"
 #endif
 
-@class KeychainItemWrapper;
-
 @protocol BLMessageDelegate <NSObject>
 @required
 - (void)newMessageReceived:(NSDictionary *)message;
@@ -57,7 +53,7 @@
 
 @end
 
-@interface BLAppDelegate : UIResponder <UIApplicationDelegate, XMPPStreamDelegate,WXApiDelegate,WeiboSDKDelegate,TencentSessionDelegate,WBHttpRequestDelegate> {
+@interface BLAppDelegate : UIResponder <UIApplicationDelegate, XMPPStreamDelegate,WXApiDelegate,WeiboSDKDelegate,WBHttpRequestDelegate> {
     XMPPStream *xmppStream;
     BOOL isOpen;
 }
@@ -69,7 +65,6 @@
 
 @property (strong, nonatomic) UINavigationController *welNavController;
 @property (strong, nonatomic) UIViewController *masterNavController;
-@property (strong, nonatomic) KeychainItemWrapper *passwordItem;
 
 @property (strong, nonatomic, readonly) XMPPStream *xmppStream;
 @property (weak, nonatomic) id<BLMessageDelegate> messageDelegate;
@@ -81,7 +76,6 @@
 @property (strong, nonatomic)NSString *avatar_url;//头像地址
 @property (strong, nonatomic)NSString *avatar_large_url;//大像素头像
 
-@property (strong,nonatomic)TencentOAuth *tencentOAuth;
 @property (strong, nonatomic)WeiboSDK *weiboOAth;
 
 - (BOOL)connect;

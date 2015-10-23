@@ -38,8 +38,6 @@
 #import "BLProfileViewController.h"
 #import <TSMessages/TSMessageView.h>
 #import "BLLoginViewController.h"
-#import <ShareSDK/ShareSDK.h>
-#import <TencentOpenAPI/TencentOAuth.h>
 #import "WeiboSDK.h"
 #import "WXApi.h"
 #import "BLHTTPClient.h"
@@ -61,16 +59,14 @@
 @synthesize openid = _openid;
 @synthesize access_token = _access_token;
 @synthesize xmppStream;
-@synthesize passwordItem, welNavController;
+@synthesize welNavController;
 @synthesize username = _username;
 @synthesize avatar_url = _avatar_url;
 @synthesize avatar_large_url = _avatar_large_url;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
-     self.passwordItem = [[KeychainItemWrapper alloc] initWithIdentifier:@"Password" accessGroup:nil];
-    
+        
     // Get current user
     self.currentUser = [[User alloc] initWithFromUserDefault];
     
@@ -111,7 +107,7 @@
     if ([url.scheme isEqualToString:kWeiXinAppId]) {
         return [WXApi handleOpenURL:url delegate:self];
     } else if ([url.scheme isEqualToString:kWeiBoAppKey]) {
-        return [TencentOAuth HandleOpenURL:url] || [WeiboSDK handleOpenURL:url delegate:self];
+        return [WeiboSDK handleOpenURL:url delegate:self];
     } else {
         return YES;
     }
@@ -124,8 +120,7 @@
     if ([url.scheme isEqualToString:kWeiXinAppId]) {
         return [WXApi handleOpenURL:url delegate:self];
     } else if ([url.scheme isEqualToString:@"wb747887283"]) {
-//        return [WeiboSDK handleOpenURL:url delegate:self];
-        return [TencentOAuth HandleOpenURL:url] || [WeiboSDK handleOpenURL:url delegate:self];
+        return [WeiboSDK handleOpenURL:url delegate:self];
     }else{
         return YES;
     }

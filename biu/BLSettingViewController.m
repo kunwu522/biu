@@ -171,10 +171,7 @@
     }];
     
     BLAppDelegate *delegate = (BLAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [delegate.passwordItem resetKeychainItem];//清keychain，有问题
-    /*
-     Assertion failure in -[KeychainItemWrapper resetKeychainItem], /Users/Dezi/Desktop/九轮/biu_8_19/biu/KeyChainUtil/KeychainItemWrapper.m:199
-     */
+
     delegate.currentUser = nil;
 
     //清userDefaults

@@ -15,7 +15,6 @@
 #import "BLMatchViewController.h"
 #import "BLMenuNavController.h"
 #import "BLMenuViewController.h"
-#import "KeychainItemWrapper.h"
 #import "BLProfileViewController.h"
 #import "Masonry.h"
 #import "BLPartnerViewController.h"

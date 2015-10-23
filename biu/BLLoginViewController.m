@@ -196,7 +196,7 @@
     [_HUD show:YES];
     self.HUDState = @"YES";
     if (user.phone && user.password) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(15.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             if ([_HUDState isEqualToString:@"YES"]) {
                 UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:@"网络不稳定" message:@"稍后重试" delegate:self cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
 //                alertV.tag = 100;

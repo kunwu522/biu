@@ -179,7 +179,7 @@ static NSInteger const BL_RESET_SUCCESS_ALERTVIEW = 1;
         av.tag = BL_RESET_SUCCESS_ALERTVIEW;
         [av show];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"Reset password failed.");
+        NSLog(@"Reset password failed. why: %@", error.localizedDescription);
     }];
 }
 
